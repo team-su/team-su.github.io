@@ -15,7 +15,7 @@
   
 
   
-  <meta name="description" content="本次2021 SCTF 我们 SU 取得了2nd 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2021 SCTF的 writeup ">
+  <meta name="description" content="本次2021 SCTF 我们 SU 取得了2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2021 SCTF的 writeup ">
 
   
 
@@ -171,7 +171,7 @@
   
   <article class="passage-article">
     <hr>
-<p>本次2021 SCTF 我们 SU 取得了2nd 的成绩，，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)<br>以下是我们 SU 本次 2021 SCTF 的 writeup </p>
+<p>本次2021 SCTF 我们 SU 取得了2nd 🥈的成绩，，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)<br>以下是我们 SU 本次 2021 SCTF 的 writeup </p>
 <h1 id="Web"><a href="#Web" class="headerlink" title="Web"></a>Web</h1><h3 id="FUMO-on-the-Christmas-tree"><a href="#FUMO-on-the-Christmas-tree" class="headerlink" title="FUMO_on_the_Christmas_tree"></a>FUMO_on_the_Christmas_tree</h3><p>通过给定的一个 gadget class 文件来进行 PHP 反序列化 RCE。观察后发现只有一个类有 destructor，然后所有和系统互动的函数只有 readfile，所以这应该就是入口和出口。剩下的只需要找到一个调用路径从入口到出口。</p>
 <p>所有的类都只有一个函数和一些成员变量。函数内部做的操作大概分为两类：</p>
 <ul>
