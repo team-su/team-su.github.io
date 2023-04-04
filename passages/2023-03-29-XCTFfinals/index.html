@@ -15,7 +15,7 @@
   
 
   
-  <meta name="description" content="本次2023 XCTFfinals 体验赛 我们 SU 取得了第7名的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2023XCTFfinals的 writeup">
+  <meta name="description" content="本次2023 XCTFfinals 我们 SU 取得了第7名的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2023XCTFfinals的 writeup">
 
   
 
@@ -171,7 +171,7 @@
   
   <article class="passage-article">
     <hr>
-<p>本次2023 XCTFfinals 体验赛 我们 SU 取得了第7名的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)<br>以下是我们 SU 本次 2023XCTFfinals的 writeup</p>
+<p>本次2023 XCTFfinals 我们 SU 取得了第7名的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)<br>以下是我们 SU 本次 2023XCTFfinals的 writeup</p>
 <h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="web-dbtrick"><a href="#web-dbtrick" class="headerlink" title="web-dbtrick"></a>web-dbtrick</h3><h4 id="0x01-预期解"><a href="#0x01-预期解" class="headerlink" title="0x01 预期解"></a>0x01 预期解</h4><p>​<img src="image-20230329192416-pn8gia5.png" alt="image">​</p>
 <p>admin.php 中读代码可以发现是从ctf.admin中读取username、password，如果能查询出数据着执行readfile(‘/flag’)</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#admin.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//flag is in /flag </span></span><br><span class="line">$con = <span class="keyword">new</span> PDO($dsn,$user,$pass); </span><br><span class="line">$sql = <span class="string">&quot;select * from ctf.admin where username=? and password=?&quot;</span>; </span><br><span class="line">$sth = $con-&gt;prepare($sql); </span><br><span class="line">$res = $sth-&gt;execute([$_POST[<span class="string">&#x27;username&#x27;</span>],$_POST[<span class="string">&#x27;password&#x27;</span>]]); </span><br><span class="line"><span class="keyword">if</span>($sth-&gt;rowCount()!==<span class="number">0</span>)&#123; </span><br><span class="line">    readfile(<span class="string">&#x27;/flag&#x27;</span>); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
