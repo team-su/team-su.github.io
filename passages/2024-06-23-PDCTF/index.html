@@ -15,7 +15,7 @@
   
 
   
-  <meta name="description" content="本次熊猫杯决赛我们 SU 取得了第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。以下是我们 SU 本次 2024 熊猫杯决赛的 writeup。">
+  <meta name="description" content="本次熊猫杯决赛我们 SU 取得了第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。">
 
   
 
@@ -173,7 +173,7 @@
     <hr>
 <p>本次熊猫杯决赛我们 SU 取得了第一名 🏆的成绩.</p>
 <p><img src="1.png" alt="img"></p>
-<p>感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a> 或者直接联系书鱼 QQ:381382770。<br>以下是我们 SU 本次 2024 熊猫杯决赛的 writeup。</p>
+<p>感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a> 或者直接联系书鱼 QQ:381382770。<br>以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。</p>
 <h1 id="数据安全"><a href="#数据安全" class="headerlink" title="数据安全"></a>数据安全</h1><h2 id="OTTO"><a href="#OTTO" class="headerlink" title="OTTO"></a>OTTO</h2><p>套了个rsa-OT协议的壳，考的东西很基础。对于transfer2，v2已知，建立两个方程做GCD即可；对于transfer1，由于v1未知但e很小，因此可以考虑消去v1之后coppersmith打，去掉flag头祖传板子梭哈。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">prefix = bytes_to_long(<span class="string">b&quot;flag&#123;&quot;</span>)</span><br><span class="line">PR.&lt;x,y&gt; = PolynomialRing(Zmod(n1))</span><br><span class="line">f = (m1[<span class="number">0</span>] - prefix*<span class="number">256</span>^<span class="number">16</span> + x)^e1 - (m1[<span class="number">1</span>] - y)^e1 - x1[<span class="number">1</span>] + x1[<span class="number">0</span>]</span><br><span class="line">res = small_roots(f,bounds=(<span class="number">256</span>^<span class="number">25</span>,<span class="number">256</span>^<span class="number">25</span>))</span><br><span class="line">print(res)</span><br><span class="line">print(long_to_bytes(int(n1-res[<span class="number">0</span>][<span class="number">0</span>])))</span><br><span class="line"></span><br><span class="line"><span class="comment">###################################### part2</span></span><br><span class="line">PR.&lt;x&gt; = PolynomialRing(Zmod(n2))</span><br><span class="line">f1 = (m2[<span class="number">0</span>] - x)^e2 - (v2 - x2[<span class="number">0</span>])</span><br><span class="line">f2 = (m2[<span class="number">1</span>] - c[<span class="number">1</span>] - x*c[<span class="number">0</span>])^e2 - (v2 - x2[<span class="number">1</span>])</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span>(<span class="params">g1, g2</span>):</span></span><br><span class="line">    <span class="keyword">while</span> g2:</span><br><span class="line">        g1, g2 = g2, g1 % g2</span><br><span class="line">    <span class="keyword">return</span> g1.monic()</span><br><span class="line"></span><br><span class="line">print(long_to_bytes(int(-gcd(f1, f2)[<span class="number">0</span>])))</span><br></pre></td></tr></table></figure>
 <h2 id="Bluetooth"><a href="#Bluetooth" class="headerlink" title="Bluetooth"></a>Bluetooth</h2><p>打开看到报错，丢到010分析看到后面有一个压缩包</p>
@@ -192,7 +192,7 @@
 <p>云影得到压缩包的password是AUCLWJQBUCIW</p>
 <p>莫斯用来做AES解密</p>
 <p><img src="1719148195051-60.png" alt="img"></p>
-<h2 id="myerm"><a href="#myerm" class="headerlink" title="myerm"></a>myerm</h2><p>估计是非预期</p>
+<h2 id="myerp"><a href="#myerp" class="headerlink" title="myerp"></a>myerp</h2><p>估计是非预期</p>
 <p><img src="1719148195051-61.png" alt="img"></p>
 <p><img src="1719148195051-62.png" alt="img"></p>
 <p><a target="_blank" rel="noopener" href="http://www.qetx.top/posts/19553/">http://www.qetx.top/posts/19553/</a></p>
@@ -210,11 +210,7 @@
 <p><img src="1719148195051-68.png" alt="img"></p>
 <p><img src="1719148195051-69.png" alt="img"></p>
 <p><img src="1719148195051-70.png" alt="img"></p>
-<h1 id="工控"><a href="#工控" class="headerlink" title="工控"></a>工控</h1><h2 id="EZmodbus"><a href="#EZmodbus" class="headerlink" title="EZmodbus"></a>EZmodbus</h2><p>打开流量发现是工控流量</p>
-<p><a target="_blank" rel="noopener" href="https://writeup.ctfhub.com/Challenge/2019/%E5%B7%A5%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B/%E6%B7%B1%E5%9C%B3%E7%AB%99/a6V88AH4vcWnZAWiA4LAKh.html">https://writeup.ctfhub.com/Challenge/2019/%E5%B7%A5%E4%B8%9A%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8%E6%8A%80%E8%83%BD%E5%A4%A7%E8%B5%9B/%E6%B7%B1%E5%9C%B3%E7%AB%99/a6V88AH4vcWnZAWiA4LAKh.html</a></p>
-<p>根据文章提供脚本先检测协议功能码</p>
-<p><img src="1719148195052-71.png" alt="img"></p>
-<h2 id="ICS2"><a href="#ICS2" class="headerlink" title="ICS2"></a>ICS2</h2><p>直接分析S7COMM协议内容，先建立了通信链路：</p>
+<h1 id="工控"><a href="#工控" class="headerlink" title="工控"></a>工控</h1><h2 id="ICS2"><a href="#ICS2" class="headerlink" title="ICS2"></a>ICS2</h2><p>直接分析S7COMM协议内容，先建立了通信链路：</p>
 <p><img src="1719148195052-72.png" alt="img"></p>
 <p>在下面几个包可以找到订单号：6ES7 841-0CC05-0YA5 </p>
 <p><img src="1719148195052-73.png" alt="img"></p>
@@ -271,7 +267,7 @@
     <span>目录</span>
   </div>
   <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8"><span class="toc-text">数据安全</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#OTTO"><span class="toc-text">OTTO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bluetooth"><span class="toc-text">Bluetooth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#myerm"><span class="toc-text">myerm</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%AF%E8%B0%81%E5%81%B7%E5%81%B7%E5%81%B7%E8%B5%B0%E6%88%91%E7%9A%84%E5%BF%83"><span class="toc-text">是谁偷偷偷走我的心</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E6%8E%A7"><span class="toc-text">工控</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#EZmodbus"><span class="toc-text">EZmodbus</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ICS2"><span class="toc-text">ICS2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-text">AI漏洞挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#panda"><span class="toc-text">panda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#login"><span class="toc-text">login</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#safestring"><span class="toc-text">safestring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gateway"><span class="toc-text">gateway</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8"><span class="toc-text">数据安全</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#OTTO"><span class="toc-text">OTTO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bluetooth"><span class="toc-text">Bluetooth</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#myerp"><span class="toc-text">myerp</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%AF%E8%B0%81%E5%81%B7%E5%81%B7%E5%81%B7%E8%B5%B0%E6%88%91%E7%9A%84%E5%BF%83"><span class="toc-text">是谁偷偷偷走我的心</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B7%A5%E6%8E%A7"><span class="toc-text">工控</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ICS2"><span class="toc-text">ICS2</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#AI%E6%BC%8F%E6%B4%9E%E6%8C%96%E6%8E%98"><span class="toc-text">AI漏洞挖掘</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#panda"><span class="toc-text">panda</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#login"><span class="toc-text">login</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#safestring"><span class="toc-text">safestring</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#gateway"><span class="toc-text">gateway</span></a></li></ol></li></ol>
   </div>
 </aside>
   
