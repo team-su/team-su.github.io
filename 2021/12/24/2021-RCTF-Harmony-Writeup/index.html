@@ -1,177 +1,41 @@
-<!DOCTYPE html>
-<html>
-  
-<head>
-  <meta charset="utf-8">
-  <meta name="author" content="Suers" />
-  
-  
-  <title>2021 RCTF Harmony Writeup | su-team</title>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>2021 RCTF Harmony Writeup - su-team</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="su-team"><meta name="msapplication-TileImage" content="/img/SU4.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="su-team"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Hi!Harmony!-复现 一看题目是鸿蒙联想到鸿蒙操作系统 不过之前没做过这一方面的题目"><meta property="og:type" content="blog"><meta property="og:title" content="2021 RCTF Harmony Writeup"><meta property="og:url" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/"><meta property="og:site_name" content="su-team"><meta property="og:description" content="Hi!Harmony!-复现 一看题目是鸿蒙联想到鸿蒙操作系统 不过之前没做过这一方面的题目"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/01.jpg"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/03.jpg"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/02.jpg"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/04.jpg"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/05.jpg"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/06.jpg"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/07.jpg"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/08.jpg"><meta property="og:image" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/09.jpg"><meta property="article:published_time" content="2021-12-24T08:53:42.000Z"><meta property="article:modified_time" content="2025-06-03T13:47:23.668Z"><meta property="article:author" content="SUers"><meta property="article:tag" content="RCTF"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/01.jpg"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/"},"headline":"2021 RCTF Harmony Writeup","image":["https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/01.jpg","https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/03.jpg","https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/02.jpg","https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/04.jpg","https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/05.jpg","https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/06.jpg","https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/07.jpg","https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/08.jpg","https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/09.jpg"],"datePublished":"2021-12-24T08:53:42.000Z","dateModified":"2025-06-03T13:47:23.668Z","author":{"@type":"Person","name":"SUers"},"publisher":{"@type":"Organization","name":"su-team","logo":{"@type":"ImageObject","url":"https://team-su.github.io/img/SU4.jpg"}},"description":"Hi!Harmony!-复现 一看题目是鸿蒙联想到鸿蒙操作系统 不过之前没做过这一方面的题目"}</script><link rel="canonical" href="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/"><link rel="icon" href="/img/SU4.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link data-pjax rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
 
-  
-    <meta name="keywords" content="RCTF," />
-  
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
 
-  
-  <meta name="description" content="Hi!Harmony!-复现一看题目是鸿蒙联想到鸿蒙操作系统不过之前没做过这一方面的题目">
-
-  
-
-  
-
-  
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
-  
-
-  
-
-  
-
-  <script>
-  // theme-ad's config script
-  // it can be used in every script
-  
-  window.AD_CONFIG = {
-    leancloud: {"appid":"Hyq9wkH495DgNHWhDQCOfQSp-gzGzoHsz","appkey":"WaR7nrzhliHj9aVwdQzkdlGd","comment":false,"count":false},
-    welcome: {"enable":false,"interval":30},
-    start_time: "2018-02-10",
-    passwords: ["efe07af7441da2b69c4a41e42e73be4db47f66010a56900788a458354a7373ec", ],
-    is_post: true,
-    lock: false,
-    author: "Suers",
-    share: {"twitter":false,"facebook":false,"weibo":false,"qq":false,"wechat":false},
-    mathjax: true,
-    page_type: "",
-    root: "/"
-  };
-</script>
-
-  
-<script src="/vendor/sha256.min.js"></script>
-<script src="/js/auth.js"></script>
-<script src="/js/index.js"></script>
-<script src="/vendor/qrcode.min.js"></script>
-
-
-  
-    <link rel="icon" href="/images/SU.ico">
-    <link rel="apple-touch-icon" href="/images/SU.png">
-  
-
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-
-  
-<link rel="stylesheet" href="/css/index.css">
-<link rel="stylesheet" href="/styles/components/highlight/highlight.css">
-
-
-  
-<meta name="generator" content="Hexo 6.3.0"></head>
-  <body>
-    <header class="site-header">
-  <div class="site-header-brand">
-    
-      <span class="site-header-brand-title">
-        <a href="/">SU</a>
-      </span>
-    
-    
-      <span class="site-header-brand-motto"> | Write ups of TEAM-SU</span>
-    
-  </div>
-  <div class="site-header-right">
-    <nav class="site-header-navigation">
-      
-        <a href="/" target="_self">首页</a>
-      
-        <a href="/archives/" target="_self">归档</a>
-      
-        <a href="/tags/" target="_self">标签</a>
-      
-        <a href="/about/" target="_self">关于</a>
-      
-        <a href="/links/" target="_self">成员</a>
-      
-    </nav>
-    <div class="site-header-btn">
-      
-        <a href="https://github.com/team-su/" target="_blank" id="site-github">
-          <i class="fa fa-github-alt"></i>
-        </a>
-      
-      <a href="javascript:void(0);" id="site-search">
-        <i class="fa fa-search"></i>
-      </a>
-      <a href="javascript:void(0);" id="site-nav-btn">
-        <i class="fa fa-ellipsis-v"></i>
-      </a>
-    </div>
-  </div>
-</header>
-<nav class="table-content" id="site-nav">
-  <div class="table-content-title">
-    <span>导航</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc">
-      
-        <li class="toc-item">
-          <a href="/" target="_self">
-            首页
-          </a>
-        </li>
-      
-        <li class="toc-item">
-          <a href="/archives/" target="_self">
-            归档
-          </a>
-        </li>
-      
-        <li class="toc-item">
-          <a href="/tags/" target="_self">
-            标签
-          </a>
-        </li>
-      
-        <li class="toc-item">
-          <a href="/about/" target="_self">
-            关于
-          </a>
-        </li>
-      
-        <li class="toc-item">
-          <a href="/links/" target="_self">
-            成员
-          </a>
-        </li>
-      
-    </ol>
-  </div>
-</nav>
-<div id="site-process"></div>
-    <main>
-      
-  <div class="passage">
-  <div class="passage-meta">
-    <span>
-      <i class="fa fa-calendar"></i>2021-12-24
-    </span>
-    
-    
-      <span>
-        | <i class="fa fa-unlock-alt"></i>UNLOCK
-      </span>
-    
-  </div>
-  <h1 class="passage-title">
-    2021 RCTF Harmony Writeup
-  </h1>
-  
-  <article class="passage-article">
-    <hr>
-<h1 id="Hi-Harmony-复现"><a href="#Hi-Harmony-复现" class="headerlink" title="Hi!Harmony!-复现"></a>Hi!Harmony!-复现</h1><p>一看题目是鸿蒙联想到鸿蒙操作系统</p>
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"><link rel="alternate" href="/atom.xml" title="su-team" type="application/atom+xml">
+</head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/SU4.jpg" alt="su-team" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a><a class="navbar-item" href="/members">Members</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/team-su"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2021-12-24T08:53:42.000Z" title="2021/12/24 16:53:42">2021-12-24</time></span><span class="level-item">Updated&nbsp;<time dateTime="2025-06-03T13:47:23.668Z" title="2025/6/3 21:47:23">2025-06-03</time></span><span class="level-item">4 minutes read (About 532 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">2021 RCTF Harmony Writeup</h1><div class="content"><p>Hi!Harmony!-复现</p>
+<p>一看题目是鸿蒙联想到鸿蒙操作系统</p>
+<p>不过之前没做过这一方面的题目</p>
+<span id="more"></span>
+<hr>
+<h1><span id="hi-harmony-fu-xian">Hi!Harmony!-复现</span><a href="#hi-harmony-fu-xian" class="header-anchor"></a></h1><p>一看题目是鸿蒙联想到鸿蒙操作系统</p>
 <p>不过之前没做过这一方面的题目</p>
 <p>文件丢进EXEinfos里面看看文件信息</p>
 <p><img src="./01.jpg" alt="01"></p>
@@ -193,130 +57,53 @@
 <p><img src="./09.jpg" alt="09"></p>
 <p>反编译伪代码  —解密模块</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">UndefinedFunction_8000095c</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="type">int</span> iStack84;</span><br><span class="line">  undefined4 uStack72;</span><br><span class="line">  undefined4 uStack68;</span><br><span class="line">  undefined4 uStack64;</span><br><span class="line">  undefined4 uStack60;</span><br><span class="line">  undefined4 uStack56;</span><br><span class="line">  undefined2 uStack52;</span><br><span class="line">  undefined uStack50;</span><br><span class="line">  undefined uStack49;</span><br><span class="line">  undefined4 uStack48;</span><br><span class="line">  undefined4 uStack44;</span><br><span class="line">  undefined4 uStack40;</span><br><span class="line">  undefined4 uStack36;</span><br><span class="line">  undefined4 uStack32;</span><br><span class="line">  undefined4 uStack28;</span><br><span class="line">  undefined2 uStack24;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    FUN_80000832(<span class="string">&quot;Welcome to RCTF 2021...\n\r&quot;</span>);</span><br><span class="line">    uStack72 = <span class="number">0x4d524148</span>;</span><br><span class="line">    uStack68 = <span class="number">0x44594e4f</span>;</span><br><span class="line">    uStack64 = <span class="number">0x4d414552</span>;</span><br><span class="line">    uStack60 = <span class="number">0x4f505449</span>;</span><br><span class="line">    uStack56 = <span class="number">0x42495353</span>;</span><br><span class="line">    uStack52 = <span class="number">0x454c</span>;</span><br><span class="line">    uStack50 = <span class="number">0</span>;</span><br><span class="line">    uStack48 = <span class="number">0x44434241</span>;</span><br><span class="line">    uStack44 = <span class="number">0x48474645</span>;</span><br><span class="line">    uStack40 = <span class="number">0x4c4b4a49</span>;</span><br><span class="line">    uStack36 = <span class="number">0x504f4e4d</span>;</span><br><span class="line">    uStack32 = <span class="number">0x54535251</span>;</span><br><span class="line">    uStack28 = <span class="number">0x58575655</span>;</span><br><span class="line">    uStack24 = <span class="number">0x5a59</span>;</span><br><span class="line">    iStack84 = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">while</span> (iStack84 &lt; <span class="number">0x16</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span> (*(<span class="type">char</span> *)((<span class="type">int</span>)&amp;uStack72 + iStack84) + <span class="number">3</span> &lt; <span class="number">0x5b</span>) &#123;</span><br><span class="line">        *(<span class="type">char</span> *)((<span class="type">int</span>)&amp;uStack72 + iStack84) = *(<span class="type">char</span> *)((<span class="type">int</span>)&amp;uStack72 + iStack84) + <span class="string">&#x27;\x03&#x27;</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        *(undefined *)((<span class="type">int</span>)&amp;uStack72 + iStack84) =</span><br><span class="line">             (&amp;uStack49)[(*(<span class="type">char</span> *)((<span class="type">int</span>)&amp;uStack72 + iStack84) + <span class="number">-0x57</span>) % <span class="number">0x1a</span>];</span><br><span class="line">      &#125;</span><br><span class="line">      iStack84 = iStack84 + <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    FUN_80000832(<span class="string">&quot;The result of encryption: %s\n\r&quot;</span>,&amp;uStack72);</span><br><span class="line">    FUN_800059a2(<span class="number">1000</span>);</span><br><span class="line">  &#125; <span class="keyword">while</span>( <span class="literal">true</span> );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>注意因为数据是小端存储 所以提取出来要稍加注意</p>
 <p>EXP</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">data1 = [<span class="number">0x48</span>,<span class="number">0x41</span>,<span class="number">0x52</span>,<span class="number">0x4d</span>,<span class="number">0x4f</span>,<span class="number">0x4e</span>,<span class="number">0x59</span>,<span class="number">0x44</span>,</span><br><span class="line"><span class="number">0x52</span>,<span class="number">0x45</span>,<span class="number">0x41</span>,<span class="number">0x4d</span>,<span class="number">0x49</span>,<span class="number">0x54</span>,<span class="number">0x50</span>,<span class="number">0x4f</span>,<span class="number">0x53</span>,<span class="number">0x53</span>,<span class="number">0x49</span>,<span class="number">0x42</span>,<span class="number">0x4c</span>,<span class="number">0x45</span>]</span><br><span class="line"></span><br><span class="line">data2 = [<span class="number">0</span>,<span class="number">0x41</span>,<span class="number">0x42</span>,<span class="number">0x43</span>,<span class="number">0x44</span>,<span class="number">0x45</span>,<span class="number">0x46</span>,<span class="number">0x47</span>,<span class="number">0x48</span>,</span><br><span class="line"><span class="number">0x49</span>,<span class="number">0x4a</span>,<span class="number">0x4b</span>,<span class="number">0x4c</span>,<span class="number">0x4d</span>,<span class="number">0x4e</span>,<span class="number">0x4f</span>,<span class="number">0x50</span>,<span class="number">0x51</span>,<span class="number">0x52</span>,<span class="number">0x53</span>,<span class="number">0x54</span>,<span class="number">0x55</span>,<span class="number">0x56</span>,</span><br><span class="line"><span class="number">0x57</span>,<span class="number">0x58</span>,<span class="number">0x59</span>,<span class="number">0x5a</span>]</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;RCTF&#123;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data1)):</span><br><span class="line">    <span class="keyword">if</span> data1[i] + <span class="number">3</span> &lt; <span class="number">0x5b</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(data1[i] +<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>(data2[(data1[i] - <span class="number">0x57</span>) % <span class="number">0x1a</span>])</span><br><span class="line">flag += <span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
-  </article>
-  <aside class="table-content" id="site-toc">
-  <div class="table-content-title">
-    <i class="fa fa-arrow-right fa-lg" id="site-toc-hide-btn"></i>
-    <span>目录</span>
-  </div>
-  <div class="table-content-main">
-    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Hi-Harmony-%E5%A4%8D%E7%8E%B0"><span class="toc-text">Hi!Harmony!-复现</span></a></li></ol>
-  </div>
-</aside>
-  
-    <aside class="passage-copyright">
-      <div>本文作者: SUers</div>
-      
-        <div>
-          原文链接: 
-          <a href="" target="_blank">https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/</a>
-        </div>
-      
-      <div>
-        版权声明: 本博客所有文章除特别声明外, 均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议. 转载请注明出处!
-      </div>
-    </aside>
-  
-  
-    <div class="passage-tags">
-     
-      <a href="/tags/RCTF/"><i class="fa fa-tags"></i>RCTF</a>
-    
-    </div>
-  
-</div>
 
-    </main>
-    
-    <div class="site-footer-wrapper">
-  <footer class="site-footer">
-    
-    <div class="site-footer-info">
-      <i class="fa fa-clock-o"></i> 本站已稳定运行<span id="site-time"></span>
-    </div>
-    
-    
-      <div class="site-footer-info">
-        <i class="fa fa-at"></i> Email: suers_xctf@126.com
-      </div>
-    
-    <div class="site-footer-info">
-      <i class="fa fa-copyright"></i> 
-      2019 <a href="https://github.com/dongyuanxin/theme-ad/" target="_blank">Theme-AD</a>.
-      Created by <a href="https://godbmw.com/" target="_blank">GodBMW</a>.
-      All rights reserved.
-    </div>
-  </footer>
-</div>
-    <div id="site-layer" style="display:none;">
-  <div class="site-layer-content">
-    <div class="site-layer-header">
-      <span class="site-layer-header-title" id="site-layer-title"></span>
-      <i class="fa fa-close" id="site-layer-close"></i>
-    </div>
-    <div class="site-layer-body" id="site-layer-container">
-      <div class="site-layer-input" id="site-layer-search" style="display: none;">
-        <div class="site-layer-input-choose">
-          <a href="javascript:void(0);" title="Change Search Engine">Google</a>
-        </div>
-        <input type="text">
-        <i class="fa fa-search"></i>
-      </div>
-      
-      <div id="site-layer-welcome" style="display:none;"></div>
-    </div>
-  </div>
-</div>
-    
-
-<div class="bottom-bar">
-  <div class="bottom-bar-left">
-    <a href="/2021/12/28/2021-12-25-SCTF/" data-enable="true">
-      <i class="fa fa-arrow-left"></i>
-    </a>
-    <a href="/2021/11/21/2021-11-20-XHLJ/" data-enable="true">
-      <i class="fa fa-arrow-right"></i>
-    </a>
-  </div>
-  <div class="bottom-bar-right">
-    <a href="javascript:void(0);" data-enable="true" id="site-toc-show-btn">
-      <i class="fa fa-bars"></i>
-    </a>
-    
-    <a href="javascript:void(0);" id="site-toggle-share-btn">
-      <i class="fa fa-share-alt"></i>
-    </a>
-    
-    <a href="javascript:void(0);" id="back-top-btn">
-      <i class="fa fa-chevron-up"></i>
-    </a>
-  </div>
-</div>
-    <div id="share-btn">
-  
-  
-  
-  
-  
-</div>
-    
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-112937997-3"></script>
-  <script async>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'UA-112937997-3');
-  </script>
-
-
-
-
-
-
-    
-  </body>
-</html>
+</div><div class="article-licensing box"><div class="licensing-title"><p>2021 RCTF Harmony Writeup</p><p><a href="https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/">https://team-su.github.io/2021/12/24/2021-RCTF-Harmony-Writeup/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>SUers</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2021-12-24</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2025-06-03</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/RCTF/">RCTF</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2021/12/28/2021-12-25-SCTF/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">2021 SCTF SU Writeup</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2021/11/21/2021-11-20-XHLJ/"><span class="level-item">2021年西湖论剑线上赛 SU Write-up</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#"><span class="level-left"><span class="level-item">1</span><span class="level-item">Hi!Harmony!-复现</span></span></a></li></ul></div></div><script src="/js/toc.js" defer></script></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/SU4.jpg" alt="su-team" height="28"></a><p class="is-size-7"><span>&copy; 2025 SUers</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2016</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/team-su"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script data-pjax src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script data-pjax src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script><script src="/js/pjax.js"></script><!--!--><!--!--><!--!--><script data-pjax src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script data-pjax src="/js/insight.js" defer></script><script data-pjax>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
