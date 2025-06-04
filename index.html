@@ -32,6 +32,10 @@
             font-family: Arial, sans-serif;
             color: #666;
             z-index: 1000;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         
         .loader {
@@ -48,6 +52,31 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        
+        /* 错误显示 */
+        #error {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ff6b6b;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 1001;
+        }
+        
+        .retry-btn {
+            background: white;
+            color: #ff6b6b;
+            border: none;
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -57,25 +86,74 @@
         <div>加载中...</div>
     </div>
     
+    <!-- 错误提示 -->
+    <div id="error">
+        <div>❌ 无法加载内容</div>
+        <div style="font-size: 0.9em; margin-top: 5px;">可能是网络问题或iframe被阻止</div>
+        <button class="retry-btn" onclick="directRedirect()">直接访问</button>
+    </div>
+    
     <!-- 博客内容iframe -->
-    <iframe id="blog-frame" src="" onload="hideLoading()"></iframe>
+    <iframe id="blog-frame" src="" onload="hideLoading()" onerror="showError()"></iframe>
     
     <script>
         function hideLoading() {
             document.getElementById('loading').style.display = 'none';
         }
         
-        // 获取当前路径并构建目标URL
-        const currentPath = window.location.pathname === '/' ? '' : window.location.pathname;
-        const targetUrl = 'https://a.baozongwi.xyz' + currentPath + window.location.search + window.location.hash;
+        function showError() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+        }
         
-        // 设置iframe源
-        document.getElementById('blog-frame').src = targetUrl;
+        function directRedirect() {
+            window.location.href = getTargetUrl();
+        }
         
-        // 监听iframe中的导航，同步更新地址栏
+        function getTargetUrl() {
+            const currentPath = window.location.pathname === '/' ? '' : window.location.pathname;
+            return 'https://a.baozongwi.xyz' + currentPath + window.location.search + window.location.hash;
+        }
+        
+        // 检测是否在iframe中（避免无限嵌套）
+        function isInIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+        
+        // 检测是否是同域访问（避免循环）
+        function isSameDomain() {
+            return window.location.hostname === 'a.baozongwi.xyz';
+        }
+        
+        // 主逻辑
+        if (isInIframe() || isSameDomain()) {
+            // 如果已经在iframe中或者是同域，直接重定向
+            window.location.href = getTargetUrl();
+        } else {
+            // 设置iframe源
+            const targetUrl = getTargetUrl();
+            document.getElementById('blog-frame').src = targetUrl;
+            
+            // 5秒后如果还在加载，显示错误
+            setTimeout(() => {
+                if (document.getElementById('loading').style.display !== 'none') {
+                    showError();
+                }
+            }, 5000);
+        }
+        
+        // 监听iframe加载错误
+        document.getElementById('blog-frame').addEventListener('error', showError);
+        
+        // 处理iframe内的导航（如果可能）
         window.addEventListener('message', function(event) {
             if (event.origin === 'https://a.baozongwi.xyz') {
-                // 可以在这里处理一些跨域消息
+                // 可以处理来自iframe的消息
+                console.log('来自iframe的消息:', event.data);
             }
         });
     </script>
