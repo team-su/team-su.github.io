@@ -1,21 +1,83 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>su-team</title>
-  <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-    }
-    iframe {
-      border: none;
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+        
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #blog-frame {
+            width: 100%;
+            height: 100vh;
+            border: none;
+            display: block;
+        }
+        
+        /* 加载动画 */
+        #loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: Arial, sans-serif;
+            color: #666;
+            z-index: 1000;
+        }
+        
+        .loader {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body>
-  <iframe src="http://8.137.148.227/" frameborder="0"></iframe>
+    <!-- 加载指示器 -->
+    <div id="loading">
+        <div class="loader"></div>
+        <div>加载中...</div>
+    </div>
+    
+    <!-- 博客内容iframe -->
+    <iframe id="blog-frame" src="" onload="hideLoading()"></iframe>
+    
+    <script>
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+        
+        // 获取当前路径并构建目标URL
+        const currentPath = window.location.pathname === '/' ? '' : window.location.pathname;
+        const targetUrl = 'http://8.137.148.227' + currentPath + window.location.search + window.location.hash;
+        
+        // 设置iframe源
+        document.getElementById('blog-frame').src = targetUrl;
+        
+        // 监听iframe中的导航，同步更新地址栏
+        window.addEventListener('message', function(event) {
+            if (event.origin === 'http://8.137.148.227') {
+                // 可以在这里处理一些跨域消息
+            }
+        });
+    </script>
 </body>
 </html>
