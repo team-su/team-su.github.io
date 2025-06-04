@@ -67,14 +67,14 @@
         
         // 获取当前路径并构建目标URL
         const currentPath = window.location.pathname === '/' ? '' : window.location.pathname;
-        const targetUrl = 'http://8.137.148.227' + currentPath + window.location.search + window.location.hash;
+        const targetUrl = 'https://a.baozongwi.xyz' + currentPath + window.location.search + window.location.hash;
         
         // 设置iframe源
         document.getElementById('blog-frame').src = targetUrl;
         
         // 监听iframe中的导航，同步更新地址栏
         window.addEventListener('message', function(event) {
-            if (event.origin === 'http://8.137.148.227') {
+            if (event.origin === 'https://a.baozongwi.xyz') {
                 // 可以在这里处理一些跨域消息
             }
         });
