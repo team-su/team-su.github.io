@@ -1,153 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            border: 0;
-        }
-        
-        html, body {
-            height: 100%;
-            overflow: hidden;
-        }
-        
-        #blog-frame {
-            width: 100%;
-            height: 100vh;
-            border: none;
-            display: block;
-        }
-        
-        /* 加载动画 */
-        #loading {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: Arial, sans-serif;
-            color: #666;
-            z-index: 1000;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .loader {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 10px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* 错误显示 */
-        #error {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #ff6b6b;
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            z-index: 1001;
-        }
-        
-        .retry-btn {
-            background: white;
-            color: #ff6b6b;
-            border: none;
-            padding: 10px 20px;
-            margin-top: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>su-team</title>
+  <style>
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
 </head>
 <body>
-    <!-- 加载指示器 -->
-    <div id="loading">
-        <div class="loader"></div>
-        <div>加载中...</div>
-    </div>
-    
-    <!-- 错误提示 -->
-    <div id="error">
-        <div>❌ 无法加载内容</div>
-        <div style="font-size: 0.9em; margin-top: 5px;">可能是网络问题或iframe被阻止</div>
-        <button class="retry-btn" onclick="directRedirect()">直接访问</button>
-    </div>
-   
-    
-    <script>
-        function hideLoading() {
-            document.getElementById('loading').style.display = 'none';
-        }
-        
-        function showError() {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('error').style.display = 'block';
-        }
-        
-        function directRedirect() {
-            window.location.href = getTargetUrl();
-        }
-        
-        function getTargetUrl() {
-            const currentPath = window.location.pathname === '/' ? '' : window.location.pathname;
-            return 'https://rb3.top' + currentPath + window.location.search + window.location.hash;
-        }
-        
-        function isInIframe() {
-            try {
-                return window.self !== window.top;
-            } catch (e) {
-                return true;
-            }
-        }
-        
-        function isSameDomain() {
-            return window.location.hostname === 'rb3.top';
-        }
-        
-        // 主逻辑
-        if (isInIframe() || isSameDomain()) {
-            window.location.href = getTargetUrl();
-        } else {
-            // 设置iframe源
-            const targetUrl = getTargetUrl();
-            document.getElementById('blog-frame').src = targetUrl;
-            
-            // 5秒后如果还在加载，显示错误
-            setTimeout(() => {
-                if (document.getElementById('loading').style.display !== 'none') {
-                    showError();
-                }
-            }, 10000);
-        }
-        
-        document.getElementById('blog-frame').addEventListener('error', showError);
-        
-        window.addEventListener('message', function(event) {
-            if (event.origin === 'https://rb3.top') {
-                console.log('来自iframe的消息:', event.data);
-            }
-        });
-    </script>
+  <iframe src="https://rb3.top/" frameborder="0"></iframe>
 </body>
 </html>
