@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,9 +92,8 @@
         <div style="font-size: 0.9em; margin-top: 5px;">可能是网络问题或iframe被阻止</div>
         <button class="retry-btn" onclick="directRedirect()">直接访问</button>
     </div>
-    
-    <!-- 博客内容iframe -->
-    <iframe id="blog-frame" src="" onload="hideLoading()" onerror="showError()"></iframe>
+   
+    <iframe id="blog-frame" title="Blog Content"></iframe>
     
     <script>
         function hideLoading() {
@@ -116,7 +114,6 @@
             return 'https://rb3.top' + currentPath + window.location.search + window.location.hash;
         }
         
-        // 检测是否在iframe中（避免无限嵌套）
         function isInIframe() {
             try {
                 return window.self !== window.top;
@@ -125,37 +122,79 @@
             }
         }
         
-        // 检测是否是同域访问（避免循环）
         function isSameDomain() {
             return window.location.hostname === 'rb3.top';
         }
         
+        // URL同步函数
+        function syncUrl() {
+            try {
+                const iframe = document.getElementById('blog-frame');
+                if (iframe && iframe.contentWindow) {
+                    const iframeUrl = iframe.contentWindow.location.href;
+                    const iframePath = new URL(iframeUrl).pathname + new URL(iframeUrl).search + new URL(iframeUrl).hash;
+                    const targetPath = iframePath || '/';
+                    
+                    // 更新父页面URL而不重新加载页面
+                    if (window.location.pathname + window.location.search + window.location.hash !== targetPath) {
+                        window.history.pushState({}, '', targetPath);
+                    }
+                }
+            } catch (e) {
+                // 跨域时会出现错误，这是正常的
+                console.log('无法访问iframe URL (跨域限制)');
+            }
+        }
+        
         // 主逻辑
         if (isInIframe() || isSameDomain()) {
-            // 如果已经在iframe中或者是同域，直接重定向
             window.location.href = getTargetUrl();
         } else {
             // 设置iframe源
             const targetUrl = getTargetUrl();
-            document.getElementById('blog-frame').src = targetUrl;
+            const iframe = document.getElementById('blog-frame');
+            iframe.src = targetUrl;
             
-            // 5秒后如果还在加载，显示错误
+            // iframe加载完成后隐藏loading
+            iframe.addEventListener('load', function() {
+                hideLoading();
+                // 尝试同步URL
+                syncUrl();
+            });
+            
+            // 10秒后如果还在加载，显示错误
             setTimeout(() => {
                 if (document.getElementById('loading').style.display !== 'none') {
                     showError();
                 }
             }, 10000);
+            
+            // 定期检查URL变化 (由于跨域限制，这个方法可能不完全有效)
+            setInterval(syncUrl, 1000);
         }
         
-        // 监听iframe加载错误
         document.getElementById('blog-frame').addEventListener('error', showError);
         
-        // 处理iframe内的导航（如果可能）
+        // 监听来自iframe的消息
         window.addEventListener('message', function(event) {
             if (event.origin === 'https://rb3.top') {
-                // 可以处理来自iframe的消息
                 console.log('来自iframe的消息:', event.data);
+                
+                // 如果iframe发送URL变化消息
+                if (event.data && event.data.type === 'urlChange') {
+                    const newPath = event.data.path;
+                    if (window.location.pathname + window.location.search + window.location.hash !== newPath) {
+                        window.history.pushState({}, '', newPath);
+                    }
+                }
             }
+        });
+        
+        // 监听浏览器前进后退按钮
+        window.addEventListener('popstate', function(event) {
+            const iframe = document.getElementById('blog-frame');
+            const newUrl = 'https://rb3.top' + window.location.pathname + window.location.search + window.location.hash;
+            iframe.src = newUrl;
         });
     </script>
 </body>
