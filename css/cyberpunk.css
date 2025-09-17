@@ -11687,6 +11687,11 @@ figure.highlight.foldable div.level-left {
   margin-bottom: 2.5rem;
   text-align: center;
 }
+@media (max-width: 768px) {
+  .welcome-banner {
+    padding: 1.5rem 1rem;
+  }
+}
 .welcome-banner .description {
   font-size: 1.5rem;
   font-weight: 500;
@@ -11696,6 +11701,11 @@ figure.highlight.foldable div.level-left {
   align-items: center;
   justify-content: center;
   line-height: 1.7;
+}
+@media (max-width: 768px) {
+  .welcome-banner .description {
+    font-size: 1.2rem;
+  }
 }
 .welcome-banner .highlight {
   color: #e74c3c;
@@ -11707,6 +11717,13 @@ figure.highlight.foldable div.level-left {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
+  flex-wrap: wrap;
+}
+@media (max-width: 768px) {
+  .welcome-banner .banner-links {
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
 }
 .welcome-banner .banner-links a {
   width: 80px;
@@ -11723,13 +11740,31 @@ figure.highlight.foldable div.level-left {
   transform: translateY(-5px);
   box-shadow: 0 5px 15px rgba(0,0,0,0.12);
 }
+@media (max-width: 768px) {
+  .welcome-banner .banner-links a {
+    width: 65px;
+    height: 65px;
+    border-radius: 12px;
+  }
+}
 .welcome-banner .banner-links a i {
   font-size: 40px;
   color: #333;
 }
-.welcome-container .banner-links a img.banner-img-icon {
+@media (max-width: 768px) {
+  .welcome-banner .banner-links a i {
+    font-size: 30px;
+  }
+}
+.welcome-banner .banner-links a img.banner-img-icon {
   width: 40px;
   height: 40px;
+}
+@media (max-width: 768px) {
+  .welcome-banner .banner-links a img.banner-img-icon {
+    width: 30px;
+    height: 30px;
+  }
 }
 body {
   counter-reset: card;
