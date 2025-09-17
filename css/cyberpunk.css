@@ -11678,6 +11678,59 @@ figure.highlight.foldable div.level-left {
     padding: 1.5rem 1rem;
   }
 }
+.welcome-banner {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border: none;
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+.welcome-banner .description {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.7;
+}
+.welcome-banner .highlight {
+  color: #e74c3c;
+  font-weight: bold;
+  margin: 0 0.25em;
+}
+.welcome-banner .banner-links {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+.welcome-banner .banner-links a {
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: all 0.2s ease-in-out;
+}
+.welcome-banner .banner-links a:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+.welcome-banner .banner-links a i {
+  font-size: 40px;
+  color: #333;
+}
+.welcome-container .banner-links a img.banner-img-icon {
+  width: 40px;
+  height: 40px;
+}
 body {
   counter-reset: card;
 }
