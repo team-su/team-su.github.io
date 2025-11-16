@@ -11,7 +11,7 @@ $(document).ready(() => {
     const state = {
         base: {
             classname: 'card has-text-centered',
-            left: '',
+            right: rightMargin,
             width: 64,
             bottom: bottomMargin
         }
@@ -106,13 +106,11 @@ $(document).ready(() => {
     }
 
     function update() {
-        // desktop mode or tablet mode with only right sidebar enabled
-        if (isDesktop() || (isTablet() && !hasLeftSidebar() && hasRightSidebar())) {
+        // desktop mode or tablet mode
+        if (isDesktop() || isTablet()) {
             let nextState;
-            const padding = ($mainColumn.outerWidth() - $mainColumn.width()) / 2;
-            const maxLeft = $(window).width() - getButtonWidth() - rightMargin;
             const maxBottom = $footer.offset().top + (getButtonHeight() / 2) + bottomMargin;
-            if (getScrollTop() === 0 || getScrollBottom() < getRightSidebarBottom() + padding + getButtonHeight()) {
+            if (getScrollTop() === 0) {
                 nextState = state['desktop-hidden'];
             } else if (getScrollBottom() < maxBottom) {
                 nextState = state['desktop-visible'];
@@ -121,11 +119,7 @@ $(document).ready(() => {
                     bottom: getScrollBottom() - maxBottom + bottomMargin
                 });
             }
-
-            const left = $mainColumn.offset().left + $mainColumn.outerWidth() + padding;
-            nextState = Object.assign({}, nextState, {
-                left: Math.min(left, maxLeft)
-            });
+            nextState = Object.assign({}, nextState, { right: rightMargin });
             applyState(nextState);
         } else {
             // mobile and tablet mode

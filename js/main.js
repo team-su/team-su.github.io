@@ -1,5 +1,6 @@
 /* eslint-disable node/no-unsupported-features/node-builtins */
 (function($, moment, ClipboardJS, config) {
+    $('.article img').attr('loading', 'lazy');
     $('.article img:not(".not-gallery-item")').each(function() {
         // wrap images with link and add caption if possible
         if ($(this).parent('a').length === 0) {
@@ -120,8 +121,8 @@
         }
     }
 
-    const $toc = $('#toc');
-    if ($toc.length > 0) {
+  const $toc = $('#toc');
+  if ($toc.length > 0) {
         const $mask = $('<div>');
         $mask.attr('id', 'toc-mask');
 
@@ -135,5 +136,142 @@
         $toc.on('click', toggleToc);
         $mask.on('click', toggleToc);
         $('.navbar-main .catalogue').on('click', toggleToc);
+  }
+  const $tocWidget = $('.widget-toc');
+  const $scrollEl = $tocWidget.find('.menu-list');
+  const $tocTrack = $tocWidget.find('.toc-scroll-track');
+  const $tocThumb = $tocWidget.find('.toc-scroll-thumb');
+  if ($scrollEl.length && $tocTrack.length && $tocThumb.length) {
+    function layoutTocTrack() {
+      const $content = $tocWidget.find('.card-content');
+      const contentTop = $content.offset().top;
+      const listTop = $scrollEl.offset().top;
+      const top = Math.max(0, listTop - contentTop);
+      const height = $scrollEl.outerHeight();
+      $tocTrack.css({ top: top + 'px', height: height + 'px' });
     }
+    function updateThumb() {
+      const contentH = $scrollEl.get(0).scrollHeight;
+      const viewportH = $scrollEl.outerHeight();
+      const ratio = viewportH / Math.max(viewportH, contentH);
+      const thumbH = Math.max(24, Math.floor($tocTrack.height() * ratio));
+      const maxScroll = contentH - viewportH;
+      const y = $scrollEl.get(0).scrollTop;
+      const trackH = $tocTrack.height() - thumbH;
+      const top = maxScroll > 0 ? Math.floor((y / maxScroll) * trackH) : 0;
+      $tocThumb.css({ height: thumbH + 'px', top: top + 'px' });
+    }
+    layoutTocTrack();
+    updateThumb();
+    $scrollEl.on('scroll', updateThumb);
+    $(window).on('resize', function(){ layoutTocTrack(); updateThumb(); });
+
+    let dragging = false;
+    let dragOffset = 0;
+    $tocThumb.on('mousedown', function(e) {
+      dragging = true;
+      const thumbTop = $tocThumb.offset().top;
+      dragOffset = e.pageY - thumbTop;
+      $tocThumb.css('cursor', 'grabbing');
+      e.preventDefault();
+    });
+    $(document).on('mousemove', function(e) {
+      if (!dragging) return;
+      const trackTop = $tocTrack.offset().top;
+      const trackH = $tocTrack.height();
+      const thumbH = $tocThumb.height();
+      let y = e.pageY - trackTop - dragOffset;
+      y = Math.max(0, Math.min(trackH - thumbH, y));
+      const contentH = $scrollEl.get(0).scrollHeight;
+      const viewportH = $scrollEl.outerHeight();
+      const maxScroll = Math.max(0, contentH - viewportH);
+      const scrollTop = maxScroll * (y / (trackH - thumbH));
+      $scrollEl.get(0).scrollTop = scrollTop;
+      updateThumb();
+    });
+    $(document).on('mouseup', function() { dragging = false; $tocThumb.css('cursor', 'grab'); });
+    // touch support
+    $tocThumb.on('touchstart', function(e) {
+      const t = e.originalEvent.touches[0];
+      dragging = true;
+      const thumbTop = $tocThumb.offset().top;
+      dragOffset = t.pageY - thumbTop;
+      e.preventDefault();
+    });
+    $(document).on('touchmove', function(e) {
+      if (!dragging) return;
+      const t = e.originalEvent.touches[0];
+      const trackTop = $tocTrack.offset().top;
+      const trackH = $tocTrack.height();
+      const thumbH = $tocThumb.height();
+      let y = t.pageY - trackTop - dragOffset;
+      y = Math.max(0, Math.min(trackH - thumbH, y));
+      const contentH = $scrollEl.get(0).scrollHeight;
+      const viewportH = $scrollEl.outerHeight();
+      const maxScroll = Math.max(0, contentH - viewportH);
+      const scrollTop = maxScroll * (y / (trackH - thumbH));
+      $scrollEl.get(0).scrollTop = scrollTop;
+      updateThumb();
+      e.preventDefault();
+    });
+    $(document).on('touchend touchcancel', function() { dragging = false; });
+    $tocTrack.on('click', function(e) {
+      const trackTop = $tocTrack.offset().top;
+      const trackH = $tocTrack.height();
+      const pageY = e.pageY || (e.originalEvent && e.originalEvent.pageY) || 0;
+      let y = pageY - trackTop - ($tocThumb.height() / 2);
+      y = Math.max(0, Math.min(trackH - $tocThumb.height(), y));
+      const contentH = $scrollEl.get(0).scrollHeight;
+      const viewportH = $scrollEl.outerHeight();
+      const maxScroll = Math.max(0, contentH - viewportH);
+      const scrollTop = maxScroll * (y / (trackH - $tocThumb.height()));
+      $scrollEl.get(0).scrollTop = scrollTop;
+      updateThumb();
+      e.preventDefault();
+    });
+    $tocTrack.on('wheel', function(e) {
+      e.preventDefault();
+      const delta = e.originalEvent.deltaY || 0;
+      const el = $scrollEl.get(0);
+      el.scrollTop = Math.max(0, Math.min(el.scrollHeight - $scrollEl.outerHeight(), el.scrollTop + delta));
+      updateThumb();
+    });
+  }
 }(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings));
+    // smooth scroll for toc links
+    $('.widget-toc .toc-list a').on('click', function(e) {
+      const href = $(this).attr('href');
+      if (!href || href.charAt(0) !== '#') return;
+      const id = href.substring(1);
+      const $targetSpan = $(`.article span[id='${CSS.escape(id)}']`);
+      if ($targetSpan.length) {
+        e.preventDefault();
+        const offset = 72;
+        const top = $targetSpan.offset().top - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      }
+    });
+
+    // active section highlighting via IntersectionObserver
+    const headingSpans = $('.article h1 span[id], .article h2 span[id], .article h3 span[id]');
+    const linkMap = new Map();
+    $('.widget-toc .toc-list a[href^="#"]').each(function(){
+      const id = $(this).attr('href').substring(1);
+      linkMap.set(id, this);
+    });
+    function setActive(id){
+      $('.widget-toc .toc-list a').removeClass('active');
+      const el = linkMap.get(id);
+      if (el) $(el).addClass('active');
+    }
+    if (headingSpans.length) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.getAttribute('id');
+            setActive(id);
+          }
+        });
+      }, { root: null, rootMargin: '-72px 0px -60% 0px', threshold: 0.1 });
+      headingSpans.each(function(){ io.observe(this); });
+    }
