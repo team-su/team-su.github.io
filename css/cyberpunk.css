@@ -11689,7 +11689,8 @@ figure.highlight.foldable div.level-left {
 }
 @media (max-width: 768px) {
   .welcome-banner {
-    display: none;
+    padding: 0.5rem 0;
+    margin-bottom: 0.5rem;
   }
 }
 .welcome-banner .description {
