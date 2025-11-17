@@ -138,10 +138,14 @@
         $('.navbar-main .catalogue').on('click', toggleToc);
   }
   const $tocWidget = $('.widget-toc');
+  const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
+  if (isMobile && $tocWidget.length) {
+    $tocWidget.remove();
+  }
   const $scrollEl = $tocWidget.find('.menu-list');
   const $tocTrack = $tocWidget.find('.toc-scroll-track');
   const $tocThumb = $tocWidget.find('.toc-scroll-thumb');
-  if ($scrollEl.length && $tocTrack.length && $tocThumb.length) {
+  if (!isMobile && $scrollEl.length && $tocTrack.length && $tocThumb.length) {
     function layoutTocTrack() {
       const $content = $tocWidget.find('.card-content');
       const contentTop = $content.offset().top;

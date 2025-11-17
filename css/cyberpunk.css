@@ -11689,7 +11689,7 @@ figure.highlight.foldable div.level-left {
 }
 @media (max-width: 768px) {
   .welcome-banner {
-    padding: 0;
+    display: none;
   }
 }
 .welcome-banner .description {
@@ -11774,8 +11774,13 @@ figure.highlight.foldable div.level-left {
   margin-bottom: 0.75rem;
 }
 .ctftime-badge img {
-  height: 28px;
+  height: 24px;
   width: auto;
+}
+@media (max-width: 768px) {
+  .ctftime-badge img {
+    height: 16px;
+  }
 }
 .widget-toc .menu-label {
   font-size: 0.9rem;
