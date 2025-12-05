@@ -1,8 +1,6 @@
-/* eslint-disable node/no-unsupported-features/node-builtins */
 (function($, moment, ClipboardJS, config) {
     $('.article img').attr('loading', 'lazy');
     $('.article img:not(".not-gallery-item")').each(function() {
-        // wrap images with link and add caption if possible
         if ($(this).parent('a').length === 0) {
             $(this).wrap('<a class="gallery-item" href="' + $(this).attr('src') + '"></a>');
             if (this.alt) {
@@ -56,10 +54,7 @@
     }
 
     $('figure.highlight table').wrap('<div class="highlight-body">');
-    if (typeof config !== 'undefined'
-        && typeof config.article !== 'undefined'
-        && typeof config.article.highlight !== 'undefined') {
-
+    if (typeof config !== 'undefined' && typeof config.article !== 'undefined' && typeof config.article.highlight !== 'undefined') {
         $('figure.highlight').addClass('hljs');
         $('figure.highlight .code .line span').each(function() {
             const classes = $(this).attr('class').split(/\s+/);
@@ -68,7 +63,6 @@
                 $(this).removeClass(cls);
             }
         });
-
 
         const clipboard = config.article.highlight.clipboard;
         const fold = config.article.highlight.fold.trim();
@@ -94,13 +88,12 @@
                 $(this).attr('id', id);
                 $(this).find('figcaption div.level-right').append(button);
             });
-            new ClipboardJS('.highlight .copy'); // eslint-disable-line no-new
+            new ClipboardJS('.highlight .copy');
         }
 
         if (fold) {
             $('figure.highlight').each(function() {
-                $(this).addClass('foldable'); // add 'foldable' class as long as fold is enabled
-
+                $(this).addClass('foldable');
                 if ($(this).find('figcaption').find('span').length > 0) {
                     const span = $(this).find('figcaption').find('span');
                     if (span[0].innerText.indexOf('>folded') > -1) {
@@ -113,7 +106,6 @@
                 $(this).find('figcaption div.level-left').prepend(createFoldButton(fold));
                 toggleFold(this, fold === 'folded');
             });
-
             $('figure.highlight figcaption .level-left').click(function() {
                 const $code = $(this).closest('figure.highlight');
                 toggleFold($code.eq(0), !$code.hasClass('folded'));
@@ -121,161 +113,107 @@
         }
     }
 
-  const $toc = $('#toc');
-  if ($toc.length > 0) {
+    const $toc = $('#toc');
+    if ($toc.length > 0) {
         const $mask = $('<div>');
         $mask.attr('id', 'toc-mask');
-
         $('body').append($mask);
-
-        function toggleToc() { // eslint-disable-line no-inner-declarations
+        function toggleToc() {
             $toc.toggleClass('is-active');
             $mask.toggleClass('is-active');
         }
-
         $toc.on('click', toggleToc);
         $mask.on('click', toggleToc);
         $('.navbar-main .catalogue').on('click', toggleToc);
-  }
-  const $tocWidget = $('.widget-toc');
-  const isMobile = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
-  if (isMobile && $tocWidget.length) {
-    $tocWidget.remove();
-  }
-  const $scrollEl = $tocWidget.find('.menu-list');
-  const $tocTrack = $tocWidget.find('.toc-scroll-track');
-  const $tocThumb = $tocWidget.find('.toc-scroll-thumb');
-  if (!isMobile && $scrollEl.length && $tocTrack.length && $tocThumb.length) {
-    function layoutTocTrack() {
-      const $content = $tocWidget.find('.card-content');
-      const contentTop = $content.offset().top;
-      const listTop = $scrollEl.offset().top;
-      const top = Math.max(0, listTop - contentTop);
-      const height = $scrollEl.outerHeight();
-      $tocTrack.css({ top: top + 'px', height: height + 'px' });
     }
-    function updateThumb() {
-      const contentH = $scrollEl.get(0).scrollHeight;
-      const viewportH = $scrollEl.outerHeight();
-      const ratio = viewportH / Math.max(viewportH, contentH);
-      const thumbH = Math.max(24, Math.floor($tocTrack.height() * ratio));
-      const maxScroll = contentH - viewportH;
-      const y = $scrollEl.get(0).scrollTop;
-      const trackH = $tocTrack.height() - thumbH;
-      const top = maxScroll > 0 ? Math.floor((y / maxScroll) * trackH) : 0;
-      $tocThumb.css({ height: thumbH + 'px', top: top + 'px' });
-    }
-    layoutTocTrack();
-    updateThumb();
-    $scrollEl.on('scroll', updateThumb);
-    $(window).on('resize', function(){ layoutTocTrack(); updateThumb(); });
 
-    let dragging = false;
-    let dragOffset = 0;
-    $tocThumb.on('mousedown', function(e) {
-      dragging = true;
-      const thumbTop = $tocThumb.offset().top;
-      dragOffset = e.pageY - thumbTop;
-      $tocThumb.css('cursor', 'grabbing');
-      e.preventDefault();
-    });
-    $(document).on('mousemove', function(e) {
-      if (!dragging) return;
-      const trackTop = $tocTrack.offset().top;
-      const trackH = $tocTrack.height();
-      const thumbH = $tocThumb.height();
-      let y = e.pageY - trackTop - dragOffset;
-      y = Math.max(0, Math.min(trackH - thumbH, y));
-      const contentH = $scrollEl.get(0).scrollHeight;
-      const viewportH = $scrollEl.outerHeight();
-      const maxScroll = Math.max(0, contentH - viewportH);
-      const scrollTop = maxScroll * (y / (trackH - thumbH));
-      $scrollEl.get(0).scrollTop = scrollTop;
-      updateThumb();
-    });
-    $(document).on('mouseup', function() { dragging = false; $tocThumb.css('cursor', 'grab'); });
-    // touch support
-    $tocThumb.on('touchstart', function(e) {
-      const t = e.originalEvent.touches[0];
-      dragging = true;
-      const thumbTop = $tocThumb.offset().top;
-      dragOffset = t.pageY - thumbTop;
-      e.preventDefault();
-    });
-    $(document).on('touchmove', function(e) {
-      if (!dragging) return;
-      const t = e.originalEvent.touches[0];
-      const trackTop = $tocTrack.offset().top;
-      const trackH = $tocTrack.height();
-      const thumbH = $tocThumb.height();
-      let y = t.pageY - trackTop - dragOffset;
-      y = Math.max(0, Math.min(trackH - thumbH, y));
-      const contentH = $scrollEl.get(0).scrollHeight;
-      const viewportH = $scrollEl.outerHeight();
-      const maxScroll = Math.max(0, contentH - viewportH);
-      const scrollTop = maxScroll * (y / (trackH - thumbH));
-      $scrollEl.get(0).scrollTop = scrollTop;
-      updateThumb();
-      e.preventDefault();
-    });
-    $(document).on('touchend touchcancel', function() { dragging = false; });
-    $tocTrack.on('click', function(e) {
-      const trackTop = $tocTrack.offset().top;
-      const trackH = $tocTrack.height();
-      const pageY = e.pageY || (e.originalEvent && e.originalEvent.pageY) || 0;
-      let y = pageY - trackTop - ($tocThumb.height() / 2);
-      y = Math.max(0, Math.min(trackH - $tocThumb.height(), y));
-      const contentH = $scrollEl.get(0).scrollHeight;
-      const viewportH = $scrollEl.outerHeight();
-      const maxScroll = Math.max(0, contentH - viewportH);
-      const scrollTop = maxScroll * (y / (trackH - $tocThumb.height()));
-      $scrollEl.get(0).scrollTop = scrollTop;
-      updateThumb();
-      e.preventDefault();
-    });
-    $tocTrack.on('wheel', function(e) {
-      e.preventDefault();
-      const delta = e.originalEvent.deltaY || 0;
-      const el = $scrollEl.get(0);
-      el.scrollTop = Math.max(0, Math.min(el.scrollHeight - $scrollEl.outerHeight(), el.scrollTop + delta));
-      updateThumb();
-    });
-  }
-}(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings));
-    // smooth scroll for toc links
-    $('.widget-toc .toc-list a').on('click', function(e) {
-      const href = $(this).attr('href');
-      if (!href || href.charAt(0) !== '#') return;
-      const id = href.substring(1);
-      const $targetSpan = $(`.article span[id='${CSS.escape(id)}']`);
-      if ($targetSpan.length) {
-        e.preventDefault();
-        const offset = 72;
-        const top = $targetSpan.offset().top - offset;
-        window.scrollTo({ top, behavior: 'smooth' });
-      }
-    });
-
-    // active section highlighting via IntersectionObserver
-    const headingSpans = $('.article h1 span[id], .article h2 span[id], .article h3 span[id]');
-    const linkMap = new Map();
-    $('.widget-toc .toc-list a[href^="#"]').each(function(){
-      const id = $(this).attr('href').substring(1);
-      linkMap.set(id, this);
-    });
-    function setActive(id){
-      $('.widget-toc .toc-list a').removeClass('active');
-      const el = linkMap.get(id);
-      if (el) $(el).addClass('active');
-    }
-    if (headingSpans.length) {
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('id');
-            setActive(id);
-          }
+    if (window.location.pathname.length > 1 && !$('.article').length) {
+        $('#back-to-top').remove();
+    } else {
+        $(window).scroll(function() {
+            if ($(window).scrollTop() > 300 && $('.article').length) {
+                $('#back-to-top').addClass('show-btn');
+            } else {
+                $('#back-to-top').removeClass('show-btn');
+            }
         });
-      }, { root: null, rootMargin: '-72px 0px -60% 0px', threshold: 0.1 });
-      headingSpans.each(function(){ io.observe(this); });
     }
+
+    $(document).ready(function() {
+        const $tocLinks = $('.widget-toc a, .menu-list a').filter(function() {
+            return $(this).attr('href') && $(this).attr('href').startsWith('#');
+        });
+        const $headers = $('.article h1, .article h2, .article h3, .article h4, .article h5');
+
+        function normalizeTextToId(text) {
+            return text.trim()
+                .replace(/\s+/g, '-')
+                .replace(/[^a-zA-Z0-9\u4e00-\u9fa5\-]/g, '')
+                .toLowerCase();
+        }
+
+        $headers.each(function() {
+            const $h = $(this);
+            if (!$h.attr('id') || $h.attr('id') === 'undefined') {
+                $h.attr('id', normalizeTextToId($h.text()));
+            }
+        });
+
+        const linkMap = new Map();
+        $tocLinks.each(function() {
+            const href = $(this).attr('href');
+            const id = href.substring(1).toLowerCase();
+            linkMap.set(id, this);
+        });
+
+        function setActive(el) {
+            if (!el) return;
+            $tocLinks.removeClass('active');
+            $(el).addClass('active');
+            
+            const $scrollContainer = $(el).closest('.menu-list, .widget-toc');
+            if ($scrollContainer.length) {
+                const top = el.offsetTop;
+                const height = $scrollContainer.height();
+                const scrollTop = $scrollContainer.scrollTop();
+                if (top > scrollTop + height - 50 || top < scrollTop) {
+                     $scrollContainer.animate({ scrollTop: top - 50 }, 200);
+                }
+            }
+        }
+
+        $tocLinks.on('click', function(e) {
+            e.preventDefault();
+            const href = $(this).attr('href');
+            const targetId = href.substring(1);
+            const normalizedTargetId = normalizeTextToId(targetId);
+            const target = document.getElementById(targetId) || document.getElementById(normalizedTargetId);
+            
+            if (target) {
+                const offset = 80;
+                const top = $(target).offset().top - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
+                setActive(linkMap.get(target.id.toLowerCase()) || this);
+            }
+        });
+
+        if ($headers.length > 0) {
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        if (id) {
+                            const linkEl = linkMap.get(id.toLowerCase());
+                            if (linkEl) setActive(linkEl);
+                        }
+                    }
+                });
+            }, { root: null, rootMargin: '-80px 0px -70% 0px', threshold: 0 });
+            
+            $headers.each(function() {
+                io.observe(this);
+            });
+        }
+    });
+
+})(jQuery, window.moment, window.ClipboardJS, window.IcarusThemeSettings);
