@@ -1,0 +1,237 @@
+- links_category: Ex-Captains
+  has_thumbnail: false
+  list:
+      - name: 书鱼
+        blog: https://ctf.org.cn/
+        github: https://github.com/bkfish
+        description: 大家都要做爱学习的好孩子。
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=381382770&s=640
+
+- links_category: Captain
+  has_thumbnail: false
+  list:
+      - name: baozongwi
+        blog: https://baozongwi.xyz/
+        github: https://github.com/baozongwi
+        description: 天地不仁，以万物为刍狗
+        avatar: https://avatars.githubusercontent.com/u/146065986?v=4
+- links_category: Members
+  has_thumbnail: false
+  list:
+      - name: w4rd3n
+        github: https://github.com/hitworld
+        description: Pwn神&哲学家
+        avatar: https://avatars.githubusercontent.com/u/32447985?v=4
+      - name: Au5t1n
+        description: 在线征婚，征婚请加1249176071
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1484818754&s=640
+      - name: Esonhugh
+        blog: https://eson.ninja/
+        github: https://github.com/Esonhugh
+        description: 带带弟弟，弟弟只会云
+        avatar: https://avatars.githubusercontent.com/u/32677240?v=4
+      - name: yulate
+        blog: https://www.yulate.com/
+        github: https://github.com/yulate
+        description: day day up
+        avatar: https://avatars.githubusercontent.com/u/53947823?v=4
+      - name: 疏狂
+        github: https://github.com/N1etzsche0
+        description: 疏狂的一天：查看推特😋，练入门题👍，参加CTF😎，质疑炸鱼😭，质疑黑幕😭，寻找群友开黑CS😋👍😎
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1249176071&s=640
+      - name: fushuling
+        blog: https://fushuling.com/
+        github: https://github.com/fushuling
+        description: nobody
+        avatar: https://fushuling-1309926051.cos.ap-shanghai.myqcloud.com/2022/08/QQ图片20220812001845.jpg
+      - name: ZimaBlue
+        blog: https://www.zimablue.life/
+        description: Pay for one's own poor choices.
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2074199505&s=640
+      - name: Helenccz
+        description: 菜的不能再菜的ctf选手兼职LOL剑魔玩家
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2574748946&s=640
+      - name: 予柒
+        blog: https://www.cnblogs.com/xyqer/tag/pwn/
+        github: https://github.com/xyqer1
+        description: 纵星有坠，惟心不坠
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2497143711&s=640
+      - name: SWDD
+        blog: https://blog.shangwendada.top/
+        github: https://github.com/SHangwendada
+        description: 学习不如开大车
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2277873568&s=640
+      - name: F10wers13eiCheng
+        blog: https://nlrvana.github.io/
+        description: No Pwn
+        avatar: https://nlrvana.github.io/avatar.png
+      - name: gcker
+        blog: https://www.cnblogs.com/gcker
+        description: 在学了在学了，别骂了
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=727748796&s=640
+      - name: 0kam1
+        description: 啥都想学的web狗
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2210075504&s=640
+      - name: flyyy
+        blog: https://flyyy.top/
+        github: https://github.com/f1lyyy
+        description: 又被自己菜昏过去了
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2264143735&s=640
+      - name: Pupi1
+        blog: https://pupil857.github.io/
+        description: 简单一点就好了
+        avatar: https://pupil857.github.io/img/touxiang.jpg
+      - name: wood1314
+        blog: https://wood1314.github.io/
+        description: stay hungry stay foolish.
+        avatar: https://wood1314.github.io/images/avatar.jpg
+      - name: Srin
+        github: https://github.com/killthatshaman
+        description: 目标是当一条咸鱼
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=735709577&s=640
+      - name: winmt
+        blog: https://bbs.pediy.com/user-home-949925.htm
+        github: https://github.com/winmt
+        description: 海压竹枝低复举，风吹山角晦还明
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=793539140&s=640
+      - name: ZIKH26
+        blog: https://zikh26.github.io/
+        description: 人生如戏，戏如人生
+        avatar: https://blog-1311372141.cos.ap-nanjing.myqcloud.com/images/202307011626843.jpg
+      - name: zarismine
+        github: https://github.com/zarismine
+        description: 不想当切图仔
+        avatar: https://avatars.githubusercontent.com/u/90366333?v=4
+      - name: m4x
+        description: 这个人很懒，什么都没留下
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1358690893&s=640
+      - name: enjoy
+        github: https://github.com/Decemberus
+        description: 都是风景，幸会！
+        avatar: https://avatars.githubusercontent.com/u/104720270?v=4
+      - name: Xherlock
+        blog: http://xherlock.top/
+        github: https://github.com/SH-Op-X
+        description: 隐约雷鸣，阴霾天空，但盼风雨来，能留你在此
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=3147614326&s=640
+      - name: p3cd0wn
+        blog: https://quietdawn.github.io/
+        description: 人生是与风暴共舞的航行
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1531723905&s=640
+      - name: 2hi5hu
+        blog: https://2hi5hu.cn/
+        github: https://github.com/2hi5hu
+        description: Ctfer, hacker, suer, whatever — moving on forever
+        avatar: https://avatars.githubusercontent.com/u/77918076?v=4
+      - name: imLZH1
+        blog: https://imLZH1.github.io
+        github: https://github.com/imLZH1
+        description: 年轻，不折腾😸
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=3461665835&s=640
+      - name: A5rZ
+        blog: https://blog.csdn.net/weixin_59166557
+        github: https://github.com/A5rZ
+        description: 1111111111
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=3843797062&s=640
+      - name: _sun_·empty.
+        blog: https://sun1028.top/
+        description: ～长风破浪会有时，直挂云帆济沧海～
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1310272435&s=640
+      - name: 0raN9e
+        blog: http://0ran9ewww.github.io/
+        github: https://github.com/0raN9ewww
+        description: 恰个🍊来签到
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=3022685823&s=640
+      - name: Pr1n7
+        blog: https://0314valen.github.io/
+        description: 喜欢书鱼，就好像冬天拉在了裤子里，让别人知道了会觉得很羞耻，但是暖暖的感觉只有自己知道
+        avatar: https://0314valen.github.io/image/UI_images/avatar.jpg
+      - name: Yigod
+        blog: https://blog.yigod.top
+        github: https://github.com/Yigods/
+        description: 学re好啊，学pwn好啊，学网安好啊
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2781431072&s=640
+      - name: pfwqdxwdd
+        blog: https://pfwqdxwdd.github.io/
+        description: 想要成为二进制高手
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2183056014&s=640
+      - name: M1ng2u
+        blog: https://m1ng2u.github.io
+        github: https://github.com/M1ng2u
+        description: 师傅拎进门，修行靠个人
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1975793061&s=640
+      - name: Hymmn0s
+        blog: https://timedegree.cc/
+        github: https://github.com/timedegree
+        description: 像梦一般地去爱,像爱一般地去梦
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1662309963&s=640
+      - name: Mo1u
+        blog: https://blog.molulu.top/
+        description: 喘气寄长牢路
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1650014594&s=640
+      - name: 马先越
+        blog: https://fishjump-my.github.io/
+        description: 慢则稳，稳则快
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1745482102&s=640
+      - name: NEWYM
+        blog: https://newym.github.io/
+        description: 知道的越多，才发现自己越无知
+        avatar: https://newym.github.io/assets/bs.jpg
+      - name: Huamang
+        blog: https://blog.huamang.xyz/
+        description: 我要给书鱼卖命
+        avatar: https://blog.huamang.xyz/img/avatar_hu2c79bb77476a4f0f53420443e9db5bfa_18691_300x0_resize_box_3.png
+      - name: YODS007
+        blog: https://www.yods007.top
+        description: T0 Be Better
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=3960268535&s=640
+      - name: Winegee
+        blog: https://wing3e.github.io/
+        description: push push popopop
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1764958267&s=640
+      - name: yyyspark
+        blog: https://www.yyyspark.xyz/
+        description: 人间有你红尘有趣
+        avatar: https://www.yyyspark.xyz/img/%E5%A4%B4%E5%83%8F.png
+      - name: Triode
+        blog: https://triodelzx.github.io/
+        github: https://github.com/TriodeLzx
+        description: 一个又菜又爱玩的Cryptoer
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1521143613&s=640
+      - name: 1ceS1amese
+        blog: https://1ces1amese.github.io/
+        description: 打go里面最不会密码学的😫
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=279113044&s=640
+      - name: ZLSF
+        blog: https://zlsf-zl.github.io/
+        description: 来点hint。
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1922184383&s=640
+      - name: J1NXEM
+        blog: https://j1nxem-o.github.io/
+        description: ⌯>ᴗo⌯ಣ
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=384896720&s=640
+      - name: iyheart
+        blog: https://iyheart.github.io/
+        description: 悟已往之不谏，知来者之可追
+        avatar: https://pic.5tu.cn/uploads/allimg/1910/pic_5tu_big_2019010211653346247.jpg
+      - name: Jiker
+        blog: https://jiker666.github.io/
+        description: M14射手步枪-烽火地带-6H74QSG0BSCDR38JE15T7
+        avatar: https://jiker666.github.io/img/%E5%9F%BA%E5%BE%B7.jpg
+      - name: Li1i1nk
+        blog: https://li1nk3.github.io/
+        github: https://github.com/Li1nk3
+        description: Live long and pwn
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1034607702&s=640
+      - name: 2εr00иe
+        blog: https://khighl.github.io/
+        description: 苦苦挣扎的pwner&ioter
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2379408752&s=640
+      - name: Sep
+        blog: https://sep252.github.io/
+        description: 落魄谷中寒风吹，春秋蝉鸣少年归
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=2967419306&s=640
+      - name: y5km
+        blog: https://yyskm.github.io/
+        description: 平芜尽处是春山
+        avatar: https://yyskm.github.io/img/1.jpg

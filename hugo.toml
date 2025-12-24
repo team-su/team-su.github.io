@@ -1,0 +1,98 @@
+baseurl = "https://team-su.github.io"
+DefaultContentLanguage = "en"
+title = "su-team"
+# Using theme as git submodule
+theme = "beautifulhugo"
+# Or when using theme as hugo module
+# theme = "github.com/halogenica/beautifulhugo"
+pygmentsStyle = "trac"
+pygmentsUseClasses = true
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+#pygmentsUseClassic = true
+#pygmentOptions = "linenos=inline"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.tableOfContents]
+    endLevel = 6
+    ordered = false
+    startLevel = 1
+
+[Services]
+  [Services.googleAnalytics]
+    # id = "XXX"
+
+[Params]
+  # homeTitle = "su-team" # Set a different text for the header on the home page
+  # subtitle = "su-team"
+  mainSections = ["post"]
+  logo = "img/SU.jpg" # Expecting square dimensions
+  favicon = "img/SU.jpg"
+  dateFormat = "January 2, 2015"
+  commit = false
+  rss = true
+  selfHosted = true
+  readingTime = true
+  wordCount = true
+  useHLJS = true
+  socialShare = false
+  delayDisqus = true
+  showRelatedPosts = true
+#  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
+#  disclaimerText = "The opinions expressed herein are my own personal opinions and do not represent my employer’s view in any way."
+
+#[[Params.bigimg]]
+#  src = "img/triangle.jpg"
+#  desc = "Triangle"
+#[[Params.bigimg]]
+#  src = "img/sphere.jpg"
+#  desc = "Sphere"
+#  # position: see values of CSS background-position.
+#  position = "center top"
+#[[Params.bigimg]]
+#  src = "img/hexagon.jpg"
+#  desc = "Hexagon"
+
+[Params.author]
+  # Set only your "username" for default hosts and full URLs otherwise (e.g., "https://MyGitLab.org/username")
+  name = "SUer"
+  website = "https://su-team.cn"
+  email = "suers_xctf@126.com"
+  github = "team-su"
+  ctftime = "https://ctftime.org/team/29641"
+  # discord = "invite code (https://discord.gg/XXXXXXX)"
+
+[[menu.main]]
+    name = "Archives"
+    url = ""
+    weight = 1
+
+[[menu.main]]
+    name = "About"
+    url = "page/about/"
+    weight = 3
+
+[[menu.main]]
+    name = "Tags"
+    url = "tags"
+    weight = 3
+
+[[menu.main]]
+    identifier = "members"
+    name = "Members"
+    weight = 2
+
+[[menu.main]]
+    parent = "members"
+    name = "Members"
+    url = "active-members"
+    weight = 1
+
+[[menu.main]]
+    parent = "members"
+    name = "Pioneers"
+    url = "pioneers"
+    weight = 2

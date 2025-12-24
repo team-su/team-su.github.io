@@ -1,0 +1,74 @@
+- links_category: pioneers
+  has_thumbnail: false
+  list: 
+    - name: Zeddy
+      blog: https://zeddyu.github.io/
+      github: https://github.com/ZeddYu
+      description: N/A
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=935702251&s=640
+    - name: 影二つ
+      blog: https://kagehutatsu.com/
+      description: 书鱼哥哥的恩情还不完
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=1609515942&s=640
+    - name: MiaoTony
+      blog: https://miaotony.xyz/?utm_source=su
+      github: https://github.com/miaotony
+      description: 喵，划水摸鱼ing~
+      avatar: https://avatars.githubusercontent.com/u/41962043?v=4
+
+    - name: Clown
+      blog: https://blog.xcu.icu/
+      github: https://github.com/clown-q
+      description: 一入人间黄粱梦，半生烟雨半生忧
+      avatar: https://blog.xcu.icu/images/avatar.jpg
+    - name: Kxheng
+      description: Kxhenggggggg
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=321586960&s=640
+    - name: wh1sper
+      blog: https://blog.wh1sper.com/
+      description: CTFer @X1cT34m @SU
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=1643239341&s=640
+    - name: m1yuu
+      blog: https://m1yuu.com/
+      description: ctfer/cyber security researcher
+      avatar: https://m1yuu.com/medias/avatar.jpg
+    - name: lo1see
+      blog: https://lo1see.github.io/
+      description: 无人扶我青云志，我自己也上不去
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=2296161885&s=640
+    - name: luo
+      blog: https://forkmmat.github.io/
+      github: https://forkmmat.github.io/
+      description: 这一切都是命运石之门的选择
+      avatar: https://forkmmat.github.io/image/02.jpg
+    - name: n4c1
+      blog: https://www.cnblogs.com/n4c1
+      github: https://github.com/NaCl1
+      description: 靡不有初, 鲜克有终!
+      avatar: https://avatars.githubusercontent.com/u/87687085?v=4
+    - name: 22mu
+      description: 莫道天凉好个秋
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=3132381817&s=640
+    - name: Nbc
+      blog: https://nbcares.top/
+      github: https://github.com/Nbccccc
+      description: 功利主义导向的思考方式往往使我们忘却了生命的本质是一场历程
+      avatar: https://avatars.githubusercontent.com/u/192305884?v=4
+    - name: 0xahh
+      description: 想学习
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=871759032&s=640
+    - name: m3rl1n
+      blog: https://blog.cyberparterre.top/
+      description: 改变就是好事
+      avatar: https://blog.cyberparterre.top/upload/header.png
+    - name: bj777
+      blog: https://jonathanbest7.github.io/
+      github: https://github.com/jonathanbest7
+      description: 戒骄戒躁
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=506611735&s=640
+    - name: ap0s
+      description: 我嘅人生先啱啱开始,做唔到最好,咁就做更好
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=3063257925&s=640
+    - name: 三哈
+      description: 哥哥不会连隐写都解不开吧~不会吧~不会吧~
+      avatar: https://q1.qlogo.cn/g?b=qq&nk=2959849401&s=640
