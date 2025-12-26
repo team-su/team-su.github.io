@@ -205,9 +205,10 @@
         
 
         <li>
-            <a href="javascript:void(0)" id="theme-toggle" onclick="toggleTheme()">
+            <a href="javascript:void(0)" id="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
                 <span class="sr-only">Toggle Theme</span>
-                <span id="theme-icon" class="glyphicon glyphicon-adjust"></span>
+                <svg class="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                <svg class="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
             </a>
         </li>
 
@@ -225,11 +226,9 @@
 
 
 <script>
-    
     (function() {
         const savedTheme = localStorage.getItem('theme');
         const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        
         
         if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
             document.body.classList.add('dark-mode');
@@ -238,11 +237,9 @@
         }
     })();
 
-    
     function toggleTheme() {
         const body = document.body;
         body.classList.toggle('dark-mode');
-        
         
         if (body.classList.contains('dark-mode')) {
             localStorage.setItem('theme', 'dark');
@@ -253,13 +250,11 @@
 </script>
 
 <style>
-     
     body.dark-mode {
         filter: invert(1) hue-rotate(180deg);
-        background-color: #111;  
+        background-color: #111; 
     }
 
-     
     body.dark-mode img, 
     body.dark-mode video, 
     body.dark-mode iframe,
@@ -268,14 +263,29 @@
         filter: invert(1) hue-rotate(180deg);
     }
     
-     
     #theme-toggle {
         cursor: pointer;
+        padding: 15px;
+        display: flex;
+        align-items: center;
     }
-    #theme-toggle .glyphicon {
-        font-size: 16px;
-        top: 2px;
+    
+    .theme-icon-moon,
+    .theme-icon-sun {
+        color: #777;
+        transition: color 0.3s, transform 0.3s;
     }
+
+    #theme-toggle:hover .theme-icon-moon,
+    #theme-toggle:hover .theme-icon-sun {
+        color: #333;
+    }
+
+    .theme-icon-sun { display: none; }
+    .theme-icon-moon { display: block; }
+
+    body.dark-mode .theme-icon-sun { display: block; color: #000; }
+    body.dark-mode .theme-icon-moon { display: none; }
 </style>
     
 
@@ -6844,7 +6854,7 @@
   </div>
 </div>
 
-      <footer>
+    <footer>
   <div class="container">
     
     <div class="row">
@@ -6852,9 +6862,9 @@
         <ul class="list-inline text-center footer-links">
           
               <li>
-		
-		  <a href="https://ctftime.org/team/29641" title="CTFTime">
-		
+    
+      <a href="https://ctftime.org/team/29641" title="CTFTime">
+    
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     
@@ -6864,9 +6874,9 @@
                 </a>
               </li>
               <li>
-		
-		  <a href="mailto:suers_xctf@126.com" title="Email me">
-		
+    
+      <a href="mailto:suers_xctf@126.com" title="Email me">
+    
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     
@@ -6876,9 +6886,9 @@
                 </a>
               </li>
               <li>
-		
-		  <a href="https://github.com/team-su" title="GitHub">
-		
+    
+      <a href="https://github.com/team-su" title="GitHub">
+    
                   <span class="fa-stack fa-lg">
                     <i class="fas fa-circle fa-stack-2x"></i>
                     
@@ -6904,7 +6914,6 @@
             <a href="http://localhost:1313/">su-team</a>
           
         </p>
-        
         <p class="credits theme-by text-muted">
           <a href="https://gohugo.io">Hugo v0.148.2</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
@@ -6942,7 +6951,86 @@
 
 
 
+<a id="back-to-top" href="#" class="btn btn-default back-to-top" role="button" title="Back to Top" onclick="scrollToTop(); return false;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+</a>
 
+<style>
+    #back-to-top {
+        position: fixed !important;
+        bottom: 30px;
+        right: 30px;
+        z-index: 9999;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        background-color: #fff;
+        color: #333;
+        padding: 0;
+        transition: all 0.3s ease;
+    }
+
+    #back-to-top:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    body.dark-mode {
+        filter: none !important; 
+        background-color: #1a1a1a !important;
+    }
+
+    body.dark-mode header, 
+    body.dark-mode .container, 
+    body.dark-mode footer {
+        filter: invert(1) hue-rotate(180deg);
+    }
+
+    body.dark-mode .navbar-custom {
+        background-color: #1a1a1a !important;
+        border-bottom: 1px solid #333;
+    }
+
+    body.dark-mode .navbar-custom .container-fluid {
+        filter: invert(1) hue-rotate(180deg);
+    }
+
+    body.dark-mode img, 
+    body.dark-mode video, 
+    body.dark-mode iframe,
+    body.dark-mode .avatar-img {
+        filter: invert(1) hue-rotate(180deg);
+    }
+
+    body.dark-mode #back-to-top {
+        background-color: #333;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(255,255,255,0.1);
+    }
+</style>
+
+<script>
+    window.onscroll = function() { scrollFunction() };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            document.getElementById("back-to-top").style.display = "flex";
+        } else {
+            document.getElementById("back-to-top").style.display = "none";
+        }
+    }
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+</script>
     
   </body>
 </html>
