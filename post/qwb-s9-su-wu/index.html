@@ -204,6 +204,13 @@
 
         
 
+        <li>
+            <a href="javascript:void(0)" id="theme-toggle" onclick="toggleTheme()">
+                <span class="sr-only">Toggle Theme</span>
+                <span id="theme-icon" class="glyphicon glyphicon-adjust"></span>
+            </a>
+        </li>
+
         
       </ul>
     </div>
@@ -216,6 +223,60 @@
 </nav>
 
 
+
+<script>
+    
+    (function() {
+        const savedTheme = localStorage.getItem('theme');
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    })();
+
+    
+    function toggleTheme() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        
+        
+        if (body.classList.contains('dark-mode')) {
+            localStorage.setItem('theme', 'dark');
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
+    }
+</script>
+
+<style>
+     
+    body.dark-mode {
+        filter: invert(1) hue-rotate(180deg);
+        background-color: #111;  
+    }
+
+     
+    body.dark-mode img, 
+    body.dark-mode video, 
+    body.dark-mode iframe,
+    body.dark-mode .avatar-img,
+    body.dark-mode .navbar-custom .avatar-container {
+        filter: invert(1) hue-rotate(180deg);
+    }
+    
+     
+    #theme-toggle {
+        cursor: pointer;
+    }
+    #theme-toggle .glyphicon {
+        font-size: 16px;
+        top: 2px;
+    }
+</style>
     
 
 
@@ -319,7 +380,6 @@
     </div>
   
   </header>
-
 
     
 <div class="container" role="main">
@@ -6827,8 +6887,6 @@
                   </span>
                 </a>
               </li>
-          
-          
           
         </ul>
         <p class="credits copyright text-muted">
