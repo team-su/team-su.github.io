@@ -1,128 +1,149 @@
-/* --- Code blocks --- */
+/* --- Code blocks (lightweight, Stack-inspired) --- */
 
 :root {
-    --code-bg: #f8f8f8;
-    --code-border: #e5e7eb;
-    --code-text: #111827;
-    --code-ln: #9ca3af;
-    --code-highlight: rgba(59, 130, 100, 0.12);
-    --code-inline-bg: #f1f5f9;
+  --code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  --code-inline-bg: rgba(0, 0, 0, 0.12);
+  --code-inline-text: #808080;
+  --code-block-bg: transparent;
+  --code-block-text: #272822;
+  --code-block-border: transparent;
+  --code-block-radius: 4px;
+  --code-block-padding: 10px;
+  --code-block-font-size: 15px;
+  --code-line-color: #9aa0a6;
+  --code-copy-bg: #ffffff;
+  --code-copy-text: #222222;
+  --code-copy-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --code-bg: #1e1e1e;
-        --code-border: #1f2937;
-        --code-text: #e5e7eb;
-        --code-ln: #6b7280;
-        --code-highlight: rgba(96, 165, 250, 0.18);
-        --code-inline-bg: #111827;
-    }
-}
 
-pre,
-code {
-    font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Menlo, Monaco,
-        Consolas, "Liberation Mono", "Courier New", monospace;
-    font-size: 0.77em;
-    color: inherit;
+
+code,
+pre {
+  font-family: var(--code-font-family);
 }
 
 code {
-    background: var(--code-inline-bg);
-    color: var(--code-text);
-    border-radius: 6px;
-    padding: 0.15em 0.35em;
+  color: var(--code-inline-text);
+  background-color: var(--code-inline-bg);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+pre {
+  overflow-x: auto;
+  display: block;
+  background-color: var(--code-block-bg);
+  color: var(--code-block-text);
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
+  word-break: break-all;
+  padding: var(--code-block-padding);
+  border-radius: var(--code-block-radius);
+  margin: 0.6em 0;
+  border: none;
 }
 
 pre code {
-    padding: 0;
-    background: none;
-    border: none;
-    color: inherit;
-    white-space: pre;
+  color: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: inherit !important;
+  line-height: inherit;
 }
 
 .highlight,
-pre.chroma,
+pre.chroma {
+  background-color: var(--code-block-bg);
+  color: var(--code-block-text);
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
+  border: none;
+  border-radius: var(--code-block-radius);
+  box-shadow: none;
+  text-align: left;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  margin: 0.6em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: var(--code-block-padding);
+}
+
 .chroma {
-    background: var(--code-bg);
-    color: var(--code-text);
-    border: none;
-    border-radius: 6px;
-    box-shadow: none;
-    text-align: left;
-    max-width: 100%;
-    box-sizing: border-box;
-    position: relative;
-    margin: 0.6em 0;
-    overflow-x: auto;
-    overflow-y: hidden;
+  background: transparent;
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
 }
 
 .highlight pre {
-    margin: 0;
-    padding: 0;
-    background: transparent;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
 }
 
 .highlight .lntable {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    table-layout: auto;
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
 }
 
 .chroma .lntd {
-    width: 1%;
-    min-width: 2em;
-    background: var(--code-bg);
-    color: var(--code-ln);
-    border-right: 1px solid var(--code-border);
-    text-align: right;
-    padding: 0;
-    position: sticky;
-    left: 0;
-    z-index: 2;
+  background: transparent;
+  color: var(--code-line-color);
+  text-align: right;
+  padding: 0;
+  border-right: none;
 }
 
 .chroma .ln {
-    display: inline-block;
-    min-width: 1.9em;
-    padding: 0 0.25em;
-    margin-right: 0;
-    text-align: right;
-    color: var(--code-ln);
+  display: inline-block;
+  min-width: 1.9em;
+  padding: 0 0.25em;
+  margin-right: 0;
+  text-align: right;
+  color: var(--code-line-color);
 }
 
 .chroma .lntd pre {
-    margin: 0;
-    padding: 10px 6px 10px 8px;
-    background: transparent;
-    border: none;
+  margin: 0;
+  padding: 0 8px 0 0;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
 }
 
 .chroma td:last-child {
-    width: 100%;
-    background: var(--code-bg);
+  width: 100%;
+  background: transparent;
 }
 
 .chroma td:last-child pre {
-    margin: 0;
-    padding: 10px 14px 10px 12px;
-    background: transparent;
-    border: none;
+  margin: 0;
+  padding: 0 0 0 8px;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
 }
 
 .chroma .hl {
-    background: var(--code-highlight);
+  background: #ffffcc;
 }
 
 .highlight tr,
 .highlight pre {
-    border: none;
+  border: none;
 }
+
 .highlight td:last-child pre code,
 .highlight pre code {
-    white-space: pre;
+  white-space: pre;
 }
