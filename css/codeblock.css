@@ -1,0 +1,192 @@
+/* --- Code blocks (lightweight, Stack-inspired) --- */
+
+:root {
+  --code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  --code-inline-bg: rgba(0, 0, 0, 0.12);
+  --code-inline-text: #808080;
+  --code-block-bg: transparent;
+  --code-block-text: #272822;
+  --code-block-border: transparent;
+  --code-block-radius: 4px;
+  --code-block-padding: 10px;
+  --code-block-font-size: 15px;
+  --code-line-color: #9aa0a6;
+  --code-copy-bg: #ffffff;
+  --code-copy-text: #222222;
+  --code-copy-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+}
+
+body.dark-mode {
+  --code-inline-bg: #272822;
+  --code-inline-text: #f8f8f2;
+  --code-block-bg: #272822;
+  --code-block-text: #f8f8f2;
+  --code-line-color: #7f7f7f;
+  --code-copy-bg: #424242;
+  --code-copy-text: #f8f8f2;
+  --code-copy-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4), 0px 2px 6px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(0, 0, 0, 0.3);
+  --chroma-bg: #272822;
+  --chroma-fg: #f8f8f2;
+  --chroma-ln-color: #7f7f7f;
+  --chroma-hl-bg: #ffffcc;
+  --chroma-keyword: #66d9ef;
+  --chroma-keyword-type: #66d9ef;
+  --chroma-name-class: #a6e22e;
+  --chroma-name-function: #a6e22e;
+  --chroma-name-variable: #f8f8f2;
+  --chroma-name-constant: #66d9ef;
+  --chroma-name-attr: #a6e22e;
+  --chroma-literal-string: #e6db74;
+  --chroma-literal-number: #ae81ff;
+  --chroma-operator: #f92672;
+  --chroma-comment: #75715e;
+  --chroma-name-tag: #f92672;
+  --chroma-name-decorator: #a6e22e;
+  --chroma-error: #bb0064;
+}
+
+body.dark-mode .highlight,
+body.dark-mode pre.chroma,
+body.dark-mode pre {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+body.dark-mode .blog-post code {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+body.dark-mode .blog-post pre code {
+  filter: none;
+}
+
+
+
+code,
+pre {
+  font-family: var(--code-font-family);
+}
+
+code {
+  color: var(--code-inline-text);
+  background-color: var(--code-inline-bg);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
+
+pre {
+  overflow-x: auto;
+  display: block;
+  background-color: var(--code-block-bg);
+  color: var(--code-block-text);
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
+  word-break: break-all;
+  padding: var(--code-block-padding);
+  border-radius: var(--code-block-radius);
+  margin: 0.6em 0;
+  border: none;
+}
+
+pre code {
+  color: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.highlight,
+pre.chroma {
+  background-color: var(--code-block-bg);
+  color: var(--code-block-text);
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
+  border: none;
+  border-radius: var(--code-block-radius);
+  box-shadow: none;
+  text-align: left;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  margin: 0.6em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: var(--code-block-padding);
+}
+
+.chroma {
+  background: transparent;
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
+}
+
+.highlight pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.highlight .lntable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+.chroma .lntd {
+  background: transparent;
+  color: var(--code-line-color);
+  text-align: right;
+  padding: 0;
+  border-right: none;
+}
+
+.chroma .ln {
+  display: inline-block;
+  min-width: 1.9em;
+  padding: 0 0.25em;
+  margin-right: 0;
+  text-align: right;
+  color: var(--code-line-color);
+}
+
+.chroma .lntd pre {
+  margin: 0;
+  padding: 0 8px 0 0;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.chroma td:last-child {
+  width: 100%;
+  background: transparent;
+}
+
+.chroma td:last-child pre {
+  margin: 0;
+  padding: 0 0 0 8px;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.chroma .hl {
+  background: #ffffcc;
+}
+
+.highlight tr,
+.highlight pre {
+  border: none;
+}
+
+.highlight td:last-child pre code,
+.highlight pre code {
+  white-space: pre;
+}

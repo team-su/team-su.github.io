@@ -1,0 +1,168 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>2021 RCTF Harmony Writeup -</title><meta name=description content="Hi!Harmony!-复现
+一看题目是鸿蒙联想到鸿蒙操作系统
+不过之前没做过这一方面的题目"><meta name=author content="SUer"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"su-team","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/su-team.cn\/","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/su-team.cn\/post\/2021-rctf-harmony-wu\/","name":"2021 rctf harmony writeup"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"SUer"},"headline":"2021 RCTF Harmony Writeup","description":"Hi!Harmony!-复现\n一看题目是鸿蒙联想到鸿蒙操作系统\n不过之前没做过这一方面的题目\n","inLanguage":"en","wordCount":281,"datePublished":"2021-12-24T16:53:42\u002b00:00","dateModified":"2021-12-24T16:53:42\u002b00:00","image":"https:\/\/su-team.cn\/img\/SU.jpg","keywords":["RCTF"],"mainEntityOfPage":"https:\/\/su-team.cn\/post\/2021-rctf-harmony-wu\/","publisher":{"@type":"Organization","name":"https:\/\/su-team.cn\/","logo":{"@type":"ImageObject","url":"https:\/\/su-team.cn\/img\/SU.jpg","height":60,"width":60}}}</script><meta property="og:title" content="2021 RCTF Harmony Writeup"><meta property="og:description" content="Hi!Harmony!-复现
+一看题目是鸿蒙联想到鸿蒙操作系统
+不过之前没做过这一方面的题目"><meta property="og:image" content="https://su-team.cn/img/SU.jpg"><meta property="og:url" content="https://su-team.cn/post/2021-rctf-harmony-wu/"><meta property="og:type" content="website"><meta property="og:site_name" content="su-team"><meta name=twitter:title content="2021 RCTF Harmony Writeup"><meta name=twitter:description content="Hi!Harmony!-复现
+一看题目是鸿蒙联想到鸿蒙操作系统
+不过之前没做过这一方面的题目"><meta name=twitter:image content="https://su-team.cn/img/SU.jpg"><meta name=twitter:card content="summary_large_image"><link href=https://su-team.cn/img/SU.jpg rel=icon type=image/x-icon><meta name=generator content="Hugo 0.148.2"><link rel=alternate href=https://su-team.cn/index.xml type=application/rss+xml title=su-team><link rel=stylesheet href=https://su-team.cn/css/katex.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/brands.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/fontawesome.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/regular.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/solid.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg-with-js.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-font-face.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-shims.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v5-font-face.min.css><link rel=stylesheet href=https://su-team.cn/css/bootstrap.min.css><link rel=stylesheet href=https://su-team.cn/css/main.css><link rel=stylesheet href=https://su-team.cn/css/fonts.css><link rel=stylesheet href=https://su-team.cn/css/syntax.css><link rel=stylesheet href=https://su-team.cn/css/codeblock.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.min.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.default-skin.min.css><style>.navbar-custom .avatar-container{width:58px;height:58px;margin-top:-29px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;background:#fff;border-radius:50%;box-shadow:0 6px 18px rgba(0,0,0,.12)}.navbar-custom .avatar-container .avatar-img-border{width:100%;height:100%;border-radius:50%;overflow:hidden;margin:0;box-shadow:none}.navbar-custom .avatar-container .avatar-img{width:100%;height:100%;object-fit:cover;border-radius:50%}@media only screen and (min-width:768px){.navbar-custom .avatar-container{width:72px;height:72px;margin-top:-36px}}</style></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+<a class="theme-toggle mobile-theme-toggle" href=javascript:void(0) onclick=toggleTheme() title="Toggle Theme"><span class=sr-only>Toggle Theme</span>
+<svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</a><a class=navbar-brand href=https://su-team.cn/>su-team</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=Archives href=/>Archives</a></li><li class=navlinks-container><a class=navlinks-parent role=button tabindex=0>Members</a><div class=navlinks-children><a href=/active-members>Members</a>
+<a href=/pioneers>Pioneers</a></div></li><li><a title=About href=/page/about/>About</a></li><li><a title=Tags href=/tags>Tags</a></li><li class=hidden-xs><a href=javascript:void(0) class=theme-toggle onclick=toggleTheme() title="Toggle Theme"><span class=sr-only>Toggle Theme</span>
+<svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></a></li></ul></div></div></nav><script>(function(){const e=localStorage.getItem("theme"),t=window.matchMedia("(prefers-color-scheme: dark)").matches;e==="dark"||!e&&t?document.body.classList.add("dark-mode"):document.body.classList.remove("dark-mode")})();function toggleTheme(){const e=document.body;e.classList.toggle("dark-mode"),e.classList.contains("dark-mode")?localStorage.setItem("theme","dark"):localStorage.setItem("theme","light")}</script><style>.theme-toggle{cursor:pointer;padding:15px;display:flex;align-items:center}.mobile-theme-toggle{float:right;padding:15px 10px;margin-top:2px}@media(min-width:768px){.mobile-theme-toggle{display:none !important}}.theme-icon-moon,.theme-icon-sun{color:#777;transition:color .3s,transform .3s}.theme-toggle:hover .theme-icon-moon,.theme-toggle:hover .theme-icon-sun{color:#333}.theme-icon-sun{display:none}.theme-icon-moon{display:block}body.dark-mode .theme-icon-sun{display:block;color:#000}body.dark-mode .theme-icon-moon{display:none}body.dark-mode{filter:none !important;background-color:#1a1a1a !important}body.dark-mode header,body.dark-mode .container,body.dark-mode footer{filter:invert(1)hue-rotate(180deg)}body.dark-mode .navbar-custom{background-color:#1a1a1a !important;border-bottom:1px solid #333}body.dark-mode .navbar-custom .container-fluid{filter:invert(1)hue-rotate(180deg)}body.dark-mode img,body.dark-mode video,body.dark-mode iframe,body.dark-mode .avatar-img,body.dark-mode .navbar-custom .avatar-container{filter:invert(1)hue-rotate(180deg)}</style><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>2021 RCTF Harmony Writeup</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on December 24, 241242
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;min
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;281&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer</span></div></div></div></div></div></header><div class=container role=main><div class="row flex-row"><div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs"><div class=toc-sidebar><h4 class=toc-title>#<br>TABLE OF CONTENTS</h4><div class=toc-card><nav id=TableOfContents><ul><li><a href=#hiharmony-复现>Hi!Harmony!-复现</a></li></ul></nav></div></div></div><div class="col-lg-9 col-md-9"><article role=main class=blog-post><p>Hi!Harmony!-复现</p><p>一看题目是鸿蒙联想到鸿蒙操作系统</p><p>不过之前没做过这一方面的题目</p><h1 id=hiharmony-复现>Hi!Harmony!-复现</h1><p>一看题目是鸿蒙联想到鸿蒙操作系统</p><p>不过之前没做过这一方面的题目</p><p>文件丢进EXEinfos里面看看文件信息</p><p><img src=/img/2021-RCTF-Harmony-Writeup/01.jpg alt=01></p><p>用Ubuntu打开看看,发现也不太行</p><p><img src=/img/2021-RCTF-Harmony-Writeup/03.jpg alt=03></p><p>准备用IDA静态分析 发现IDA打不开</p><p><img src=/img/2021-RCTF-Harmony-Writeup/02.jpg alt=02></p><p>用file命令查看下文件信息</p><p><img src=/img/2021-RCTF-Harmony-Writeup/04.jpg alt=04></p><p>看到了一个信息RISC-V 百度搜索下</p><p><img src=/img/2021-RCTF-Harmony-Writeup/05.jpg alt=05></p><p>一个指令集 怪不得IDA打开 搜下有没有关于IDA的RISC-V的插件https://github.com/shuffle2/riscv-ida</p><p>经过一大堆艰难的操作发现 不能F5。。。。。。。</p><p><img src=/img/2021-RCTF-Harmony-Writeup/06.jpg alt=06></p><p>总不能硬读汇编把 没学过这个架构 搜索其他脚本也报错 这也是为啥我再比赛过程中没做出该题的原因</p><p><img src=/img/2021-RCTF-Harmony-Writeup/07.jpg alt=07></p><p><img src=/img/2021-RCTF-Harmony-Writeup/08.jpg alt=08></p><p>后面想想用新学习到的Ghidra试试 发现还真的可以 不得不说这个反编译工具还是强啊</p><p><img src=/img/2021-RCTF-Harmony-Writeup/09.jpg alt=09></p><p>反编译伪代码 &mdash;解密模块</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C data-lang=C><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kt>void</span> <span class=nf>UndefinedFunction_8000095c</span><span class=p>(</span><span class=kt>void</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kt>int</span> <span class=n>iStack84</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack72</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack68</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack64</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack60</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack56</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined2</span> <span class=n>uStack52</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined</span> <span class=n>uStack50</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined</span> <span class=n>uStack49</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack48</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack44</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack40</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack36</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack32</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined4</span> <span class=n>uStack28</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=n>undefined2</span> <span class=n>uStack24</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  <span class=k>do</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nf>FUN_80000832</span><span class=p>(</span><span class=s>&#34;Welcome to RCTF 2021...</span><span class=se>\n\r</span><span class=s>&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack72</span> <span class=o>=</span> <span class=mh>0x4d524148</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack68</span> <span class=o>=</span> <span class=mh>0x44594e4f</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack64</span> <span class=o>=</span> <span class=mh>0x4d414552</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack60</span> <span class=o>=</span> <span class=mh>0x4f505449</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack56</span> <span class=o>=</span> <span class=mh>0x42495353</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack52</span> <span class=o>=</span> <span class=mh>0x454c</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack50</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack48</span> <span class=o>=</span> <span class=mh>0x44434241</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack44</span> <span class=o>=</span> <span class=mh>0x48474645</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack40</span> <span class=o>=</span> <span class=mh>0x4c4b4a49</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack36</span> <span class=o>=</span> <span class=mh>0x504f4e4d</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack32</span> <span class=o>=</span> <span class=mh>0x54535251</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack28</span> <span class=o>=</span> <span class=mh>0x58575655</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>uStack24</span> <span class=o>=</span> <span class=mh>0x5a59</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>iStack84</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=p>(</span><span class=n>iStack84</span> <span class=o>&lt;</span> <span class=mh>0x16</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=o>*</span><span class=p>(</span><span class=kt>char</span> <span class=o>*</span><span class=p>)((</span><span class=kt>int</span><span class=p>)</span><span class=o>&amp;</span><span class=n>uStack72</span> <span class=o>+</span> <span class=n>iStack84</span><span class=p>)</span> <span class=o>+</span> <span class=mi>3</span> <span class=o>&lt;</span> <span class=mh>0x5b</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=o>*</span><span class=p>(</span><span class=kt>char</span> <span class=o>*</span><span class=p>)((</span><span class=kt>int</span><span class=p>)</span><span class=o>&amp;</span><span class=n>uStack72</span> <span class=o>+</span> <span class=n>iStack84</span><span class=p>)</span> <span class=o>=</span> <span class=o>*</span><span class=p>(</span><span class=kt>char</span> <span class=o>*</span><span class=p>)((</span><span class=kt>int</span><span class=p>)</span><span class=o>&amp;</span><span class=n>uStack72</span> <span class=o>+</span> <span class=n>iStack84</span><span class=p>)</span> <span class=o>+</span> <span class=sc>&#39;\x03&#39;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=o>*</span><span class=p>(</span><span class=n>undefined</span> <span class=o>*</span><span class=p>)((</span><span class=kt>int</span><span class=p>)</span><span class=o>&amp;</span><span class=n>uStack72</span> <span class=o>+</span> <span class=n>iStack84</span><span class=p>)</span> <span class=o>=</span>
+</span></span><span class=line><span class=cl>             <span class=p>(</span><span class=o>&amp;</span><span class=n>uStack49</span><span class=p>)[(</span><span class=o>*</span><span class=p>(</span><span class=kt>char</span> <span class=o>*</span><span class=p>)((</span><span class=kt>int</span><span class=p>)</span><span class=o>&amp;</span><span class=n>uStack72</span> <span class=o>+</span> <span class=n>iStack84</span><span class=p>)</span> <span class=o>+</span> <span class=o>-</span><span class=mh>0x57</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1a</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=n>iStack84</span> <span class=o>=</span> <span class=n>iStack84</span> <span class=o>+</span> <span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=nf>FUN_80000832</span><span class=p>(</span><span class=s>&#34;The result of encryption: %s</span><span class=se>\n\r</span><span class=s>&#34;</span><span class=p>,</span><span class=o>&amp;</span><span class=n>uStack72</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nf>FUN_800059a2</span><span class=p>(</span><span class=mi>1000</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span> <span class=k>while</span><span class=p>(</span> <span class=nb>true</span> <span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>注意因为数据是小端存储 所以提取出来要稍加注意</p><p>EXP</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=n>data1</span> <span class=o>=</span> <span class=p>[</span><span class=mh>0x48</span><span class=p>,</span><span class=mh>0x41</span><span class=p>,</span><span class=mh>0x52</span><span class=p>,</span><span class=mh>0x4d</span><span class=p>,</span><span class=mh>0x4f</span><span class=p>,</span><span class=mh>0x4e</span><span class=p>,</span><span class=mh>0x59</span><span class=p>,</span><span class=mh>0x44</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=mh>0x52</span><span class=p>,</span><span class=mh>0x45</span><span class=p>,</span><span class=mh>0x41</span><span class=p>,</span><span class=mh>0x4d</span><span class=p>,</span><span class=mh>0x49</span><span class=p>,</span><span class=mh>0x54</span><span class=p>,</span><span class=mh>0x50</span><span class=p>,</span><span class=mh>0x4f</span><span class=p>,</span><span class=mh>0x53</span><span class=p>,</span><span class=mh>0x53</span><span class=p>,</span><span class=mh>0x49</span><span class=p>,</span><span class=mh>0x42</span><span class=p>,</span><span class=mh>0x4c</span><span class=p>,</span><span class=mh>0x45</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>data2</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>,</span><span class=mh>0x41</span><span class=p>,</span><span class=mh>0x42</span><span class=p>,</span><span class=mh>0x43</span><span class=p>,</span><span class=mh>0x44</span><span class=p>,</span><span class=mh>0x45</span><span class=p>,</span><span class=mh>0x46</span><span class=p>,</span><span class=mh>0x47</span><span class=p>,</span><span class=mh>0x48</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=mh>0x49</span><span class=p>,</span><span class=mh>0x4a</span><span class=p>,</span><span class=mh>0x4b</span><span class=p>,</span><span class=mh>0x4c</span><span class=p>,</span><span class=mh>0x4d</span><span class=p>,</span><span class=mh>0x4e</span><span class=p>,</span><span class=mh>0x4f</span><span class=p>,</span><span class=mh>0x50</span><span class=p>,</span><span class=mh>0x51</span><span class=p>,</span><span class=mh>0x52</span><span class=p>,</span><span class=mh>0x53</span><span class=p>,</span><span class=mh>0x54</span><span class=p>,</span><span class=mh>0x55</span><span class=p>,</span><span class=mh>0x56</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=mh>0x57</span><span class=p>,</span><span class=mh>0x58</span><span class=p>,</span><span class=mh>0x59</span><span class=p>,</span><span class=mh>0x5a</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>flag</span> <span class=o>=</span> <span class=s1>&#39;RCTF{&#39;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>data1</span><span class=p>)):</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>data1</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>+</span> <span class=mi>3</span> <span class=o>&lt;</span> <span class=mh>0x5b</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>flag</span> <span class=o>+=</span> <span class=nb>chr</span><span class=p>(</span><span class=n>data1</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>+</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>flag</span> <span class=o>+=</span> <span class=nb>chr</span><span class=p>(</span><span class=n>data2</span><span class=p>[(</span><span class=n>data1</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>-</span> <span class=mh>0x57</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x1a</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>flag</span> <span class=o>+=</span> <span class=s1>&#39;}&#39;</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>flag</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><div class=blog-tags><a href=https://su-team.cn/tags/rctf/>RCTF</a>&nbsp;</div><h4 class=see-also>See also</h4><ul><li><a href=/post/rctf-2025-su-wu/>2025 RCTF SU WriteUp</a></li><li><a href=/post/rctf-2024-su-wu/>2024 RCTF SU WriteUp</a></li></ul></article><ul class="pager blog-pager"><li class=previous><a href=https://su-team.cn/post/xhlj-2021-su-wu/ data-toggle=tooltip data-placement=top title="2021年西湖论剑线上赛 SU Write-up">&larr; Previous Post</a></li><li class=next><a href=https://su-team.cn/post/sctf-2021-su-wu/ data-toggle=tooltip data-placement=top title="2021 SCTF SU Writeup">Next Post &rarr;</a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://ctftime.org/team/29641 title=CTFTime><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<img src=https://su-team.cn/img/ctftime.svg title=CTFTime alt=CTFTime style=width:60%;height:60%;position:absolute;top:20%;left:20%></span></a></li><li><a href=mailto:suers_xctf@126.com title="Email me"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/team-su title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted"><a href=https://su-team.cn>SUer</a>
+&nbsp;&bull;&nbsp;&copy;
+2026
+&nbsp;&bull;&nbsp;
+<a href=https://su-team.cn/>su-team</a></p><p class="credits theme-by text-muted"><a href=https://gohugo.io>Hugo v0.148.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script defer src=https://su-team.cn/js/katex.min.js></script><script defer src=https://su-team.cn/js/auto-render.min.js></script><script src=https://su-team.cn/js/jquery-3.7.0.slim.min.js></script><script src=https://su-team.cn/js/bootstrap.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\begin{equation}",right:"\\end{equation}",display:!0},{left:"\\begin{align}",right:"\\end{align}",display:!0},{left:"\\begin{alignat}",right:"\\end{alignat}",display:!0},{left:"\\begin{gather}",right:"\\end{gather}",display:!0},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script><script src=https://su-team.cn/js/main.js></script><script src=https://su-team.cn/js/photoswipe.min.js></script><script src=https://su-team.cn/js/photoswipe-ui-default.min.js></script><script src=https://su-team.cn/js/load-photoswipe.js></script></body></html>

