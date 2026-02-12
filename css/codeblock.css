@@ -17,46 +17,114 @@
 }
 
 body.dark-mode {
-  --code-inline-bg: #272822;
-  --code-inline-text: #f8f8f2;
-  --code-block-bg: #272822;
-  --code-block-text: #f8f8f2;
-  --code-line-color: #7f7f7f;
+  --code-inline-bg: #d8d7dd;
+  --code-inline-text: #07070d;
+  --code-block-bg: #d8d7dd;
+  --code-block-text: #07070d;
+  --code-line-color: #808080;
   --code-copy-bg: #424242;
   --code-copy-text: #f8f8f2;
   --code-copy-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4), 0px 2px 6px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(0, 0, 0, 0.3);
-  --chroma-bg: #272822;
-  --chroma-fg: #f8f8f2;
-  --chroma-ln-color: #7f7f7f;
-  --chroma-hl-bg: #ffffcc;
-  --chroma-keyword: #66d9ef;
-  --chroma-keyword-type: #66d9ef;
-  --chroma-name-class: #a6e22e;
-  --chroma-name-function: #a6e22e;
-  --chroma-name-variable: #f8f8f2;
-  --chroma-name-constant: #66d9ef;
-  --chroma-name-attr: #a6e22e;
-  --chroma-literal-string: #e6db74;
-  --chroma-literal-number: #ae81ff;
-  --chroma-operator: #f92672;
-  --chroma-comment: #75715e;
-  --chroma-name-tag: #f92672;
-  --chroma-name-decorator: #a6e22e;
-  --chroma-error: #bb0064;
+  --chroma-bg: #d8d7dd;
+  --chroma-fg: #07070d;
+  --chroma-ln-color: #808080;
+  --chroma-hl-bg: #000033;
+  --chroma-keyword: #992610;
+  --chroma-keyword-type: #992610;
+  --chroma-name-class: #591dd1;
+  --chroma-name-function: #591dd1;
+  --chroma-name-variable: #07070d;
+  --chroma-name-constant: #992610;
+  --chroma-name-attr: #591dd1;
+  --chroma-literal-string: #19248b;
+  --chroma-literal-number: #517e00;
+  --chroma-operator: #06d98d;
+  --chroma-comment: #8a8ea1;
+  --chroma-name-tag: #06d98d;
+  --chroma-name-decorator: #591dd1;
+  --chroma-error: #44ff9b;
 }
 
 body.dark-mode .highlight,
 body.dark-mode pre.chroma,
-body.dark-mode pre {
-  filter: invert(1) hue-rotate(180deg);
+body.dark-mode .chroma {
+  background-color: #d8d7dd !important;
+  color: #07070d !important;
 }
 
-body.dark-mode .blog-post code {
-  filter: invert(1) hue-rotate(180deg);
+body.dark-mode .chroma .ln,
+body.dark-mode .chroma .lnt {
+  color: #808080 !important;
 }
 
-body.dark-mode .blog-post pre code {
-  filter: none;
+body.dark-mode .chroma .k,
+body.dark-mode .chroma .kc,
+body.dark-mode .chroma .kd,
+body.dark-mode .chroma .kp,
+body.dark-mode .chroma .kr,
+body.dark-mode .chroma .kt,
+body.dark-mode .chroma .kn,
+body.dark-mode .chroma .no {
+  color: #992610 !important;
+}
+
+body.dark-mode .chroma .na,
+body.dark-mode .chroma .nc,
+body.dark-mode .chroma .nd,
+body.dark-mode .chroma .ne,
+body.dark-mode .chroma .nf,
+body.dark-mode .chroma .nx,
+body.dark-mode .chroma .gi {
+  color: #591dd1 !important;
+}
+
+body.dark-mode .chroma .s,
+body.dark-mode .chroma .sa,
+body.dark-mode .chroma .sb,
+body.dark-mode .chroma .sc,
+body.dark-mode .chroma .dl,
+body.dark-mode .chroma .sd,
+body.dark-mode .chroma .s2,
+body.dark-mode .chroma .sh,
+body.dark-mode .chroma .si,
+body.dark-mode .chroma .sx,
+body.dark-mode .chroma .sr,
+body.dark-mode .chroma .s1,
+body.dark-mode .chroma .ss {
+  color: #19248b !important;
+}
+
+body.dark-mode .chroma .m,
+body.dark-mode .chroma .mb,
+body.dark-mode .chroma .mf,
+body.dark-mode .chroma .mh,
+body.dark-mode .chroma .mi,
+body.dark-mode .chroma .il,
+body.dark-mode .chroma .mo,
+body.dark-mode .chroma .se {
+  color: #517e00 !important;
+}
+
+body.dark-mode .chroma .o,
+body.dark-mode .chroma .ow,
+body.dark-mode .chroma .nt,
+body.dark-mode .chroma .gd {
+  color: #06d98d !important;
+}
+
+body.dark-mode .chroma .c,
+body.dark-mode .chroma .ch,
+body.dark-mode .chroma .cm,
+body.dark-mode .chroma .c1,
+body.dark-mode .chroma .cs,
+body.dark-mode .chroma .cp,
+body.dark-mode .chroma .cpf,
+body.dark-mode .chroma .gu {
+  color: #8a8ea1 !important;
+}
+
+body.dark-mode .chroma .err {
+  color: #44ff9b !important;
 }
 
 
