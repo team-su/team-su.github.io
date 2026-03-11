@@ -1,3 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>XCTFfinals on su-team</title><link>https://team-su.github.io/tags/xctffinals/</link><description>Recent content in XCTFfinals on su-team</description><generator>Hugo</generator><language>en</language><managingEditor>suers_xctf@126.com (SUer)</managingEditor><webMaster>suers_xctf@126.com (SUer)</webMaster><lastBuildDate>Sun, 23 Jun 2024 21:13:11 +0000</lastBuildDate><atom:link href="https://team-su.github.io/tags/xctffinals/index.xml" rel="self" type="application/rss+xml"/><item><title>2024 熊猫杯决赛 SU WriteUp</title><link>https://team-su.github.io/post/pdctf-2024-su-wu/</link><pubDate>Sun, 23 Jun 2024 21:13:11 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://team-su.github.io/post/pdctf-2024-su-wu/</guid><description>&lt;p>本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_&lt;a href="mailto:xctf@126.com">xctf@126.com&lt;/a> 或者直接联系书鱼 QQ:381382770。&lt;/p>
-&lt;p>以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。&lt;/p></description></item><item><title>2023 XCTFfinals SU Writeup</title><link>https://team-su.github.io/post/xctffinals-2023-su-wu/</link><pubDate>Tue, 04 Apr 2023 17:02:13 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://team-su.github.io/post/xctffinals-2023-su-wu/</guid><description>&lt;p>本次2023 XCTFfinals 我们 SU 取得了 第7名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：&lt;a href="mailto:suers_xctf@126.com">suers_xctf@126.com&lt;/a>或直接联系书鱼(QQ:381382770)
-以下是我们 SU 本次 2023XCTFfinals的 writeup&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>XCTFfinals on su-team</title>
+    <link>http://localhost:1313/tags/xctffinals/</link>
+    <description>Recent content in XCTFfinals on su-team</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>suers_xctf@126.com (SUer)</managingEditor>
+    <webMaster>suers_xctf@126.com (SUer)</webMaster>
+    <lastBuildDate>Sun, 23 Jun 2024 21:13:11 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/xctffinals/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2024 熊猫杯决赛 SU WriteUp</title>
+      <link>http://localhost:1313/post/pdctf-2024-su-wu/</link>
+      <pubDate>Sun, 23 Jun 2024 21:13:11 +0000</pubDate><author>suers_xctf@126.com (SUer)</author>
+      <guid>http://localhost:1313/post/pdctf-2024-su-wu/</guid>
+      <description>&lt;p&gt;本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_&lt;a href=&#34;mailto:xctf@126.com&#34;&gt;xctf@126.com&lt;/a&gt; 或者直接联系书鱼 QQ:381382770。&lt;/p&gt;&#xA;&lt;p&gt;以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>2023 XCTFfinals SU Writeup</title>
+      <link>http://localhost:1313/post/xctffinals-2023-su-wu/</link>
+      <pubDate>Tue, 04 Apr 2023 17:02:13 +0000</pubDate><author>suers_xctf@126.com (SUer)</author>
+      <guid>http://localhost:1313/post/xctffinals-2023-su-wu/</guid>
+      <description>&lt;p&gt;本次2023 XCTFfinals 我们 SU 取得了 第7名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：&lt;a href=&#34;mailto:suers_xctf@126.com&#34;&gt;suers_xctf@126.com&lt;/a&gt;或直接联系书鱼(QQ:381382770)&#xA;以下是我们 SU 本次 2023XCTFfinals的 writeup&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

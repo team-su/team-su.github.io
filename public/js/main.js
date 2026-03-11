@@ -185,8 +185,8 @@ document.addEventListener('DOMContentLoaded', main.init);
  */
 document.addEventListener('DOMContentLoaded', () => {
   const highlights = document.querySelectorAll('.row div.highlight');
-  const copyText = '📋';
-  const copiedText = '✔️';
+  const copyText = 'Copy';
+  const copiedText = 'Copied';
 
   highlights.forEach((highlight) => {
       const copyButton = document.createElement('button');

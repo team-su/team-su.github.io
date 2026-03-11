@@ -2499,7 +2499,9 @@ public final class TicketReceiver extends BroadcastReceiver {
         context.sendBroadcast(intent2);
     }
 }
+```
 
+```java
 package com.example.oxidized_intentions;
 
 import android.content.Context;

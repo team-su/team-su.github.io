@@ -1,33 +1,260 @@
-/* --- Code blocks --- */
+/* --- Code blocks (lightweight, Stack-inspired) --- */
 
-.chroma .ln {
-  margin-right: 0.8em;
-  padding: 0 0.4em 0 0.4em;
-}
-pre code.hljs {
-  padding: 9.5px;
+:root {
+  --code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  --code-inline-bg: rgba(0, 0, 0, 0.12);
+  --code-inline-text: #808080;
+  --code-block-bg: transparent;
+  --code-block-text: #272822;
+  --code-block-border: transparent;
+  --code-block-radius: 4px;
+  --code-block-padding: 10px;
+  --code-block-font-size: 15px;
+  --code-line-color: #9aa0a6;
+  --code-copy-bg: #ffffff;
+  --code-copy-text: #222222;
+  --code-copy-shadow: 0px 10px 20px rgba(0, 0, 0, 0.04), 0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
 }
 
-.highlight tr, .highlight pre {
-  border: none;
+body.dark-mode {
+  --code-inline-bg: #d8d7dd;
+  --code-inline-text: #07070d;
+  --code-block-bg: #d8d7dd;
+  --code-block-text: #07070d;
+  --code-line-color: #808080;
+  --code-copy-bg: #424242;
+  --code-copy-text: #f8f8f2;
+  --code-copy-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4), 0px 2px 6px rgba(0, 0, 0, 0.3), 0px 0px 1px rgba(0, 0, 0, 0.3);
+  --chroma-bg: #d8d7dd;
+  --chroma-fg: #07070d;
+  --chroma-ln-color: #808080;
+  --chroma-hl-bg: #000033;
+  --chroma-keyword: #992610;
+  --chroma-keyword-type: #992610;
+  --chroma-name-class: #591dd1;
+  --chroma-name-function: #591dd1;
+  --chroma-name-variable: #07070d;
+  --chroma-name-constant: #992610;
+  --chroma-name-attr: #591dd1;
+  --chroma-literal-string: #19248b;
+  --chroma-literal-number: #517e00;
+  --chroma-operator: #06d98d;
+  --chroma-comment: #8a8ea1;
+  --chroma-name-tag: #06d98d;
+  --chroma-name-decorator: #591dd1;
+  --chroma-error: #44ff9b;
 }
 
-.highlight div:first-child {
+body.dark-mode .highlight,
+body.dark-mode pre.chroma,
+body.dark-mode .chroma {
+  background-color: #d8d7dd !important;
+  color: #07070d !important;
+}
+
+body.dark-mode .chroma .ln,
+body.dark-mode .chroma .lnt {
+  color: #808080 !important;
+}
+
+body.dark-mode .chroma .k,
+body.dark-mode .chroma .kc,
+body.dark-mode .chroma .kd,
+body.dark-mode .chroma .kp,
+body.dark-mode .chroma .kr,
+body.dark-mode .chroma .kt,
+body.dark-mode .chroma .kn,
+body.dark-mode .chroma .no {
+  color: #992610 !important;
+}
+
+body.dark-mode .chroma .na,
+body.dark-mode .chroma .nc,
+body.dark-mode .chroma .nd,
+body.dark-mode .chroma .ne,
+body.dark-mode .chroma .nf,
+body.dark-mode .chroma .nx,
+body.dark-mode .chroma .gi {
+  color: #591dd1 !important;
+}
+
+body.dark-mode .chroma .s,
+body.dark-mode .chroma .sa,
+body.dark-mode .chroma .sb,
+body.dark-mode .chroma .sc,
+body.dark-mode .chroma .dl,
+body.dark-mode .chroma .sd,
+body.dark-mode .chroma .s2,
+body.dark-mode .chroma .sh,
+body.dark-mode .chroma .si,
+body.dark-mode .chroma .sx,
+body.dark-mode .chroma .sr,
+body.dark-mode .chroma .s1,
+body.dark-mode .chroma .ss {
+  color: #19248b !important;
+}
+
+body.dark-mode .chroma .m,
+body.dark-mode .chroma .mb,
+body.dark-mode .chroma .mf,
+body.dark-mode .chroma .mh,
+body.dark-mode .chroma .mi,
+body.dark-mode .chroma .il,
+body.dark-mode .chroma .mo,
+body.dark-mode .chroma .se {
+  color: #517e00 !important;
+}
+
+body.dark-mode .chroma .o,
+body.dark-mode .chroma .ow,
+body.dark-mode .chroma .nt,
+body.dark-mode .chroma .gd {
+  color: #06d98d !important;
+}
+
+body.dark-mode .chroma .c,
+body.dark-mode .chroma .ch,
+body.dark-mode .chroma .cm,
+body.dark-mode .chroma .c1,
+body.dark-mode .chroma .cs,
+body.dark-mode .chroma .cp,
+body.dark-mode .chroma .cpf,
+body.dark-mode .chroma .gu {
+  color: #8a8ea1 !important;
+}
+
+body.dark-mode .chroma .err {
+  color: #44ff9b !important;
+}
+
+
+
+code,
+pre {
+  font-family: var(--code-font-family);
+}
+
+code {
+  color: var(--code-inline-text);
+  background-color: var(--code-inline-bg);
+  padding: 2px 4px;
   border-radius: 4px;
 }
 
-.highlight td:first-child pre, .highlight pre {
-  border-top-left-radius: 4px;
-  border-top-right-radius: unset;
-  border-bottom-left-radius: 4px;
-  border-bottom-right-radius: unset;
+pre {
+  overflow-x: auto;
+  display: block;
+  background-color: var(--code-block-bg);
+  color: var(--code-block-text);
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
+  word-break: break-all;
+  padding: var(--code-block-padding);
+  border-radius: var(--code-block-radius);
+  margin: 0.6em 0;
+  border: none;
+}
+
+pre code {
+  color: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.highlight,
+pre.chroma {
+  background-color: var(--code-block-bg);
+  color: var(--code-block-text);
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
+  border: none;
+  border-radius: var(--code-block-radius);
+  box-shadow: none;
+  text-align: left;
+  max-width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  margin: 0.6em 0;
+  overflow-x: auto;
   overflow-y: hidden;
+  padding: var(--code-block-padding);
 }
 
-.highlight td:last-child pre, .highlight pre {
-  border-radius: unset;
+.chroma {
+  background: transparent;
+  font-size: var(--code-block-font-size) !important;
+  line-height: 1.6;
 }
 
-.highlight td:last-child pre code, .highlight pre code {
+.highlight pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.highlight .lntable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+}
+
+.chroma .lntd {
+  background: transparent;
+  color: var(--code-line-color);
+  text-align: right;
+  padding: 0;
+  border-right: none;
+}
+
+.chroma .ln {
+  display: inline-block;
+  min-width: 1.9em;
+  padding: 0 0.25em;
+  margin-right: 0;
+  text-align: right;
+  color: var(--code-line-color);
+}
+
+.chroma .lntd pre {
+  margin: 0;
+  padding: 0 8px 0 0;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.chroma td:last-child {
+  width: 100%;
+  background: transparent;
+}
+
+.chroma td:last-child pre {
+  margin: 0;
+  padding: 0 0 0 8px;
+  background: transparent;
+  border: none;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.chroma .hl {
+  background: #ffffcc;
+}
+
+.highlight tr,
+.highlight pre {
+  border: none;
+}
+
+.highlight td:last-child pre code,
+.highlight pre code {
   white-space: pre;
 }

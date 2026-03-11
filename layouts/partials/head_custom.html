@@ -1,18 +1,41 @@
-<!--
-If you want to include any custom html just before </head>, put it in this file.
-Or you can delete these file if you don't need it.
--->
-<!-- for example, you could insert this custom css, which makes the bigimg not stretch:
 <style>
-.intro-header.big-img, .intro-header.big-img  .big-img-transition {
-  -webkit-background-size: contain !important;
-  -moz-background-size: contain !important;
-  background-size: contain !important;
-  -o-background-size: contain !important;
-  background-color: lightgrey;
+/* 手机端: 原始 72px -> 80% ≈ 58px */
+.navbar-custom .avatar-container {
+  width: 58px;
+  height: 58px;
+  margin-top: -29px; /* 高度的一半 */
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.navbar-custom .avatar-container .avatar-img-border {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0;
+  box-shadow: none;
+}
+
+.navbar-custom .avatar-container .avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* 电脑端: 原始 90px -> 80% = 72px */
+@media only screen and (min-width: 768px) {
+  .navbar-custom .avatar-container {
+    width: 72px;
+    height: 72px;
+    margin-top: -36px; /* 高度的一半 */
+  }
 }
 </style>
--->
-<!-- or you could include some additional css libraries:
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.css" integrity="sha256-I1UoFd33KHIydu88R9owFaQWzwkiZV4hXXug5aYaM28=" crossorigin="anonymous" />
--->

@@ -37,7 +37,7 @@
         avatar: https://avatars.githubusercontent.com/u/53947823?v=4
       - name: 疏狂
         github: https://github.com/N1etzsche0
-        description: 疏狂的一天：查看推特😋，练入门题👍，参加CTF😎，质疑炸鱼😭，质疑黑幕😭，寻找群友开黑CS😋👍😎
+        description: 濑户环奈，风华绝代
         avatar: https://q1.qlogo.cn/g?b=qq&nk=1249176071&s=640
       - name: fushuling
         blog: https://fushuling.com/
@@ -109,6 +109,14 @@
         github: https://github.com/Decemberus
         description: 都是风景，幸会！
         avatar: https://avatars.githubusercontent.com/u/104720270?v=4
+      - name: MiaoTony
+        blog: https://miaotony.xyz/?utm_source=su
+        github: https://github.com/miaotony
+        description: 喵，划水摸鱼ing~
+        avatar: https://avatars.githubusercontent.com/u/41962043?v=4
+      - name: 22mu
+        description: 莫道天凉好个秋
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=3132381817&s=640
       - name: Xherlock
         blog: http://xherlock.top/
         github: https://github.com/SH-Op-X
@@ -199,7 +207,7 @@
         description: 一个又菜又爱玩的Cryptoer
         avatar: https://q1.qlogo.cn/g?b=qq&nk=1521143613&s=640
       - name: 1ceS1amese
-        blog: https://1ces1amese.github.io/
+        blog: http://1ces1amese.cn/
         description: 打go里面最不会密码学的😫
         avatar: https://q1.qlogo.cn/g?b=qq&nk=279113044&s=640
       - name: ZLSF
@@ -235,3 +243,8 @@
         blog: https://yyskm.github.io/
         description: 平芜尽处是春山
         avatar: https://yyskm.github.io/img/1.jpg
+      - name: mnzn
+        blog: https://mnzn.me/
+        github: https://github.com/RealMnzn
+        description: Just the essence.
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1315744643&s=640

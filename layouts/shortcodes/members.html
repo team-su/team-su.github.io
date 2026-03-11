@@ -1,110 +1,185 @@
-{{ $datafile := .Get "datafile" }}
-{{ $data := index .Site.Data $datafile }}
+<div class="list-layout-container">
+  {{ $datafile := .Get "datafile" }}
+  {{ $data := index .Site.Data $datafile }}
 
-<div class="row" style="display: flex; flex-wrap: wrap; justify-content: center;">
-{{ range $data }}
-  <div class="col-xs-12" style="width: 100%;">
-    <h3 class="text-center" style="margin-top: 40px; margin-bottom: 30px; font-weight: 800;">{{ .links_category }}</h3>
-    <hr class="small">
+  {{ range $data }}
+  <div class="category-header">
+    <h3 class="category-name">{{ .links_category }}</h3>
+    <hr class="category-divider">
   </div>
-  {{ range .list }}
-  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3" style="display: flex; justify-content: center; margin-bottom: 30px;">
-    <div class="member-card">
+
+  <div class="member-list">
+    {{ range .list }}
+    <div class="member-row">
       <div class="member-avatar">
         <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy">
       </div>
-      <div class="member-info">
-        <h4>{{ .name }}</h4>
-        <p class="member-desc">{{ .description }}</p>
-        <div class="member-links">
-          {{ if .blog }}
-          <a href="{{ .blog }}" target="_blank" rel="noopener" title="Blog"><i class="fas fa-link"></i></a>
-          {{ end }}
-          {{ if .github }}
-          <a href="{{ .github }}" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
-          {{ end }}
+
+      <div class="member-body">
+        <div class="member-top-line">
+          <span class="name">{{ .name }}</span>
+          <div class="meta-links">
+            {{ if .join }}
+            <span class="meta-item"><i class="fas fa-chess-knight"></i> Join: {{ .join }}</span>
+            {{ end }}
+            
+            {{ if .blog }}
+            <a href="{{ .blog }}" target="_blank" rel="noopener" class="meta-item link">
+              <i class="fas fa-link"></i> Blog
+            </a>
+            {{ end }}
+            
+            {{ if .github }}
+            <a href="{{ .github }}" target="_blank" rel="noopener" class="meta-item link">
+              <i class="fab fa-github"></i> GitHub
+            </a>
+            {{ end }}
+          </div>
+        </div>
+        
+        <div class="description">
+          {{ .description }}
         </div>
       </div>
     </div>
+    {{ end }}
   </div>
   {{ end }}
-{{ end }}
 </div>
 
 <style>
-.member-card {
+/* 基础容器布局 */
+.list-layout-container {
+  max-width: 860px; /* 限制宽度，条状布局更美观 */
+  margin: 0 auto;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+/* 分类样式 */
+.category-header {
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
+.category-name {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.category-divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 0;
+}
+
+/* 条状项目样式 */
+.member-row {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 25px;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-  width: 100%;
-  height: 100%;
-  max-width: 300px; /* Prevent cards from getting too wide on single column */
+  padding: 25px 0;
+  border-bottom: 1px solid #f2f2f2; /* 条状分割线 */
+  transition: background-color 0.2s ease;
+}
+
+/* 最后一个元素不显示分割线 */
+.member-row:last-child {
+  border-bottom: none;
+}
+
+/* 头像：参考图中略带圆角的正方形 */
+.member-avatar {
+  flex-shrink: 0;
+  margin-right: 20px;
 }
 
 .member-avatar img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  border-radius: 6px; /* 微圆角，比纯圆更硬朗 */
   object-fit: cover;
-  margin-bottom: 15px;
-  border: 3px solid #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: block;
 }
 
-.member-info h4 {
-  margin: 0 0 10px 0;
-  font-weight: 700;
-  font-size: 18px;
-  color: #333;
+/* 信息区布局 */
+.member-body {
+  flex-grow: 1;
+  min-width: 0;
 }
 
-.member-desc {
-  font-size: 14px;
+.member-top-line {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #000;
+  margin-right: 15px;
+}
+
+/* 元数据和链接样式 */
+.meta-links {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
   color: #666;
-  margin-bottom: 15px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.meta-item.link {
+  color: #666;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.meta-item.link:hover {
+  color: #008AFF;
+  text-decoration: underline;
+}
+
+/* 简介文字排版 */
+.description {
+  font-size: 15px;
   line-height: 1.6;
+  color: #444;
   word-wrap: break-word;
 }
 
-.member-links a {
-  margin: 0 8px;
-  color: #888;
-  font-size: 18px;
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.member-links a:hover {
-  color: #008AFF;
-  transform: rotate(360deg);
-}
-
-/* Dark mode support if the theme supports it via media query */
-@media (prefers-color-scheme: dark) {
-  .member-card {
-    background: #2a2a2a;
-    border-color: #444;
-  }
-  .member-info h4 {
-    color: #eee;
-  }
-  .member-desc {
-    color: #bbb;
-  }
-  .member-links a {
-    color: #aaa;
-  }
-  .member-links a:hover {
-    color: #50afff;
+/* 移动端适配 */
+@media (max-width: 600px) {
+  .member-row {
+    padding: 15px 0;
   }
   .member-avatar img {
-    border-color: #333;
+    width: 60px;
+    height: 60px;
   }
+  .name {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  .meta-links {
+    width: 100%;
+  }
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+  .category-name { color: #f0f0f0; }
+  .category-divider { border-color: #333; }
+  .member-row { border-color: #2a2a2a; }
+  .name { color: #fff; }
+  .description { color: #bbb; }
+  .meta-item, .meta-item.link { color: #999; }
+  .member-avatar img { opacity: 0.9; }
 }
 </style>

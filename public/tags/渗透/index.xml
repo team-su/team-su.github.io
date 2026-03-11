@@ -1,2 +1,28 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>渗透 on su-team</title><link>https://team-su.github.io/tags/%E6%B8%97%E9%80%8F/</link><description>Recent content in 渗透 on su-team</description><generator>Hugo</generator><language>en</language><managingEditor>suers_xctf@126.com (SUer)</managingEditor><webMaster>suers_xctf@126.com (SUer)</webMaster><lastBuildDate>Thu, 24 Aug 2023 14:02:00 +0000</lastBuildDate><atom:link href="https://team-su.github.io/tags/%E6%B8%97%E9%80%8F/index.xml" rel="self" type="application/rss+xml"/><item><title>2023 巅峰极客决赛 SU WriteUp</title><link>https://team-su.github.io/post/dfjkfinal-2023-su-wu/</link><pubDate>Thu, 24 Aug 2023 14:02:00 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://team-su.github.io/post/dfjkfinal-2023-su-wu/</guid><description>&lt;p>本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：&lt;a href="mailto:suers_xctf@126.com">suers_xctf@126.com&lt;/a>&lt;/p>
-&lt;p>以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。&lt;/p></description></item><item><title>2023 贵阳大数据网络安全精英对抗赛 SU Writeup</title><link>https://team-su.github.io/post/gyb-2023-su-wu/</link><pubDate>Thu, 24 Aug 2023 13:51:39 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://team-su.github.io/post/gyb-2023-su-wu/</guid><description>&lt;p>本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。&lt;/p></description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>渗透 on su-team</title>
+    <link>http://localhost:1313/tags/%E6%B8%97%E9%80%8F/</link>
+    <description>Recent content in 渗透 on su-team</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>suers_xctf@126.com (SUer)</managingEditor>
+    <webMaster>suers_xctf@126.com (SUer)</webMaster>
+    <lastBuildDate>Thu, 24 Aug 2023 14:02:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/%E6%B8%97%E9%80%8F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>2023 巅峰极客决赛  SU WriteUp</title>
+      <link>http://localhost:1313/post/dfjkfinal-2023-su-wu/</link>
+      <pubDate>Thu, 24 Aug 2023 14:02:00 +0000</pubDate><author>suers_xctf@126.com (SUer)</author>
+      <guid>http://localhost:1313/post/dfjkfinal-2023-su-wu/</guid>
+      <description>&lt;p&gt;本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：&lt;a href=&#34;mailto:suers_xctf@126.com&#34;&gt;suers_xctf@126.com&lt;/a&gt;&lt;/p&gt;&#xA;&lt;p&gt;以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>2023 贵阳大数据网络安全精英对抗赛 SU Writeup</title>
+      <link>http://localhost:1313/post/gyb-2023-su-wu/</link>
+      <pubDate>Thu, 24 Aug 2023 13:51:39 +0000</pubDate><author>suers_xctf@126.com (SUer)</author>
+      <guid>http://localhost:1313/post/gyb-2023-su-wu/</guid>
+      <description>&lt;p&gt;本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
