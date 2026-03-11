@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -16,7 +18,7 @@ jobs:
 
       - uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: '0.157.0'
+          hugo-version: "0.157.0"
           extended: true
 
       - run: hugo --minify --buildFuture
@@ -27,3 +29,4 @@ jobs:
           publish_branch: master
           publish_dir: ./public
           force_orphan: true
+          cname: su-team.cn
