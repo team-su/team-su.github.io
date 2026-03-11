@@ -3,7 +3,7 @@ name: Deploy Hugo Site
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   deploy:
@@ -14,20 +14,16 @@ jobs:
           submodules: true
           fetch-depth: 0
 
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
+      - uses: peaceiris/actions-hugo@v3
         with:
           hugo-version: '0.157.0'
           extended: true
 
-      - name: Build
-        run: hugo --minify
+      - run: hugo --minify
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
+      - uses: peaceiris/actions-gh-pages@v4
         with:
           deploy_key: ${{ secrets.DEPLOY_KEY }}
-          external_repository: team-su/team-su.github.io
           publish_branch: master
           publish_dir: ./public
           force_orphan: true
