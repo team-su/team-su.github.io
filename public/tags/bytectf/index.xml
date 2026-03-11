@@ -8,12 +8,12 @@
     <language>en</language>
     <managingEditor>suers_xctf@126.com (SUer)</managingEditor>
     <webMaster>suers_xctf@126.com (SUer)</webMaster>
-    <lastBuildDate>Sat, 14 Sep 2019 17:30:50 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Sep 2019 17:30:50 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/bytectf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ByteCTF 2019 SU Write Up</title>
       <link>http://localhost:1313/post/bytectf-2019-su-wu/</link>
-      <pubDate>Sat, 14 Sep 2019 17:30:50 +0000</pubDate><author>suers_xctf@126.com (SUer)</author>
+      <pubDate>Sat, 14 Sep 2019 17:30:50 +0800</pubDate><author>suers_xctf@126.com (SUer)</author>
       <guid>http://localhost:1313/post/bytectf-2019-su-wu/</guid>
       <description>&lt;p&gt;以下是我们 SU 本次 ByteCTF 的 writeup。&lt;/p&gt;</description>
     </item>

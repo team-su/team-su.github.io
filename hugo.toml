@@ -2,6 +2,7 @@ baseurl = "https://su-team.cn/"
 DefaultContentLanguage = "en"
 title = "su-team"
 theme = "beautifulhugo"
+timeZone = "Asia/Shanghai"
 
 [markup]
   [markup.goldmark]

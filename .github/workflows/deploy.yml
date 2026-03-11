@@ -19,7 +19,7 @@ jobs:
           hugo-version: '0.157.0'
           extended: true
 
-      - run: hugo --minify --buildFuture
+      - run: hugo --minify
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
