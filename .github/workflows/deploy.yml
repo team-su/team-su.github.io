@@ -29,4 +29,4 @@ jobs:
           publish_branch: master
           publish_dir: ./public
           force_orphan: true
-          cname: su-team.cn
+          # cname: su-team.cn
