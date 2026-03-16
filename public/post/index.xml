@@ -8,15 +8,8 @@
     <language>en</language>
     <managingEditor>suers_xctf@126.com (SUer)</managingEditor>
     <webMaster>suers_xctf@126.com (SUer)</webMaster>
-    <lastBuildDate>Wed, 11 Mar 2026 20:18:54 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 02 Feb 2026 22:24:15 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Hello Action</title>
-      <link>http://localhost:1313/post/hello-action/</link>
-      <pubDate>Wed, 11 Mar 2026 20:18:54 +0800</pubDate><author>suers_xctf@126.com (SUer)</author>
-      <guid>http://localhost:1313/post/hello-action/</guid>
-      <description></description>
-    </item>
     <item>
       <title>2026 ALICTF SU WriteUp</title>
       <link>http://localhost:1313/post/alictf-su-2026-wu/</link>
