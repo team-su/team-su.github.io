@@ -1,0 +1,75 @@
+baseurl = "https://su-team.cn"
+DefaultContentLanguage = "en"
+title = "su-team"
+theme = "beautifulhugo"
+themesDir = "../.."
+pygmentsStyle = "trac"
+pygmentsUseClasses = true
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+
+[pagination]
+  pagerSize = 10
+
+[Params]
+  mainSections = ["post", "posts"]
+  hideHomeTitle = true
+  favicon = "img/SU.jpg"
+  logo = "img/SU.jpg"
+  dateFormat = "January 2, 2006"
+  since = 2016
+  rss = false
+  comments = false
+  readingTime = true
+  wordCount = true
+  useHLJS = false
+  socialShare = false
+  showRelatedPosts = false
+  selfHosted = true
+
+[Params.author]
+  name = "SUer"
+  website = "https://su-team.cn"
+  email = "suers_xctf@126.com"
+  github = "team-su"
+  ctftime = "https://ctftime.org/team/29641"
+
+[[menu.main]]
+  name = "Archives"
+  url = ""
+  weight = 1
+
+[[menu.main]]
+  identifier = "members"
+  name = "Members"
+  weight = 2
+
+[[menu.main]]
+  parent = "members"
+  name = "Members"
+  url = "active-members"
+  weight = 1
+
+[[menu.main]]
+  parent = "members"
+  name = "Pioneers"
+  url = "pioneers"
+  weight = 2
+
+[[menu.main]]
+  name = "About"
+  url = "page/about/"
+  weight = 3
+
+[[menu.main]]
+  name = "Tags"
+  url = "tags"
+  weight = 4
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 3

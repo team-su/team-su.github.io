@@ -1,0 +1,223 @@
+<nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">{{ i18n "toggleNavigation" }}</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="theme-toggle mobile-theme-toggle" href="javascript:void(0)" onclick="toggleTheme()" title="Toggle Theme">
+        <span class="sr-only">Toggle Theme</span>
+        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+        </svg>
+        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+      </a>
+      <a class="navbar-brand" href="{{ "" | absLangURL }}">{{ .Site.Title }}</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        {{ range .Site.Menus.main.ByWeight }}
+          {{ if .HasChildren }}
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">{{ .Name }}</a>
+              <div class="navlinks-children">
+                {{ range .Children }}
+                  <a href="{{ .URL | relLangURL }}">{{ .Name }}</a>
+                {{ end }}
+              </div>
+            </li>
+          {{ else }}
+            <li>
+              <a title="{{ .Name }}" href="{{ .URL  | relLangURL }}">{{ .Name }}</a>
+            </li>
+          {{ end }}
+        {{ end }}
+
+        {{ if hugo.IsMultilingual }}
+          {{ if ge (len .Site.Languages) 3 }}
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">{{ i18n "languageSwitcherLabel" }}</a>
+              <div class="navlinks-children">
+                {{ range .Translations }}
+                  {{ if not (eq .Lang $.Site.Language.Lang) }}
+                  <a href="{{ .Permalink }}">{{ default .Lang .Site.Language.LanguageName }}</a>
+                  {{ end }}
+                {{ end }}
+              </div>
+            </li>
+          {{ else }}
+            <li>
+              {{ if .IsTranslated }}
+                {{ range .Translations }}
+                  <a href="{{ .Permalink }}">{{ default .Lang .Site.Language.LanguageName }}</a>
+                {{ end}}
+              {{ end }}
+            </li>
+          {{ end }}
+        {{ end }}
+
+        <li class="hidden-xs">
+          <a href="javascript:void(0)" class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+            <span class="sr-only">Toggle Theme</span>
+            <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+            </svg>
+            <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </a>
+        </li>
+        {{ if isset .Site.Params "gcse" }}
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">{{ i18n "gcseLabelShort" }}</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+        {{ end }}
+      </ul>
+    </div>
+
+    {{ if isset .Site.Params "logo" }}
+      {{ $isAbout := or (eq .RelPermalink "/page/about/") (eq .RelPermalink "/page/about") }}
+      {{ if $isAbout }}
+        <div class="avatar-container">
+          <div class="avatar-img-border">
+            <a title="{{ .Site.Title }}" href="{{ "" | absLangURL }}">
+            {{- $image := resources.Get ( $.Site.Params.logo) -}}
+            {{ if $image }}
+              <img class="avatar-img" src="{{ ($image.Fit "300x300 webp q100").Permalink }}" alt="{{ .Site.Title }}" />
+            {{else}}
+              <img class="avatar-img" src="{{ .Site.Params.logo | absURL }}" alt="{{ .Site.Title }}" />
+             {{end}}
+            </a>
+          </div>
+        </div>
+      {{ end }}
+    {{ end }}
+
+  </div>
+</nav>
+<script>
+  (function() {
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  })();
+  function toggleTheme() {
+    const body = document.body;
+    body.classList.toggle("dark-mode");
+    if (body.classList.contains("dark-mode")) {
+      localStorage.setItem("theme", "dark");
+    } else {
+      localStorage.setItem("theme", "light");
+    }
+  }
+</script>
+<style>
+  .theme-toggle {
+    cursor: pointer;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+  }
+  .mobile-theme-toggle {
+    float: right;
+    padding: 15px 10px;
+    margin-top: 2px;
+  }
+  @media (min-width: 768px) {
+    .mobile-theme-toggle {
+      display: none !important;
+    }
+  }
+  .theme-icon-moon,
+  .theme-icon-sun {
+    color: #777;
+    transition: color .3s, transform .3s;
+  }
+  .theme-toggle:hover .theme-icon-moon,
+  .theme-toggle:hover .theme-icon-sun {
+    color: #333;
+  }
+  .theme-icon-sun {
+    display: none;
+  }
+  .theme-icon-moon {
+    display: block;
+  }
+  body.dark-mode .theme-icon-sun {
+    display: block;
+    color: #000;
+  }
+  body.dark-mode .theme-icon-moon {
+    display: none;
+  }
+  body.dark-mode {
+    filter: none !important;
+    background-color: #1a1a1a !important;
+  }
+  body.dark-mode header,
+  body.dark-mode .container,
+  body.dark-mode footer {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  body.dark-mode .navbar-custom {
+    background-color: #1a1a1a !important;
+    border-bottom: 1px solid #333;
+  }
+  body.dark-mode .navbar-custom .container-fluid {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  body.dark-mode img,
+  body.dark-mode video,
+  body.dark-mode iframe,
+  body.dark-mode .avatar-img,
+  body.dark-mode .navbar-custom .avatar-container {
+    filter: invert(1) hue-rotate(180deg);
+  }
+</style>
+
+<!-- Search Modal -->
+{{ if isset .Site.Params "gcse" }}
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ i18n "gcseLabelLong" . }}</h4>
+        </div>
+        <div class="modal-body">
+          <gcse:search></gcse:search>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{{ i18n "gcseClose" }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{{ end }}
