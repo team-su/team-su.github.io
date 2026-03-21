@@ -13,7 +13,7 @@ timeZone = "Asia/Shanghai"
     ordered = false
     startLevel = 1
   [markup.highlight]
-    lineNos = true
+    lineNos = false
     codeFences = true
     guessSyntax = true
     style = "paraiso-light"
@@ -22,6 +22,10 @@ timeZone = "Asia/Shanghai"
 [Params]
   mainSections = ["post"]
   katex = true
+  homeTitle = "su-team"
+  homeEyebrow = "SU TEAM // BATTLE LOG"
+  homeSubtitle = "Writeups, Records, and Field Notes"
+  homeDescription = "Competition archives, deep-dive writeups, and long-term team memory from Team SU."
   logo = "img/SU.jpg"
   favicon = "img/SU.jpg"
   dateFormat = "January 2, 2006"
@@ -34,6 +38,10 @@ timeZone = "Asia/Shanghai"
   socialShare = false
   delayDisqus = true
   showRelatedPosts = true
+  articleEyebrow = "SU TEAM ARCHIVE"
+  articleLead = "Writeups, reports, and battle notes from the team."
+  footerTagline = "Built for team archives and competition writeups."
+  footerSubline = "Minimal noise, high signal, and fast navigation."
 
 [Params.author]
   name = "SUer"

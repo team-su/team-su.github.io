@@ -1,0 +1,53 @@
+<article class="post-preview team-card">
+  <div class="post-preview__card">
+    <div class="post-preview__body">
+      <p class="post-preview__meta">
+        {{ partial "post_meta.html" . }}
+      </p>
+
+      <div class="post-preview__headline">
+        <a href="{{ .RelPermalink }}">
+          <h2 class="post-title">{{ .Title }}</h2>
+          {{ if .Params.subtitle }}
+            <p class="post-subtitle">{{ .Params.subtitle }}</p>
+          {{ end }}
+        </a>
+      </div>
+
+      {{ if or .Params.image .Params.video }}
+        <a class="post-preview__media" href="{{ .RelPermalink }}">
+          {{ if .Params.image }}
+            <img src="{{ .Params.image }}" alt="{{ .Title }}" class="img-title" />
+          {{ end }}
+          {{ if .Params.video }}
+            <video loop autoplay muted playsinline class="img-title">
+              <source src="{{ .Params.video }}">
+            </video>
+          {{ end }}
+        </a>
+      {{ end }}
+
+      <div class="post-entry">
+        {{ if or (.Truncated) (.Params.summary) }}
+          {{ .Summary }}
+        {{ else }}
+          {{ .Content }}
+        {{ end }}
+      </div>
+
+      <div class="post-preview__footer">
+        {{ if .Params.tags }}
+          <div class="blog-tags">
+            {{ range .Params.tags }}
+              <a href="{{ "tags" | absLangURL }}/{{ . | urlize }}/">{{ . }}</a>
+            {{ end }}
+          </div>
+        {{ end }}
+
+        {{ if or (.Truncated) (.Params.summary) }}
+          <a href="{{ .RelPermalink }}" class="post-read-more">Read Report</a>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</article>

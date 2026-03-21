@@ -184,45 +184,70 @@ document.addEventListener('DOMContentLoaded', main.init);
  * Add copy button to code block
  */
 document.addEventListener('DOMContentLoaded', () => {
-  const highlights = document.querySelectorAll('.row div.highlight');
+  const highlights = document.querySelectorAll('.highlight');
   const copyText = 'Copy';
   const copiedText = 'Copied';
 
+  const copyToClipboard = async (text) => {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.top = '-9999px';
+    textarea.style.left = '-9999px';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    const copied = document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    if (!copied) {
+      throw new Error('Copy command failed');
+    }
+  };
+
   highlights.forEach((highlight) => {
-      const copyButton = document.createElement('button');
-      copyButton.innerHTML = copyText;
-      copyButton.classList.add('copyCodeButton');
-      highlight.appendChild(copyButton);
+    const codeBlock = highlight.querySelector('code[data-lang]');
+    if (!codeBlock) return;
 
-      const codeBlock = highlight.querySelector('code[data-lang]');
-      if (!codeBlock) return;
+    const copyButton = document.createElement('button');
+    copyButton.type = 'button';
+    copyButton.textContent = copyText;
+    copyButton.classList.add('copyCodeButton');
+    copyButton.setAttribute('aria-label', 'Copy code block');
+    copyButton.setAttribute('title', 'Copy code block');
+    copyButton.setAttribute('data-state', 'copy');
+    highlight.appendChild(copyButton);
 
-      copyButton.addEventListener('click', () => {
-          // Create a deep clone of the code block
-          const codeBlockClone = codeBlock.cloneNode(true);
+    copyButton.addEventListener('click', async () => {
+      const codeBlockClone = codeBlock.cloneNode(true);
+      const lineNumbers = codeBlockClone.querySelectorAll('.ln');
 
-          // Remove line number elements from the clone
-          const lineNumbers = codeBlockClone.querySelectorAll('.ln');
-          lineNumbers.forEach(ln => ln.remove());
+      lineNumbers.forEach((ln) => ln.remove());
 
-          // Get the text content, splitting by lines, trimming each line, and joining back
-          const codeText = codeBlockClone.textContent
-              .split('\n')              // Split into lines
-              .map(line => line.trim()) // Trim each line
-              .join('\n');              // Join lines back with newline
+      const codeText = codeBlockClone.textContent
+        .replace(/\u00a0/g, ' ')
+        .replace(/\n$/, '');
 
-          navigator.clipboard.writeText(codeText)
-              .then(() => {
-                  copyButton.textContent = copiedText;
+      try {
+        await copyToClipboard(codeText);
+        copyButton.textContent = copiedText;
+        copyButton.setAttribute('data-state', 'copied');
 
-                  setTimeout(() => {
-                      copyButton.textContent = copyText;
-                  }, 1000);
-              })
-              .catch((err) => {
-                  alert('Failed to copy text');
-                  console.error('Something went wrong', err);
-              });
-      });
+        window.setTimeout(() => {
+          copyButton.textContent = copyText;
+          copyButton.setAttribute('data-state', 'copy');
+        }, 1200);
+      } catch (err) {
+        console.error('Something went wrong', err);
+        alert('Failed to copy text');
+      }
+    });
   });
 });

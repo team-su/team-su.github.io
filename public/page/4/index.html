@@ -12,6 +12,7 @@
  
 
 
+      <title>su-team</title>
   
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
@@ -48,55 +49,21 @@
   <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/regular.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg-with-js.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-shims.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v5-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260212-fix3" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><style>
- 
-.navbar-custom .avatar-container {
-  width: 58px;
-  height: 58px;
-  margin-top: -29px;  
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
+  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  (function() {
+    var theme = "dark";
+    try {
+      theme = localStorage.getItem("theme") || "dark";
+    } catch (e) {
+      theme = "dark";
+    }
+    document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  })();
+</script>
+<link rel="stylesheet" href="/css/team-theme.css?v=20260322-6">
 
-.navbar-custom .avatar-container .avatar-img-border {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0;
-  box-shadow: none;
-}
-
-.navbar-custom .avatar-container .avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
- 
-@media only screen and (min-width: 768px) {
-  .navbar-custom .avatar-container {
-    width: 72px;
-    height: 72px;
-    margin-top: -36px;  
-  }
-}
-</style>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
@@ -108,12 +75,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="theme-toggle mobile-theme-toggle" href="javascript:void(0)" onclick="toggleTheme()" title="Toggle Theme">
-        <span class="sr-only">Toggle Theme</span>
-        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+      <a class="navbar-brand" href="/">
+        <span class="navbar-brand__title">su-team</span>
+        <span class="navbar-brand__meta">battle log</span>
+      </a>
+
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
-        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -124,8 +96,7 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-      </a>
-      <a class="navbar-brand" href="http://localhost:1313/">su-team</a>
+      </button>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
@@ -165,13 +136,12 @@
 
         
 
-        <li class="hidden-xs">
-          <a href="javascript:void(0)" class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-            <span class="sr-only">Toggle Theme</span>
-            <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <li class="nav-theme-toggle hidden-xs">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
-            <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -182,8 +152,9 @@
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
-          </a>
+          </button>
         </li>
+
         
       </ul>
     </div>
@@ -192,185 +163,68 @@
       
       
     
-
   </div>
 </nav>
+
 <script>
-  (function() {
-    const storedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  })();
   function toggleTheme() {
-    const body = document.body;
-    body.classList.toggle("dark-mode");
-    if (body.classList.contains("dark-mode")) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+    var next = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch (e) {}
   }
 </script>
-<style>
-  .theme-toggle {
-    cursor: pointer;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-  }
-  .mobile-theme-toggle {
-    float: right;
-    padding: 15px 10px;
-    margin-top: 2px;
-  }
-  @media (min-width: 768px) {
-    .mobile-theme-toggle {
-      display: none !important;
-    }
-  }
-  .theme-icon-moon,
-  .theme-icon-sun {
-    color: #777;
-    transition: color .3s, transform .3s;
-  }
-  .theme-toggle:hover .theme-icon-moon,
-  .theme-toggle:hover .theme-icon-sun {
-    color: #333;
-  }
-  .theme-icon-sun {
-    display: none;
-  }
-  .theme-icon-moon {
-    display: block;
-  }
-  body.dark-mode .theme-icon-sun {
-    display: block;
-    color: #000;
-  }
-  body.dark-mode .theme-icon-moon {
-    display: none;
-  }
-  body.dark-mode {
-    filter: none !important;
-    background-color: #1a1a1a !important;
-  }
-  body.dark-mode header,
-  body.dark-mode .container,
-  body.dark-mode footer {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode .navbar-custom {
-    background-color: #1a1a1a !important;
-    border-bottom: 1px solid #333;
-  }
-  body.dark-mode .navbar-custom .container-fluid {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode img,
-  body.dark-mode video,
-  body.dark-mode iframe,
-  body.dark-mode .avatar-img,
-  body.dark-mode .navbar-custom .avatar-container {
-    filter: invert(1) hue-rotate(180deg);
-  }
-</style>
-
 
 
 
     
-
-
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-
-<div class="pswp__bg"></div>
-
-<div class="pswp__scroll-wrap">
     
-    <div class="pswp__container">
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-    </div>
-    
-    <div class="pswp__ui pswp__ui--hidden">
-    <div class="pswp__top-bar">
-      
-      <div class="pswp__counter"></div>
-      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-      <button class="pswp__button pswp__button--share" title="Share"></button>
-      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-      
-      
-      <div class="pswp__preloader">
-        <div class="pswp__preloader__icn">
-          <div class="pswp__preloader__cut">
-            <div class="pswp__preloader__donut"></div>
+  <div role="main" class="container page-home">
+    <section class="team-hero">
+      <div class="team-hero__inner">
+        <div class="team-hero__content">
+          <p class="team-hero__eyebrow">SU TEAM // BATTLE LOG</p>
+          <h1 class="team-hero__title">su-team</h1>
+          <p class="team-hero__subtitle">Writeups, Records, and Field Notes</p>
+          <p class="team-hero__description">Competition archives, deep-dive writeups, and long-term team memory from Team SU.</p>
+          <div class="team-hero__actions">
+            <a class="team-button team-button--primary" href="/">Archives</a>
+            <a class="team-button" href="/active-members">Members</a>
+            <a class="team-button" href="/page/about/">About</a>
+          </div>
+        </div>
+
+        <div class="team-hero__emblem">
+          <div class="team-emblem">
+            <div class="team-emblem__frame">
+              
+                <img src="/img/SU.jpg" alt="su-team">
+              
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-      <div class="pswp__share-tooltip"></div>
-    </div>
-    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-    </button>
-    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-    </button>
-    <div class="pswp__caption">
-      <div class="pswp__caption__center"></div>
-    </div>
-    </div>
-    </div>
-</div>
-
-
-
-
-  
-  
-
-
-
-
-
-
-  <header class="header-section">
-    <div class="intro-header no-img">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="page-heading"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
+    </section>
 
     
-  <div role="main" class="container">
+
+    <section class="section-head">
+      <p class="section-head__eyebrow">Latest Dispatch</p>
+      <h2 class="section-head__title">Recent Writeups</h2>
+    </section>
+
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-
-        <div class="posts-list">
+        <div class="posts-list posts-list--team">
           
           
-            <article class="post-preview">
-    <a href="http://localhost:1313/post/gxzyctf-2020-su-wu/">
-        <h2 class="post-title">高校战“疫”网络安全分享赛 2020 SU Write Up</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
+            <article class="post-preview team-card">
+  <div class="post-preview__card">
+    <div class="post-preview__body">
+      <p class="post-preview__meta">
         <span class="post-meta">
   
   
@@ -378,10 +232,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on March 10, 2020
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;15&nbsp;min
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;11&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3043&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2272&nbsp;words
   
   
     
@@ -392,35 +246,46 @@
 </span>
 
 
-    </p>
-    <div class="post-entry">
-        
-        <p>本次高校战“疫”网络安全分享赛我们 SU 取得了 第十七名 的成绩，感谢队里师傅们的辛苦付出！</p>
-<p>以下是我们 SU 本次 高校战“疫”网络安全分享赛的 writeup。</p>
-        <a href="http://localhost:1313/post/gxzyctf-2020-su-wu/" class="post-read-more">[Read More]</a>
-        
-    </div>
+      </p>
 
-    
-    <div class="blog-tags">
-        
-       
-       <a href="http://localhost:1313/tags/otherctf/">OtherCTF</a>&nbsp;
-         
-    </div>
-    
-
-</article>
+      <div class="post-preview__headline">
+        <a href="/post/gxzyctf-2020-su-wu/">
+          <h2 class="post-title">高校战“疫”网络安全分享赛 2020 SU Write Up</h2>
           
-            <article class="post-preview">
-    <a href="http://localhost:1313/post/bytectf-2019-su-wu/">
-        <h2 class="post-title">ByteCTF 2019 SU Write Up</h2>
-        
-        
-        
-    </a>
+        </a>
+      </div>
 
-    <p class="post-meta">
+      
+
+      <div class="post-entry">
+        
+          <p>本次高校战“疫”网络安全分享赛我们 SU 取得了 第十七名 的成绩，感谢队里师傅们的辛苦付出！</p>
+<p>以下是我们 SU 本次 高校战“疫”网络安全分享赛的 writeup。</p>
+        
+      </div>
+
+      <div class="post-preview__footer">
+        
+          <div class="blog-tags">
+            
+              <a href="http://localhost:1313/tags/otherctf/">OtherCTF</a>
+            
+          </div>
+        
+
+        
+          <a href="/post/gxzyctf-2020-su-wu/" class="post-read-more">Read Report</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+          
+            <article class="post-preview team-card">
+  <div class="post-preview__card">
+    <div class="post-preview__body">
+      <p class="post-preview__meta">
         <span class="post-meta">
   
   
@@ -428,10 +293,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on September 14, 2019
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;13&nbsp;min
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;9&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2682&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;1865&nbsp;words
   
   
     
@@ -442,34 +307,45 @@
 </span>
 
 
-    </p>
-    <div class="post-entry">
-        
-        <p>以下是我们 SU 本次 ByteCTF 的 writeup。</p>
-        <a href="http://localhost:1313/post/bytectf-2019-su-wu/" class="post-read-more">[Read More]</a>
-        
-    </div>
+      </p>
 
-    
-    <div class="blog-tags">
-        
-       
-       <a href="http://localhost:1313/tags/bytectf/">ByteCTF</a>&nbsp;
-         
-    </div>
-    
-
-</article>
+      <div class="post-preview__headline">
+        <a href="/post/bytectf-2019-su-wu/">
+          <h2 class="post-title">ByteCTF 2019 SU Write Up</h2>
           
-            <article class="post-preview">
-    <a href="http://localhost:1313/post/2019-suctf-official-writeup/">
-        <h2 class="post-title">SUCTF 2019 官方 Write up</h2>
-        
-        
-        
-    </a>
+        </a>
+      </div>
 
-    <p class="post-meta">
+      
+
+      <div class="post-entry">
+        
+          <p>以下是我们 SU 本次 ByteCTF 的 writeup。</p>
+        
+      </div>
+
+      <div class="post-preview__footer">
+        
+          <div class="blog-tags">
+            
+              <a href="http://localhost:1313/tags/bytectf/">ByteCTF</a>
+            
+          </div>
+        
+
+        
+          <a href="/post/bytectf-2019-su-wu/" class="post-read-more">Read Report</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+          
+            <article class="post-preview team-card">
+  <div class="post-preview__card">
+    <div class="post-preview__body">
+      <p class="post-preview__meta">
         <span class="post-meta">
   
   
@@ -477,10 +353,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on August 22, 2019
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;19&nbsp;min
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;14&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3850&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2837&nbsp;words
   
   
     
@@ -491,24 +367,40 @@
 </span>
 
 
-    </p>
-    <div class="post-entry">
-        
-        <p>以下是我们 SU 本次 SUCTF 的 官方writeup。</p>
-        <a href="http://localhost:1313/post/2019-suctf-official-writeup/" class="post-read-more">[Read More]</a>
-        
-    </div>
+      </p>
 
-    
-    <div class="blog-tags">
-        
-       
-       <a href="http://localhost:1313/tags/suctf/">SUCTF</a>&nbsp;
-         
-    </div>
-    
+      <div class="post-preview__headline">
+        <a href="/post/2019-suctf-official-writeup/">
+          <h2 class="post-title">SUCTF 2019 官方 Write up</h2>
+          
+        </a>
+      </div>
 
+      
+
+      <div class="post-entry">
+        
+          <p>以下是我们 SU 本次 SUCTF 的 官方writeup。</p>
+        
+      </div>
+
+      <div class="post-preview__footer">
+        
+          <div class="blog-tags">
+            
+              <a href="http://localhost:1313/tags/suctf/">SUCTF</a>
+            
+          </div>
+        
+
+        
+          <a href="/post/2019-suctf-official-writeup/" class="post-read-more">Read Report</a>
+        
+      </div>
+    </div>
+  </div>
 </article>
+
           
         </div>
 
@@ -516,7 +408,7 @@
           <ul class="pager main-pager">
             
               <li class="previous">
-                <a href="http://localhost:1313/page/3/">&larr; Newer Posts</a>
+                <a href="/page/3/">&larr; Newer Posts</a>
               </li>
             
             
@@ -533,51 +425,63 @@
 </div>
 
 
-  <footer>
+  <footer class="site-footer">
   <div class="container">
     
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <ul class="list-inline text-center footer-links">
+
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <p class="site-footer__eyebrow">SU TEAM // BATTLE LOG</p>
+        <h2 class="site-footer__title">su-team</h2>
+        <p class="site-footer__tagline">
+          Built for team archives and competition writeups.
+          
+            <span class="site-footer__subline">Minimal noise, high signal, and fast navigation.</span>
+          
+        </p>
+      </div>
+
+      <div class="site-footer__meta">
+        <ul class="list-inline footer-links">
           
               <li>
                 
-		  <a href="https://ctftime.org/team/29641" title="CTFTime">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <img src="http://localhost:1313/img/ctftime.svg" title="CTFTime" alt="CTFTime" style="width:60%;height:60%;position:absolute;top:20%;left:20%">
-                    
-                  </span>
-                </a>
+                  <a href="https://ctftime.org/team/29641" title="CTFTime">
+                
+                    <span class="footer-link__icon">
+                      
+                        
+                          <img class="footer-social-img" src="/img/ctftime.svg" title="CTFTime" alt="CTFTime">
+                        
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="mailto:suers_xctf@126.com" title="Email me">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="mailto:suers_xctf@126.com" title="Email me">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="https://github.com/team-su" title="GitHub">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="https://github.com/team-su" title="GitHub">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
           
         </ul>
+
         <p class="credits copyright text-muted">
           
             
@@ -592,10 +496,10 @@
 
           
             &nbsp;&bull;&nbsp;
-            <a href="http://localhost:1313/">su-team</a>
+            <a href="/">su-team</a>
           
         </p>
-        
+
         <p class="credits theme-by text-muted">
           <a href="https://gohugo.io">Hugo v0.157.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
@@ -626,8 +530,6 @@
 
 <script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
 <script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
-
-
 
 
 

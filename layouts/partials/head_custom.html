@@ -1,41 +1,12 @@
-<style>
-/* 手机端: 原始 72px -> 80% ≈ 58px */
-.navbar-custom .avatar-container {
-  width: 58px;
-  height: 58px;
-  margin-top: -29px; /* 高度的一半 */
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
-
-.navbar-custom .avatar-container .avatar-img-border {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0;
-  box-shadow: none;
-}
-
-.navbar-custom .avatar-container .avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-/* 电脑端: 原始 90px -> 80% = 72px */
-@media only screen and (min-width: 768px) {
-  .navbar-custom .avatar-container {
-    width: 72px;
-    height: 72px;
-    margin-top: -36px; /* 高度的一半 */
-  }
-}
-</style>
+<script>
+  (function() {
+    var theme = "dark";
+    try {
+      theme = localStorage.getItem("theme") || "dark";
+    } catch (e) {
+      theme = "dark";
+    }
+    document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  })();
+</script>
+<link rel="stylesheet" href="{{ "css/team-theme.css" | relURL }}?v=20260322-6">

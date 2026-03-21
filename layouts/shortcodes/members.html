@@ -1,185 +1,50 @@
-<div class="list-layout-container">
+<div class="members-board">
   {{ $datafile := .Get "datafile" }}
   {{ $data := index .Site.Data $datafile }}
 
   {{ range $data }}
-  <div class="category-header">
-    <h3 class="category-name">{{ .links_category }}</h3>
-    <hr class="category-divider">
-  </div>
-
-  <div class="member-list">
-    {{ range .list }}
-    <div class="member-row">
-      <div class="member-avatar">
-        <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy">
+    <section class="members-section">
+      <div class="category-header">
+        <h3 class="category-name">{{ .links_category }}</h3>
+        <hr class="category-divider">
       </div>
 
-      <div class="member-body">
-        <div class="member-top-line">
-          <span class="name">{{ .name }}</span>
-          <div class="meta-links">
-            {{ if .join }}
-            <span class="meta-item"><i class="fas fa-chess-knight"></i> Join: {{ .join }}</span>
-            {{ end }}
-            
-            {{ if .blog }}
-            <a href="{{ .blog }}" target="_blank" rel="noopener" class="meta-item link">
-              <i class="fas fa-link"></i> Blog
-            </a>
-            {{ end }}
-            
-            {{ if .github }}
-            <a href="{{ .github }}" target="_blank" rel="noopener" class="meta-item link">
-              <i class="fab fa-github"></i> GitHub
-            </a>
-            {{ end }}
-          </div>
-        </div>
-        
-        <div class="description">
-          {{ .description }}
-        </div>
+      <div class="member-list">
+        {{ range .list }}
+          <article class="member-row">
+            <div class="member-avatar">
+              <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy">
+            </div>
+
+            <div class="member-body">
+              <div class="member-top-line">
+                <span class="name">{{ .name }}</span>
+                <div class="meta-links">
+                  {{ if .join }}
+                    <span class="meta-item"><i class="fas fa-chess-knight"></i> Join: {{ .join }}</span>
+                  {{ end }}
+
+                  {{ if .blog }}
+                    <a href="{{ .blog }}" target="_blank" rel="noopener noreferrer" class="meta-item link">
+                      <i class="fas fa-link"></i> Blog
+                    </a>
+                  {{ end }}
+
+                  {{ if .github }}
+                    <a href="{{ .github }}" target="_blank" rel="noopener noreferrer" class="meta-item link">
+                      <i class="fab fa-github"></i> GitHub
+                    </a>
+                  {{ end }}
+                </div>
+              </div>
+
+              <div class="description">
+                {{ .description }}
+              </div>
+            </div>
+          </article>
+        {{ end }}
       </div>
-    </div>
-    {{ end }}
-  </div>
+    </section>
   {{ end }}
 </div>
-
-<style>
-/* 基础容器布局 */
-.list-layout-container {
-  max-width: 860px; /* 限制宽度，条状布局更美观 */
-  margin: 0 auto;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-}
-
-/* 分类样式 */
-.category-header {
-  margin-top: 50px;
-  margin-bottom: 20px;
-}
-
-.category-name {
-  font-size: 24px;
-  font-weight: 800;
-  margin-bottom: 10px;
-  color: #222;
-}
-
-.category-divider {
-  border: 0;
-  border-top: 1px solid #eee;
-  margin: 0;
-}
-
-/* 条状项目样式 */
-.member-row {
-  display: flex;
-  padding: 25px 0;
-  border-bottom: 1px solid #f2f2f2; /* 条状分割线 */
-  transition: background-color 0.2s ease;
-}
-
-/* 最后一个元素不显示分割线 */
-.member-row:last-child {
-  border-bottom: none;
-}
-
-/* 头像：参考图中略带圆角的正方形 */
-.member-avatar {
-  flex-shrink: 0;
-  margin-right: 20px;
-}
-
-.member-avatar img {
-  width: 80px;
-  height: 80px;
-  border-radius: 6px; /* 微圆角，比纯圆更硬朗 */
-  object-fit: cover;
-  display: block;
-}
-
-/* 信息区布局 */
-.member-body {
-  flex-grow: 1;
-  min-width: 0;
-}
-
-.member-top-line {
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-
-.name {
-  font-size: 20px;
-  font-weight: 800;
-  color: #000;
-  margin-right: 15px;
-}
-
-/* 元数据和链接样式 */
-.meta-links {
-  display: flex;
-  gap: 12px;
-  font-size: 13px;
-  color: #666;
-}
-
-.meta-item {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.meta-item.link {
-  color: #666;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.meta-item.link:hover {
-  color: #008AFF;
-  text-decoration: underline;
-}
-
-/* 简介文字排版 */
-.description {
-  font-size: 15px;
-  line-height: 1.6;
-  color: #444;
-  word-wrap: break-word;
-}
-
-/* 移动端适配 */
-@media (max-width: 600px) {
-  .member-row {
-    padding: 15px 0;
-  }
-  .member-avatar img {
-    width: 60px;
-    height: 60px;
-  }
-  .name {
-    width: 100%;
-    margin-bottom: 5px;
-  }
-  .meta-links {
-    width: 100%;
-  }
-}
-
-/* 深色模式适配 */
-@media (prefers-color-scheme: dark) {
-  .category-name { color: #f0f0f0; }
-  .category-divider { border-color: #333; }
-  .member-row { border-color: #2a2a2a; }
-  .name { color: #fff; }
-  .description { color: #bbb; }
-  .meta-item, .meta-item.link { color: #999; }
-  .member-avatar img { opacity: 0.9; }
-}
-</style>
