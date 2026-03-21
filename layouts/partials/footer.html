@@ -16,7 +16,9 @@
 
     <div class="site-footer__grid">
       <div class="site-footer__brand">
-        <p class="site-footer__eyebrow">{{ .Site.Params.homeEyebrow | default "SU TEAM // BATTLE LOG" }}</p>
+        {{ with .Site.Params.homeEyebrow }}
+          <p class="site-footer__eyebrow">{{ . }}</p>
+        {{ end }}
         <h2 class="site-footer__title">{{ .Site.Title }}</h2>
         <p class="site-footer__tagline">
           {{ .Site.Params.footerTagline | default .Site.Params.homeDescription | default "Built for team archives and long-form writeups." }}
@@ -28,8 +30,17 @@
 
       <div class="site-footer__meta">
         <ul class="list-inline footer-links">
+          {{ with .Site.Params.author.ctftime }}
+            <li>
+              <a href="{{ . }}" title="CTFTime" rel="noopener noreferrer" target="_blank">
+                <span class="footer-link__icon">
+                  <img class="footer-social-img" src="{{ "img/ctftime.svg" | relURL }}" title="CTFTime" alt="CTFTime">
+                </span>
+              </a>
+            </li>
+          {{ end }}
           {{ range .Site.Data.beautifulhugo.social.social_icons }}
-            {{- if isset $.Site.Params.author .id }}
+            {{- if and (ne .id "ctftime") (isset $.Site.Params.author .id) }}
               <li>
                 {{ if or (hasPrefix (index $.Site.Params.author .id) "http://") (hasPrefix (index $.Site.Params.author .id) "https://") }}
                   <a {{ if .rel }}rel="{{ .rel }}"{{- end -}} href="{{ printf "%s" (index $.Site.Params.author .id) }}" title="{{ .title }}">
@@ -86,10 +97,6 @@
           {{ end }}
         </p>
 
-        <p class="credits theme-by text-muted">
-          {{ i18n "poweredBy" . | safeHTML }}
-          {{ if $.GitInfo }}&nbsp;&bull;&nbsp;[<a href="{{ .Site.Params.commit }}{{ .GitInfo.Hash }}">{{ substr .GitInfo.Hash 0 8 }}</a>]{{ end }}
-        </p>
       </div>
     </div>
   </div>

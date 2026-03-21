@@ -396,9 +396,27 @@ html[data-theme="light"] .navbar-custom {
   position: relative;
 }
 
+.navbar-custom .nav .navlinks-container:hover,
+.navbar-custom .nav .navlinks-container.show-children {
+  background: transparent;
+}
+
 .navbar-custom .nav .navlinks-children {
   width: 220px;
   padding-top: 12px;
+}
+
+.navbar-custom .nav .navlinks-container:hover > .navlinks-parent,
+.navbar-custom .nav .navlinks-container.show-children > .navlinks-parent {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+html[data-theme="light"] .navbar-custom .nav .navlinks-container:hover > .navlinks-parent,
+html[data-theme="light"] .navbar-custom .nav .navlinks-container.show-children > .navlinks-parent {
+  background: rgba(17, 109, 203, 0.08);
 }
 
 .navbar-custom .nav .navlinks-container .navlinks-children a {

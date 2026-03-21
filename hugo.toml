@@ -23,7 +23,6 @@ timeZone = "Asia/Shanghai"
   mainSections = ["post"]
   katex = true
   homeTitle = "su-team"
-  homeEyebrow = "SU TEAM // BATTLE LOG"
   homeSubtitle = "Writeups, Records, and Field Notes"
   homeDescription = "Competition archives, deep-dive writeups, and long-term team memory from Team SU."
   logo = "img/SU.jpg"

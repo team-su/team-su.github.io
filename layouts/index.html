@@ -5,7 +5,9 @@
     <section class="team-hero">
       <div class="team-hero__inner">
         <div class="team-hero__content">
-          <p class="team-hero__eyebrow">{{ .Site.Params.homeEyebrow | default "SU TEAM // BATTLE LOG" }}</p>
+          {{ with .Site.Params.homeEyebrow }}
+            <p class="team-hero__eyebrow">{{ . }}</p>
+          {{ end }}
           <h1 class="team-hero__title">{{ .Site.Params.homeTitle | default .Site.Title }}</h1>
           <p class="team-hero__subtitle">{{ .Site.Params.homeSubtitle | default "Writeups, Records, and Field Notes" }}</p>
           <p class="team-hero__description">{{ .Site.Params.homeDescription | default "Competition archives, deep-dive writeups, and long-term team memory from Team SU." }}</p>
