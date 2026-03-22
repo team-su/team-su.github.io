@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -14,7 +14,8 @@
 
       <title>2024 熊猫杯决赛 SU WriteUp - su-team</title>
 
-  <meta name="description" content="本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+  <meta name="description" content="本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系书鱼 QQ:381382770。
 以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
@@ -87,7 +88,8 @@
 
 
 <meta property="og:title" content="2024 熊猫杯决赛 SU WriteUp" />
-<meta property="og:description" content="本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+<meta property="og:description" content="本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系书鱼 QQ:381382770。
 以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/pdctf-2024-su-wu/" />
@@ -95,7 +97,8 @@
 <meta property="og:site_name" content="su-team" />
 
   <meta name="twitter:title" content="2024 熊猫杯决赛 SU WriteUp" />
-  <meta name="twitter:description" content="本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+  <meta name="twitter:description" content="本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系书鱼 QQ:381382770。
 以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -383,9 +386,15 @@
 
         <section class="article-shell">
           <article role="main" class="blog-post">
-            <p>本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a> 或者直接联系书鱼 QQ:381382770。</p>
+            <p>本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a>
+ 或者直接联系书鱼 QQ:381382770。</p>
 <p>以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。</p>
-<p><img src="/img/2024-06-23-PDCTF/1.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h1 id="数据安全">数据安全</h1>
 <h2 id="otto">OTTO</h2>
 <p>套了个rsa-OT协议的壳，考的东西很基础。对于transfer2，v2已知，建立两个方程做GCD即可；对于transfer1，由于v1未知但e很小，因此可以考虑消去v1之后coppersmith打，去掉flag头祖传板子梭哈。</p>
@@ -408,13 +417,23 @@
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="o">-</span><span class="n">gcd</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">f2</span><span class="p">)[</span><span class="mi">0</span><span class="p">])))</span>
 </span></span></code></pre></div><h2 id="bluetooth">Bluetooth</h2>
 <p>打开看到报错，丢到010分析看到后面有一个压缩包</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195050-58.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195050-58.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>然后分析流量是一个xbox手柄的</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-HTTP" data-lang="HTTP"><span class="line"><span class="cl"><span class="err">https://www.partsnotincluded.com/understanding-the-xbox-360-wired-controllers-usb-data/
 </span></span></span></code></pre></div><p>于是提取所有的数据出来</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">tshark.exe -r .<span class="se">\x</span>box.pcapng -e <span class="s2">&#34;btl2cap.payload&#34;</span> -T fields
 </span></span></code></pre></div><p>发现前面的都一样，只有后面的这个位置不一样</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195050-59.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195050-59.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>脚本提取过程中发现，31位和29位字符集</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl">31：01248
 </span></span><span class="line"><span class="cl">29：0135
@@ -459,21 +478,63 @@
 </span></span></code></pre></div><p>一个是云影，一个是莫斯</p>
 <p>云影得到压缩包的password是AUCLWJQBUCIW</p>
 <p>莫斯用来做AES解密</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-60.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-60.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h2 id="myerp">myerp</h2>
 <p>估计是非预期</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-61.png" alt="img"></p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-62.png" alt="img"></p>
-<p><a href="http://www.qetx.top/posts/19553/">http://www.qetx.top/posts/19553/</a></p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-63.png" alt="img"></p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-64.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-61.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-62.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><a href="http://www.qetx.top/posts/19553/">http://www.qetx.top/posts/19553/</a>
+</p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-63.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-64.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h2 id="是谁偷偷偷走我的心">是谁偷偷偷走我的心</h2>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-65.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-65.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>很明显是域控流量，筛选出HTTP流量发现涉及到winrm协议</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-66.png" alt="img"></p>
-<p><a href="https://gist.github.com/jborean93/d6ff5e87f8a9f5cb215cd49826523045/">https://gist.github.com/jborean93/d6ff5e87f8a9f5cb215cd49826523045/</a></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-66.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><a href="https://gist.github.com/jborean93/d6ff5e87f8a9f5cb215cd49826523045/">https://gist.github.com/jborean93/d6ff5e87f8a9f5cb215cd49826523045/</a>
+</p>
 <p>找到一个解密脚本，非常好用，现在开始寻找NTLM</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-67.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-67.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>成功解密，Windows跑脚本会报错，Linux 则不会</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">joker@kali:/mnt/d/Projects/CTFProjects/CTF2024/熊猫杯/是谁偷偷偷走我的心$ python3 winrm_decrypt.py  -n 579da618cfbfa85247acf1f800a280a4 getshell.pcapng 
 </span></span><span class="line"><span class="cl">No: <span class="m">1014</span> <span class="p">|</span> Time: 2024-06-06T10:24:15.289523 <span class="p">|</span> Source: 192.168.106.1 <span class="p">|</span> Destination: 192.168.106.170
@@ -481,23 +542,68 @@
 </span></span><span class="line"><span class="cl">......
 </span></span><span class="line"><span class="cl">joker@kali:/mnt/d/Projec
 </span></span></code></pre></div><p>获取其中flag.txt内容</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-68.png" alt="img"></p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-69.png" alt="img"></p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195051-70.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-68.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-69.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195051-70.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h1 id="工控">工控</h1>
 <h2 id="ics2">ICS2</h2>
 <p>直接分析S7COMM协议内容，先建立了通信链路：</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195052-72.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195052-72.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>在下面几个包可以找到订单号：6ES7 841-0CC05-0YA5</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195052-73.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195052-73.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>同时，我们可以知道这台S7设备的ip为192.168.1.15，因此可以把它的流量单独过滤出来。这里攻击者进行了对password的不断爆破，我们需要找到他爆破成功的标志。</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195052-74.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195052-74.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>下面这是没成功的情况，有error code提示：</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195052-75.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195052-75.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>一直往下翻，找到没有报错的响应包：</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195052-76.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195052-76.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>同时去请求包里找到爆出的password：19253a012c602d66</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195052-77.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195052-77.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>S7-300对cpu的保护密码进行了加密，可以参考：https://blog.csdn.net/xsdfhh/article/details/113547469</p>
 <p>写个解密脚本：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">hex_data</span> <span class="o">=</span> <span class="s2">&#34;19253a012c602d66&#34;</span>
@@ -513,9 +619,19 @@
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">password</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># LpvqC4TS </span>
 </span></span></code></pre></div><p>这里就可以得到真实的cpu保护密码。后面攻击者做了个upload的操作，感觉没啥东西。接下来是要找到M区偏移量10的值，需要找写入流量write var指令。</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195052-78.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195052-78.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>用操作码过滤&rsquo;s7comm.param.func == 5&rsquo;，然后一条条找就行：</p>
-<p><img src="/img/2024-06-23-PDCTF/1719148195052-79.png" alt="img"></p>
+<p><img
+  src="/post/pdctf-2024-su-wu/1719148195052-79.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>最后三个可见字符就是i#R</p>
 <p>最终得到的flag就是</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Plain" data-lang="Plain"><span class="line"><span class="cl">flag{0YA5LpvqC4TSi#R}
@@ -618,11 +734,26 @@
 </span></span><span class="line"><span class="cl"><span class="n">delete</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">sh</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span></code></pre></div><h2 id="login">login</h2>
-<p><img src="https://s2.loli.net/2024/06/23/oM3jPv1FAex4m82.png" alt="image-20240623141533130"></p>
+<p><img
+  src="https://s2.loli.net/2024/06/23/oM3jPv1FAex4m82.png"
+  alt="image-20240623141533130"
+  loading="lazy"
+>
+</p>
 <p>可以看到有两个功能，一个是输入密码，一个是输出输入的密码</p>
-<p><img src="https://s2.loli.net/2024/06/23/M8rkFblsyUBPenX.png" alt="image-20240623141617033"></p>
+<p><img
+  src="https://s2.loli.net/2024/06/23/M8rkFblsyUBPenX.png"
+  alt="image-20240623141617033"
+  loading="lazy"
+>
+</p>
 <p>可以看到有个read，而且是读到栈上并且长度是变量也就是我们输入的密码，前提是绕过校验</p>
-<p><img src="https://s2.loli.net/2024/06/23/FB2QEGLtXRhgSDP.png" alt="image-20240623141652666"></p>
+<p><img
+  src="https://s2.loli.net/2024/06/23/FB2QEGLtXRhgSDP.png"
+  alt="image-20240623141652666"
+  loading="lazy"
+>
+</p>
 <p>校验的返回值是一个数字，是从一个随机文件读出来的，一开始想着爆破，结果远程爆破的时候发现到后面居然是openerror，那么密码也就是-1了，所以直接栈溢出后门一把嗦</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">from</span> <span class="n">pwn</span> <span class="n">import</span><span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">from</span> <span class="n">time</span> <span class="n">import</span><span class="o">*</span>
@@ -647,7 +778,12 @@
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">p</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span></code></pre></div><h2 id="safestring">safestring</h2>
-<p><img src="https://s2.loli.net/2024/06/23/2rKfDmujki89aGb.png" alt="image-20240623141843775"></p>
+<p><img
+  src="https://s2.loli.net/2024/06/23/2rKfDmujki89aGb.png"
+  alt="image-20240623141843775"
+  loading="lazy"
+>
+</p>
 <p>菜单三个功能，加密、解密、输出，输出的时候有格式化字符串，然后加密和解密一个是大小写字母+3一个-3</p>
 <p>所以就是一个格式化字符串泄露地址，然后直接格式化字符串任意地址写劫持栈返回地址，因为字符串长度不超过31，所以我们要分多次打，直接改main的返回地址，然后用功能4return触发就行</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span><span class="o">*</span>

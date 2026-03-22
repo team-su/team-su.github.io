@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -65,7 +65,7 @@
   "headline": "SUCTF 2019 官方 Write up",
   "description" : "以下是我们 SU 本次 SUCTF 的 官方writeup。\n",
   "inLanguage" : "en",
-  "wordCount":  2837 ,
+  "wordCount":  2842 ,
   "datePublished" : "2019-08-22T00:00:00\u002b08:00",
   "dateModified" : "2019-08-22T00:00:00\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -316,7 +316,7 @@
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;14&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2837&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2842&nbsp;words
   
   
     
@@ -431,11 +431,14 @@
 <h1 id="web">Web</h1>
 <h3 id="checkin">CheckIn</h3>
 <p>一个比较老的上传技巧,但是貌似很少人知道，一些上传总结中都没有出现，github 开源项目 upload-lab 上也没有出现过，所以就拿来出题了。<code>.user.ini</code>适用于 php-fpm 的场景下的上传 trick，但是CTF比赛中貌似都还没有出现过，直接拿了国赛华东北赛区的一个上传绕过题目来改的，原本是直接 ban 掉了<code>htaccess</code>，防止大家思路跑偏，可是出题人打字太快了写成了<code>htacess</code>，就比较尴尬了。</p>
-<p>参考<a href="https://wooyun.js.org/drops/user.ini%E6%96%87%E4%BB%B6%E6%9E%84%E6%88%90%E7%9A%84PHP%E5%90%8E%E9%97%A8.html">user.ini文件构成的PHP后门</a></p>
+<p>参考<a href="https://wooyun.js.org/drops/user.ini%E6%96%87%E4%BB%B6%E6%9E%84%E6%88%90%E7%9A%84PHP%E5%90%8E%E9%97%A8.html">user.ini文件构成的PHP后门</a>
+</p>
 <h3 id="easyphp">EasyPHP</h3>
-<p>这道题没有什么全新的考点，就是三层绕过，但是第三层 fpm 绕过 disable_functions  ，作为出题人要给大家谢罪了。。。忘记过滤了 ini_set ，结果导致大家都用的时 <a href="https://xz.aliyun.com/t/4720">bypass open_basedir的新方法</a> 这篇文章中的思路。另外还有 putenv，所以第三层基本上是废了 T_T。</p>
+<p>这道题没有什么全新的考点，就是三层绕过，但是第三层 fpm 绕过 disable_functions  ，作为出题人要给大家谢罪了。。。忘记过滤了 ini_set ，结果导致大家都用的时 <a href="https://xz.aliyun.com/t/4720">bypass open_basedir的新方法</a>
+ 这篇文章中的思路。另外还有 putenv，所以第三层基本上是废了 T_T。</p>
 <h4 id="第一层">第一层</h4>
-<p>黑名单执行，参考自 <a href="https://xz.aliyun.com/t/5677">https://xz.aliyun.com/t/5677</a> ，另外限制了长度。</p>
+<p>黑名单执行，参考自 <a href="https://xz.aliyun.com/t/5677">https://xz.aliyun.com/t/5677</a>
+ ，另外限制了长度。</p>
 <p>Php的经典特性“Use of undefined constant”，会将代码中没有引号的字符都自动作为字符串，7.2开始提出要被废弃，不过目前还存在着。</p>
 <p>Ascii码大于 0x7F 的字符都会被当作字符串，而和 0xFF 异或相当于取反，可以绕过被过滤的取反符号。</p>
 <p>可以传入phpinfo，也可以进入第二层get_the_flag 函数</p>
@@ -451,7 +454,8 @@
 </span></span></code></pre></div><p>后面上传的文件可以加一个四个字符 b&quot;\x18\x81\x7c\xf5&quot;，这样base64之后开头就是 GIF89了</p>
 <h4 id="第三层">第三层</h4>
 <p>有了webshell后，发现有 open_basedir限制，在www目录下发现文件 F1AghhhhhhhhhhhhhHH ，但是发现是个假的 flag ，还提示说有 php7.2-fpm has been initialized in unix socket mode!</p>
-<p>这里不难联想到 fpm 绕过 open_basedir，disable_functions等限制，参考<a href="https://bugs.php.net/bug.php?id=70134">open_basedir bypass with IP-based PHP-FPM</a>，今年不止考了一次了</p>
+<p>这里不难联想到 fpm 绕过 open_basedir，disable_functions等限制，参考<a href="https://bugs.php.net/bug.php?id=70134">open_basedir bypass with IP-based PHP-FPM</a>
+，今年不止考了一次了</p>
 <p>php7.2-fpm.sock默认在</p>
 <p>unix:///run/php/php7.2-fpm.sock</p>
 <p>借用p神的脚本魔改一下，不过还要加上对 open_basedir 的重设</p>
@@ -505,7 +509,12 @@
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="o">+</span><span class="n">r2</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
 </span></span></code></pre></div><h3 id="pythonginx">pythonginx</h3>
 <p>这是在刚刚举行的 black hat 2019 上看到的东西，感觉比较有意思，就拿来出题了。</p>
-<p><img src="https://blogpic-1254145318.cos.ap-shanghai.myqcloud.com/20190819104652.png" alt=""></p>
+<p><img
+  src="https://blogpic-1254145318.cos.ap-shanghai.myqcloud.com/20190819104652.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>//题目代码都没改多少，但是很多队伍都跑远了&hellip;orz</p>
 <p>预期解：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">file://suctf.c℆sr%2ffffffflag @111
@@ -549,7 +558,8 @@
 </span></span><span class="line"><span class="cl">    <span class="nv">$reflectionMethod</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ReflectionMethod</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">clazz</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">func3</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl">    <span class="nv">$reflectionMethod</span><span class="o">-&gt;</span><span class="na">invoke</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">instance</span><span class="p">,</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">arg3</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></div><p>参考<a href="https://paper.seebug.org/998/">TSec 2019 议题 PPT：Comprehensive analysis of the mysql client attack chain</a>，这里其实就是</p>
+</span></span></code></pre></div><p>参考<a href="https://paper.seebug.org/998/">TSec 2019 议题 PPT：Comprehensive analysis of the mysql client attack chain</a>
+，这里其实就是</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="nv">$m</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl"><span class="nv">$m</span><span class="o">-&gt;</span><span class="na">init</span><span class="p">();</span>
 </span></span><span class="line"><span class="cl"><span class="nv">$m</span><span class="o">-&gt;</span><span class="na">real_connect</span><span class="p">(</span><span class="s1">&#39;ip&#39;</span><span class="p">,</span><span class="s1">&#39;select 1&#39;</span><span class="p">,</span><span class="s1">&#39;select 1&#39;</span><span class="p">,</span><span class="s1">&#39;select 1&#39;</span><span class="p">,</span><span class="mi">3306</span><span class="p">);</span>
@@ -595,8 +605,18 @@
 $query||FLAG
 因此需要找到一种可以通过||带出flag的方式。在sql_mode，可以通过将其值设置为PIPE_AS_CONCAT改变||的作用为拼接字符串，此时随便输入一串字符串便能返回该字符串与FLAG拼接的内容。
 这里我借用N.E.X的一张图加以说明：
-<img src="https://hackmd.summershrimp.com/uploads/upload_798e53bdb308c936d6e7c008f3bc58ba.png" alt="">
-<img src="https://hackmd.summershrimp.com/uploads/upload_669e9245c3c4e870eca0ea89ccf2718a.png" alt=""></p>
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_798e53bdb308c936d6e7c008f3bc58ba.png"
+  alt=""
+  loading="lazy"
+>
+
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_669e9245c3c4e870eca0ea89ccf2718a.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>最终的payload为：
 1;set sql_mode=pipes_as_concat;select 1</p>
 <p>由于出题出到一半时有事就放着了，最后放题时看有黑名单存在便以为出完了，结果导致了许多低级的非预期解。</p>
@@ -1429,8 +1449,10 @@ http://ip/download.php?filename=/usr/lib/apache2/modules/mod_cocktail.so</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">ticket</span><span class="p">)</span> <span class="o">==</span> <span class="n">Ticket</span>
 </span></span></code></pre></div><p>所以还需要栈顶为一个 Ticket, 这比较方便, 可以 dumps 一个 Ticket 拼到之前手写的后面就可以了.</p>
-<p>dockerfile: <a href="https://github.com/rmb122/suctf2019_guess_game/">https://github.com/rmb122/suctf2019_guess_game/</a><br>
-ref: <a href="https://www.leavesongs.com/PENETRATION/code-breaking-2018-python-sandbox.html">https://www.leavesongs.com/PENETRATION/code-breaking-2018-python-sandbox.html</a><br>
+<p>dockerfile: <a href="https://github.com/rmb122/suctf2019_guess_game/">https://github.com/rmb122/suctf2019_guess_game/</a>
+<br>
+ref: <a href="https://www.leavesongs.com/PENETRATION/code-breaking-2018-python-sandbox.html">https://www.leavesongs.com/PENETRATION/code-breaking-2018-python-sandbox.html</a>
+<br>
 exp:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">pickle</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
@@ -1457,7 +1479,9 @@ exp:</p>
 </span></span></code></pre></div><h3 id="homerouter">homerouter</h3>
 <p>题目的附件给出的是一个固件文件，提取文件系统后我们可以发现是OpenWrt。结合题目名称和<code>/etc/config/easycwmp</code>文件，查阅一下资料后我们可以发现这道题的内容和<code>tr069</code>有关，相信家里用电信光猫的同学应该不陌生，这个东西具体是用来干什么的这里就不做赘述了。当明白了这道理的考察点之后后续工作就不算困难了，一种做法是找一个OpenWrt的路由器模拟出环境，将固件中存在的和easycwmp相关的配置文件添加到模拟环境中即可，只是这样需要硬件设备支持。实际上我们打开easycwmp项目可以发现完全可以在x86环境下编译运行，官方给出了也较为详细的编译指南。编译成功后同样将固件中的配置文件添加进来，使用前台log模式即可发现，ACS服务器下发了一个修改系统root密码的指令，而密码就是该题的flag：<code>Hello_tr_069_Protocol</code>。</p>
 <h3 id="protocol">protocol</h3>
-<p>打开<code>pcapng</code>文件后我们可以发现这是一段USB流量，观察一些流量我们可以发现出现了<code>opendeck</code>字符串和一个假的flag，结合开源的提示我们可以找到两个项目<a href="github.com/summershrimp/opendeck-linux">opendeck-linux</a>和<a href="github.com/summershrimp/opendeck-linux">opendeck-gui</a>，注意有一个同名的项目不要搞错了。大致观察下这两个项目的代码，我们可以发现题目给出的流量正是gui项目所读取的流量。</p>
+<p>打开<code>pcapng</code>文件后我们可以发现这是一段USB流量，观察一些流量我们可以发现出现了<code>opendeck</code>字符串和一个假的flag，结合开源的提示我们可以找到两个项目<a href="https://github.com/summershrimp/opendeck-linux">opendeck-linux</a>
+和<a href="https://github.com/summershrimp/opendeck-gui">opendeck-gui</a>
+，注意有一个同名的项目不要搞错了。大致观察下这两个项目的代码，我们可以发现题目给出的流量正是gui项目所读取的流量。</p>
 <p>kernel运行在一个连接触摸屏的Linux设备上，而gui项目一方面解析经过USB发来的信息，将一些png图片显示触摸屏上，一方面响应触摸屏上的输入信息，并将输入信息发到USB对端。在源码中我们可以发现该程序的运行原理是：对端一次性发送15张png图片，每一张图片是一个字符，按照数据部分第3个字节表示的数字显示在屏幕上；接下来读取触摸屏上输出的点击信息，如果点击正确那么对端发来一张空图片覆盖掉点击位置（可以理解为清空该位置图像），等到该组中有10个字符消失后开始下一组。整个流量中包含了5组上述过程。</p>
 <p>知道程序的大致运行原理了后该题就不难了，首先将流量包中的png图片全部提取，接下来用<code>tshark</code>将leftover data提取出来，解析位置信息就可以得到每次点击的字符。将所有的字符连起来即可得到flag<code>suctf{My_usb_pr0toco1_s0_w3ak}</code>。</p>
 <h2 id="rev">Rev</h2>
@@ -1625,7 +1649,8 @@ You win!</p>
 这个场景下的unicorn感觉可以用在iot的fuzz上,不过要注意的是这东西毕竟是模拟执行,所以效率不是很高</p>
 <p>解题思路就是学一波unicorn,然后根据uc_open函数参数的值找到要模拟字节码的架构,然后使用对应的反编译工具对func文件进行逆向,dump出大端序的res,用求解器算出flag</p>
 <h2 id="crypto">Crypto</h2>
-<p>详情见 <a href="http://team-su.github.io/passages/2019-08-22-SUCTF/Crypto-WriteUp.html">Writeup.html</a>。</p>
+<p>详情见 <a href="http://team-su.github.io/passages/2019-08-22-SUCTF/Crypto-WriteUp.html">Writeup.html</a>
+。</p>
 
             
               <div class="blog-tags">

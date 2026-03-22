@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -14,7 +14,8 @@
 
       <title>2025 WMCTF SU WriteUp - su-team</title>
 
-  <meta name="description" content="感谢 W&amp;M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+  <meta name="description" content="感谢 W&amp;M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 本次 2025 WMCTF的 WriteUp。">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
@@ -87,7 +88,8 @@
 
 
 <meta property="og:title" content="2025 WMCTF SU WriteUp" />
-<meta property="og:description" content="感谢 W&amp;M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+<meta property="og:description" content="感谢 W&amp;M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 本次 2025 WMCTF的 WriteUp。">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/wmctf-2025-su-wu/" />
@@ -95,7 +97,8 @@
 <meta property="og:site_name" content="su-team" />
 
   <meta name="twitter:title" content="2025 WMCTF SU WriteUp" />
-  <meta name="twitter:description" content="感谢 W&amp;M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+  <meta name="twitter:description" content="感谢 W&amp;M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 本次 2025 WMCTF的 WriteUp。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -390,9 +393,15 @@
 
         <section class="article-shell">
           <article role="main" class="blog-post">
-            <p>感谢 W&amp;M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a> 或者直接联系baozongwi QQ:2405758945。</p>
+            <p>感谢 W&amp;M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a>
+ 或者直接联系baozongwi QQ:2405758945。</p>
 <p>以下是我们 SU 本次 2025 WMCTF的 WriteUp。</p>
-<p><img src="/img/2025-WMCTF/1.PNG" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/1.PNG"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h1 id="web">Web</h1>
 <h2 id="guess">guess</h2>
 <p>应用代码如下</p>
@@ -685,7 +694,12 @@
 </span></span></code></pre></div><p>完全可控，所以生成恶意的tar.gz和PDF文件上传即可，但是都是需要伪造成pdf文件才能够上传的，第一步生成一个有恶意opcode的n4c1.pickle.gz，然后最后的PDF还需要去解析/app/uploads/n4c1，就可以成功反弹shell了</p>
 <p>生成pdf去加载opcode</p>
 <p>构造思路, 全局搜索 _load_data方法</p>
-<p><img src="/img/2025-WMCTF/2.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/2.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>有两处触发点, 这里选用get_cmap, 继续往上找, 可以找到以下调用路径</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Plain" data-lang="Plain"><span class="line"><span class="cl">extract_pages
 </span></span><span class="line"><span class="cl">        PDFPageInterpreter#process_page
@@ -1007,7 +1021,12 @@
 <h1 id="reverse">Reverse</h1>
 <h2 id="catfriend">catfriend</h2>
 <p>出题人失误了，搜索字符串直接找到flag</p>
-<p><img src="/img/2025-WMCTF/3.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/3.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>WMCTF{5a3e8f2b-1c7d-4a6f-b89e-0d3c2f1a4b5c}</p>
 <h2 id="appfriend">appfriend</h2>
 <p>Java层逻辑指向native层的check flag函数</p>
@@ -1119,7 +1138,12 @@
 </span></span></code></pre></div><p>密文：DBE98E0AD47ED658741CD38EF85959858177D9F3A8F90F24CFE14FD11A313B72002A8A4EFA863CCAD024AC0300BB40D2</p>
 <p>key：0123456789ABCDEFFEDCBA9876543210</p>
 <p>找到密文和key注意端序赛博厨子直接解出flag</p>
-<p><img src="/img/2025-WMCTF/4.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/4.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>WMCTF{sm4_1s_1imsss_test_easyss}</p>
 <h1 id="misc">Misc</h1>
 <h2 id="check-in">Check in</h2>
@@ -1127,7 +1151,12 @@
 <h2 id="questionnaire">Questionnaire</h2>
 <p>手速局，二血</p>
 <h2 id="shopping-company1">Shopping company1</h2>
-<p><img src="/img/2025-WMCTF/5.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/5.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>直接vshell上线</p>
 <h2 id="shopping-company3">Shopping company3</h2>
 <p>传个fscan上去，发现有两个网段</p>
@@ -1448,8 +1477,18 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># Keyspace</span>
 </span></span><span class="line"><span class="cl"><span class="n">db0</span><span class="p">:</span><span class="n">keys</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">expires</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span><span class="n">avg_ttl</span><span class="o">=</span><span class="mi">68250416</span><span class="p">,</span><span class="n">subexpiry</span><span class="o">=</span><span class="mi">0</span>
 </span></span></code></pre></div><p>版本非常新，思考能否把那个数据库文件弄下来，搞半天弄不下来，观察两个web服务30是一个老的管理系统，其中有report，而这个report我正好在redis里面看到过</p>
-<p><img src="/img/2025-WMCTF/6.png" alt="img"></p>
-<p><img src="/img/2025-WMCTF/7.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/6.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/wmctf-2025-su-wu/7.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>所以也就是说30可以用这个打，而40是一个open webui系统，不知道怎么整</p>
 <p>先打30，经过不懈努力终于睡眠了</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JSON" data-lang="JSON"><span class="line"><span class="cl"><span class="p">{</span>
@@ -1507,7 +1546,12 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>然后现在去打40的openai webui的1day，我们首先就要考虑能够RCE的</p>
 <h2 id="shopping-company2">Shopping company2</h2>
-<p><img src="/img/2025-WMCTF/8.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/8.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>拿到登录的账号密码，进去之后发现版本为v0.6.1 http://192.168.100.40:8080/auth?redirect=%2F</p>
 <p>给open-webui加个deepseek的api，然后写一个工具，添加到open-webui的自定义工具里</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
@@ -1688,9 +1732,19 @@
 </span></span><span class="line"><span class="cl">get_current_working_directory: 获取当前工作目录
 </span></span><span class="line"><span class="cl">change_directory: 更改当前工作目录
 </span></span></code></pre></div><p>然后开个新对话，启动我们自定的工具</p>
-<p><img src="/img/2025-WMCTF/9.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/9.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p><code>execute_system_command &lt;命令&gt;</code>就可实现rce</p>
-<p><img src="/img/2025-WMCTF/10.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/10.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h2 id="phishing-email">phishing email</h2>
 <p>邮件藏了个svg，提取出来代码如下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-XML" data-lang="XML"><span class="line"><span class="cl"><span class="cp">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
@@ -2243,16 +2297,29 @@
 </span></span></code></pre></div><p>去噪归一化得到wmctf{SVG_Phishing_Attack_Detection_Evasion}</p>
 <h2 id="voice_hacker">Voice_hacker</h2>
 <p>分析前端代码没有直接的录音而是通过两个接口实现的认证，<code>/api/fake_audio</code>和<code>/api/authenticate</code>最后可以通过curl一个wav上去实现</p>
-<p><a href="https://blog.csdn.net/pyl88429/article/details/102841032">https://blog.csdn.net/pyl88429/article/details/102841032</a></p>
+<p><a href="https://blog.csdn.net/pyl88429/article/details/102841032">https://blog.csdn.net/pyl88429/article/details/102841032</a>
+</p>
 <p>流量包给到的udp按照如上文章流程可以提取出一个音频</p>
-<p><img src="/img/2025-WMCTF/11.png" alt="img"></p>
+<p><img
+  src="/post/wmctf-2025-su-wu/11.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>有长达2min的对话，现在要做的是实现<code>ctf启动</code>的内容，可以使用在线网站</p>
-<p><a href="https://nicevoice.org/zh/">https://nicevoice.org/zh/</a></p>
+<p><a href="https://nicevoice.org/zh/">https://nicevoice.org/zh/</a>
+</p>
 <p>对提出来的音频进行ai克隆，再找个网站mp3转wav，</p>
-<p><a href="https://cdkm.com/cn/mp3-to-wav">https://cdkm.com/cn/mp3-to-wav</a></p>
+<p><a href="https://cdkm.com/cn/mp3-to-wav">https://cdkm.com/cn/mp3-to-wav</a>
+</p>
 <p>最后提交</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">curl -X POST http://62.234.144.69:30635/api/authenticate -F <span class="s2">&#34;audio=@audio_c6560ca3_1758457411069.wav&#34;</span>
-</span></span></code></pre></div><p><img src="/img/2025-WMCTF/12.png" alt="img"></p>
+</span></span></code></pre></div><p><img
+  src="/post/wmctf-2025-su-wu/12.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h1 id="crypto">CRYPTO</h1>
 <h2 id="splitmaster">SplitMaster</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2463,7 +2530,7 @@
             
             
               <li class="next">
-                <a href="/post/qwb-s9-su-wu/" data-toggle="tooltip" data-placement="top" title="2025 QWB-S9 SU WriteUp">Next Post &rarr;</a>
+                <a href="/post/ntfy-2025-su-wu/" data-toggle="tooltip" data-placement="top" title="第八届“强网”拟态防御国际精英挑战赛 SU Writeup">Next Post &rarr;</a>
               </li>
             
           </ul>

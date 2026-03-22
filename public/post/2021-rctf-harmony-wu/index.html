@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -373,23 +373,68 @@
 <p>一看题目是鸿蒙联想到鸿蒙操作系统</p>
 <p>不过之前没做过这一方面的题目</p>
 <p>文件丢进EXEinfos里面看看文件信息</p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/01.jpg" alt="01"></p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/01.jpg"
+  alt="01"
+  loading="lazy"
+>
+</p>
 <p>用Ubuntu打开看看,发现也不太行</p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/03.jpg" alt="03"></p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/03.jpg"
+  alt="03"
+  loading="lazy"
+>
+</p>
 <p>准备用IDA静态分析 发现IDA打不开</p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/02.jpg" alt="02"></p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/02.jpg"
+  alt="02"
+  loading="lazy"
+>
+</p>
 <p>用file命令查看下文件信息</p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/04.jpg" alt="04"></p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/04.jpg"
+  alt="04"
+  loading="lazy"
+>
+</p>
 <p>看到了一个信息RISC-V 百度搜索下</p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/05.jpg" alt="05"></p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/05.jpg"
+  alt="05"
+  loading="lazy"
+>
+</p>
 <p>一个指令集  怪不得IDA打开 搜下有没有关于IDA的RISC-V的插件https://github.com/shuffle2/riscv-ida</p>
 <p>经过一大堆艰难的操作发现 不能F5。。。。。。。</p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/06.jpg" alt="06"></p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/06.jpg"
+  alt="06"
+  loading="lazy"
+>
+</p>
 <p>总不能硬读汇编把 没学过这个架构 搜索其他脚本也报错 这也是为啥我再比赛过程中没做出该题的原因</p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/07.jpg" alt="07"></p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/08.jpg" alt="08"></p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/07.jpg"
+  alt="07"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/08.jpg"
+  alt="08"
+  loading="lazy"
+>
+</p>
 <p>后面想想用新学习到的Ghidra试试 发现还真的可以  不得不说这个反编译工具还是强啊</p>
-<p><img src="/img/2021-RCTF-Harmony-Writeup/09.jpg" alt="09"></p>
+<p><img
+  src="/post/2021-rctf-harmony-wu/09.jpg"
+  alt="09"
+  loading="lazy"
+>
+</p>
 <p>反编译伪代码  &mdash;解密模块</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="kt">void</span> <span class="nf">UndefinedFunction_8000095c</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>

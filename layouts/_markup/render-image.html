@@ -1,0 +1,8 @@
+{{- $page := or .PageInner .Page -}}
+{{- $src := partial "page-resource-url.html" (dict "page" $page "path" .Destination) -}}
+<img
+  src="{{ $src | safeURL }}"
+  alt="{{ .PlainText }}"
+  {{- with .Title }} title="{{ . }}"{{- end }}
+  loading="lazy"
+>

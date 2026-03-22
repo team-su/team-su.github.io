@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -15,6 +15,7 @@
       <title>强网杯 S4 SU Write-Up - su-team</title>
 
   <meta name="description" content="本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
 以下是我们 SU 本次 强网杯 S4 的 writeup">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
@@ -64,7 +65,7 @@
     "name" : "SUer"
   },
   "headline": "强网杯 S4 SU Write-Up",
-  "description" : "本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com\n以下是我们 SU 本次 强网杯 S4 的 writeup\n",
+  "description" : "本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 以下是我们 SU 本次 强网杯 S4 的 writeup\n",
   "inLanguage" : "en",
   "wordCount":  5099 ,
   "datePublished" : "2020-08-24T21:00:00\u002b08:00",
@@ -88,6 +89,7 @@
 
 <meta property="og:title" content="强网杯 S4 SU Write-Up" />
 <meta property="og:description" content="本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
 以下是我们 SU 本次 强网杯 S4 的 writeup">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/qwb-s4-su-wu/" />
@@ -96,6 +98,7 @@
 
   <meta name="twitter:title" content="强网杯 S4 SU Write-Up" />
   <meta name="twitter:description" content="本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
 以下是我们 SU 本次 强网杯 S4 的 writeup">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -419,7 +422,8 @@
 
         <section class="article-shell">
           <article role="main" class="blog-post">
-            <p>本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a></p>
+            <p>本次强网杯比赛我们 SU 取得了线上赛 12th 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+</p>
 <p>以下是我们 SU 本次 强网杯 S4 的 writeup</p>
 <h2 id="web">Web</h2>
 <h3 id="easy_java">easy_java</h3>
@@ -496,7 +500,8 @@
 </span></span><span class="line"><span class="cl">        $json_obj = json_encode($dice);
 </span></span><span class="line"><span class="cl">        echo $json_obj;
 </span></span><span class="line"><span class="cl">?&gt;
-</span></span></code></pre></div><p>可以看到 <a href="https://github.com/php/php-src/commit/fc4d462e947828fdbeac6020ac8f34704a218834">https://github.com/php/php-src/commit/fc4d462e947828fdbeac6020ac8f34704a218834</a> 这次 commit 修了一个bug，我们可以用<code>[</code>绕过 php 对点的转换。web 部分结束
+</span></span></code></pre></div><p>可以看到 <a href="https://github.com/php/php-src/commit/fc4d462e947828fdbeac6020ac8f34704a218834">https://github.com/php/php-src/commit/fc4d462e947828fdbeac6020ac8f34704a218834</a>
+ 这次 commit 修了一个bug，我们可以用<code>[</code>绕过 php 对点的转换。web 部分结束
 密码学部分：RSA LSB Oracle，不过是mod 3的。把区间改一改就行了</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">json</span>
@@ -544,7 +549,12 @@
 </span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">pow</span><span class="p">(</span><span class="n">low</span><span class="o">+</span><span class="n">diff</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="o">==</span> <span class="n">c</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">diff</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">        <span class="k">break</span>
-</span></span></code></pre></div><p><img src="https://i.loli.net/2020/08/23/f4cTxE8ZLg79o5W.jpg" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="https://i.loli.net/2020/08/23/f4cTxE8ZLg79o5W.jpg"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="half_infiltration">half_infiltration</h3>
 <p>http://39.98.131.124/</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">view-source:http://39.98.131.124/?x=a:2:{i:0;O:4:%22User%22:3:{s:3:%22age%22;O:4:%22Pass%22:0:{}s:3:%22sex%22;s:4:%22read%22;s:3:%22num%22;s:6:%22result%22;}i:1;O:4:%22User%22:3:{s:3:%22age%22;O:4:%22Pass%22:0:{}s:3:%22sex%22;s:4:%22read%22;s:3:%22num%22;s:4:%22this%22;}}
@@ -881,18 +891,44 @@
 </span></span><span class="line"><span class="cl">p.interactive()
 </span></span></code></pre></div><h2 id="misc">Misc</h2>
 <h3 id="miscstudy">miscstudy</h3>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_6a55e4763ec72134b9c0b3d913bd724b.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_6a55e4763ec72134b9c0b3d913bd724b.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>找到一个访问 http://39.99.247.28/fonts/1 的流量</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_7456417605938132686ff20660e7d9ff.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_7456417605938132686ff20660e7d9ff.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>得到flag{level1_begin_and_level2_is_come</p>
 <p>还从中得到了私钥信息，将其导入Wireshark可以解密后续的部分TLS流量。</p>
 <p>继续往后翻stream，可以发现一个图片：
-<img src="https://hackmd.summershrimp.com/uploads/upload_d374609201cbd3daf43e87e452f03c30.png" alt=""></p>
-<p>访问 <a href="https://www.qiangwangbei.com/images/4e5d47b2db53654959295bba216858932.png">https://www.qiangwangbei.com/images/4e5d47b2db53654959295bba216858932.png</a> 下载图片</p>
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_d374609201cbd3daf43e87e452f03c30.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p>访问 <a href="https://www.qiangwangbei.com/images/4e5d47b2db53654959295bba216858932.png">https://www.qiangwangbei.com/images/4e5d47b2db53654959295bba216858932.png</a>
+ 下载图片</p>
 <p>在末尾能看到一串类似base64编码的字符串：</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_96ed59c4dba7593974234283b98b6ca3.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_96ed59c4dba7593974234283b98b6ca3.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>解码得到level3_start_it</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_d88a9c7631f80aee514a93c951730a2b.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_d88a9c7631f80aee514a93c951730a2b.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>在文件末尾的上面，也能发现3串base64编码后的字符串，对其分别解码后得到一串长度为3600的01字符串，按照每60个一行，可以得到一个二维码：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
 </span></span><span class="line"><span class="cl">
@@ -912,23 +948,43 @@
 </span></span><span class="line"><span class="cl">            <span class="n">img</span><span class="o">.</span><span class="n">putpixel</span><span class="p">((</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">),</span> <span class="n">black</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            
 </span></span><span class="line"><span class="cl"><span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_abea5644a517e71dffcdda7ab5957760.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_abea5644a517e71dffcdda7ab5957760.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>扫描得到
 链接：https://pan.baidu.com/s/1wVJ7d0RLW8Rj-HOTL9Shug 提取码：1lms</p>
 <p>下载得到level4.zip</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_4a982fd6cd1c6c0e6ea0ff6ead63c099.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_4a982fd6cd1c6c0e6ea0ff6ead63c099.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>stegbreak，密码power123</p>
 <p>JPHS提取得到</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">https://pan.baidu.com/s/1o43y4UGkm1eP-RViC25aOw
 </span></span><span class="line"><span class="cl">mrpt
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">level4_here_all
-</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_1f8f684177225795f5167bf2a7a69080.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_1f8f684177225795f5167bf2a7a69080.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>level5_is_aaa</p>
 <p>level6.zip中有3个txt文件，crc爆破得到level6_isready</p>
 <p>level7.zip明文碰撞1.png，再水印隐写可以得到level7ishere和39.99.247.28/final_level/</p>
 <p>源码里看到</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_f6df4e39c4e1ca6dcb47e51e2d442ff5.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_f6df4e39c4e1ca6dcb47e51e2d442ff5.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>Snow隐写 解密得到the_misc_examaaaaaaa_!!!}</p>
 <p>flag{level1_begin_and_level2_is_comelevel3_start_itlevel4_here_alllevel5_is_aaalevel6_isreadylevel7isherethe_misc_examaaaaaaa_!!!}</p>
 <h2 id="rev">Rev</h2>
@@ -1058,21 +1114,41 @@
 <p>The procedure of the round-key generation indicates that the master key can be easily retrieved from any four consecutive round-keys.</p>
 </blockquote>
 <p>然后几个paper轮流看。</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_bbc71b52cfdefddb249b337787f0c652.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_bbc71b52cfdefddb249b337787f0c652.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>选择了需要fault次数最多的那个方法。（因为容易理解一些</p>
 <p>paper：https://wenku.baidu.com/view/df86818e79563c1ec5da71c4.html</p>
 <p>出题人没整好输入的round（只能在第2～31轮注入fault， 而非1～32轮），所以操作的时候就稍微需要自己改变一下</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_ee8ac49c5879017f86dfc47f2778e39c.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_ee8ac49c5879017f86dfc47f2778e39c.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>往第31轮的X30上注入1byte的fault，将会导致第32轮的X34的差分值有1byte不为0。</p>
 <p>然后往F函数里面日：</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_944a8f9c6845bac7c504f38481822778.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_944a8f9c6845bac7c504f38481822778.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>可以激活一个sbox：必有一个sbox的差分值不为0（其他3个sbox均为0），且这个sbox的位置可控；这个sbox的两个差分输入r_inp, f_inp 也能确定下来。</p>
 <blockquote>
 <p>r_byte: raw input byte
 f_byte: fault input byte</p>
 </blockquote>
 <p>再来从下往上看这个sbox输出的差分值：</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_e1c2ffc280b41e4a1e98b99227cd24d9.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_e1c2ffc280b41e4a1e98b99227cd24d9.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>paper里有具体的分析，看不懂，直接看到结论。这个结论就是说sbox输出的差分值diff_out也能确定下来。</p>
 <p>ok，然后穷举这个sbox所对应那一byte子密钥rk_byte（仅256种可能，一个子密钥有4byte，每1byte对应一个sbox），计算sbox(r_inp ^ rk_byte) ^ sbox(f_inp ^ rk_byte)，看是否等于diff_out，如果等于就说明这个byte可以作为备选子密钥byte（理论值是说这边有2.0236个可能的candidate子密钥byte）。两次这么操作后，基本上就可以确定下这个byte到底是哪一个了。</p>
 <p>然后这么再去另外3个sbox对应的位置处注入fault，即可恢复出这第32轮的4byte子密钥。</p>
@@ -1283,14 +1359,29 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span></code></pre></div><p>但是能getflag：</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_80b51b89dfd332c4c8c86c69fe16698d.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_80b51b89dfd332c4c8c86c69fe16698d.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="modestudy">modestudy</h3>
 <p>第一关 cbc bit flip，把第一块密文的最后一字节xor上0x1即可</p>
 <p>第二关</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_7b66e6dda856cd1cf3f9c8ab71abcb68.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_7b66e6dda856cd1cf3f9c8ab71abcb68.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>扔给服务器两个一样的c1、c2，然后iv = (c1 ^ p2) ^ p1</p>
 <p>第三关</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_159b1c4e457f109f16b6c8ba0e45486b.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_159b1c4e457f109f16b6c8ba0e45486b.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>把第3块密文换成第5块密文</p>
 <p>第四关 低配版 BEAST Attack</p>
 <p>第五关 几次尝试后，发现它的加密实际上就是对每2byte进行置换，列一个置换表出来，即可找到secret</p>
@@ -1490,7 +1581,12 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl"><span class="n">solve_6</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_89f5b8eb5b121d8ba732901351531e73.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_89f5b8eb5b121d8ba732901351531e73.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h2 id="blockchain">Blockchain</h2>
 <h3 id="ipfs">IPFS</h3>
 <p>可以通过命令<code>ipfs cat &lt;hash&gt; &gt; i.data</code>把pic1.jpg的6块block给下载下来，很明显第4条hash对应jpg文件的开头，第5条hash对应jpg文件的结尾</p>
@@ -1509,21 +1605,41 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">perm</span><span class="p">)</span><span class="si">}</span><span class="s2">.jpg&#34;</span><span class="p">,</span> <span class="s2">&#34;wb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </span></span></code></pre></div><p>发现0213.jpg可以正常显示：</p>
-<p><img src="https://i.loli.net/2020/08/23/WhGOoXKJQVyH4c2.png" alt="Screen Shot 2020-08-23 at 2.32.56 AM"></p>
+<p><img
+  src="https://i.loli.net/2020/08/23/WhGOoXKJQVyH4c2.png"
+  alt="Screen Shot 2020-08-23 at 2.32.56 AM"
+  loading="lazy"
+>
+</p>
 <p>pic2.jpg，给出了文件的sha256sum，根据QmHash的格式，可以得到pic2.jpg的QmHash：</p>
-<p><img src="https://i.loli.net/2020/08/23/vsh6M3fpr9OAx2Q.png" alt="image-20200823023341028"></p>
+<p><img
+  src="https://i.loli.net/2020/08/23/vsh6M3fpr9OAx2Q.png"
+  alt="image-20200823023341028"
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base58</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">base58</span><span class="o">.</span><span class="n">b58encode</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s2">&#34;1220&#34;</span><span class="o">+</span><span class="s2">&#34;659c2a2c3ed5e50f848135eea4d3ead3fa2607e2102ae73fafe8f82378ce1d1e&#34;</span><span class="p">)))</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># b&#39;QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3&#39;</span>
 </span></span></code></pre></div><p><code>ipfs cat QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3 &gt; pic2.jpg</code>可以得到第二张图片：</p>
-<p><img src="https://i.loli.net/2020/08/23/yltfSPeMgpYLJUu.png" alt="Screen Shot 2020-08-23 at 2.36.21 AM"></p>
+<p><img
+  src="https://i.loli.net/2020/08/23/yltfSPeMgpYLJUu.png"
+  alt="Screen Shot 2020-08-23 at 2.36.21 AM"
+  loading="lazy"
+>
+</p>
 <p>组合起来就是：<code>flag=flag{md5( hash1 + hash2 )}</code></p>
 <p>hash2已经有了：QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3</p>
 <p>hash1可以通过再重新上传pic1.jpg得到。</p>
 <p>观察发现出题人上传pic1.jpg时，设置的block-size是26624</p>
 <p>看一下<code>ipfs add --help</code>发现能够通过<code>--chunker=size-26624</code>指定block的大小</p>
-<p><img src="https://i.loli.net/2020/08/23/1hvuTxL9gWVQJpj.png" alt="Screen Shot 2020-08-23 at 2.39.27 AM"></p>
+<p><img
+  src="https://i.loli.net/2020/08/23/1hvuTxL9gWVQJpj.png"
+  alt="Screen Shot 2020-08-23 at 2.39.27 AM"
+  loading="lazy"
+>
+</p>
 <p>重新上传得到root hash：QmYjQSMMux72UH4d6HX7tKVFaP27UzC65cRchbVAsh96Q7</p>
 <p>flag{35fb9b3fe44919974a02c26f34369b8e}</p>
 <h2 id="强网先锋">强网先锋</h2>
@@ -1538,7 +1654,8 @@ f_byte: fault input byte</p>
 payload</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">http://39.101.177.96/?hash1=0e251288019&amp;hash2=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2&amp;hash3=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2&amp;hash4=ffifdyop
 </span></span></code></pre></div><h3 id="web辅助">web辅助</h3>
-<p><a href="http://eci-2ze9cia09xafqb8rd109.cloudeci1.ichunqiu.com/">http://eci-2ze9cia09xafqb8rd109.cloudeci1.ichunqiu.com/</a><br>
+<p><a href="http://eci-2ze9cia09xafqb8rd109.cloudeci1.ichunqiu.com/">http://eci-2ze9cia09xafqb8rd109.cloudeci1.ichunqiu.com/</a>
+<br>
 签到题，看脚本吧，没什么难度</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="err">?</span><span class="n">php</span>
 </span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="n">topsolo</span><span class="p">{</span>
@@ -1681,8 +1798,14 @@ xor key后有个换位操作，做对应逆运算即可</p>
 </span></span></code></pre></div><h3 id="baby_crt">baby_crt</h3>
 <p>crypto</p>
 <p>RSA CRT fault</p>
-<p><a href="http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf">http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf</a></p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_7487dc2dc6748d87889114d2ddd279d6.png" alt=""></p>
+<p><a href="http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf">http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf</a>
+</p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_7487dc2dc6748d87889114d2ddd279d6.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">sha1</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl">
@@ -1747,7 +1870,12 @@ xor key后有个换位操作，做对应逆运算即可</p>
 <p>transact
 Alice -1000
 get flag</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_28920235447ac58455a8fc5ce744baac.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_28920235447ac58455a8fc5ce744baac.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="红方辅助">红方辅助</h3>
 <p>分析一下流量的格式，解解密就行</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">struct</span>
@@ -1809,7 +1937,12 @@ get flag</p>
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="n">plain</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">index</span> <span class="o">+=</span> <span class="mi">9</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">data_length</span> <span class="o">+</span> <span class="mi">4</span>
-</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_dd2a1b0987a7931fcf7479b8dbd231a6.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_dd2a1b0987a7931fcf7479b8dbd231a6.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>得到3e752bf509ddb4e9a42f1ef30beff495</p>
 <p>flag提交一直不对，改一下格式即可：QWB{3e752bf509ddb4e9a42f1ef30beff495}</p>
 <h3 id="siri---强网先锋">Siri - 强网先锋</h3>
@@ -1966,19 +2099,7 @@ get flag</p>
 
             
               
-                
-              
 
-              
-                <section class="article-related">
-                  <h4 class="see-also">See also</h4>
-                  <ul>
-                    
-                    
-                      <li><a href="/post/qwb-s9-su-wu/">2025 QWB-S9 SU WriteUp</a></li>
-                    
-                  </ul>
-                </section>
               
             
           </article>

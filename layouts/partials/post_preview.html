@@ -17,11 +17,13 @@
       {{ if or .Params.image .Params.video }}
         <a class="post-preview__media" href="{{ .RelPermalink }}">
           {{ if .Params.image }}
-            <img src="{{ .Params.image }}" alt="{{ .Title }}" class="img-title" />
+            {{ $imageURL := partial "page-resource-url.html" (dict "page" . "path" .Params.image) }}
+            <img src="{{ $imageURL | safeURL }}" alt="{{ .Title }}" class="img-title" />
           {{ end }}
           {{ if .Params.video }}
+            {{ $videoURL := partial "page-resource-url.html" (dict "page" . "path" .Params.video) }}
             <video loop autoplay muted playsinline class="img-title">
-              <source src="{{ .Params.video }}">
+              <source src="{{ $videoURL | safeURL }}">
             </video>
           {{ end }}
         </a>

