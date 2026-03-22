@@ -1156,6 +1156,33 @@ html[data-theme="light"] .disqus-comments {
   padding: 34px 0 0 !important;
 }
 
+.blog-post .highlight > pre.chroma,
+.blog-post .highlight > .chroma {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.blog-post .highlight > pre.chroma::-webkit-scrollbar,
+.blog-post .highlight > .chroma::-webkit-scrollbar {
+  height: 10px;
+}
+
+.blog-post .highlight > pre.chroma::-webkit-scrollbar-thumb,
+.blog-post .highlight > .chroma::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: var(--border-strong);
+  background-clip: padding-box;
+}
+
+.blog-post .highlight > pre.chroma::-webkit-scrollbar-track,
+.blog-post .highlight > .chroma::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .blog-post .highlight .chroma,
 .blog-post pre.chroma,
 .blog-post .highlight pre {

