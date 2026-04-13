@@ -35,6 +35,12 @@
     <loc>http://localhost:1313/post/ntfy-2025-su-wu/</loc>
     <lastmod>2025-10-27T23:24:08+08:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/post/qwb-s9-su-wu/</loc>
+    <lastmod>2025-10-21T22:41:45+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/qwb/</loc>
+    <lastmod>2025-10-21T22:41:45+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/post/wmctf-2025-su-wu/</loc>
     <lastmod>2025-09-21T19:32:48+08:00</lastmod>
   </url><url>
@@ -145,9 +151,6 @@
   </url><url>
     <loc>http://localhost:1313/post/ntfy-2021-su-wu/</loc>
     <lastmod>2021-10-26T00:39:02+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/qwb/</loc>
-    <lastmod>2020-08-24T21:00:00+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/qwb-s4-su-wu/</loc>
     <lastmod>2020-08-24T21:00:00+08:00</lastmod>
