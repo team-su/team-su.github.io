@@ -1,0 +1,247 @@
+summary: >-
+  SU 持续活跃于国内外 CTF 赛事与国家级网络安全赛事，这里只展示代表性成绩，完整荣誉已按时间轴整理。
+preview_limit: 6
+years:
+  - year: 2026
+    entries:
+      - event: AliCTF
+        badges:
+          - label: 10th
+            tone: rank
+      - event: LilacCTF
+        badges:
+          - label: 5th
+            tone: rank
+
+  - year: 2025
+    entries:
+      - event: CTFTIME TOP 50
+        badges:
+          - label: 36th
+            tone: rank
+      - event: 第九届 XCTF 联赛积分榜
+        featured_rank: 1
+        badges:
+          - label: 第一名
+            tone: gold
+      - event: HKCERTCTF Quals
+        badges:
+          - label: 4th
+            tone: rank
+      - event: RCTF
+        badges:
+          - label: 5th
+            tone: rank
+      - event: 第九届 XCTF 国际网络攻防联赛总决赛
+        badges:
+          - label: 三等奖
+            tone: bronze
+          - label: Live Solo 季军
+            tone: bronze
+      - event: 强网拟态
+        badges:
+          - label: 预赛冠军
+            tone: gold
+          - label: 决赛季军
+            tone: bronze
+      - event: 中华人民共和国第三届职业技能大赛网络安全项目
+        featured_rank: 11
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: WMCTF
+        featured_rank: 8
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: TFCCTF
+        badges:
+          - label: 6th
+            tone: rank
+      - event: L3HCTF
+        featured_rank: 2
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: DASCTF 上半年赛
+        featured_rank: 12
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 数字中国创新大赛数据安全产业积分争夺赛
+        badges:
+          - label: 铜奖
+            tone: bronze
+          - label: 10th
+            tone: rank
+
+  - year: 2024
+    entries:
+      - event: 第四届网鼎杯
+        featured_rank: 3
+        badges:
+          - label: 金长城奖
+            tone: gold
+      - event: 第四届网鼎杯线下总决赛
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 第四十七届世界技能大赛网络安全项目中国国家队选拔赛
+        featured_rank: 10
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 国产 OS 漏洞挖掘赛
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 羊城杯网络安全大赛
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 矩阵杯网络安全大赛
+        featured_rank: 9
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: RCTF
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 熊猫杯网络安全大赛
+        featured_rank: 4
+        badges:
+          - label: 冠军
+            tone: gold
+
+  - year: 2023
+    entries:
+      - event: XCTF ACTF 2023
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: RWCTF 2023 体验赛
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 中华人民共和国第二届职业技能大赛网络安全项目
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 网鼎杯决赛
+        badges:
+          - label: 第十一名
+            tone: rank
+      - event: 陇剑杯决赛
+        badges:
+          - label: 第六名
+            tone: rank
+      - event: 祥云杯线下决赛
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 巅峰极客线下决赛
+        featured_rank: 5
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 巅峰极客线上赛
+        badges:
+          - label: 亚军
+            tone: silver
+
+  - year: 2022
+    entries:
+      - event: XCTF SUSCTF 2022
+        featured_rank: 6
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: RWCTF 2022 体验赛
+        badges:
+          - label: 冠军
+            tone: gold
+
+  - year: 2021
+    entries:
+      - event: 美团 CTF（个人 / 团队）
+        featured_rank: 7
+        badges:
+          - label: 个人赛冠军
+            tone: gold
+          - label: 团队赛亚军
+            tone: silver
+      - event: SCTF
+        badges:
+          - label: 第二名
+            tone: silver
+      - event: 强网拟态预赛
+        badges:
+          - label: 第二名
+            tone: silver
+      - event: BYTECTF
+        badges:
+          - label: 第十名
+            tone: rank
+      - event: RCTF
+        badges:
+          - label: 第七名
+            tone: rank
+
+  - year: 2020
+    entries:
+      - event: XCTF WMCTF 2020
+        featured_rank: 13
+        badges:
+          - label: 亚军
+            tone: silver
+
+  - year: 2019
+    entries:
+      - event: CyBRICS CTF 中国区
+        badges:
+          - label: 第五名
+            tone: rank
+      - event: XCTF SCTF 2019
+        featured_rank: 14
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: KCTF 2019 Q2
+        badges:
+          - label: 亚军
+            tone: silver
+
+  - year: 2017
+    entries:
+      - event: SCTF
+        badges:
+          - label: 第八名
+            tone: rank
+      - event: WHCTF
+        badges:
+          - label: 第四名
+            tone: rank
+
+  - year: 2016
+    entries:
+      - event: 华山杯（决赛 / 初赛）
+        badges:
+          - label: 决赛第七名
+            tone: rank
+          - label: 初赛第十名
+            tone: rank
+      - event: XMAN 夏令营
+        badges:
+          - label: 总排名第三
+            tone: bronze
+          - label: 攻防第五
+            tone: rank
+          - label: 结业第三
+            tone: bronze
+          - label: 练习赛第一
+            tone: gold
+      - event: AliCTF
+        badges:
+          - label: 第十名
+            tone: rank

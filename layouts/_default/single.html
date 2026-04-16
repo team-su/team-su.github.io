@@ -19,7 +19,9 @@
 
         <section class="article-shell">
           <article role="main" class="blog-post">
-            {{ .Content }}
+            {{- $content := .Content -}}
+{{- $content = replaceRE `([A-Za-z0-9._%+\-]+_)<a href="mailto:([A-Za-z0-9.%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})">[^<]+</a>` `<a href="mailto:$1$2">$1$2</a>` $content -}}
+{{ $content | safeHTML }}
 
             {{ if .Params.tags }}
               <div class="blog-tags">

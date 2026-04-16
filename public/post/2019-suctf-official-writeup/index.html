@@ -114,7 +114,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260322-8">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
 
   </head>
   <body>
@@ -426,8 +426,7 @@
     
 
         <section class="article-shell">
-          <article role="main" class="blog-post">
-            <p>以下是我们 SU 本次 SUCTF 的 官方writeup。</p>
+          <article role="main" class="blog-post"><p>以下是我们 SU 本次 SUCTF 的 官方writeup。</p>
 <h1 id="web">Web</h1>
 <h3 id="checkin">CheckIn</h3>
 <p>一个比较老的上传技巧,但是貌似很少人知道，一些上传总结中都没有出现，github 开源项目 upload-lab 上也没有出现过，所以就拿来出题了。<code>.user.ini</code>适用于 php-fpm 的场景下的上传 trick，但是CTF比赛中貌似都还没有出现过，直接拿了国赛华东北赛区的一个上传绕过题目来改的，原本是直接 ban 掉了<code>htaccess</code>，防止大家思路跑偏，可是出题人打字太快了写成了<code>htacess</code>，就比较尴尬了。</p>

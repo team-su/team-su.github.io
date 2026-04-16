@@ -1,0 +1,20 @@
+{{- $honors := site.Data.honors -}}
+{{- $years := $honors.years | default (slice) -}}
+<section class="honors-archive-simple">
+  <div class="honors-yearline">
+    {{- range $years -}}
+      <section class="honors-yearline__group">
+        <div class="honors-yearline__year">{{ .year }}</div>
+        <div class="honors-yearline__body">
+          {{- range .entries -}}
+            <div class="honors-yearline__entry">
+              <span class="honors-yearline__event">{{ .event }}</span>
+              <span class="honors-yearline__dash">—</span>
+              <span class="honors-yearline__result">{{ partial "honor-result-inline.html" .badges }}</span>
+            </div>
+          {{- end -}}
+        </div>
+      </section>
+    {{- end -}}
+  </div>
+</section>

@@ -175,5 +175,7 @@
     <loc>http://localhost:1313/categories/</loc>
   </url><url>
     <loc>http://localhost:1313/page/</loc>
+  </url><url>
+    <loc>http://localhost:1313/page/honors/</loc>
   </url>
 </urlset>

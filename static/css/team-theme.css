@@ -2296,3 +2296,263 @@ html[data-theme="light"] .pager li a {
     padding-top: 22px;
   }
 }
+
+
+.honors-brief,
+.honors-archive-simple {
+  margin-top: 18px;
+}
+
+.honors-brief__actions {
+  margin-top: 20px;
+}
+
+.honors-zigzag {
+  position: relative;
+  display: grid;
+  gap: 26px;
+}
+
+.honors-zigzag::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 10px;
+  bottom: 10px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--border-strong), rgba(103, 206, 255, 0.08));
+  transform: translateX(-0.5px);
+}
+
+.honors-zigzag__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
+  align-items: start;
+}
+
+.honors-zigzag__item::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 9px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 6px rgba(101, 217, 255, 0.08);
+  transform: translateX(-50%);
+}
+
+.honors-zigzag__body {
+  position: relative;
+  width: min(100%, 420px);
+  display: grid;
+  gap: 10px;
+}
+
+.honors-zigzag__body::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  width: 22px;
+  height: 1px;
+  background: rgba(103, 206, 255, 0.18);
+}
+
+.honors-zigzag__item--left .honors-zigzag__body {
+  grid-column: 1;
+  justify-self: end;
+  text-align: right;
+}
+
+.honors-zigzag__item--left .honors-zigzag__body::before {
+  right: -46px;
+}
+
+.honors-zigzag__item--right .honors-zigzag__body {
+  grid-column: 3;
+  justify-self: start;
+  text-align: left;
+}
+
+.honors-zigzag__item--right .honors-zigzag__body::before {
+  left: -46px;
+}
+
+.honors-zigzag__year {
+  color: var(--accent);
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.honors-zigzag__entries {
+  display: grid;
+  gap: 12px;
+}
+
+.honors-zigzag__line,
+.honors-yearline__entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--text-soft);
+  line-height: 1.9;
+}
+
+.honors-zigzag__item--left .honors-zigzag__line {
+  justify-content: flex-end;
+}
+
+.honors-zigzag__item--right .honors-zigzag__line {
+  justify-content: flex-start;
+}
+
+.honors-zigzag__event,
+.honors-yearline__event {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.honors-zigzag__result,
+.honors-yearline__result {
+  color: var(--text-soft);
+}
+
+.honors-zigzag__dash,
+.honors-yearline__dash,
+.honor-result__sep {
+  color: var(--text-muted);
+}
+
+.honors-yearline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding-left: 24px;
+}
+
+.honors-yearline::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: linear-gradient(180deg, var(--border-strong), rgba(103, 206, 255, 0.08));
+}
+
+.honors-yearline__group {
+  position: relative;
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.honors-yearline__group::before {
+  content: "";
+  position: absolute;
+  left: -18px;
+  top: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: 0 0 0 5px rgba(101, 217, 255, 0.08);
+}
+
+.honors-yearline__year {
+  display: block;
+  padding-top: 1px;
+  color: var(--accent);
+  font-family: var(--font-accent);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.6;
+  letter-spacing: 0.16em;
+}
+
+.honors-yearline__body {
+  display: grid;
+  gap: 8px;
+}
+
+.honor-result--gold {
+  color: #f1d36f;
+}
+
+.honor-result--silver {
+  color: #dbe5f7;
+}
+
+.honor-result--bronze {
+  color: #e8b089;
+}
+
+.honor-result--rank {
+  color: var(--text-soft);
+}
+
+.blog-post a[href^="mailto:"] {
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .honors-timeline,
+  .honors-yearline {
+    padding-left: 18px;
+  }
+
+  .honors-zigzag::before {
+    left: 8px;
+    transform: none;
+  }
+
+  .honors-zigzag__item {
+    grid-template-columns: 1fr;
+    padding-left: 22px;
+  }
+
+  .honors-zigzag__item::before {
+    left: 8px;
+    transform: translateX(-50%);
+  }
+
+  .honors-zigzag__body,
+  .honors-zigzag__item--left .honors-zigzag__body,
+  .honors-zigzag__item--right .honors-zigzag__body {
+    grid-column: 1;
+    justify-self: start;
+    width: 100%;
+    text-align: left;
+  }
+
+  .honors-zigzag__body::before {
+    left: -14px;
+    width: 18px;
+  }
+
+  .honors-zigzag__line,
+  .honors-zigzag__item--left .honors-zigzag__line,
+  .honors-zigzag__item--right .honors-zigzag__line {
+    justify-content: flex-start;
+  }
+
+  .honors-yearline {
+    padding-left: 18px;
+  }
+
+  .honors-yearline__group {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .honors-yearline__group::before {
+    left: -16px;
+  }
+}

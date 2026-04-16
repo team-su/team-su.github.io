@@ -1,0 +1,57 @@
+{{- $honors := site.Data.honors -}}
+{{- $years := $honors.years | default (slice) -}}
+{{- $scratch := newScratch -}}
+{{- $scratch.Set "featured" (slice) -}}
+{{- range $years -}}
+  {{- $year := .year -}}
+  {{- range .entries -}}
+    {{- $entry := dict "year" $year "event" .event "badges" .badges "featured_rank" (.featured_rank | default 0) -}}
+    {{- if gt ($entry.featured_rank | int) 0 -}}
+      {{- $scratch.Add "featured" (slice $entry) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $featured := sort ($scratch.Get "featured") "featured_rank" -}}
+{{- $previewLimit := $honors.preview_limit | default 6 -}}
+{{- $selected := first $previewLimit $featured -}}
+{{- $groups := slice -}}
+{{- range $years -}}
+  {{- $year := .year -}}
+  {{- $groupEntries := slice -}}
+  {{- range $selected -}}
+    {{- if eq .year $year -}}
+      {{- $groupEntries = $groupEntries | append (dict "event" .event "badges" .badges) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if gt (len $groupEntries) 0 -}}
+    {{- $groups = $groups | append (dict "year" $year "entries" $groupEntries) -}}
+  {{- end -}}
+{{- end -}}
+<section class="honors-brief honors-brief--zigzag">
+  <div class="honors-zigzag honors-zigzag--bare">
+    {{- range $idx, $group := $groups -}}
+      {{- $side := "honors-zigzag__item--left" -}}
+      {{- if not (modBool $idx 2) -}}
+        {{- $side = "honors-zigzag__item--right" -}}
+      {{- end -}}
+      <article class="honors-zigzag__item {{ $side }}">
+        <div class="honors-zigzag__body">
+          <div class="honors-zigzag__year">{{ $group.year }}</div>
+          <div class="honors-zigzag__entries">
+            {{- range $group.entries -}}
+              <div class="honors-zigzag__line">
+                <span class="honors-zigzag__event">{{ .event }}</span>
+                <span class="honors-zigzag__dash">—</span>
+                <span class="honors-zigzag__result">{{ partial "honor-result-inline.html" .badges }}</span>
+              </div>
+            {{- end -}}
+          </div>
+        </div>
+      </article>
+    {{- end -}}
+  </div>
+
+  <div class="honors-brief__actions">
+    <a class="team-button" href="{{ "/page/honors/" | relURL }}">查看完整荣誉墙</a>
+  </div>
+</section>

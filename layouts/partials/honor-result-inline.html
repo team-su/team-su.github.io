@@ -1,0 +1,17 @@
+{{- range $idx, $badge := . -}}
+  {{- if gt $idx 0 -}}<span class="honor-result__sep"> / </span>{{- end -}}
+  {{- $tone := $badge.tone | default "rank" -}}
+  {{- $label := $badge.label -}}
+  {{- if and (eq $tone "gold") (not (or (in $label "金长城奖") (in $label "三等奖") (in $label "铜奖"))) -}}
+    {{- $label = replace $label "冠军" "第一名" -}}
+  {{- end -}}
+  {{- if eq $tone "silver" -}}
+    {{- $label = replace $label "亚军" "第二名" -}}
+  {{- end -}}
+  {{- if eq $tone "bronze" -}}
+    {{- if not (or (in $label "三等奖") (in $label "铜奖")) -}}
+      {{- $label = replace $label "季军" "第三名" -}}
+    {{- end -}}
+  {{- end -}}
+  <span class="honor-result honor-result--{{ $tone }}">{{- if eq $tone "gold" -}}🏆&nbsp;{{- end -}}{{- if eq $tone "silver" -}}🥈&nbsp;{{- end -}}{{- if eq $tone "bronze" -}}🥉&nbsp;{{- end -}}{{- $label -}}</span>
+{{- end -}}
