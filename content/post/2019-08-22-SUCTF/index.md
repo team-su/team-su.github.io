@@ -1436,4 +1436,4 @@ int main(int argc,char *argv[])
  解题思路就是学一波unicorn,然后根据uc_open函数参数的值找到要模拟字节码的架构,然后使用对应的反编译工具对func文件进行逆向,dump出大端序的res,用求解器算出flag
 
  ## Crypto
- 详情见 [Writeup.html](http://team-su.github.io/passages/2019-08-22-SUCTF/Crypto-WriteUp.html)。
+详情见 [Writeup.html](/passages/2019-08-22-SUCTF/Crypto-WriteUp.html)。
