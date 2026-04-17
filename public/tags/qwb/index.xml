@@ -8,15 +8,8 @@
     <language>en</language>
     <managingEditor>suers_xctf@126.com (SUer)</managingEditor>
     <webMaster>suers_xctf@126.com (SUer)</webMaster>
-    <lastBuildDate>Tue, 21 Oct 2025 22:41:45 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 24 Aug 2020 21:00:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/qwb/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>2025 QWB-S9 SU WriteUp</title>
-      <link>http://localhost:1313/post/qwb-s9-su-wu/</link>
-      <pubDate>Tue, 21 Oct 2025 22:41:45 +0800</pubDate><author>suers_xctf@126.com (SUer)</author>
-      <guid>http://localhost:1313/post/qwb-s9-su-wu/</guid>
-      <description>&lt;p&gt;本次强网杯我们 SU 从各方面原因考虑，十位师傅组成一队，名为“SehllWeDance”，取得了 19th 的成绩，感谢队里师傅们的辛苦付出，每个人都熬夜通宵干！特别是&lt;code&gt;@2hi5hu&lt;/code&gt;师傅，一个人几乎AK misc 方向。同时我们也在持续招人，欢迎发送个人简介至：suers_&lt;a href=&#34;mailto:xctf@126.com&#34;&gt;xctf@126.com&lt;/a&gt;&#xA; 或者直接联系baozongwi QQ:2405758945。&lt;/p&gt;&#xA;&lt;p&gt;以下是我们 SU 本次 2025 强网杯的 WriteUp。&lt;/p&gt;</description>
-    </item>
     <item>
       <title>强网杯 S4 SU Write-Up</title>
       <link>http://localhost:1313/post/qwb-s4-su-wu/</link>

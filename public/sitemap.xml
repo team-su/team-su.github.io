@@ -17,10 +17,13 @@
     <loc>http://localhost:1313/tags/</loc>
     <lastmod>2026-02-02T22:24:15+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/active-members/</loc>
+    <loc>http://localhost:1313/page/active-members/</loc>
     <lastmod>2025-12-24T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/pioneers/</loc>
+    <loc>http://localhost:1313/page/</loc>
+    <lastmod>2025-12-24T00:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/page/pioneers/</loc>
     <lastmod>2025-12-24T00:00:00+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/rctf-2025-su-wu/</loc>
@@ -34,12 +37,6 @@
   </url><url>
     <loc>http://localhost:1313/post/ntfy-2025-su-wu/</loc>
     <lastmod>2025-10-27T23:24:08+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/post/qwb-s9-su-wu/</loc>
-    <lastmod>2025-10-21T22:41:45+08:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/tags/qwb/</loc>
-    <lastmod>2025-10-21T22:41:45+08:00</lastmod>
   </url><url>
     <loc>http://localhost:1313/post/wmctf-2025-su-wu/</loc>
     <lastmod>2025-09-21T19:32:48+08:00</lastmod>
@@ -152,6 +149,9 @@
     <loc>http://localhost:1313/post/ntfy-2021-su-wu/</loc>
     <lastmod>2021-10-26T00:39:02+08:00</lastmod>
   </url><url>
+    <loc>http://localhost:1313/tags/qwb/</loc>
+    <lastmod>2020-08-24T21:00:00+08:00</lastmod>
+  </url><url>
     <loc>http://localhost:1313/post/qwb-s4-su-wu/</loc>
     <lastmod>2020-08-24T21:00:00+08:00</lastmod>
   </url><url>
@@ -173,8 +173,6 @@
     <loc>http://localhost:1313/page/about/</loc>
   </url><url>
     <loc>http://localhost:1313/categories/</loc>
-  </url><url>
-    <loc>http://localhost:1313/page/</loc>
   </url><url>
     <loc>http://localhost:1313/page/honors/</loc>
   </url>

@@ -68,10 +68,10 @@ timeZone = "Asia/Shanghai"
 [[menu.main]]
     parent = "members"
     name = "Members"
-    url = "active-members"
+    url = "page/active-members/"
     weight = 1
 [[menu.main]]
     parent = "members"
     name = "Pioneers"
-    url = "pioneers"
+    url = "page/pioneers/"
     weight = 2
