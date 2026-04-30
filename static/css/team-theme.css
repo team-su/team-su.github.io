@@ -21,6 +21,8 @@
   --radius-lg: 18px;
   --radius-md: 14px;
   --radius-sm: 10px;
+  --article-image-max-width: 960px;
+  --article-image-max-height: min(760px, 82vh);
   --font-ui: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
   --font-display: "Open Sans", "Helvetica Neue", Helvetica, sans-serif;
   --font-accent: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
@@ -1088,7 +1090,16 @@ html[data-theme="light"] .disqus-comments {
   background: rgba(255, 255, 255, 0.02);
 }
 
-.blog-post img {
+.blog-post__image,
+.blog-post > p > img,
+.blog-post > img {
+  display: block;
+  box-sizing: border-box;
+  max-width: min(100%, var(--article-image-max-width));
+  max-height: var(--article-image-max-height);
+  height: auto;
+  margin: 28px auto;
+  object-fit: contain;
   border-radius: 16px;
   border: 1px solid rgba(103, 206, 255, 0.08);
   box-shadow: none;
