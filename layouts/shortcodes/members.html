@@ -1,6 +1,9 @@
 <div class="members-board">
   {{ $datafile := .Get "datafile" }}
-  {{ $data := index .Site.Data $datafile }}
+  {{ $data := index hugo.Data $datafile }}
+  {{ if not $data }}
+    {{ errorf "members shortcode datafile %q not found on %s" $datafile .Page.File.Path }}
+  {{ end }}
 
   {{ range $data }}
     <section class="members-section">

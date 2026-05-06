@@ -1,6 +1,17 @@
 {{ define "main" }}
-{{ $toc := .Params.toc | default .TableOfContents }}
-{{ $hasToc := and (ne .Type "page") (gt (len (findRE "<a " $toc)) 0) }}
+{{ $tocParam := .Params.toc }}
+{{ $toc := .TableOfContents }}
+{{ $tocEnabled := ne .Type "page" }}
+{{ if isset .Params "toc" }}
+  {{ if eq (printf "%T" $tocParam) "bool" }}
+    {{ if not $tocParam }}
+      {{ $tocEnabled = false }}
+    {{ end }}
+  {{ else }}
+    {{ $toc = $tocParam }}
+  {{ end }}
+{{ end }}
+{{ $hasToc := and $tocEnabled (gt (len (findRE "<a " (printf "%s" $toc))) 0) }}
 <div class="container post-layout" role="main">
   <div class="row flex-row post-layout__row">
     {{ if $hasToc }}
@@ -18,9 +29,8 @@
     {{ end }}
 
         <section class="article-shell">
-          <article role="main" class="blog-post">
-            {{- $content := .Content -}}
-{{- $content = replaceRE `([A-Za-z0-9._%+\-]+_)<a href="mailto:([A-Za-z0-9.%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,})">[^<]+</a>` `<a href="mailto:$1$2">$1$2</a>` $content -}}
+          <article role="main" class="blog-post{{ if eq .Type "page" }} blog-post--page{{ end }}">
+            {{- $content := partial "fix-email-autolinks.html" .Content -}}
 {{ $content | safeHTML }}
 
             {{ if .Params.tags }}

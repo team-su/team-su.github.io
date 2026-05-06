@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 强网杯 S4 的 writeup">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -549,9 +595,11 @@
 </span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">low</span> <span class="o">+</span> <span class="n">diff</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl">        <span class="k">break</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="https://i.loli.net/2020/08/23/f4cTxE8ZLg79o5W.jpg"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="half_infiltration">half_infiltration</h3>
@@ -891,41 +939,51 @@
 </span></span></code></pre></div><h2 id="misc">Misc</h2>
 <h3 id="miscstudy">miscstudy</h3>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_6a55e4763ec72134b9c0b3d913bd724b.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>找到一个访问 http://39.99.247.28/fonts/1 的流量</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_7456417605938132686ff20660e7d9ff.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到flag{level1_begin_and_level2_is_come</p>
 <p>还从中得到了私钥信息，将其导入Wireshark可以解密后续的部分TLS流量。</p>
 <p>继续往后翻stream，可以发现一个图片：
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_d374609201cbd3daf43e87e452f03c30.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>访问 <a href="https://www.qiangwangbei.com/images/4e5d47b2db53654959295bba216858932.png">https://www.qiangwangbei.com/images/4e5d47b2db53654959295bba216858932.png</a>
  下载图片</p>
 <p>在末尾能看到一串类似base64编码的字符串：</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_96ed59c4dba7593974234283b98b6ca3.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>解码得到level3_start_it</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_d88a9c7631f80aee514a93c951730a2b.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>在文件末尾的上面，也能发现3串base64编码后的字符串，对其分别解码后得到一串长度为3600的01字符串，按照每60个一行，可以得到一个二维码：</p>
@@ -948,18 +1006,22 @@
 </span></span><span class="line"><span class="cl">            
 </span></span><span class="line"><span class="cl"><span class="n">img</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_abea5644a517e71dffcdda7ab5957760.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>扫描得到
 链接：https://pan.baidu.com/s/1wVJ7d0RLW8Rj-HOTL9Shug 提取码：1lms</p>
 <p>下载得到level4.zip</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_4a982fd6cd1c6c0e6ea0ff6ead63c099.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>stegbreak，密码power123</p>
@@ -969,9 +1031,11 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">level4_here_all
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_1f8f684177225795f5167bf2a7a69080.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>level5_is_aaa</p>
@@ -979,9 +1043,11 @@
 <p>level7.zip明文碰撞1.png，再水印隐写可以得到level7ishere和39.99.247.28/final_level/</p>
 <p>源码里看到</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_f6df4e39c4e1ca6dcb47e51e2d442ff5.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>Snow隐写 解密得到the_misc_examaaaaaaa_!!!}</p>
@@ -1114,26 +1180,32 @@
 </blockquote>
 <p>然后几个paper轮流看。</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_bbc71b52cfdefddb249b337787f0c652.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>选择了需要fault次数最多的那个方法。（因为容易理解一些</p>
 <p>paper：https://wenku.baidu.com/view/df86818e79563c1ec5da71c4.html</p>
 <p>出题人没整好输入的round（只能在第2～31轮注入fault， 而非1～32轮），所以操作的时候就稍微需要自己改变一下</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_ee8ac49c5879017f86dfc47f2778e39c.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>往第31轮的X30上注入1byte的fault，将会导致第32轮的X34的差分值有1byte不为0。</p>
 <p>然后往F函数里面日：</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_944a8f9c6845bac7c504f38481822778.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>可以激活一个sbox：必有一个sbox的差分值不为0（其他3个sbox均为0），且这个sbox的位置可控；这个sbox的两个差分输入r_inp, f_inp 也能确定下来。</p>
@@ -1143,9 +1215,11 @@ f_byte: fault input byte</p>
 </blockquote>
 <p>再来从下往上看这个sbox输出的差分值：</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_e1c2ffc280b41e4a1e98b99227cd24d9.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>paper里有具体的分析，看不懂，直接看到结论。这个结论就是说sbox输出的差分值diff_out也能确定下来。</p>
@@ -1359,26 +1433,32 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span></code></pre></div><p>但是能getflag：</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_80b51b89dfd332c4c8c86c69fe16698d.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="modestudy">modestudy</h3>
 <p>第一关 cbc bit flip，把第一块密文的最后一字节xor上0x1即可</p>
 <p>第二关</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_7b66e6dda856cd1cf3f9c8ab71abcb68.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>扔给服务器两个一样的c1、c2，然后iv = (c1 ^ p2) ^ p1</p>
 <p>第三关</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_159b1c4e457f109f16b6c8ba0e45486b.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>把第3块密文换成第5块密文</p>
@@ -1581,9 +1661,11 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_89f5b8eb5b121d8ba732901351531e73.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="blockchain">Blockchain</h2>
@@ -1605,16 +1687,20 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </span></span></code></pre></div><p>发现0213.jpg可以正常显示：</p>
 <p><img
+  class="blog-post__image"
   src="https://i.loli.net/2020/08/23/WhGOoXKJQVyH4c2.png"
   alt="Screen Shot 2020-08-23 at 2.32.56 AM"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>pic2.jpg，给出了文件的sha256sum，根据QmHash的格式，可以得到pic2.jpg的QmHash：</p>
 <p><img
+  class="blog-post__image"
   src="https://i.loli.net/2020/08/23/vsh6M3fpr9OAx2Q.png"
   alt="image-20200823023341028"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base58</span>
@@ -1623,9 +1709,11 @@ f_byte: fault input byte</p>
 </span></span><span class="line"><span class="cl"><span class="c1"># b&#39;QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3&#39;</span>
 </span></span></code></pre></div><p><code>ipfs cat QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3 &gt; pic2.jpg</code>可以得到第二张图片：</p>
 <p><img
+  class="blog-post__image"
   src="https://i.loli.net/2020/08/23/yltfSPeMgpYLJUu.png"
   alt="Screen Shot 2020-08-23 at 2.36.21 AM"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>组合起来就是：<code>flag=flag{md5( hash1 + hash2 )}</code></p>
@@ -1634,9 +1722,11 @@ f_byte: fault input byte</p>
 <p>观察发现出题人上传pic1.jpg时，设置的block-size是26624</p>
 <p>看一下<code>ipfs add --help</code>发现能够通过<code>--chunker=size-26624</code>指定block的大小</p>
 <p><img
+  class="blog-post__image"
   src="https://i.loli.net/2020/08/23/1hvuTxL9gWVQJpj.png"
   alt="Screen Shot 2020-08-23 at 2.39.27 AM"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>重新上传得到root hash：QmYjQSMMux72UH4d6HX7tKVFaP27UzC65cRchbVAsh96Q7</p>
@@ -1800,9 +1890,11 @@ xor key后有个换位操作，做对应逆运算即可</p>
 <p><a href="http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf">http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf</a>
 </p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_7487dc2dc6748d87889114d2ddd279d6.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">sha1</span>
@@ -1870,9 +1962,11 @@ xor key后有个换位操作，做对应逆运算即可</p>
 Alice -1000
 get flag</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_28920235447ac58455a8fc5ce744baac.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="红方辅助">红方辅助</h3>
@@ -1937,9 +2031,11 @@ get flag</p>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">index</span> <span class="o">+=</span> <span class="mi">9</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">+</span> <span class="n">data_length</span> <span class="o">+</span> <span class="mi">4</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_dd2a1b0987a7931fcf7479b8dbd231a6.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到3e752bf509ddb4e9a42f1ef30beff495</p>
@@ -2098,7 +2194,19 @@ get flag</p>
 
             
               
+                
+              
 
+              
+                <section class="article-related">
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                    
+                    
+                      <li><a href="/post/qwb-s9-su-wu/">2025 QWB-S9 SU WriteUp</a></li>
+                    
+                  </ul>
+                </section>
               
             
           </article>
@@ -2198,12 +2306,12 @@ get flag</p>
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -2218,9 +2326,11 @@ get flag</p>
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

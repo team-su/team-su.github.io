@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -35,6 +35,7 @@
 }
 </script>
 
+
 <meta property="og:title" content="DASCTF" />
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/tags/dasctf/" />
@@ -44,14 +45,14 @@
   <meta name="twitter:title" content="DASCTF" />
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -62,7 +63,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -80,7 +81,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -108,9 +109,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -136,7 +138,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -166,15 +168,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -297,7 +341,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -311,10 +354,12 @@
 
       <div class="post-entry">
         
-          <p>感谢 08067Sec 的师傅们精心准备的比赛！本次DASCTF我们 SU 取得了 第一名🏆 的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a>
+        
+          
+        
+        <p>感谢 08067Sec 的师傅们精心准备的比赛！本次DASCTF我们 SU 取得了 第一名🏆 的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
  或者直接联系baozongwi QQ:2405758945。</p>
 <p>以下是我们 SU 本次 2025 DASCTF 上半年赛的 部分writeup以及赛后解出的部分题目。</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -416,12 +461,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -436,9 +481,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

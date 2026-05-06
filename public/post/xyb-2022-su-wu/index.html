@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 或直接联系书鱼(QQ:381382770)">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -427,39 +473,49 @@
 </span></span><span class="line"><span class="cl"><span class="n">fake_payload</span> <span class="o">=</span> <span class="n">base64url_encode</span><span class="p">((</span><span class="n">dumps</span><span class="p">(</span><span class="n">parsed_payload</span><span class="p">,</span> <span class="n">separators</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">))))</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;{&#34;  &#39;</span> <span class="o">+</span> <span class="n">header</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span> <span class="o">+</span> <span class="n">fake_payload</span> <span class="o">+</span> <span class="s1">&#39;.&#34;:&#34;&#34;,&#34;protected&#34;:&#34;&#39;</span> <span class="o">+</span> <span class="n">header</span> <span class="o">+</span> <span class="s1">&#39;&#34;, &#34;payload&#34;:&#34;&#39;</span> <span class="o">+</span> <span class="n">payload</span> <span class="o">+</span> <span class="s1">&#39;&#34;,&#34;signature&#34;:&#34;&#39;</span> <span class="o">+</span> <span class="n">signature</span> <span class="o">+</span> <span class="s1">&#39;&#34;}&#39;</span><span class="p">)</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/1.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 生成后就可以开始使用graphql注入，一步步注入获取密码为13Rj2x7VgjCLHIOZSGX0
 <img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/2.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 登录后查看flag</p>
 <h2 id="ezjava">ezjava</h2>
 <p><img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/3.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 <img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/4.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="rustwaf">Rustwaf</h2>
 <p>先读src，然后使用/readfile 传入/flag可以进一步看到源码
 <img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/5.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 参考https://blog.maple3142.net/2022/08/07/corctf-2022-writeups/#rustshop</p>
@@ -483,16 +539,20 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 逆一下，<code>str.charTo(offset, val)</code>代表将字符串<code>str</code>偏移<code>offset</code>（可正可负）处改为<code>val</code>。</p>
 <p>可越界写的条件是字符串<code>str</code>的长度为<code>3</code>，且当<code>val = 17</code>的时候，会返回存放<code>str</code>自身的堆块地址（结合动态调试）。</p>
 <p><img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/10.png"
   alt="image"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>由于本题没开<code>PIE</code>保护，且<code>got</code>表可写：</p>
 <p><img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/11.png"
   alt="image"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>所以其实任意写的思路很显然：先泄露出<code>str</code>自身堆块地址，然后就能用其与某<code>got</code>表地址的差值通过<code>charTo</code>任意写<code>got</code>表了。</p>
@@ -501,9 +561,11 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 <p>此外，这里应该也可以通过改某个<code>got</code>表为<code>puts@plt</code>，然后输入某个<code>got</code>的地址来泄露<code>libc</code>，或者先劫持<code>bss</code>段上的<code>stdin/stdout/stderr</code>指针为某个<code>got</code>表地址，然后比如再改<code>setvbuf</code>的<code>got</code>表为<code>puts@plt</code>，最后劫持执行流到<code>setvbuf</code>来泄露。不过这里貌似不太好泄露完再返回了，但是通过这里泄露的值和上述<code>60*8</code>的位置泄露的<code>libc</code>比对一下就不需要上面的爆破操作了。</p>
 <p>最后，选用如下<code>one_gadget</code>即可：
 <img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/12.png"
   alt="image"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
@@ -539,9 +601,11 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">sendlineafter</span><span class="p">(</span><span class="s2">&#34;&gt; &#34;</span><span class="p">,</span> <span class="s1">&#39;b.push(&#34;winmt&#34;);&#39;</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl"><span class="n">io</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/13.png"
   alt="image"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="protocol">protocol</h2>
@@ -821,9 +885,11 @@ cc4可以直接打，但是不出网，所以得打一个tomcat通用回显
 于是思路就是将libc start main的后三字节，改为one_gadget地址(由于libc地址后三位是固定的，所以我们需要爆破前三位，概率为1/4096)。</p>
 <p>但如果我们单纯的填垃圾数据，然后溢出篡改的话，情况如下
 <img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/6.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 即使我们溢出篡改了libc_start_main,也会返回到它上面的地址，所以我们需要让执行流滑到libc_start_main上，开了PIE保护，我们无法直接获取ret指令的地址，但是vsyscall的地址始终是固定的，它可以当做ret指令来用。
@@ -853,18 +919,22 @@ EXP</p>
 </span></span></code></pre></div><h2 id="sandboxheap">sandboxheap</h2>
 <p>沙箱分析
 <img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/7.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 此处为0才不会进入if，否则就走ptrace禁用了。
 初始化bss段这里全为1,当我们传进来的参数rdi为3的时候，则可以进入两个if(如下)，而switch case想进这里的话，需要让rax为0x2710,因此我们只要保证rop链执行的时候，先让rdi为3，rax为0x2710，然后调用syscall，自定义一个白名单，就可以去打orw了。
 漏洞所在：
 <img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/8.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 在edit函数里，input函数(函数已重命名)的参数有个+1，所以判断这里是存在个溢出的。
@@ -1203,9 +1273,11 @@ exp</p>
 $1$C5/bIl1n$9l5plqPKK4DjjqpGHz46Y/:890topico
 flag3直接是明文
 <img
+  class="blog-post__image"
   src="/post/xyb-2022-su-wu/9.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>stings发现里面有个secret.zip</p>
@@ -1514,12 +1586,12 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -1534,9 +1606,11 @@ flag{890topico_y0u_Ar3_tHe_LInUx_forEnsIcS_MASTER}</p>
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

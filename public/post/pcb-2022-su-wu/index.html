@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 或直接联系书鱼(QQ:381382770)">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -964,30 +1010,38 @@
 <h3 id="简单php">简单php</h3>
 <p>只能无参数执行，那么利用url取反加二维数组绕过,使用end(getallheaders())来取命令去执行</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image1.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image2.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="ez_java">Ez_java</h3>
 <p>存在反序列化黑名单</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image3.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>但是存在cb依赖</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image4.png"
   alt="1"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>可以尝试调用SignedObject的getobject二次反序列化</p>
@@ -1041,15 +1095,19 @@
 </span></span><span class="line"><span class="cl"><span class="k">return</span> <span class="n">queue</span><span class="p">;</span>
 </span></span></code></pre></div><p>再使用https://github.com/Y4er/ysoserial 打内存马直接命令执行获取flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image5.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image6.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>PCL{870bf708ae428c5da3191e69b4badf6a}</p>
@@ -1059,9 +1117,11 @@
 <p>这里构造payload&rsquo;/<strong>/union/</strong>/select(REPLACE(REPLACE(&rsquo;&quot;/<strong>/union/</strong>/select(REPLACE(REPLACE(&quot;!&quot;,CHAR(34),CHAR(39)),CHAR(33),&quot;!&quot;))%23&rsquo;,CHAR(34),CHAR(39)),CHAR(33),&rsquo;&quot;/<strong>/union/</strong>/select(REPLACE(REPLACE(&quot;!&quot;,CHAR(34),CHAR(39)),CHAR(33),&quot;!&quot;))%23&rsquo;))%23</p>
 <p>入让输入和输出一样</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image7.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>绕过验证获取flag   PCL{7a7a24ec-9dc5-434e-b30c-92fe2df7d626}</p>
@@ -1196,25 +1256,31 @@
 <h3 id="easysql">easysql</h3>
 <p>dirsearch 扫描发现phpmyadmin，口令root，password到了后台</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image8.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>挨个登陆 发现其中一个有flag User=SuperF1@g&amp;Pass=F1@g_1N_Th1S_UsEr_Y0u_Ge7_P@ssW0rd!!!</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image9.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="压缩包">压缩包</h3>
 <p>解法1：</p>
 <p>制作一个多文件的压缩包如下图：</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image10.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>将压缩包base64编码后通过content参数发包</p>
@@ -1222,47 +1288,59 @@
 <p><a href="http://192.168.1.113/static/upload/b712fd7be07efcb74ee5a9a9e5eb6ceb/xxxada.php">http://192.168.1.113</a>
 :8521/static/upload/1b4fd24ada6be9d55e67a6f8ab55c0c9/xxada.php</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image11.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>通过puts跨目录写shell到static/upload/下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;?php fputs(fopen(&#39;../shell.php&#39;,&#39;w&#39;),&#39;&lt;?php @eval($_POST[&#34;cmd&#34;])?&#39;);?&gt;
 </span></span></code></pre></div><p>http://192.168.1.110:8521/static/upload/shell.php</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image12.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>解法2：</p>
 <p>构造一个畸形的压缩包或者解压到一半损坏的压缩包即可。</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image13.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image14.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image15.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="misc">misc</h2>
 <h3 id="简单取证">简单取证</h3>
 <p>filescan发现secret.jpg</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image16.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>下载之后打开发现是base64编码,解码之后发现是倒置的zip</p>
@@ -1273,48 +1351,60 @@
 </span></span><span class="line"><span class="cl">c.write(b)
 </span></span></code></pre></div><p>发现要密码,最后在cmdscan里面发现密码</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image17.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到flag.txt,发现是每行是一个点的坐标</p>
 <p>使用gnuplot画图</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image18.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>扫码得到flag</p>
 <h3 id="misc_water">Misc_water</h3>
 <p>发现给出的png文件结尾还有多余数据,很容易发现是一个jpg数据的倒置与一个png文件</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image19.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>简单的提取处理一下,得到三张图片</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image20.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>根据题目名称water,猜测是盲水印</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image21.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到压缩包密码:ZC4#QaWbW</p>
 <p>得到一张奇怪的图片,010打开发现crc报错,而且根据图片内容很容易发现是高宽被修改</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image22.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>因此开始爆破png宽高,得到flag</p>
@@ -1344,16 +1434,20 @@
 </span></span><span class="line"><span class="cl">                print(int.from_bytes(height, byteorder=&#39;big&#39;))
 </span></span><span class="line"><span class="cl">                break 
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image23.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>修改高宽后得到flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image24.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="what_is_log">what_is_log</h3>
@@ -1364,40 +1458,50 @@
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">sysdig -r flag2.scap &gt; 1.txt
 </span></span></code></pre></div><p>在vscode里面翻了一下，大概翻到了个查询表的结构</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image25.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>搜索这种表的特征，找到了一串数据，且带有seccess，符合题目语境</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image26.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>PCL{1555a651a13ec074ce725383214fd7cc}</p>
 <h3 id="babybit">babybit</h3>
 <p>首先用OSFMount挂载镜像，然后用DiskGenius打开G盘：</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image27.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>把zip文件导出来，其实里边就是注册表的备份文件:</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image28.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>用Register Explorer导入注册表备份文件，bitlocker的加密开始时间位于SYSTEM:ControlSet001\Control\FVEStats\OscEncryptInit，加密结束时间则位于SYSTEM:ControlSet001\Control\FVEStats\OscEncryptComplete。</p>
 <p>这里应该说是时间戳，把时间戳转为正常的date格式：</p>
 <p><img
+  class="blog-post__image"
   src="/post/pcb-2022-su-wu/image29.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">import datetime
@@ -1882,12 +1986,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -1902,9 +2006,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

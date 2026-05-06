@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 第八届“强网”拟态防御国际精英挑战赛 的 WriteUp。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -511,24 +557,30 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>然后访问 /webjars/flag 就能获得 flag，虽然最后是 404 但是不影响</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/1.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="safesecret">safesecret</h2>
 <p>漏洞点在这里的ssti</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/2.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>获取secret, 这里需要ssrf</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/3.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>这一步可以直接ai问出来</p>
@@ -567,9 +619,11 @@
 <p>并且题目有一个read函数</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">f</span><span class="p">):</span> <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/4.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>我们可以从<code>sset.__globals__</code>直接获取到, 并且也可以直接使用sset把某些字符串存进session</p>
@@ -608,30 +662,38 @@
 </span></span></code></pre></div><p>这时候输入</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nv">env</span><span class="o">=</span><span class="nv">WGETRC</span><span class="o">=</span>/var/www/html/1.txt
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/5.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/6.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">find / -perm -4000 -type f -exec ls -la <span class="o">{}</span> 2&gt;/dev/null <span class="se">\;</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/7.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="ecshop">ecshop</h2>
 <p>不告诉你，这个就是很 ez，自己审代码去吧</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/19.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h1 id="reverse">Reverse</h1>
@@ -727,56 +789,72 @@
 <p>地址混淆+控制流平坦化，不会还原只能上动调</p>
 <p>首先init里出现了pthread_create创建新线程导致调试器附加失败（反调），因此直接跳过pthread_create的调用（IDA来set ip），接着跳过exit的调用</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/20.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/21.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>接着就可以F9来到main一点点调试，首先关注到解密出来了一个字符串&quot;arf@gocrying&quot;</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/22.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后输入字符串</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/23.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后循环做了放射处理</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/24.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>接着就是RC4，观察到了init和异或，同时该流程调用了三次</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/25.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/26.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>由于一直没复现出来，所以直接下条件断点提取异或值</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/27.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>提取出来异或的v10（keystream，正好是90个，也就是每次加密30个字符）</p>
@@ -1085,32 +1163,40 @@
 <h2 id="just">Just</h2>
 <p>il2cpp的加固，思考如何解密il2cpp.so</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/28.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>UnityPlayerActivity中载入了just.so，后续不再有任何JNI调用，说明利用了构造函数或者Jni_onload</p>
 <p>Just.so Hook了dlopen解密il2cpp.so</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/29.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>可以看到解密逻辑是RC4+^0x33</p>
 <p>密钥在上文中是nihaounity</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/30.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>解密到so文件，直接尝试il2cppdumper是失败的，发现metadata也被加密了，metadata是在il2cpp.so中进行加密的</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/31.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>看到加密逻辑，这里直接解密</p>
@@ -1134,36 +1220,46 @@
 </span></span><span class="line"><span class="cl">    <span class="n">decrypt</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 </span></span></code></pre></div><p>接下来il2cppdumper直接恢复符号了</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/32.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/33.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>TEA轮子没有任何魔改，就是tea加密自身之后再进行异或，引入流密码特性</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/34.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>根据PrivateImplementationDetails的特性，构造函数的这个内容是通过dump.cs找偏移在global-metadata中取值</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/35.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>根据偏移索引地址</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/36.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>即可找到密文密钥</p>
@@ -1703,18 +1799,22 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">        <span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/37.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>拿到密文是</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Plain" data-lang="Plain"><span class="line"><span class="cl">buiqhrvilHwigdClBuiTucduZnXmrLoHleieggbawsgsgcAyaFekhqWmAvqTocwhBuiiARfyurergyhNprwePcHcurmQsmGmqopirdhliaWpdRwIvhRphqgNproiBgGevBaRwfsyifiAlRvQpvglwfsemLQeBzswpnrkhbwmiAsXkcFjWvrXlLtuDbVsiRvyiqStWgcHwsxlLqqilrfCwfCmmqiWlPwhogSxuybMuvXmPncLbnrxPcGmitiWzgHbWhxXkcgfQtlxhQhxiakiUmtNprmvPcGmitiWecWhoeiegzMjWymxlaofwefyVgbyaFvmYyzmmGg
 </span></span></code></pre></div><p>用在线网站爆破密钥</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/38.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <blockquote>
@@ -1727,9 +1827,11 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span><span class="line"><span class="cl">核心代码我已将其放进了fork的私人仓库里
 </span></span></code></pre></div><p>去github上查找对应的项目，给出了app的基本代码，去commit发现账户对应的用户和密码要求</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/39.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>在issue里提到了qq，简单处理得到</p>
@@ -1739,16 +1841,20 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">EXPORT <span class="nv">GITHUB_TOKEN</span><span class="o">=</span>ghp_Jk...
 </span></span><span class="line"><span class="cl">./trufflehog github-experimental --repo https://github.com/Yu2ul0ver/Ciallo_Encrypt0r.git --object-discovery
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/40.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>随机访问一个拿到加密逻辑</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/41.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>带上密文和时间戳给ai写解密脚本</p>
@@ -1860,9 +1966,11 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 <h2 id="the-hidden-link">The Hidden Link</h2>
 <p>全是udp的流量，wirkshark简单的手动分析一下在</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/42.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>类似这样B后面有明文，且刚好能拼成正常的flag的内容，手动补填一下</p>
@@ -1880,32 +1988,40 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span></code></pre></div><h1 id="pwn">Pwn</h1>
 <h2 id="stack">stack</h2>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/43.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/44.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>sub_401354控制好输入可以泄漏rbp的栈地址。</p>
 <p>sub_4013B9存在大量栈溢出。</p>
 <p>在sub_4013B9中调试发现栈上存在libc地址：</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/45.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>我们可以通过合理控制rbp回到sub_401354来泄漏libc地址0x75ae10429d90然后顺便回到main函数0x401413，但是这样下一次printf会出现栈对齐问题，所以我们需要栈迁移一次避免调用main函数，而是直接调用sub_401354的read部分。</p>
 <p>这样通过合理构造rbp完成栈上的栈迁移，通过sub_401354自带的printf将libc打印出来，然后接上一个sub_4013B9的read部分，再绕开沙盒执行orw即可获得flag：</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/46.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>exp：</p>
@@ -2012,17 +2128,21 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span><span class="line"><span class="cl"><span class="n">op</span><span class="p">()</span>
 </span></span></code></pre></div><p>flag：</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/47.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="pinnote">PinNote</h2>
 <p>看了一圈没看出问题，直到测这个 tmp/pin* 文件</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/48.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>如果两个进程同时指向一个文件，就可以篡改size,</p>
@@ -2395,9 +2515,11 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span></code></pre></div><h2 id="babystack">babystack</h2>
 <p>程序逻辑如下，可以通过第二次输入将n180097847覆盖，然后直接getshell</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/49.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2459,9 +2581,11 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span></span><span class="line"><span class="cl"><span class="w"> </span><span class="nt">0008</span><span class="p">:</span><span class="w"> </span><span class="m">0x06</span><span class="w"> </span><span class="m">0x00</span><span class="w"> </span><span class="m">0x00</span><span class="w"> </span><span class="m">0x00000000</span><span class="w">  </span><span class="l">return KILL</span><span class="w">
 </span></span></span></code></pre></div><p>大概分析一下逻辑，先是一个密码</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/50.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后可以输入指令，但这上面这几个指令都没什么用。主要是下面的逻辑，我们可以发送3种类型的 ISO-TP 帧</p>
@@ -2480,9 +2604,11 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </ul>
 <p>大概尝试了一下，可以利用处理 CF 帧的这个 if 判断来泄露 pie</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/51.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>没细看处理的逻辑，但大概尝试了一下</p>
@@ -2496,16 +2622,20 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span></span></code></pre></div><p>就能执行到这个else分支，应该是输入的 CF 帧不合法导致的</p>
 <p>值得注意的是这个函数</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/52.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>memcpy没有对长度进行判断，当满足条件的时候就会执行下面这个 p_sub_16E0, 存放在 buf_ + 0x100 的位置</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/53.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>可以先发送一个 FF 帧，例如：发送 <code>1#1008...</code>, 发这个帧是为了设定 ::n 的大小 , 由1#1后面的三个数字来决定，这个例子中  ::n 会被设定为 8。</p>
@@ -2520,17 +2650,21 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
 </span></span><span class="line"><span class="cl"><span class="o">.</span><span class="n">text</span><span class="p">:</span><span class="mi">000000000000131</span><span class="n">E</span>                 <span class="n">call</span>    <span class="n">_fgets</span>
 </span></span></code></pre></div><p>然后我们把 p_sub_16E0 覆盖成这个gadget <code>push rdi ; pop rsp ; ret</code>。因为执行 p_sub_16E0 之前寄存器的状态是这样的</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/54.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>用这个gadget就能把栈迁移到bss段上，最后通过fgets的溢出来布置orw的rop链即可</p>
 <p>大概泄露了一下远程的libc</p>
 <p><img
+  class="blog-post__image"
   src="/post/ntfy-2025-su-wu/55.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2726,7 +2860,7 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
           <ul class="pager blog-pager">
             
               <li class="previous">
-                <a href="/post/wmctf-2025-su-wu/" data-toggle="tooltip" data-placement="top" title="2025 WMCTF SU WriteUp">&larr; Previous Post</a>
+                <a href="/post/qwb-s9-su-wu/" data-toggle="tooltip" data-placement="top" title="2025 QWB-S9 SU WriteUp">&larr; Previous Post</a>
               </li>
             
             
@@ -2816,12 +2950,12 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -2836,9 +2970,11 @@ $$Y_{n+1} = [(aX_n + b) \mod p] \mod 256$$
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

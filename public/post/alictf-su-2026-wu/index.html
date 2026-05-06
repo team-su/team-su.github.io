@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 2026 ALICTF 的 WriteUp。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -402,9 +448,11 @@
  或者直接联系baozongwi QQ:2405758945。</p>
 <p>以下是我们 SU 本次 2026 ALICTF 的 WriteUp。</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/1.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h1 id="web">Web</h1>
@@ -426,9 +474,11 @@
 </span></span></span></code></pre></div><p>黑名单包含了大部分常用反序列化 Gadget 类:</p>
 <p>复盘去年 WP 发现，当前环境缺失了 <code>com.feilong</code> 依赖，导致二次反序列化绕过黑名单的方案失效，这也意味着挖掘新利用链</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/2.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>先分析一下黑名单，包含了大部分常用反序列化 Gadget 类:</p>
@@ -477,9 +527,11 @@
 </ul>
 <p>起初试图复刻去年的思路挖掘二次反序列化，但此路俺没走通，失败了</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/3.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>就在一筹莫展之际，猛地想起老大梅子酒在 Non-RCE 题解中提到的 <code>StoreableCachingMap</code> 链子。这条链子能实现任意路径写文件，幸运地避开了黑名单的拦截**！**</p>
@@ -493,9 +545,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">                            </span><span class="n">SimpleCache$StorableCachingMap</span><span class="p">.</span><span class="na">writeToPath</span><span class="p">()</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">                                </span><span class="n">FileOutputStream</span><span class="p">.</span><span class="na">write</span><span class="p">()</span><span class="w">
 </span></span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/4.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><strong>适配Fury 完整<strong><strong>POC</strong></strong>如下：</strong></p>
@@ -598,9 +652,11 @@
 </span></span><span class="line"><span class="cl">  → 写入文件 key，内容为 value
 </span></span></code></pre></div><p>有了写文件能力，我以为胜券在握。尝试了包括但不限于计划任务、LD_Preload、charsets.jar 等各种写入姿势，结果竟无一奏效。苦也！这波折腾直接把狂子写到怀疑人生，当时心凉半截，只道是这一血要拱手让人了</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/5.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>正所谓山重水复疑无路，柳暗花明又一村。绝境中忽忆起一篇 FastJson 写入绕过的文章，妙招在于开启 <code>-verbose:class</code> 参数，通过监控类加载情况，精准定位未被加载的 JAR 包实施覆盖利用。</p>
@@ -660,25 +716,31 @@
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>至于<code>dnsns.jar</code> 怎么改？驰骋AWDP赛场的诸君，像这种<code>JarEditor</code> 手改字节码的基操，想必无需我多言了，对吧？</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/6.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>先发包覆盖<code>dnsns.jar</code> ，再发包触发恶意类加载，完成RCE</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/7.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>比赛结束后，我试图向她解释什么是 Apache Fury 的黑名单绕过，解释那个 <code>dnsns.jar</code> 的覆盖是多么的神来之笔。她只是淡淡地看了我一眼转身就走了</p>
 <p>那一刻我才明白</p>
 <p><strong>可惜她不懂JAVA，也不懂我的⚡超！⚡级！⚡炎！🔥舞！🔥爆！⚡爆！⚡回！⚡</strong></p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/8.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>参考资料：</p>
@@ -740,9 +802,11 @@
 <p>至于Hessian Payload，发现存在Jackson依赖就好办了，使用 <code>Jackson POJONode</code> 触发 <code>UnixPrintService</code>的getter 方法达成RCE</p>
 <p>2026 年了，不识 <code>UnixPrintService</code>，纵称英雄也枉然，快去学习我大哥yemoli在KCON2023首秀的《<strong>Magic In Java</strong> <strong>API</strong>》议题</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/9.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><strong>完整<strong><strong>POC</strong></strong>如下（</strong> <strong>Hessian</strong> <strong>序列化****数据必须是 2.0</strong> <strong>RPC</strong> <strong>Reply 格式）：</strong></p>
@@ -945,9 +1009,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/10.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>继续分析发现还存在ViburDBCPObjectFactory 可以利用，其中，允许通过 JNDI Reference 实例化并配置一个 DataSource，且会自动调用其 <code>start()</code>方法内部调用 <code>DriverManager.getDriver(jdbcUrl)</code>，从而触发JDBC 攻击</p>
@@ -973,33 +1039,41 @@
 <li><strong>RCE</strong>: <code>chmod 444 /flag &amp;&amp; cat /flag</code> -&gt; CAT FLAG</li>
 </ol>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/11.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="stage-3--获取flag">Stage 3:  获取FLAG</h3>
 <p>改写x1r0z 师傅的<code>JNDIMap</code> 项目修改参考 <a href="https://github.com/N1etzsche0/JNDIMap">https://github.com/N1etzsche0/JNDIMap</a>
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/12.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>爽！😎这才叫RCE🎶！😋👍爽！😎这才叫RCE🎶！😋👍😎这才叫RCE🎶！</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/13.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>GGWP</p>
 <p>青山不改，绿水长流。山水有相逢，下篇WP再见</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/14.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>参考资料：</p>
@@ -1127,9 +1201,11 @@
 </span></span><span class="line"><span class="cl">  XOR Key =&gt; 2a7fc3915e348b19d267f428ab76439d
 </span></span></code></pre></div><p>根据题目中的 <code>攻击者曾在系统上创建并配置了一个恶意 FTP 服务</code>，试一下 发现可以匿名登录 anonymous</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/23.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后在 <code>microsoft </code>目录下发现 <code>results.txt</code>，内容是 mimikatz dcsync /all 输出，包含大量 NTLM 哈希</p>
@@ -1990,9 +2066,11 @@
 <p>看了绕过方法之后，收集代码 <a href="https://github.com/denandz/sourcemapper">https://github.com/denandz/sourcemapper</a>
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/15.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="k">for</span> url in <span class="se">\
@@ -2415,30 +2493,38 @@
 <p>所以我们可以通过修改对应的数据文本去引导RAG检索我们构造的恶意提示词，然后去执行一些操作</p>
 <p>下载原始语料后直接上传</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/24.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>测试后知道第一个问题的答案是李善德购买的宅子位于长安城南边的归义坊内。，去掉修饰语其实就是归义坊，通过VSCode搜索发现是在chunk_002.txt得到的这个答案。</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/25.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>试着在原文的归义坊附近添加内容来输出flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/26.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>上传后得到flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/27.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="auction">Auction</h2>
@@ -3934,9 +4020,11 @@
 </span></span></span></code></pre></div><p>然后像 batch1/batch3 一样切片 + LZRR 解压 + 提取 base64，即可得到flag_part_2.jpg和flag_part_4.jpg</p>
 <p>最后写个脚本拼起来得到完整图片：</p>
 <p><img
+  class="blog-post__image"
   src="/post/alictf-su-2026-wu/28.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>flag为：<code>alictf{5a8e0fb1-d3f5-4b13-8424-164faab9bbd2}</code></p>
@@ -4049,12 +4137,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -4069,9 +4157,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

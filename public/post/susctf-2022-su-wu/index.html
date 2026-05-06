@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 2022 SUSCTF的 writeup">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -928,35 +974,45 @@ Basically after going though many cases I’ve figured out final parameters that
 <h2 id="checkin">Checkin</h2>
 <p>Discord频道给机器人私发&quot;&gt;flag&quot;可以得到一闪而过的flag，考虑使用录屏来获取。
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005625955.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="ra2">ra2</h2>
 <p>直接玩游戏即可得到flag：SUSCTF{RED_ALERT_WINNER!!!}
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626061.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626302.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626167.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626003.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="tanner">Tanner</h2>
@@ -966,16 +1022,20 @@ Basically after going though many cases I’ve figured out final parameters that
 <h2 id="audio">AUDIO</h2>
 <p>听fromfreiend的音频可以在30s部分听见比较明显的morse电码声音,而原始音频无杂音。因此猜测是否两者可以进行叠加而消除而只保留morse电码声音,网上搜了一下,发现b站教程一大堆,大部分都是用au进行。随便乱调,发现在等于-6dB时可以只听见清晰的电码声音,于是开始导出文件看频谱,可以很清晰得看到明显的morse电码
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626383.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>&hellip; ..- &hellip; -.-. - ..-. &ndash; .- &hellip; - . .-. &mdash; ..-. .- ..- -.. .. &mdash;
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626207.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 最后加上{}
@@ -988,9 +1048,11 @@ SUSCTF{MASTEROFAUDIO}</p>
 分割一下，大概是
 a new multiply is e times _ will become b
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626343.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 翻译得到：一个新的乘法是e乘以_将变成b
@@ -1142,9 +1204,11 @@ _的ASCII值是95</p>
 </span></span></code></pre></div><h2 id="kqueues-revenge">kqueue&rsquo;s revenge</h2>
 <p>diff了一下直接有flag
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626084.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="mujs">mujs</h2>
@@ -1486,9 +1550,11 @@ $$c2^{-1024e}\equiv{m^e}\pmod{n}$$</p>
 </span></span></code></pre></div><h2 id="inverseproblem">InverseProblem</h2>
 <p>小数矩阵乘法求逆，在这个过程中无论如何计算都会产生精度损失（做题过程中尝试了使用Rational域计算都没用），后来意识到也许可以用格来做，构造一个这样的格：
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626248.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 其左边如果乘以flag构成的向量，那么得到的目标向量会是：$ (errors, flag) $，理想状态下，errors等于0，但是受到精度影响，errors不等于0，但是很小，同时flag也很小，因此可以达成目的。
@@ -1852,15 +1918,19 @@ exp如下：</p>
 python pyinstxtractor.py DigitalCircuits.exe
 之后对比 struct 与 DigitalCircuits 2个文件的16进制码
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626629.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626083.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 复制插入16进制码 修复Python版本和时间戳之后 将DigitalCircuits后缀改为.pyc
@@ -2306,9 +2376,11 @@ exp</p>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">did</span><span class="p">))</span>
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">ans</span><span class="p">)</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/1.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="hell_world">hell_world</h2>
@@ -2316,9 +2388,11 @@ exp</p>
 来解题
 从字符串搜索关键点
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626448.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 之后就是慢慢解析每个case的作用
@@ -2326,15 +2400,19 @@ exp</p>
 之后慢慢调试一遍流程后 发现case11条件里面的sub_140009CC0函数与链接函数一样
 所以进行调试发现 这个算法其实就是一个异或算法
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626545.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 <img
+  class="blog-post__image"
   src="/post/susctf-2022-su-wu/20220301005626508.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 
 上面的v74与v71是是输入的加密结果和密文，密文就在本分支的dword_1400F5B80[]数组
@@ -2552,12 +2630,12 @@ exp</p>
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -2572,9 +2650,11 @@ exp</p>
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

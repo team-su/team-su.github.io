@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 2023 RWCTF的 writeup">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -386,9 +432,11 @@
 <h2 id="happyfactory">HappyFactory</h2>
 <p>这题的合约类型是DeFi-DEX，由于大多数DEX采用的是恒定乘积自动做市商模型，所以首先看合约代码中是否存在K值校验计算错误的问题，发现不存在这个问题，并且代码基本上正确，第一眼看不出什么异常，于是找到目前链上主流的DEX合约代码来进行对比，发现题目合约代码中关于币对流动性储备值的处理与正常的流程不一致，存在先发送代币后更新储备值的可能，可供我们构造出比原先更低的恒定乘积K值，以绕过滑点问题，使得我们能够通过1A代币交换成1B代币。大致流程是：先换出1B代币给攻击合约账户-回调攻击合约的HappyCall-在HappyCall函数中调用币对流动性的sync函数更新储备值（原先为10:10，现在为10:9）-将1A代币转给币对流动性以增加它的余额值（此时余额值为11：9，能够通过K值校验）-最后将成功换出的1B代币发送给deployer账户。题目的最大坑点在于回调函数名应该为HappyCall而不是代码中给出的KonohaCall，这个要自己调试才能猜出来。</p>
 <p><img
+  class="blog-post__image"
   src="/post/rwctf-2023-su-wu/1.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>具体的攻击合约代码与脚本如下：
@@ -564,9 +612,11 @@ Hacker.sol:</p>
 <p>apktools 反编译得到smai代码，然后把图中this.length&gt;55条件取反，再编译成apk正常玩游戏，吃掉第一个后面的接着就是flag
 这里是对蛇的长度判读，正常玩需要长度大于55后才会出现flag，取反后可以直接出现flag。
 <img
+  class="blog-post__image"
   src="/post/rwctf-2023-su-wu/2.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="be-a-language-expert">Be-a-Language-Expert</h2>
@@ -582,9 +632,11 @@ Hacker.sol:</p>
 </span></span><span class="line"><span class="cl">Pragma: no-cache
 </span></span><span class="line"><span class="cl">Cache-Control: no-cache
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/rwctf-2023-su-wu/3.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="babycurve">babyCurve</h2>
@@ -609,32 +661,40 @@ Hacker.sol:</p>
 <h2 id="evil-mysql-server">Evil MySQL Server</h2>
 <p>MySQL服务端读取客户端文件漏洞
 <img
+  class="blog-post__image"
   src="/post/rwctf-2023-su-wu/4.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="yummy-api">Yummy Api</h2>
 <p>YApi NoSQL注入导致远程命令执行漏洞
 <img
+  class="blog-post__image"
   src="/post/rwctf-2023-su-wu/5.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="be-a-famicom-hacker">Be-a-Famicom-Hacker</h2>
 <p><code>https://tieba.baidu.com/p/20384367?pn=1</code>
 <img
+  class="blog-post__image"
   src="/post/rwctf-2023-su-wu/6.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 玩游戏通关到最后按这两个键出flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/rwctf-2023-su-wu/7.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 上上下下左右左右ba</p>
@@ -990,12 +1050,12 @@ Hacker.sol:</p>
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -1010,9 +1070,11 @@ Hacker.sol:</p>
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

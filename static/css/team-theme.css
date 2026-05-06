@@ -161,6 +161,18 @@ a:focus {
   color: var(--accent);
 }
 
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid rgba(101, 217, 255, 0.72);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px rgba(101, 217, 255, 0.16);
+}
+
 p,
 li {
   color: var(--text-soft);
@@ -765,7 +777,9 @@ html[data-theme="light"] .post-preview.team-card:focus-within {
 .post-preview .post-title {
   margin: 0;
   font-size: clamp(30px, 4vw, 44px);
-  line-height: 0.98;
+  line-height: 1.12;
+  line-break: loose;
+  overflow-wrap: break-word;
 }
 
 .post-preview .post-subtitle {
@@ -1045,6 +1059,13 @@ html[data-theme="light"] .disqus-comments {
 .blog-post blockquote {
   font-size: 17px;
   line-height: 1.95;
+}
+
+.blog-post--page > p,
+.blog-post--page > ul,
+.blog-post--page > ol,
+.blog-post--page > blockquote {
+  max-width: 72ch;
 }
 
 .blog-post p,
@@ -1605,6 +1626,15 @@ html[data-theme="light"] .member-list .member-row:first-child {
   color: var(--text-soft);
   font-size: 15px;
   line-height: 1.85;
+  overflow-wrap: anywhere;
+}
+
+.honors-zigzag__event,
+.honors-yearline__event,
+.honor-result,
+.honor-result__sep,
+.blog-post a[href^="mailto:"] {
+  overflow-wrap: anywhere;
 }
 
 footer {
@@ -1849,6 +1879,12 @@ footer div.disclaimer {
     padding-right: 12px;
   }
 
+  .page-home > .row,
+  .page-list > .row {
+    margin-left: -12px;
+    margin-right: -12px;
+  }
+
   .navbar-custom .navbar-header {
     min-height: 62px;
   }
@@ -1905,12 +1941,24 @@ footer div.disclaimer {
     gap: 20px;
   }
 
+  .team-hero__title {
+    font-size: clamp(42px, 14vw, 64px);
+    line-height: 0.96;
+  }
+
   .team-hero__subtitle {
     max-width: none;
   }
 
   .post-preview__body {
     padding: 22px 0 24px;
+  }
+
+  .copyCodeButton {
+    min-width: 44px;
+    min-height: 44px;
+    height: auto;
+    padding: 0 14px;
   }
 
   .post-preview__footer {

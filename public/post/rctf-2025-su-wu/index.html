@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 2025 RCTF 的 WriteUp。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -411,9 +457,11 @@
  或者直接联系baozongwi QQ:2405758945。</p>
 <p>以下是我们 SU 本次 2025 RCTF 的 WriteUp。</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/0.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h1 id="web">Web</h1>
@@ -422,9 +470,11 @@
 <img src="1.png" alt="img" width="50%" />
 <p>在pycharm 上对比发现 v2.3.1 和 v2.3.0 改动发现添加了sandbox.so 和 LD_PRELOAD 环境变量且sandbox.so 允许被覆盖，那么参考 LD_PRELOAD 劫持即可</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/2.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>感觉开发者的修法好抽象，用sandbox.so修复了一个SSRF结果又来一个RCE，俺也不知道俺也不敢问</p>
@@ -1090,61 +1140,79 @@
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p>在idea 里面扒一扒继承InvocationHandler  接口且在白名单的类有哪些，只有这三个</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/7.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>EarlySingletonInvocationHandler 类看着没啥用</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/8.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>ServiceLocatorInvocationHandler 类最后会触发<code>args[0]</code>的toString 方法，利用难度太大</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/9.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/10.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/11.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>参考Spring1 链子易知ObjectFactoryDelegatingInvocationHandler可以自定义的ObjectFactory 类触发 getObject 方法</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/12.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>翻了一下找到了TargetBeanObjectFactory 这个类，恰巧SimpleJndiBeanFactory 这个类继承自BeanFactory 接口，其中的getBean 方法会触发lookup ，一切就大功告成了</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/13.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/14.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/15.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <img src="16.png" alt="img" width="50%" />
@@ -1245,9 +1313,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="p">}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="p">}</span><span class="w">
 </span></span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/17.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>感谢出题师傅手下留情，俺做出来了，要是学了这么久的JAVA要是这次再爆0，俺真的会玉玉了</p>
@@ -1647,9 +1717,11 @@
 </span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
 </span></span><span class="line"><span class="cl">    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/19.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="ultimatefreeloader">UltimateFreeloader</h2>
@@ -1673,23 +1745,29 @@
 <p>这里再思考这两个订单是哪个订单是用优惠券创建的，假设创建订单用优惠券创建，退款订单是直接花钱买的，即使我们竞争成功实现零元购也没意义，用优惠券创建订单本来就不用花钱，而且优惠券也没了，所以唯一的可能就是退款订单是用优惠券创建的，创建订单是直接花钱买的，说不定还有奇迹发生，能通过某种神奇的方式利用竞争免费创建订单。</p>
 <p>先头脑风暴一下大概的思路，然后仔细分析一下这一块的代码，先看到创建订单这里，过程大概就是先对购买操作上锁，然后校验用户和商品，接着计算价格，如果优惠券金额大于商品价格，最终价格会被置为 0，最后检查余额是否能支付这个最终价格。</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/20.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>代码这里看起来没什么问题，后面就是数据库这边的操作了，会先用<code>this.orderMapper.insert(order):</code> 在订单表 orders 中插入一条新的订单记录，接着用 <code>BigDecimal newBalance = user.getBalance().subtract(finalPrice);</code>计算一个新余额，最后用<code>this.userService.updateBalance(userId, newBalance)</code>把新余额写入用户的账户，这里的逻辑其实就非常的奇怪了，正常的代码逻辑应该是对数据库里的余额做加减，这里却是算出一个新余额后替换数据库里的余额，并且还没上锁，一看就很可疑的样子。</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/21.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后再看到退款这边的逻辑，可以看到差不多，先用加法算一下当前的余额加上退款后的值得到一个新余额，然后用<code>this.userService.updateBalance</code>把用户的余额替换成新余额的值。</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/22.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>所以之前的思路确实是没问题的，就是要在退款订单和创建订单之间并发做竞争，假设退款订单的顺序是1.检查订单是否合法2.将余额替换成10(假设退款后的余额应该是10)，创建订单的顺序是3.检查订单是否合法4.将余额替换成0(假设购买后的余额应该是0)，只要竞争到一个1342的顺序，就能在完成创建订单的所有操作后反而执行到退款订单的操作2，将余额替换成10，这样就成功实现零元购了。</p>
@@ -1976,69 +2054,87 @@
 <p>第一问</p>
 <p>根据视频的信息，直接在youtube里搜关键词快速定位到了这个视频，答案为8ssDGBTssUI</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/23.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>第二问</p>
 <p>视频介绍里，提到了这个项目的网站</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/24.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>进网站可以看到有对应的项目仓库，装个svn的gui工具</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/25.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>访问仓库，可以看到有若干版本</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/26.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>在v0.9里找到soft error相关的记录，发现revision是178，所以答案是r178（gpt告诉我的格式）</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/27.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>第三问</p>
 <p>在网站里可以快速定位到作者的个人官网https://mateusz.viste.fr/</p>
 <p>在最下面可以找到</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/28.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>答案是https://mateusz.viste.fr/mateusz.ogg</p>
 <p>第四问</p>
 <p>个人主页里提到了有一个gopher空间，访问进去可以找到捐赠链接</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/29.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>或者直接搜关键词也能看到</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/30.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/31.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="wanna-feel-love">Wanna Feel Love</h2>
@@ -2047,24 +2143,30 @@
 <p>题目给了个附件 里面是有eml邮件</p>
 <p>看了一下邮件内容，一眼垃圾邮件隐写 解隐写拿到</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/32.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>第二问</p>
 <p>邮件里有个xm文件 ai分析一波发现要用OpenMPT打开，下个工具</p>
 <p>说是要提取feel的信息，切到feel的波形发现明显是转01，黑为0红为1</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/33.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/34.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>写脚本提取</p>
@@ -2109,24 +2211,30 @@
 </span></span></code></pre></div><p>得到答案I Feel Fantastic heyheyhey</p>
 <p>第三问 通过搜索第二问的答案可以找到这个猎奇小玩意</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/35.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后可以gpt梭哈</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/36.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>第四问</p>
 <p>继续gpt梭哈，页面也可以自己搜到，不难</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/37.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>同时通过调查可以发现一篇关键文章 <a href="https://yitzilitt.medium.com/the-story-behind-i-feel-fantastic-tara-the-singing-android-and-john-bergeron-fc83de9e8f36">https://yitzilitt.medium.com/the-story-behind-i-feel-fantastic-tara-the-singing-android-and-john-bergeron-fc83de9e8f36</a>
@@ -2135,9 +2243,11 @@
 <p>在关键文章的评论里可以找到</p>
 <p>答案为https://www.findagrave.com/memorial/63520325/john-louis-bergeron</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/38.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="shadows-of-asgard">Shadows of Asgard</h2>
@@ -2145,17 +2255,21 @@
 <p>第一问</p>
 <p>跟踪第一个http流就看到了</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/39.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>第二问</p>
 <p>往后分析，发现这里传了aeskey和iv还有data，说明是aes加密了数据 并且key一直没变</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/40.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>ai搞了个脚本来解密</p>
@@ -2205,46 +2319,58 @@
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="n">ctr_res</span> <span class="k">if</span> <span class="n">ctr_res</span> <span class="k">else</span> <span class="s2">&#34;CTR 解密失败&#34;</span><span class="p">)</span>
 </span></span></code></pre></div><p>解出路径</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/41.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>第三问</p>
 <p>一样的解数据，根据描述藏了隐写，同一个流里发现png图片内有base数据</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/42.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>提出来解密就行，得到id</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/43.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>第四问</p>
 <p>找数据然后解密</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/44.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>第五问</p>
 <p>接着解数据</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/45.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/46.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="the-alchemists-cage">The Alchemist&rsquo;s Cage</h2>
@@ -2252,9 +2378,11 @@
 <p>进去先输个soul 创建个对象</p>
 <p>然后就可以开始在五轮内进行注入攻击了，很简单的，随便让它爆爆就出来了，这里是让它重复上一轮回复，当出现指定关键词（这里是谎言），输出关键字符串</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/47.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="asgard-fallen-down">Asgard Fallen Down</h2>
@@ -2263,138 +2391,176 @@
 <p>干扰的流量太多，不太好找</p>
 <p>在流207中发现类似连接成功的流量</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/48.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>解码看看，看到了熟悉的进程</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/49.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>同时我们注意到，响应包中有三个奇怪的base64字符串</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/50.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>解码看一下，发现第一个长度是32，第二个是16，猜测为AES的key和iv</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/51.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/52.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>继续往后看，在之后紧跟着的包中看到，一串神秘的base64</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/53.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>使用之前得到的密钥和iv可以成功解密</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/54.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到命令<code>spawn whoami</code></p>
 <p>然后在之后的</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/55.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到命令执行结果</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/56.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><strong>Challenge 2: The Heartbeat</strong></p>
 <p>很明显之前的命令执行过程含有心跳包机制，在207流中很明显看到时间间隔是<code>10s</code></p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/57.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><strong>Challenge 3: The Heart of Iron</strong></p>
 <p>继续解密即可</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/58.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/59.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>找到响应包解密</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/60.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/61.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到答案<code>Intel64 Family 6 Model 191 Stepping 2, GenuineIntel</code></p>
 <p><strong>Challenge 4: Odin&rsquo;s Eye</strong></p>
 <p>搜索关键词<code>build:20251115</code>可在2787流中找到本题的执行命令</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/62.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/63.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>发现之后有很多大块的响应包，猜测是可能图片base64后太大一次不好传输于是分段传输</p>
 <p>正则匹配，解密</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/64.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>不知道为啥cbc没解出来，cbcnopadding出了</p>
 <p>解密result</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/65.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到图片，工具是<code>TscanPlus</code></p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/66.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="vault">vault</h2>
@@ -2404,36 +2570,46 @@
 <p>但是不懂区块链只能让ai帮忙做，换了两轮ai，gpt和gemini都怪怪的，最后用claude梭出来了</p>
 <p>改了客户端的vault.move 然后修改Move.toml和Solve.move拿到了flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/67.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/68.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><a href="https://claude.ai/share/87c74de4-00d5-4ac9-bfce-a8faecb24525">https://claude.ai/share/87c74de4-00d5-4ac9-bfce-a8faecb24525</a>
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/69.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/70.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="n">module</span> <span class="n">solution</span><span class="o">::</span><span class="n">solution</span> <span class="p">{</span>     <span class="n">use</span> <span class="n">sui</span><span class="o">::</span><span class="n">coin</span><span class="o">::</span><span class="p">{</span><span class="n">Self</span><span class="p">,</span> <span class="n">TreasuryCap</span><span class="p">};</span>     <span class="n">use</span> <span class="n">sui</span><span class="o">::</span><span class="n">tx_context</span><span class="o">::</span><span class="n">TxContext</span><span class="p">;</span>     <span class="n">use</span> <span class="n">challenge</span><span class="o">::</span><span class="n">vault</span><span class="o">::</span><span class="p">{</span><span class="n">Self</span><span class="p">,</span> <span class="n">Vault</span><span class="p">,</span> <span class="n">AirdropTracker</span><span class="p">};</span>     <span class="n">use</span> <span class="n">challenge</span><span class="o">::</span><span class="n">vault_coin</span><span class="o">::</span><span class="n">VAULT_COIN</span><span class="p">;</span>      <span class="k">public</span> <span class="n">fun</span> <span class="nf">solve</span><span class="p">(</span>         <span class="nl">vault</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">mut</span> <span class="n">Vault</span><span class="p">,</span>         <span class="nl">tracker</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">mut</span> <span class="n">AirdropTracker</span><span class="p">,</span>         <span class="nl">treasury</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">mut</span> <span class="n">TreasuryCap</span><span class="o">&lt;</span><span class="n">VAULT_COIN</span><span class="o">&gt;</span><span class="p">,</span>         <span class="nl">ctx</span><span class="p">:</span> <span class="o">&amp;</span><span class="n">mut</span> <span class="n">TxContext</span>     <span class="p">)</span> <span class="p">{</span>         <span class="n">vault</span><span class="o">::</span><span class="n">request_airdrop</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">treasury</span><span class="p">,</span> <span class="n">ctx</span><span class="p">);</span>         <span class="n">let</span> <span class="n">proof_coin</span> <span class="o">=</span> <span class="n">coin</span><span class="o">::</span><span class="n">mint</span><span class="p">(</span><span class="n">treasury</span><span class="p">,</span> <span class="mi">100</span><span class="n">_000_000_000</span><span class="p">,</span> <span class="n">ctx</span><span class="p">);</span>         <span class="n">vault</span><span class="o">::</span><span class="n">buy_flag</span><span class="p">(</span><span class="n">tracker</span><span class="p">,</span> <span class="n">vault</span><span class="p">,</span> <span class="n">proof_coin</span><span class="p">,</span> <span class="n">ctx</span><span class="p">);</span>     <span class="p">}</span> <span class="p">}</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/71.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h1 id="pwn">Pwn</h1>
@@ -2866,18 +3042,22 @@
 </ul>
 <p>让ai改完代码下载好rust后，运行cargo run -p client即可得到flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/72.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h1 id="reverse">Reverse</h1>
 <h2 id="chaos">Chaos</h2>
 <p>出糊了变成签到，运行程序即给flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/73.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>flag：RCTF{AntiDbg_KeyM0d_2025_R3v3rs3}</p>
@@ -2983,9 +3163,11 @@
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>调试起来发现key是flag:{Th1sflaglsGo0ds}</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/74.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>尝试解密发现有问题，然后注意到几处反调试</p>
@@ -3513,15 +3695,19 @@
 </span></span></code></pre></div><p>上面可以完整的打印所有流程，输入ints我最开始构造的是aaaa、bbbb等ascii_letters[:50]，最开始可以把log注释全部取消，debug参数改为True可以看到完整流程</p>
 <p>观察到第一组数据读出了0x63636363，也就是第三个数，然后会运行到opcode为0x90的地方，可以发现打印Fail前面正好有一处cmp比较了数值，测试发现第一个数是固定的，第二个是我们输入的数字经过加密得到的</p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/75.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/rctf-2025-su-wu/76.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>我们可以简化下代码，实际上可以只看<strong>数字读取开始</strong>到<strong>cmp比较</strong>中间的运算代码，jmp类log、数据读取类均可以注释掉，方便我们分析运算代码（具体修改是把debug改为False、opcode 0x18那里增加reg==0时候设置debug_ok开始打印日志），此时一轮check日志可以缩减为2000行左右了，可以把一轮的日志喂给各种ai让他们各显神通</p>
@@ -4723,12 +4909,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -4743,9 +4929,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 或直接联系书鱼(QQ:381382770)">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -413,16 +459,20 @@
 <p>是个信呼的web应用，老洞都打不了，没有给写入的权限，</p>
 <p>所以我们需要去找新的利用点</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536083.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>这个地方把他生成的方法类中的displayfile传入到了下面的mpathname中</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536029.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>于是在这个位置就可能会造成</p>
@@ -430,9 +480,11 @@
 <p>然后全局搜索一下那个displayfile</p>
 <p>发现在webmain/index/indexAction.php中的getshtmlAction方法里传入一个surl，然后经过拼接传入到了displayfile中，而surl是我们可控的，所以这里确实存在一个文件包含</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536532.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>这里因为拼接了后缀为php，而我们没有上传文件的权限，所以只能包含已经有的文件。然后就想到前阵子p神提出的pearcmd.php的利用。</p>
@@ -558,18 +610,22 @@
 <h3 id="yusa的小秘密">yusa的小秘密</h3>
 <p>Ycrcb隐写提取得到图片，放stegsolve中得到flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536081.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="reverse">Reverse</h2>
 <h3 id="ror">ROR</h3>
 <p><code>main</code> 函数很清晰</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536406.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>Z3 一把梭</p>
@@ -696,27 +752,33 @@
 </li>
 </ol>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536443.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <ol>
 <li><code>initterm</code> 里面有反调试</li>
 </ol>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536448.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <ol>
 <li>这个线程在跑起来之后 IDA 的调试功能就没法用了，所以 patch 掉函数指针</li>
 </ol>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536255.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <ol>
@@ -724,9 +786,11 @@
 <li>手动 dump 前面的指令，发现大量的 shr xor 等操作，猜测是 tea，然后发现 delta 变成了 -0x7E5A96D2，密钥是初始化时赋值的，外层循环也能发现轮数改为了 33，并且每次加密后 sum 并没有置为 0</li>
 </ol>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536576.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>exp</p>
@@ -1675,17 +1739,21 @@
 <p>case4就是for(int i = 0; i &lt; 44; i++)</p>
 <p>case5是最后比较，即看有多少个输入是正确的，当为44时则输出correct。</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536714.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>case6是加密函数，case7就是对单字节加密结果比较了。</p>
 <p>密文在case7的分组来的，如第一组密文在如下箭头的地方：</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536165.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>这里还有一点要说的就是程序的<strong>sub_5585B8E481D0</strong>函数是把数据转化为二进制，但是1用3代替，0用2代替的。</p>
@@ -1704,36 +1772,46 @@
 <p>你是真的粉丝还是虚假的粉丝？</p>
 </blockquote>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536171.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536245.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>ASCII-faded 1999.txt</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536493.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>key1 和 key2 可以从上面得到（当然也可以逆向出）</p>
 <p>Final key 足够大就行了</p>
 <p><img
+  class="blog-post__image"
   src="https://txq2mmofcw.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGJjMGUyYWQ2YWE3NDgyYWRhNjNjZDM1MGVkZjJiOGRfRTE2YVRhMVBDbThtbE1DdFoxWVNFdEhVZjlrV1kxaXpfVG9rZW46Ym94Y25jWWhDZ3JrUUxTbkZCOGJ5V0gyOGViXzE2Mzc0ODg1MzA6MTYzNzQ5MjEzMF9WNA"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536234.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">S3Cre7_K3y = Al4N_wAlK3RX
@@ -1781,9 +1859,11 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536884.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>A_TrUe_AW_f4ns</p>
@@ -1888,9 +1968,11 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">sh</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175537028.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="blind">Blind</h3>
@@ -2307,9 +2389,11 @@
 <p>protocol: tcp</p>
 <p>nc连上 数独题 把汉字对应1-9编排 求出解</p>
 <p><img
+  class="blog-post__image"
   src="/post/xhlj-2021-su-wu/20211121175536861.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <blockquote>
@@ -2457,12 +2541,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -2477,9 +2561,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

@@ -1,4 +1,4 @@
-{{- $honors := site.Data.honors -}}
+{{- $honors := hugo.Data.honors -}}
 {{- $years := $honors.years | default (slice) -}}
 {{- $scratch := newScratch -}}
 {{- $scratch.Set "featured" (slice) -}}

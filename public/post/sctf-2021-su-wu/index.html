@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 2021 SCTF的 writeup">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -889,9 +935,11 @@
 <p>FUMOFUMO FUMO FUMOFUMO?(flag中没有数字)</p>
 </blockquote>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082941352.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>Fumo 中间夹着两段彩色的文字，其中一部分包含一个链接</p>
@@ -901,30 +949,38 @@
 <p><a href="https://imgtu.com/i/TpMSkq">https://imgtu.com/i/TpMSkq</a>
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082945284.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/1.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>按照题目名称的意思，提取这里面的每个像素点，和 cli 里面的那个进行异或</p>
 <p>图片中一行100个 总共 13300 个色块</p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082941059.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>Shell 里拿 pwntools 接收 提取出来有 6650 个字符，正好2倍</p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082943505.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>图里这个顺序正好和shell里第二段五颜六色的字符颜色顺序一样，异或之后发现前6650位几乎完全一致，后面不一样</p>
@@ -1036,9 +1092,11 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="n">img1</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082940663.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>翻转旋转一下得到 flag</p>
@@ -1054,24 +1112,30 @@
 <p>提取码：sctf</p>
 </blockquote>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082942056.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>修改频谱大一点  mose解密</p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082941119.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="easydsp">easydsp</h3>
 <p>题目附件包含 4 个数据文件，每个数据文件为 126000 个浮点数。参考题目描述，将数据文件按照音频文件理解，转换为 wav （适当压缩幅度），可以听到四段音乐混合不同类型的杂音。考虑到样本点幅度超过了 -1 ~ 1 的范围，猜测出题人可能将两段音频文件直接加在了一起，因此尝试了一下计算 data1 - data2 的结果，画图如下</p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082941973.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>可以从差值中看出采用了类似 BPSK 调制方式进行编码，周期为 1000 个采样点。完整的文件可以编码 126 bit 内容。126 不是 8 的倍数，是 7 的倍数，猜测有可能是使用 7bit 编码一个字符的方式。一些尝试后可还原出 flag 的内容。</p>
@@ -1775,15 +1839,19 @@
 </span></span></code></pre></div><p>然后将<code>pwnjson</code>里面的&rsquo;\&lsquo;替换成&rsquo;' 复制到文本框中点击发送即可</p>
 <p>web服务堆环境很乱 需要多次爆破尝试.</p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082942015.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082941710.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>pwnjson如下:</p>
@@ -3713,9 +3781,11 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082941976.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>比较的数在1ec8 ec8 ghidra 打开sctf看一下就行 前面的代码是它的加密流程</p>
@@ -3752,15 +3822,19 @@
 <p>描述：cpp is a good language</p>
 <p>使用ssh穿起来的逻辑，可以这样将他处理</p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082942213.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/sctf-2021-su-wu/20211228082942283.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>计算 0x402c37-0x402730=0x507</p>
@@ -4085,12 +4159,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -4105,9 +4179,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

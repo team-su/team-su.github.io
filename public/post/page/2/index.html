@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -35,6 +35,7 @@
 }
 </script>
 
+
 <meta property="og:title" content="Posts" />
 <meta property="og:image" content="http://localhost:1313/img/SU.jpg" />
 <meta property="og:url" content="http://localhost:1313/post/" />
@@ -44,14 +45,14 @@
   <meta name="twitter:title" content="Posts" />
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -62,7 +63,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -80,7 +81,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -108,9 +109,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -136,7 +138,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -166,15 +168,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -274,7 +318,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -301,6 +344,69 @@
   
   
   
+  <i class="fas fa-calendar"></i>&nbsp;Posted on May 27, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;13&nbsp;min
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;2675&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer
+    
+  
+  
+</span>
+
+      </p>
+
+      <div class="post-preview__headline">
+        <a href="/post/rctf-2024-su-wu/">
+          <h2 class="post-title">2024 RCTF SU WriteUp</h2>
+          
+        </a>
+      </div>
+
+      
+
+      <div class="post-entry">
+        
+        
+          
+        
+        <p>本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+ 或者直接联系书鱼 QQ:381382770。</p>
+<p>以下是我们 SU 本次 2024 RCTF的 writeup。</p>
+      </div>
+
+      <div class="post-preview__footer">
+        
+          <div class="blog-tags">
+            
+              <a href="http://localhost:1313/tags/rctf/">RCTF</a>
+            
+          </div>
+        
+
+        
+          <a href="/post/rctf-2024-su-wu/" class="post-read-more">Read Report</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+          
+            <article class="post-preview team-card">
+  <div class="post-preview__card">
+    <div class="post-preview__body">
+      <p class="post-preview__meta">
+        <span class="post-meta">
+  
+  
+  
   <i class="fas fa-calendar"></i>&nbsp;Posted on October 30, 2023
   
   
@@ -317,7 +423,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -331,10 +436,12 @@
 
       <div class="post-entry">
         
-          <p>感谢 AAA 的师傅们精心准备的比赛！本次ACTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_<a href="mailto:xctf@126.com">xctf@126.com</a>
+        
+          
+        
+        <p>感谢 AAA 的师傅们精心准备的比赛！本次ACTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
  或者直接联系书鱼 QQ:381382770。</p>
 <p>以下是我们 SU 本次 2023 ACTF的 writeup。</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -379,7 +486,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -393,10 +499,12 @@
 
       <div class="post-entry">
         
-          <p>本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+        
+          
+        
+        <p>本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
 </p>
 <p>以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -441,7 +549,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -455,8 +562,10 @@
 
       <div class="post-entry">
         
-          <p>本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。</p>
         
+          
+        
+        <p>本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。</p>
       </div>
 
       <div class="post-preview__footer">
@@ -501,7 +610,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -515,10 +623,12 @@
 
       <div class="post-entry">
         
-          <p>感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 10nd 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+        
+          
+        
+        <p>感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 10nd 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
 </p>
 <p>以下是我们 SU 本次 WMCTF 2023 的 writeup。</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -563,7 +673,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -577,10 +686,12 @@
 
       <div class="post-entry">
         
-          <p>本次2023 Zer0ptsCTF 是我们SU第一次正式组织参加国际赛，获得全球榜第二十七名，大陆第三名，我们会继续努力，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+        
+          
+        
+        <p>本次2023 Zer0ptsCTF 是我们SU第一次正式组织参加国际赛，获得全球榜第二十七名，大陆第三名，我们会继续努力，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
 或直接联系书鱼(QQ:381382770)
 以下是我们 SU 本次 Zer0ptsCTF writeup</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -625,7 +736,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -639,10 +749,12 @@
 
       <div class="post-entry">
         
-          <p>本次2023 XCTFfinals 我们 SU 取得了 第7名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+        
+          
+        
+        <p>本次2023 XCTFfinals 我们 SU 取得了 第7名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
 或直接联系书鱼(QQ:381382770)
 以下是我们 SU 本次 2023XCTFfinals的 writeup</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -687,7 +799,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -701,10 +812,12 @@
 
       <div class="post-entry">
         
-          <p>本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
+        
+          
+        
+        <p>本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
 或直接联系书鱼(QQ:381382770)
 以下是我们 SU 本次 2023 RWCTF的 writeup</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -749,7 +862,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -763,11 +875,13 @@
 
       <div class="post-entry">
         
-          <p>感谢队里师傅们的辛苦付出,尤其是深海师傅<code>@B1ue1nWh1te</code>，考试中抽空第一个ak了区块链赛题！
+        
+          
+        
+        <p>感谢队里师傅们的辛苦付出,尤其是深海师傅<code>@B1ue1nWh1te</code>，考试中抽空第一个ak了区块链赛题！
 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
 或直接联系书鱼(QQ:381382770)
 以下是我们 SU 本次 强网拟态防御国际精英挑战赛 的 writeup</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -812,7 +926,6 @@
   
 </span>
 
-
       </p>
 
       <div class="post-preview__headline">
@@ -826,10 +939,12 @@
 
       <div class="post-entry">
         
-          <p>以下是我们 SU 本次2022 祥云杯 的 writeup ，感谢队里师傅们的辛苦付出！
+        
+          
+        
+        <p>以下是我们 SU 本次2022 祥云杯 的 writeup ，感谢队里师傅们的辛苦付出！
 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
 或直接联系书鱼(QQ:381382770)</p>
-        
       </div>
 
       <div class="post-preview__footer">
@@ -843,68 +958,6 @@
 
         
           <a href="/post/xyb-2022-su-wu/" class="post-read-more">Read Report</a>
-        
-      </div>
-    </div>
-  </div>
-</article>
-
-          
-            <article class="post-preview team-card">
-  <div class="post-preview__card">
-    <div class="post-preview__body">
-      <p class="post-preview__meta">
-        <span class="post-meta">
-  
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on July 4, 2022
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;18&nbsp;min
-  
-  
-    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;3750&nbsp;words
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;SUer
-    
-  
-  
-</span>
-
-
-      </p>
-
-      <div class="post-preview__headline">
-        <a href="/post/pcb-2022-su-wu/">
-          <h2 class="post-title">2022 鹏城杯 SU Writeup</h2>
-          
-        </a>
-      </div>
-
-      
-
-      <div class="post-entry">
-        
-          <p>以下是我们 SU 本次2022 鹏城杯 的 writeup
-同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：<a href="mailto:suers_xctf@126.com">suers_xctf@126.com</a>
-或直接联系书鱼(QQ:381382770)</p>
-        
-      </div>
-
-      <div class="post-preview__footer">
-        
-          <div class="blog-tags">
-            
-              <a href="http://localhost:1313/tags/%E9%B9%8F%E5%9F%8E%E6%9D%AF/">鹏城杯</a>
-            
-          </div>
-        
-
-        
-          <a href="/post/pcb-2022-su-wu/" class="post-read-more">Read Report</a>
         
       </div>
     </div>
@@ -1006,12 +1059,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -1026,9 +1079,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

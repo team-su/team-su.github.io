@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 2025 …">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -414,17 +460,21 @@
 <h2 id="personal-vault">Personal Vault</h2>
 <p>一血，没想太多，直接拿lovelymem luxe搜了一波flag，直接非了</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/1.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="the_interrogation_room">The_Interrogation_Room</h2>
 <p>叽里咕噜说的啥听不懂，大概就是要提问17轮，其中有两轮是说谎的，根据信息推出正确的数据，要连续猜对25轮，当时题解数已经多到可怕了，一怒之下问ai梭了</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/2.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python3</span>
@@ -771,9 +821,11 @@
 </span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Exception outer:&#34;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 </span></span></code></pre></div><p>非常稳定，我发现让ai解题的时候让他去找巧妙的解法很容易出</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/3.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="谍影重重-60">谍影重重 6.0</h2>
@@ -781,9 +833,11 @@
 <p>打开题目是一个700多m的流量包，要吓尿了</p>
 <p>进去看到全是udp流量，前期绕了很多圈子，特别是看到了个manolito协议，后面反应过来是ws自己误识别的</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/4.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>实际上这个udp流量就是rtp数据（看他的数据格式跟之前wm那个voice hacker的流量数据简直一模一样），所以要将他们的音频提取出来，但是简单过了一下发现有1300个端口，每个端口对应一条语音，而且流量包太大了，全部用ws根本不现实，所以要用脚本，之前做voice_hacker有过脚本，在那基础上让ai优化升级了一下</p>
@@ -1299,50 +1353,64 @@
 </span></span><span class="line"><span class="cl">    <span class="n">main</span><span class="p">()</span>
 </span></span></code></pre></div><p>提取完后用飞书妙记转录，可以看到里面有两串数字，而且很明显数字都不超过8，一眼八进制</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/5.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/6.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>用厨子转一下八进制就好了，这里要手动拆，不然他识别不到</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/7.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>刚刚好拿到32位的hex值，尝试解压加密压缩包发现密码对了</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/8.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>老样子妙记转录音频文字，可以看到有些信息，什么廿四，辰时正过三刻，双里湖西岸南山茶铺，看这个通话看着其实就很间谍那味（）</p>
 <p>但是这里太谜语了，一直没确定具体的时间，只有地点是确定的</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/9.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>直到后面上了hint，确定要去寻找历史事件（其实有一点猜想，但不确定），音频中提到的双里湖，通过简单社工发现了一个叫双鲤湖的地方，位于福建省金门县，通过大量调查，发现那曾发生过金门战役</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/10.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/11.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>那么时间就确定了是1949年10月24日（一开始以为是25不对，改24对了），然后时分就是8点45分，对应辰时正三刻，地点就是双鲤湖西岸南山茶铺</p>
@@ -1351,17 +1419,21 @@
 <p>（这题凭什么烂，我感觉好难）</p>
 <p>附件是一个sr文件，经常打国外赛的都知道，这是什么逻辑分析仪的文件，可以用sigrok的工具打开，下个pulseview打开，发现里面有蜜汁波形</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/12.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>后面队友给我说可能借鉴了这个文章：https://github.com/bobby-tables2/CTF-Archive/tree/87dcb7af1c64705315d6878a7178accf316fe606/CTFSG%202022/SIGINT/Writeup</p>
 <p>我简单看了看，发现太像了，遂继续攻破，首先根据题目的OLED和波形的情况，推断这个OLED显示屏的信号数据，一般他的通信协议是I2C，所以可以用I2C对其进行解码，可以发现它传了不少数据的</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/13.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>我将数据提取了出来（右键可以导出），然后利用参考的文章的exp跑，发现不行，完全对不上，遂深入研究了OLED和I2C通信的原理</p>
@@ -1371,16 +1443,20 @@
 </p>
 <p>通过深入学习上面的两个文章，我确定了，当设备进行地址写入后，传入的第一个数据为控制字节，如果是00则代表传入了命令，40则代表发送给GRAM，然后用于画面打印的（大概就这意思）</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/14.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>这整段波形中，前面一长串基本是没用的，主要从后一段开始分析，我们可以看到这里断开传入了四次数据，一开始00控制字节，执行了20命令，参数为01，20代表其进行寻址模式调整，参数为01时寻址模式为垂直寻址，00则为水平寻址，后面会出现多次交替，然后是22命令和21命令，分别对应起始/终止页和列，也就是说从哪里开始画起，再往后就是传入40控制字节，开始显示，往后每段都有类似的情况，需要将他们逐一提取然后在参考文章exp的基础上，通过拷打ai问出了一个升级版的脚本</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/15.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Markdown" data-lang="Markdown"><span class="line"><span class="cl">00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
@@ -1394,9 +1470,11 @@
 </span></span><span class="line"><span class="cl">[00 21 24 35 22 00 02]: 02 5E 0B 7E 00 57 7F 32 00 12 24 47 00 7F DF 83 C8 D1 00 00 00 00 00 00 00 00 00 80 E0 F0 FC FF FF FF FF FF 00 00 00 00 80 E0 E0 F8 FE FF FF FF FF FF FF FF 3F 1F
 </span></span><span class="line"><span class="cl">[01 21 00 7F 22 00 00]: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/16.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">binascii</span>
@@ -1617,15 +1695,19 @@
 </span></span><span class="line"><span class="cl"><span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">图像已保存到 oled_output.txt&#34;</span><span class="p">)</span>
 </span></span></code></pre></div><p>最后终于成功了，画出了一个强网杯的logo，上面乱乱的看不出是什么，以为是我脚本错了，后面发现是将_#转01然后解二进制就可以了</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/17.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/18.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="secured-personal-vault">Secured Personal Vault</h2>
@@ -1633,9 +1715,11 @@
 <p>如果我说我又非了你信吗（）</p>
 <p>依旧内存取证，但是把早上的非预期修了，爆搜搜不到，分析一下发现桌面有个apersonalvault.exe（早上的取证做过也能知道）</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/19.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>提出来丢给逆向手逆向了，他们说要找密文，exe里自带了解密什么的，但是生成的mailslot文件提取不出来，拿不到，没招了</p>
@@ -1645,21 +1729,27 @@
 <p>由于不确定分辨率，所以我手动爆了一下，最后发现是1279这个宽度可以正常看到窗口信息，然后我就滑了滑，没想到啊，真的有出题人在加密flag时的窗口画面，但是有点花，不过不影响我通过强大的视力再加上一点点小小的英语语法功底和毅力，将他盯出来了，flag最后为</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="n">flag</span><span class="p">{</span><span class="n">Making_challenge_is_hard_manage_secure_vault_is_more_difficult</span><span class="p">}</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/20.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/21.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/22.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>至此该系列顺利完成，双非这块（）</p>
@@ -1691,9 +1781,11 @@
 </span></span></span><span class="line"><span class="cl"><span class="s1">  ./mvnw yamcs:run&#39;</span><span class="err">
 </span></span></span></code></pre></div><p>直接本地 clone 项目，很小，发现</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/23.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>发现可控字符串，clone 完整的后端大项目下来搜索这个方法的实现，结果全局搜索搜不出来，从数据流路由找出 web 路由，</p>
@@ -1701,30 +1793,38 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="l">/algorithms/myproject/copySunsensor/-/summary?c=myproject__realtime</span><span class="w">
 </span></span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/24.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>找到能够 RCE 的地方，但是远程不出网，jdk17 内存马写不来</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/25.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>起个 docker 找到静态目录</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/26.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>直接写入</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/27.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Java" data-lang="Java"><span class="line"><span class="cl"><span class="k">try</span><span class="w"> </span><span class="p">{</span><span class="w">
@@ -1887,9 +1987,11 @@
 <p>参考p牛博客：https://www.leavesongs.com/PENETRATION/php-challenge-2023-oct.html</p>
 <p>保存base64解码后的文件为 test.php，用同款插件分析</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/28.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>本地可以用 <code>%00readflag%2Fhome%2Fmingzu%2FCTF%2Fqwb%2Fezphp%2Ftest.php%3A59%241</code> 执行 <code>readflag</code></p>
@@ -1923,9 +2025,11 @@
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
 </span></span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/29.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>但是上传之后文件名会被重命名，include 去包含 .phar.gz 类文件必须有 phar 字符串的出现，测试后发现 <code>xxxx.pharxxxx.jpg</code> 在 include 时会被正确加载</p>
@@ -2012,9 +2116,11 @@
 </span></span></code></pre></div><p>构造的思路是，先 upload 然后 readflag</p>
 <p>upload 只能由 __construct 触发，所以 $x 这个实例是固定的，因为在执行 <code>new test()</code> 之前 <code>$GLOBALS['filename']</code> 的值会被 $this-&gt;readflag 这个成员变量覆盖，所以 $x 的 readflag 只能是爆破出的种子后缀</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/30.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>$y 的构造思路也很简单，就是使用 <code>\0</code> 开头的函数名直接执行位于第一行的函数 readflag，实现文件包含</p>
@@ -2031,9 +2137,11 @@
 </span></span><span class="line"><span class="cl">{{file:line(C:\Users\baozhongqi\Desktop\final.phar.gz)}}
 </span></span><span class="line"><span class="cl">------WebKitFormBoundaryMvFc5zDkBcoa1yiL--
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/31.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>读取 /flag 不成功，suid 提权即可</p>
@@ -2049,9 +2157,11 @@
 </span></span><span class="line"><span class="cl">{{file:line(C:\Users\baozhongqi\Desktop\final.phar.gz)}}
 </span></span><span class="line"><span class="cl">------WebKitFormBoundaryMvFc5zDkBcoa1yiL--
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/32.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="anime">anime</h2>
@@ -2124,23 +2234,29 @@
 </span></span><span class="line"><span class="cl">    <span class="n">run</span><span class="p">(</span><span class="n">tasks</span><span class="p">)</span>
 </span></span></code></pre></div><p>写wp的时候爆破出密码是18149（交flag的时候是89195）</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/33.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>登陆后编辑个人资料，没找到flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/34.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>注册的时候发现用户名大小写不敏感，尝试将用户名改成全小写，拿到flag（可能是缓存机制的问题？）</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/35.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <blockquote>
@@ -2183,38 +2299,48 @@
 </span></span></code></pre></div><p>构造数据包不好构造，直接 curl</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl"><span class="nb">printf</span> <span class="s1">&#39;GET /dashboard HTTP/1.1\r\nHost: 101.201.70.201:20509\r\nConnection: X-User\r\n\r\n&#39;</span> <span class="p">|</span> nc 101.201.70.201 <span class="m">20509</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/36.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h1 id="pwn">Pwn</h1>
 <h2 id="flag-market">Flag-market</h2>
 <p>有一个全局变量的溢出写，可以覆盖到format变量</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/37.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/38.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>format变量在上面会用作printf参数，可以通过覆盖format字符串触发格式化字符串漏洞</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/39.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>通过泄露stream的地址，进而泄露IO_FILE结构体里buffer的地址，进而读出buffer中的数据，即flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/40.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
@@ -2288,15 +2414,19 @@
 </span></span></code></pre></div><h2 id="bhp">bhp</h2>
 <p>关键漏洞函数：</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/41.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/42.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>sub_1640()中我们可以控制输入的长度带出把libc基地址，heap基地址，stack基地址，pie基地址任意选一个地址，我们选择带出libc基地址。</p>
@@ -2305,9 +2435,11 @@
 <p>在获得任意长度的地址任意写后我们选择劫持_IO_2_1_stderr 攻击 house of apple2。</p>
 <p>但是程序启用了沙盒。</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/43.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>我们可以找到一个magic_rop:</p>
@@ -2447,9 +2579,11 @@
 </span></span><span class="line"><span class="cl"><span class="n">op</span><span class="p">()</span>
 </span></span></code></pre></div><p>Flag:</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/44.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h1 id="re">Re</h1>
@@ -3102,16 +3236,20 @@
 <p>流量包里关键的只有后四个包，三个ISAKMP协议包，一个ESP包，其中ESP UDP payload有大量数据</p>
 <p>查看elf，发现通讯相关代码，定位到main，发现关键在sub_4050F0函数中，出现FLAG字眼，同时里面存在不少加解密算法。首先进入了sub_404790，里面出现HMAC+AES，HMAC我们不用管，只需关注AES密文、密钥、iv即可</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/45.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>核心函数如上，一个是传入了密钥，发现是第三个参数地址+4的16字节，也就是外面的dword_8498C0，交叉引用发现在main做了初始化，很明显这个位置也和序号为1的ISAKMP相关，出现了对应的字符串，一点点数据往前对应即可直到v30对应的是ISAKMP数据包前16字节</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/46.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C++" data-lang="C++"><span class="line"><span class="cl"><span class="kt">char</span> <span class="kr">__fastcall</span> <span class="nf">sub_404B00</span><span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="n">a1</span><span class="p">,</span> <span class="n">_DWORD</span> <span class="o">*</span><span class="n">a2</span><span class="p">)</span>
@@ -3380,16 +3518,20 @@
 </span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;a2[</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">] = </span><span class="si">{</span><span class="n">chunk</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span></code></pre></div><p>接着就是最后加密的地方sub_4031F0</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/47.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>里面还是比较复杂的，第一眼以为没法逆向来着，观察到最后先乘以7再加13再异或0x53，ai分析可知7有逆元0xb7可逆，所以得开始想办法解密上面的aes明文</p>
 <p><img
+  class="blog-post__image"
   src="/post/qwb-s9-su-wu/48.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>发现sub_403A50和sub_4031F0紧邻，里面正是逆向代码，还没被调用，出题人可能忘删了也可能故意留着。想着调试会更简单，但是不会发通信数据。所以直接疯狂拷打ai让他同构sub_403A50。其中a1是密文、a3是密钥、a2是a1长度、a4是0</p>
@@ -3927,12 +4069,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -3947,9 +4089,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

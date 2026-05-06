@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 WMCTF 2020 的 writeup。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -450,9 +496,11 @@
 <a href="https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c">https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c</a>
 </p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_6c61a5a08c92dbda0b82e77a9ffb0afb.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>超过 32 层会停止读符号链接, 所以用 /proc/self/root 套 33 层娃即可</p>
@@ -898,16 +946,20 @@
 <h3 id="dalabengba">Dalabengba</h3>
 <p>先用EnigmaVBUnpacker.exe将游戏解包
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_f40cca716ad4cccb72861350a9b79c3e.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 然后开启rpgmaker开一个新项目，把www里面文件拷过去打开
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_b3e744e636152849dc783d0ff598e507.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 在这个网站把素材解包https://petschko.org/tools/mv_decrypter/，把完整的放回文件夹里，这里要修改data/system.json的配置
@@ -915,16 +967,20 @@
 &ldquo;hasEncryptedAudio&rdquo;: false,
 运行正常使用了
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_0280daf918a26ff67cafd0d76c9745e5.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 查找了国王最后成功的话
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_5db1d582c9cd1710e90fd9de5e605019.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 调试发现还是加密了，用了decText.js里面代码
@@ -932,18 +988,22 @@
 
 去分析rpg_core.js，推出systemkey:&ldquo;f74592328a168cf858e727078d4f6ab&rdquo;，然后丢回包里看国王说的话，其实可以把所有发现加密的都跑出来看看有哪些东西
 <img
+  class="blog-post__image"
   src="https://images-cdn.shimo.im/V0etRC2WJpTzNdys__thumbnail.PNG"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 emm好像没flag
 第一部分：</p>
 <p>直接跳到最后的天空城关卡
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_44b8b47e88c65b64871b31003e28c45e.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 发现移动路线组成单词Pr1nCe5s
@@ -953,33 +1013,41 @@ emm好像没flag
 找打java盲水印工具：https://github.com/ww23/BlindWatermark，
 需要拼接一部分，扫描出第二部分
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_66fa2c8058debf0be49712ab229dc1ad.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 W@rR1or</p>
 <p>第三部分：
 前面导入systemkey后使用加密的素材
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_36ef3f2933fd61a8f638cbfa7bb0197a.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 看到国王的话逆序hex-&gt;ascii得到Y0u_@re_5o_bRaVE得到一个文件
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_238ca188ca474387ad33958b4cbff3be.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 搜文件名s3cr3t找到了个解密的https://gist.github.com/aanoaa/1408846
 出了WhrRrrr~
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_0d910504a7ecb5dfa598b63708415bb9.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="xman_happy_birthday">XMAN_Happy_birthday!</h3>
@@ -995,9 +1063,11 @@ W@rR1or</p>
 <p>一个windows逆向,一开始踩坑到了虚假的执行流,虚假的base64,虚假的xor,在init的时候,运行了好多函数,关于异常反调试等等,还有三处调用了ntdll里面的一个可以对抗调试器的函数.</p>
 <p>既然这样,那就直接上trace了,手头有一个写好的工具,配合qemu,trace出了他所有的指令流
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_eb1e6150524146d82f47f963b35c4a87.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 发现到这里了,跟进去看了一下,和假的那个函数差不多,直接逆了一下,发现有一个改了表的base64函数,后面是几个明显的大数计算,这里直接patch了他的ntdll那个函数的调用,可以调试了,在进入虚假的check函数时,修改eip到这个函数,手动跳过来,继续调试</p>
@@ -1020,24 +1090,30 @@ base64decode -&gt; rsa -&gt; 高60bit和低56bit分别做x y,计算x^3 + y^3 + z
 </span></span></code></pre></div><h3 id="meet_in_july">Meet_in_July</h3>
 <p><strong>First Blood</strong></p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_adfc7becae87af10ef6798f13fe703ee.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 check格式flag{}长度70
 数字和大写ABCDEF
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_933b2c51cb597137690981f9004ce0d5.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 字符串转16进制后进sub_401909进行加密
 <img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_b0b0102d285e2209705ad6e60fcbf3dd.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 
 主要是乘法减法mod三个操作</p>
@@ -1158,32 +1234,40 @@ b &amp;\equiv a \cdot z - x \equiv  (x^4-4x^2 + 2) (x^3 - 3x)
 $$</p>
 <p>试了一下，模数n可以被分解为两个素数：</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_aa549cd4b2fea446ef3cede72d45f0ca.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>p = 320265757102059730318470218759311257989
 q = 361550014853497117429835520396253724753</p>
 <p>通过Mathematica可以分别在mod p和mod q上解出来x</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_8cdadd80b40e712d8885735244da2871.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_4e390411a80f80ec29f9859d80ff4d67.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后再用CRT即可得到在mod n下的解：17608204545242378720348793798058123425575979093234353645947732994798163637792</p>
 <p>程序输入flag{26EDE3FE048B6BFA04F647259A3F00505FD9C9CCB87298CD631FD91F17CCB620}</p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_f4ea85e2037390a2008bdb99f9973dd6.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>提交需要将&quot;flag&quot;改成&quot;WMCTF&quot;</p>
@@ -1232,9 +1316,11 @@ q = 361550014853497117429835520396253724753</p>
 </span></span><span class="line"><span class="cl">            <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
 </span></span><span class="line"><span class="cl">            <span class="n">quit</span><span class="p">()</span>
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_faf549fca1bd7700eaead38dfb8281f4.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h3 id="piece_of_cake">piece_of_cake</h3>
@@ -1417,9 +1503,11 @@ q = 361550014853497117429835520396253724753</p>
 <p>就选这个0x00000040 -&gt; 0x00000000 0.2534</p>
 <p><strong>画图分析</strong></p>
 <p><img
+  class="blog-post__image"
   src="https://hackmd.summershrimp.com/uploads/upload_c126a80567a8eeab248c3b0ff26319cd.png"
   alt=""
   loading="lazy"
+  decoding="async"
 >
 </p>
 <blockquote>
@@ -1673,12 +1761,12 @@ q = 361550014853497117429835520396253724753</p>
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -1693,9 +1781,11 @@ q = 361550014853497117429835520396253724753</p>
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 

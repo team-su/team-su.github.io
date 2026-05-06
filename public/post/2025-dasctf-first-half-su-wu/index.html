@@ -7,7 +7,7 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
  
 
@@ -37,6 +37,7 @@
   
 }
 </script>
+
 <script type="application/ld+json">
 {
   "@context": "http://schema.org",
@@ -102,14 +103,14 @@
 以下是我们 SU 本次 2025 DASCTF 上半年赛的 部分writeup以及赛后解出的部分题目。">
   <meta name="twitter:image" content="http://localhost:1313/img/SU.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
-  <link href='http://localhost:1313/img/SU.jpg' rel='icon' type='image/x-icon'/>
+  <link href='/img/SU.jpg' rel='icon' type='image/x-icon'/>
   <meta name="generator" content="Hugo 0.157.0">
-  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="http://localhost:1313/css/katex.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/brands.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/fontawesome.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/fontawesome/css/solid.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/bootstrap.min.css" /><link rel="stylesheet" href="http://localhost:1313/css/main.css" /><link rel="stylesheet" href="http://localhost:1313/css/fonts.css" /><link rel="stylesheet" href="http://localhost:1313/css/syntax.css" /><link rel="stylesheet" href="http://localhost:1313/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="http://localhost:1313/css/photoswipe.min.css" />
-  <link rel="stylesheet" href="http://localhost:1313/css/photoswipe.default-skin.min.css" /><script>
+  <link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team"><link rel="stylesheet" href="/css/katex.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/brands.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/fontawesome.min.css" />
+  <link rel="stylesheet" href="/fontawesome/css/solid.min.css" />
+  <link rel="stylesheet" href="/css/bootstrap.min.css" /><link rel="stylesheet" href="/css/main.css" /><link rel="stylesheet" href="/css/fonts.css" /><link rel="stylesheet" href="/css/syntax.css" /><link rel="stylesheet" href="/css/codeblock.css?v=20260322-1" /><link rel="stylesheet" href="/css/photoswipe.min.css" />
+  <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css" /><script>
   (function() {
     var theme = "dark";
     try {
@@ -120,7 +121,7 @@
     document.documentElement.setAttribute("data-theme", theme === "light" ? "light" : "dark");
   })();
 </script>
-<link rel="stylesheet" href="/css/team-theme.css?v=20260416-1">
+<link rel="stylesheet" href="/css/team-theme.css?v=20260430-1">
 
   </head>
   <body>
@@ -138,7 +139,7 @@
         <span class="navbar-brand__title">su-team</span>
       </a>
 
-      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Toggle theme">
+      <button type="button" class="theme-toggle mobile-theme-toggle hidden-sm hidden-md hidden-lg" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
         <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
         </svg>
@@ -166,9 +167,10 @@
           
         
           
+            
             <li class="navlinks-container">
-              <a class="navlinks-parent" role="button" tabindex="0">Members</a>
-              <div class="navlinks-children">
+              <a class="navlinks-parent" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-controls="nav-dropdown-1-members">Members</a>
+              <div class="navlinks-children" id="nav-dropdown-1-members">
                 
                   <a href="/page/active-members/">Members</a>
                 
@@ -194,7 +196,7 @@
         
 
         <li class="nav-theme-toggle hidden-xs">
-          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+          <button type="button" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to light theme" aria-pressed="false">
             <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
             </svg>
@@ -224,15 +226,57 @@
 </nav>
 
 <script>
+  function updateThemeToggleState(theme) {
+    var isLight = theme === "light";
+    var label = isLight ? "Switch to dark theme" : "Switch to light theme";
+    var toggles = document.querySelectorAll(".theme-toggle");
+    for (var i = 0; i < toggles.length; i++) {
+      toggles[i].setAttribute("aria-label", label);
+      toggles[i].setAttribute("aria-pressed", isLight ? "true" : "false");
+    }
+  }
+
   function toggleTheme() {
     var root = document.documentElement;
     var current = root.getAttribute("data-theme") === "light" ? "light" : "dark";
     var next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
+    updateThemeToggleState(next);
     try {
       localStorage.setItem("theme", next);
     } catch (e) {}
   }
+
+  (function() {
+    function syncDropdownState() {
+      var parents = document.querySelectorAll(".navlinks-parent[aria-expanded]");
+      for (var i = 0; i < parents.length; i++) {
+        var container = parents[i].parentNode;
+        var expanded = container && container.classList.contains("show-children");
+        parents[i].setAttribute("aria-expanded", expanded ? "true" : "false");
+      }
+    }
+
+    updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+
+    document.addEventListener("click", function(event) {
+      if (event.target.closest && event.target.closest(".navlinks-parent")) {
+        window.setTimeout(syncDropdownState, 0);
+      }
+    });
+
+    document.addEventListener("keydown", function(event) {
+      if (!event.target.matches || !event.target.matches(".navlinks-parent")) return;
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      event.target.click();
+    });
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateThemeToggleState(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+      syncDropdownState();
+    });
+  })();
 </script>
 
 
@@ -332,7 +376,6 @@
   
 </span>
 
-
               
             </div>
           </div>
@@ -344,6 +387,9 @@
 
 
     
+
+
+
 
 
 <div class="container post-layout" role="main">
@@ -399,9 +445,11 @@
  或者直接联系baozongwi QQ:2405758945。</p>
 <p>以下是我们 SU 本次 2025 DASCTF 上半年赛的 部分writeup以及赛后解出的部分题目。</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/QQ20250621-212945.jpg"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h1 id="web">Web</h1>
@@ -417,9 +465,11 @@
 </span></span><span class="line"><span class="cl">git stash list
 </span></span><span class="line"><span class="cl">git stash show -p
 </span></span></code></pre></div><p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/fb9dd69d-4af3-469c-adad-31e922d4d2ac.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>发现php基础函数都不存在，只有原生类，现在可以列出目录以及读取一些有权限的文件</p>
@@ -898,69 +948,87 @@
 <h2 id="bluetrace">BlueTrace</h2>
 <p>一开始先用neta梭了一下，发现能得到一张jpg，发现显示不全</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/01279d99-7aaa-4fbe-b3f8-8c406ecf39e4.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>猜测是neta提取的有问题，估计是做限制了，故转手搓：</p>
 <p>众所周知蓝牙传输的协议一般是obex，所以过滤一下，可以发现这里明显是传了一个jpg的</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/33618614-7e91-4c5f-a7d4-055098b8a52f.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>用tshark导出一下</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Plain" data-lang="Plain"><span class="line"><span class="cl">tshark -r BlueTrace.pcapng -Y &#34;obex&#34; -T fields -e data &gt; obex_payload.txt
 </span></span></code></pre></div><p>导出后将数据拉到010，分析一下会发现藏了一个压缩包（可以直接将流量包拿去binwalk就会发现有这么个压缩包了）</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/fd147174-057a-4b4e-b7c2-c19fad4ce93a.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>全部提取出来，根据010的模板会发现内容是不全的</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/7a0a5ddc-f7e4-4136-a343-baa4fbe15438.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>回到wireshark分析一下，会发现在最后面还漏了一个流量数据，将他单独提取出来拼上后即可修复压缩包</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/604fb2fb-2908-4fa7-84b1-5d95d5a7ee69.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>打开后它提示我们密码是蓝牙传输的目标电脑名字</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/a0b85729-7f2a-4fb2-9920-5a9135aa631a.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>在wireshark的无线中找到蓝牙设备，然后简单遍历一下就知道密码是<code>INFERNITYのPC</code></p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/6b95853a-1064-4cec-b6e9-49d61a22f66d.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>解压得到一张奇怪的png图，猜测是lsb隐写，stegsolve分析找到flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/6135bd3f-db5e-436d-87cb-603e8139a4c1.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <h2 id="webshell-plus">Webshell Plus</h2>
 <p>根据题意易得webshell流量，那么就看是哪种常见的，简单分析可以发现传了个shell.php</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/26764c97-ca32-4fdf-8663-1181593712d9.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>其内容如下，不难看出就是冰蝎，但又不太一样，显然魔改了，一开始会进行检测，当攻击者进行密钥交换时（传入gene_key和public_key），shell的key为一个随机的8字节的字符串转hex后取md5的前16个字符，然后用这个key结合传入的public_key进行openssl加密，最后输出被两个8长度的伪造base64字符串包含的base64字符串</p>
@@ -1026,25 +1094,31 @@
 </span></span></span><span class="line"><span class="cl"><span class="err">------WebKitFormBoundary2AdFNokm3wx5QuXV-- 
 </span></span></span></code></pre></div><p>接着分析，发现攻击者确认传了这俩参数，所以key值就不是默认的了，可以看到回显就是被两个8长度的伪造base64字符串包含的base64字符串，现在要做的就是找到RSA的私钥去解出p值和key</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/3c888a6d-f36e-43ef-b53a-85a8d18181de.png"
   alt="1"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>用厨子解一下传入的public_key，可以得到RSA的公钥，结合搜到的这篇文章</p>
 <p><a href="https://weiyubo.top/2019/03/31/RSA%20%E8%A7%A3%E5%AF%86%20%EF%BC%88%E5%B7%B2%E7%9F%A5%E5%85%AC%E9%92%A5%EF%BC%89/">https://weiyubo.top/2019/03/31/RSA%20%E8%A7%A3%E5%AF%86%20%EF%BC%88%E5%B7%B2%E7%9F%A5%E5%85%AC%E9%92%A5%EF%BC%89/</a>
   爆破私钥</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/2e926d28-f8fc-4254-957f-be28978ff2f6.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>用这个在线网站https://www.ssleye.com/ssltool/pub_asysi.html  解出n，然后用yafu爆破得到p和q，接着按照文章操作得出私钥文件即可</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/d78b73c2-3401-40e4-bc31-0384887b9250.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后搓个脚本解出p和key</p>
@@ -1089,21 +1163,27 @@
 <p>用在线网站 <a href="http://tools.bugscaner.com/cryptoaes/">http://tools.bugscaner.com/cryptoaes/</a>
  解密，然后base64解一下msg，最后爆破shadow的hash即可得到密码</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/d10d1d52-b2ec-4fd6-81c9-4785a7028753.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/8e853000-f963-4e15-8f83-b8a3275b16d4.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/89855f6a-481a-427e-81ad-63ec6883d3f2.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>md5之后就是flag</p>
@@ -1263,16 +1343,20 @@
 <p>格式化字符串泄露地址， 然后 直接栈溢出</p>
 <p>a.so 可以直接访问远程环境下载</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/8312ebfa-6b66-4a8e-a565-57b42f3575ca.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>访问一个不存在的文件时，会调用这个函数 存在格式化字符串漏洞</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/90840edc-856b-4c9c-b041-35f1cc01a6c0.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Python" data-lang="Python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
@@ -1612,9 +1696,11 @@
 </span></span></code></pre></div><p>解完得到39 63 61 66 61 36 34 36 36 61 30 32 38 62 66 62</p>
 <p>然后赛博厨子解得假flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/6b02f1ab-2046-415d-907b-1c4bfa227df5.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>然后卡住了挺长时间的，猜想通过ptrace改了密文，翻阅函数看到了方程组</p>
@@ -1746,16 +1832,20 @@
 </span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">hex_line</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
 </span></span></code></pre></div><p>得到：1d7fea8e9b8991f350e69118d732b3fc49c12679a87162f6a1d42dc5e43b5956</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/18193d0b-9fd9-4ec0-97e1-a2cd1c284fc3.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>猜测是真正的密文，尝试解密</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/52464938-efca-4ecb-926e-459e1644ac83.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>解得flag，flag为：DASCTF{9d78b5507187421a48de8f6ef24a8d4b}</p>
@@ -1779,9 +1869,11 @@
 </span></span><span class="line"><span class="cl"><span class="n">fl4g</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;fl4g&#39;</span><span class="p">,</span> <span class="s1">&#39;where_is_the_flag?&#39;</span><span class="p">)</span>
 </span></span></code></pre></div><p>把pyd拿过来和main、xianyu后缀文件放同一目录动态调试即可得到flag</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/e96f1a83-4c5a-4528-ae97-133dfd00956b.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>flag是DASCTF{fl5h_mus1c_miao_m1a0_mlaO}</p>
@@ -1789,9 +1881,11 @@
 <p>java层是假的flag（tea加密）</p>
 <p>so层分析后发现还是arm好读，里面有几个函数开头有花指令</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/ade9d6f8-05b9-45bf-95f7-111d4196fdfb.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>分析可以发现在跳转BR X8后的代码反汇编失败，分析X8值，首先是X8=(1^0xAB^0xC7)-0x6C=1，然后X8=X9+X12*X8=0x4028+0x14=0x403C，所以实际上实现了一个计算跳转地址，中间所有的都是花指令，直接IDA nop即可</p>
@@ -2214,16 +2308,20 @@
 </span></span><span class="line"><span class="cl"><span class="c1"># 040D08DA68001026F3DC0D68897148B4</span>
 </span></span></code></pre></div><p>sus求解第一轮密钥：</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/3b0f6c59-984f-48fa-9cb7-f8d25f7482c1.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>44306E5175317830746535616E636830——D0nQu1x0te5anch0</p>
 <p><img
+  class="blog-post__image"
   src="/post/2025-dasctf-first-half-su-wu/9612a3b1-cd10-43a3-a19c-77e48c3c8c5e.png"
   alt="img"
   loading="lazy"
+  decoding="async"
 >
 </p>
 <p>得到flag为DASCTF{FALLEN_FLOWERS_FADE_NONE_CARES}</p>
@@ -2340,12 +2438,12 @@
       </div>
     </div>
   </div>
-</footer><script defer src="http://localhost:1313/js/katex.min.js"></script>
-<script defer src="http://localhost:1313/js/auto-render.min.js"></script>
-<script src="http://localhost:1313/js/jquery-3.7.0.slim.min.js"></script>
-<script src="http://localhost:1313/js/bootstrap.min.js"></script>
+</footer>
+<script defer src="/js/katex.min.js"></script>
+<script defer src="/js/auto-render.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
+    if (typeof renderMathInElement !== "function") return;
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
@@ -2360,9 +2458,11 @@
     });
   });
 </script>
+<script src="/js/jquery-3.7.0.slim.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
-<script src="http://localhost:1313/js/main.js"></script><script src="http://localhost:1313/js/photoswipe.min.js"></script>
-<script src="http://localhost:1313/js/photoswipe-ui-default.min.js"></script><script src="http://localhost:1313/js/load-photoswipe.js"></script>
+<script src="/js/main.js"></script><script src="/js/photoswipe.min.js"></script>
+<script src="/js/photoswipe-ui-default.min.js"></script><script src="/js/load-photoswipe.js"></script>
 
 
 
