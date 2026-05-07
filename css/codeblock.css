@@ -1,0 +1,278 @@
+/* --- Code blocks --- */
+
+:root {
+  --code-font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --code-inline-bg: rgba(21, 122, 214, 0.1);
+  --code-inline-text: #0f4f96;
+  --code-block-bg: #f5f8fd;
+  --code-block-text: #14233d;
+  --code-block-border: rgba(40, 98, 160, 0.18);
+  --code-block-radius: 16px;
+  --code-block-font-size: 13px;
+  --code-block-line-height: 1.55;
+  --code-block-pad-x: 16px;
+  --code-block-pad-y: 14px;
+  --code-line-number-width: 3.25em;
+  --code-line-number-bg: rgba(21, 122, 214, 0.04);
+  --code-line-number-color: #7687a0;
+  --code-copy-bg: rgba(255, 255, 255, 0.92);
+  --code-copy-text: #15315a;
+  --code-copy-border: rgba(40, 98, 160, 0.16);
+  --code-copy-shadow: 0 10px 24px rgba(56, 91, 148, 0.08);
+  --chroma-bg: var(--code-block-bg);
+  --chroma-fg: var(--code-block-text);
+  --chroma-ln-color: var(--code-line-number-color);
+  --chroma-hl-bg: rgba(21, 122, 214, 0.08);
+  --chroma-keyword: #0f5bb7;
+  --chroma-keyword-type: #0a8f74;
+  --chroma-name-class: #3e57bf;
+  --chroma-name-function: #0a8f74;
+  --chroma-name-variable: #14233d;
+  --chroma-name-constant: #9c2aa0;
+  --chroma-name-attr: #225fc7;
+  --chroma-literal-string: #9a5f00;
+  --chroma-literal-number: #036d90;
+  --chroma-operator: #d45639;
+  --chroma-comment: #6f8099;
+  --chroma-name-tag: #0f5bb7;
+  --chroma-name-decorator: #0a8f74;
+  --chroma-error: #cf234e;
+}
+
+html[data-theme="dark"],
+body.dark-mode {
+  --code-inline-bg: rgba(101, 217, 255, 0.14);
+  --code-inline-text: #dff1ff;
+  --code-block-bg: #0b1626;
+  --code-block-text: #e6efff;
+  --code-block-border: rgba(103, 206, 255, 0.18);
+  --code-line-number-bg: rgba(255, 255, 255, 0.02);
+  --code-line-number-color: #7c8fad;
+  --code-copy-bg: rgba(12, 24, 40, 0.88);
+  --code-copy-text: #eef7ff;
+  --code-copy-border: rgba(103, 206, 255, 0.2);
+  --code-copy-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+  --chroma-bg: var(--code-block-bg);
+  --chroma-fg: var(--code-block-text);
+  --chroma-ln-color: var(--code-line-number-color);
+  --chroma-hl-bg: rgba(101, 217, 255, 0.08);
+  --chroma-keyword: #7cd6ff;
+  --chroma-keyword-type: #58f3d0;
+  --chroma-name-class: #91b7ff;
+  --chroma-name-function: #78f0cd;
+  --chroma-name-variable: #e6efff;
+  --chroma-name-constant: #f6a8ff;
+  --chroma-name-attr: #a6d9ff;
+  --chroma-literal-string: #ffd580;
+  --chroma-literal-number: #9af0ff;
+  --chroma-operator: #ff8f70;
+  --chroma-comment: #7d8eaa;
+  --chroma-name-tag: #7cd6ff;
+  --chroma-name-decorator: #7ef6d6;
+  --chroma-error: #ff7d9e;
+}
+
+code,
+pre {
+  font-family: var(--code-font-family);
+}
+
+code {
+  color: var(--code-inline-text);
+  background-color: var(--code-inline-bg);
+  padding: 0.14em 0.42em;
+  border-radius: 0.45em;
+}
+
+pre {
+  overflow-x: auto;
+  display: block;
+  margin: 0.85em 0;
+  color: var(--code-block-text);
+  font-size: var(--code-block-font-size) !important;
+  line-height: var(--code-block-line-height);
+  word-break: normal;
+  border: 0;
+}
+
+pre code {
+  color: inherit;
+  border: 0;
+  background: none;
+  padding: 0;
+  font-size: inherit !important;
+  line-height: inherit;
+  border-radius: 0;
+}
+
+.highlight,
+pre.chroma {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 100%;
+  margin: 0.95em 0;
+  border: 1px solid var(--code-block-border);
+  border-radius: var(--code-block-radius);
+  background-color: var(--code-block-bg);
+  color: var(--code-block-text);
+  box-shadow: none;
+  text-align: left;
+  overflow: hidden;
+}
+
+.highlight {
+  padding: 2.15rem var(--code-block-pad-x) var(--code-block-pad-y);
+}
+
+.highlight > pre.chroma,
+.highlight > .chroma {
+  margin: 0;
+  padding: 0;
+  background: transparent !important;
+  border: 0 !important;
+  color: inherit !important;
+}
+
+.chroma {
+  background: transparent;
+  font-size: inherit !important;
+  line-height: var(--code-block-line-height);
+}
+
+.highlight .lntable {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  table-layout: fixed;
+}
+
+.chroma .lntd {
+  padding: 0;
+  background: transparent;
+  border-right: 0;
+  vertical-align: top;
+}
+
+.chroma .lntd:first-child {
+  width: var(--code-line-number-width);
+  padding-right: 0.75rem;
+  background: var(--code-line-number-bg);
+}
+
+.chroma .ln,
+.chroma .lnt {
+  display: inline-block;
+  min-width: 1.85em;
+  color: var(--code-line-number-color);
+  text-align: right;
+}
+
+.chroma .lntd pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.chroma td:last-child {
+  width: 100%;
+  background: transparent;
+}
+
+.chroma td:last-child pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  font-size: inherit !important;
+  line-height: inherit;
+}
+
+.chroma .hl {
+  background: var(--chroma-hl-bg);
+}
+
+.highlight tr,
+.highlight pre {
+  border: 0;
+}
+
+.highlight td:last-child pre code,
+.highlight pre code {
+  white-space: pre;
+}
+
+.copyCodeButton {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  min-height: 2rem;
+  padding: 0.42rem 0.8rem;
+  border: 1px solid var(--code-copy-border);
+  border-radius: 999px;
+  background: var(--code-copy-bg);
+  color: var(--code-copy-text);
+  box-shadow: var(--code-copy-shadow);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.copyCodeButton::before {
+  content: "";
+  width: 0.7rem;
+  height: 0.7rem;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  box-shadow: 0.22rem -0.22rem 0 -0.08rem currentColor;
+  opacity: 0.9;
+}
+
+.highlight:hover .copyCodeButton,
+.highlight:focus-within .copyCodeButton {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.copyCodeButton:hover,
+.copyCodeButton:focus {
+  border-color: var(--code-copy-border);
+  background: var(--code-inline-bg);
+  color: var(--code-block-text);
+}
+
+.copyCodeButton[data-state="copied"] {
+  background: rgba(115, 240, 198, 0.16);
+  color: var(--code-block-text);
+}
+
+@media (max-width: 767px) {
+  .highlight {
+    padding: 2rem 0.9rem 0.9rem;
+    border-radius: 14px;
+  }
+
+  .highlight .lntable,
+  .chroma td:last-child {
+    table-layout: auto;
+  }
+
+  .copyCodeButton {
+    opacity: 1;
+    transform: none;
+    top: 0.55rem;
+    right: 0.55rem;
+  }
+}
