@@ -2,44 +2,11 @@
 
 {{ define "main" }}
   <div role="main" class="container page-home">
-    <section class="team-hero">
-      <div class="team-hero__inner">
-        <div class="team-hero__content">
-          {{ with .Site.Params.homeEyebrow }}
-            <p class="team-hero__eyebrow">{{ . }}</p>
-          {{ end }}
-          <h1 class="team-hero__title">{{ .Site.Params.homeTitle | default .Site.Title }}</h1>
-          <p class="team-hero__subtitle">{{ .Site.Params.homeSubtitle | default "Writeups, Records, and Field Notes" }}</p>
-          <p class="team-hero__description">{{ .Site.Params.homeDescription | default "Competition archives, deep-dive writeups, and long-term team memory from Team SU." }}</p>
-          <div class="team-hero__actions">
-            <a class="team-button team-button--primary" href="#recent-writeups">Archives</a>
-            <a class="team-button" href="{{ "page/active-members/" | relLangURL }}">Members</a>
-            <a class="team-button" href="{{ "page/about/" | relLangURL }}">About</a>
-          </div>
-        </div>
-
-        <div class="team-hero__emblem">
-          <div class="team-emblem">
-            <div class="team-emblem__frame">
-              {{ with .Site.Params.logo }}
-                <img src="{{ . | relURL }}" width="220" height="220" alt="{{ $.Site.Title }}" decoding="async">
-              {{ end }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     {{ with .Content }}
       <div class="well team-home-intro">
         {{ . }}
       </div>
     {{ end }}
-
-    <section class="section-head" id="recent-writeups">
-      <p class="section-head__eyebrow">Latest Dispatch</p>
-      <h2 class="section-head__title">Recent Writeups</h2>
-    </section>
 
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">

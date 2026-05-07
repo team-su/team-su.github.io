@@ -115,38 +115,11 @@ body {
   min-height: 100vh;
   color: var(--text);
   font-family: var(--font-ui);
-  background-image:
-    radial-gradient(circle at top left, rgba(28, 188, 255, 0.12), transparent 30%),
-    radial-gradient(circle at 85% 12%, rgba(115, 240, 198, 0.06), transparent 22%),
-    linear-gradient(180deg, rgba(9, 21, 38, 0.9) 0%, rgba(7, 15, 27, 1) 42%, rgba(5, 12, 22, 1) 100%);
-}
-
-body::before {
-  content: none;
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background-image:
-    linear-gradient(rgba(101, 217, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(101, 217, 255, 0.03) 1px, transparent 1px);
-  background-size: 96px 96px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.45), transparent 80%);
-  opacity: 0.45;
-}
-
-html[data-theme="light"] body {
-  background-image:
-    radial-gradient(circle at 92% 0%, rgba(17, 109, 203, 0.055), transparent 28%),
-    radial-gradient(circle at 4% 18%, rgba(17, 143, 120, 0.035), transparent 22%),
-    linear-gradient(180deg, #fbfcfe 0%, #f5f7fb 48%, #eff3f8 100%);
-}
-
-html[data-theme="light"] body::before {
-  content: none;
+  background: var(--bg);
 }
 
 ::selection {
-  background: rgba(101, 217, 255, 0.22);
+  background: var(--accent-soft);
   color: var(--text);
 }
 
@@ -168,9 +141,9 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 .btn:focus-visible {
-  outline: 3px solid rgba(101, 217, 255, 0.72);
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
-  box-shadow: 0 0 0 5px rgba(101, 217, 255, 0.16);
+   box-shadow: 0 0 0 5px var(--accent-soft);
 }
 
 p,
@@ -242,7 +215,7 @@ html[data-theme="light"] .well.team-home-intro {
   position: absolute;
   inset: 0 0 auto;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+  background: var(--border);
 }
 
 .team-button {
@@ -269,20 +242,20 @@ html[data-theme="light"] .well.team-home-intro {
   transform: translateY(-2px);
   border-color: var(--border-strong);
   background: var(--accent-soft);
-  box-shadow: 0 12px 26px rgba(28, 188, 255, 0.16);
+  box-shadow: 0 12px 26px var(--accent-soft);
   color: var(--text);
 }
 
 .team-button--primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-  color: #07111d;
+  background: var(--accent);
+  color: #ffffff;
   border-color: transparent;
 }
 
 .team-button--primary:hover,
 .team-button--primary:focus {
-  color: #07111d;
-  background: linear-gradient(135deg, var(--accent), #96ffe2);
+  color: #ffffff;
+  background: var(--accent-strong);
 }
 
 .section-head {
@@ -310,7 +283,7 @@ html[data-theme="light"] .well.team-home-intro {
 
 .navbar-custom {
   background: rgba(5, 12, 24, 0.9);
-  border-bottom: 1px solid rgba(103, 206, 255, 0.1);
+  border-bottom: 1px solid var(--border);
   box-shadow: none;
   backdrop-filter: none;
   font-family: var(--font-ui);
@@ -449,7 +422,7 @@ html[data-theme="light"] .navbar-custom .nav .navlinks-container.show-children >
 .navbar-custom .nav .navlinks-container .navlinks-children a:hover,
 .navbar-custom .nav .navlinks-container .navlinks-children a:focus {
   color: var(--text);
-  background: linear-gradient(135deg, rgba(28, 188, 255, 0.12), rgba(115, 240, 198, 0.08));
+  background: var(--accent-soft);
   border-color: var(--border-strong);
 }
 
@@ -567,23 +540,8 @@ html[data-theme="light"] .theme-icon-sun {
   border: 0;
   border-radius: 0;
   padding: 28px 0 30px;
-  background:
-    linear-gradient(180deg, rgba(11, 21, 38, 0.18), rgba(11, 21, 38, 0.02));
+  background: none;
   box-shadow: none;
-}
-
-.team-hero__inner::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(90deg, rgba(101, 217, 255, 0.06), transparent 22%, transparent 78%, rgba(115, 240, 198, 0.05));
-  opacity: 0.5;
-}
-
-html[data-theme="light"] .team-hero__inner {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(245, 249, 255, 0.16));
 }
 
 .team-hero__content,
@@ -661,10 +619,8 @@ html[data-theme="light"] .team-hero__inner {
   min-height: 230px;
   padding: 24px;
   border-radius: 20px;
-  border: 1px solid rgba(103, 206, 255, 0.08);
-  background:
-    radial-gradient(circle at top left, rgba(101, 217, 255, 0.1), transparent 44%),
-    rgba(5, 12, 24, 0.18);
+  border: 1px solid var(--border);
+  background: transparent;
 }
 
 .team-emblem__frame img {
@@ -712,23 +668,23 @@ html[data-theme="light"] .team-hero__inner {
   position: relative;
   overflow: visible;
   border: 0;
-  border-bottom: 1px solid rgba(103, 206, 255, 0.14);
+  border-bottom: 1px solid var(--border);
   border-radius: 0;
   background: transparent;
   box-shadow: none;
-  transition: border-color 0.22s ease, background-color 0.22s ease;
+  transition: border-color 0.22s ease;
 }
 
 html[data-theme="light"] .post-preview__card,
 html[data-theme="light"] .post-preview.team-card {
-  border-bottom-color: rgba(40, 98, 160, 0.12);
+  border-bottom-color: var(--border);
 }
 
 .post-preview__card:hover,
 .post-preview__card:focus-within,
 .post-preview.team-card:hover,
 .post-preview.team-card:focus-within {
-  background: rgba(255, 255, 255, 0.02);
+  background: transparent;
   border-bottom-color: var(--border-strong);
 }
 
@@ -736,7 +692,7 @@ html[data-theme="light"] .post-preview__card:hover,
 html[data-theme="light"] .post-preview__card:focus-within,
 html[data-theme="light"] .post-preview.team-card:hover,
 html[data-theme="light"] .post-preview.team-card:focus-within {
-  background: rgba(21, 122, 214, 0.04);
+  background: transparent;
 }
 
 .post-preview__body {
@@ -792,7 +748,7 @@ html[data-theme="light"] .post-preview.team-card:focus-within {
 
 .post-preview__media {
   overflow: hidden;
-  border: 1px solid rgba(103, 206, 255, 0.08);
+  border: 1px solid var(--border);
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.01);
 }
@@ -910,14 +866,14 @@ html[data-theme="light"] .post-preview.team-card:focus-within {
   overflow: hidden;
   margin-top: 82px;
   margin-bottom: 24px;
-  border-bottom: 1px solid rgba(103, 206, 255, 0.1);
+  border-bottom: 1px solid var(--border);
 }
 
 .intro-header.big-img::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(4, 11, 21, 0.2), rgba(4, 11, 21, 0.74));
+  background: rgba(4, 11, 21, 0.5);
 }
 
 .intro-header .page-heading,
@@ -957,7 +913,7 @@ html[data-theme="light"] .intro-header .post-heading {
   width: clamp(88px, 12vw, 156px);
   height: 1px;
   margin-top: 24px;
-  background: linear-gradient(90deg, var(--accent-strong), transparent);
+  background: var(--border-strong);
 }
 
 .intro-header .page-heading h1,
@@ -1122,7 +1078,7 @@ html[data-theme="light"] .disqus-comments {
   margin: 28px auto;
   object-fit: contain;
   border-radius: 16px;
-  border: 1px solid rgba(103, 206, 255, 0.08);
+  border: 1px solid var(--border);
   box-shadow: none;
 }
 
@@ -1134,7 +1090,7 @@ html[data-theme="light"] .disqus-comments {
 .blog-post table:not(.lntable) {
   border-collapse: separate;
   border-spacing: 0;
-  border: 1px solid rgba(103, 206, 255, 0.1);
+  border: 1px solid var(--border);
   border-radius: 14px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.015);
@@ -1479,14 +1435,14 @@ html[data-theme="light"] .panel-group .panel {
 
 .panel-title .badge {
   border-radius: 999px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-  color: #07111d;
+  background: var(--accent);
+  color: #ffffff;
   min-width: 34px;
 }
 
 .list-group-item {
   background: transparent;
-  border-color: rgba(103, 206, 255, 0.12);
+  border-color: var(--border);
   border-width: 1px 0 0;
   padding-left: 0;
   padding-right: 0;
@@ -1547,30 +1503,30 @@ html[data-theme="light"] .panel-group .panel {
   gap: 20px;
   padding: 18px 0 22px;
   border: 0;
-  border-bottom: 1px solid rgba(103, 206, 255, 0.12);
+  border-bottom: 1px solid var(--border);
   border-radius: 0;
   background: transparent;
   box-shadow: none;
 }
 
 html[data-theme="light"] .member-row {
-  border-bottom-color: rgba(40, 98, 160, 0.12);
+  border-bottom-color: var(--border);
   background: transparent;
 }
 
 .member-list .member-row:first-child {
-  border-top: 1px solid rgba(103, 206, 255, 0.12);
+  border-top: 1px solid var(--border);
 }
 
 html[data-theme="light"] .member-list .member-row:first-child {
-  border-top-color: rgba(40, 98, 160, 0.12);
+  border-top-color: var(--border);
 }
 
 .member-avatar img {
   width: 96px;
   height: 96px;
   border-radius: 14px;
-  border: 1px solid rgba(103, 206, 255, 0.08);
+  border: 1px solid var(--border);
   object-fit: cover;
   display: block;
 }
@@ -1641,16 +1597,12 @@ footer {
   position: relative;
   margin-top: 56px;
   padding: 42px 0 48px;
-  border-top: 1px solid rgba(103, 206, 255, 0.12);
-  background:
-    linear-gradient(180deg, rgba(10, 19, 35, 0.7), rgba(6, 13, 24, 0.96)),
-    radial-gradient(circle at top left, rgba(101, 217, 255, 0.05), transparent 30%);
+  border-top: 1px solid var(--border);
+  background: var(--bg-soft);
 }
 
 html[data-theme="light"] footer {
-  background:
-    linear-gradient(180deg, rgba(251, 252, 254, 0.96), rgba(244, 247, 251, 0.98)),
-    radial-gradient(circle at top left, rgba(17, 109, 203, 0.025), transparent 28%);
+  background: var(--bg-soft);
 }
 
 .site-footer__grid {
@@ -1718,7 +1670,7 @@ footer .footer-links a {
   height: 48px;
   padding: 0;
   border-radius: 16px;
-  border: 1px solid rgba(103, 206, 255, 0.08);
+  border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.02);
   color: var(--text);
   transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
@@ -1775,11 +1727,11 @@ footer .theme-by a {
 footer div.disclaimer {
   margin: 0 0 24px;
   padding: 18px 20px;
-  border: 1px solid rgba(115, 240, 198, 0.22);
+  border: 1px solid var(--border);
   border-left-width: 1px;
   border-right-width: 1px;
   border-radius: 20px;
-  background: rgba(115, 240, 198, 0.08);
+  background: var(--accent-soft);
   color: var(--text-soft);
 }
 
@@ -1804,7 +1756,7 @@ footer div.disclaimer {
 }
 
 .modal-content {
-  border: 1px solid rgba(103, 206, 255, 0.12);
+  border: 1px solid var(--border);
   border-radius: 18px;
   background: var(--surface-strong);
   box-shadow: var(--shadow-soft);
@@ -2006,13 +1958,6 @@ footer div.disclaimer {
 }
 
 /* Flow refinement: reduce isolated-card feeling across repeated page sections. */
-html[data-theme="light"] body {
-  background-image: linear-gradient(180deg, #fbfcfe 0%, #f5f7fb 52%, #eff3f8 100%);
-}
-
-html[data-theme="light"] body::before {
-  content: none;
-}
 
 .team-panel,
 .well.team-panel,
@@ -2039,7 +1984,7 @@ html[data-theme="light"] body::before {
   border: 0;
   border-top: 1px solid var(--border);
   border-radius: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+  background: none;
 }
 
 html[data-theme="light"] .team-panel,
@@ -2068,9 +2013,9 @@ html[data-theme="light"] .well.team-home-intro {
   border-bottom: 1px solid var(--border);
   border-radius: 0;
   padding: 34px 0 22px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.015), rgba(255, 255, 255, 0));
+  background: none;
   box-shadow: none;
-  transition: border-color 0.22s ease, background 0.22s ease;
+  transition: border-color 0.22s ease;
 }
 
 .team-hero__inner::before {
@@ -2078,19 +2023,19 @@ html[data-theme="light"] .well.team-home-intro {
 }
 
 html[data-theme="light"] .team-hero__inner {
-  background: linear-gradient(180deg, rgba(17, 109, 203, 0.015), rgba(255, 255, 255, 0));
+  background: none;
 }
 
 .team-hero__inner:hover,
 .team-hero__inner:focus-within {
   border-top-color: var(--border-strong);
   border-bottom-color: var(--border-strong);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0));
+  background: none;
 }
 
 html[data-theme="light"] .team-hero__inner:hover,
 html[data-theme="light"] .team-hero__inner:focus-within {
-  background: linear-gradient(180deg, rgba(17, 109, 203, 0.06), rgba(255, 255, 255, 0.16));
+  background: none;
 }
 
 .team-emblem {
@@ -2103,18 +2048,14 @@ html[data-theme="light"] .team-hero__inner:focus-within {
 
 .team-emblem__frame {
   border-radius: 22px;
-  border: 1px solid rgba(103, 206, 255, 0.08);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
-    rgba(5, 12, 24, 0.3);
+  border: 1px solid var(--border);
+  background: none;
   opacity: 0.72;
-  transition: border-color 0.22s ease, background 0.22s ease, opacity 0.22s ease;
+  transition: border-color 0.22s ease, opacity 0.22s ease;
 }
 
 html[data-theme="light"] .team-emblem__frame {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(248, 250, 252, 0.58)),
-    rgba(255, 255, 255, 0.22);
+  background: none;
   border-color: rgba(23, 46, 82, 0.08);
 }
 
@@ -2126,9 +2067,7 @@ html[data-theme="light"] .team-emblem__frame {
 
 html[data-theme="light"] .team-hero__inner:hover .team-emblem__frame,
 html[data-theme="light"] .team-hero__inner:focus-within .team-emblem__frame {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.78)),
-    rgba(255, 255, 255, 0.5);
+  background: none;
 }
 
 .intro-header {
@@ -2214,7 +2153,7 @@ html[data-theme="light"] .team-hero__inner:focus-within .team-emblem__frame {
 .post-preview.team-card:focus-within {
   transform: none;
   border-color: var(--border-strong);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0));
+  background: none;
   box-shadow: none;
 }
 
@@ -2222,7 +2161,7 @@ html[data-theme="light"] .post-preview__card:hover,
 html[data-theme="light"] .post-preview__card:focus-within,
 html[data-theme="light"] .post-preview.team-card:hover,
 html[data-theme="light"] .post-preview.team-card:focus-within {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0));
+  background: none;
 }
 
 .post-preview__body {
@@ -2232,7 +2171,7 @@ html[data-theme="light"] .post-preview.team-card:focus-within {
 
 .post-preview__footer {
   padding-top: 10px;
-  border-top: 1px dashed var(--border);
+  border-top: 1px solid var(--border);
 }
 
 .post-preview .post-read-more,
@@ -2379,7 +2318,7 @@ html[data-theme="light"] .pager li a {
   top: 10px;
   bottom: 10px;
   width: 1px;
-  background: linear-gradient(180deg, var(--border-strong), rgba(103, 206, 255, 0.08));
+  background: var(--border);
   transform: translateX(-0.5px);
 }
 
@@ -2399,7 +2338,7 @@ html[data-theme="light"] .pager li a {
   height: 10px;
   border-radius: 999px;
   background: var(--accent);
-  box-shadow: 0 0 0 6px rgba(101, 217, 255, 0.08);
+  box-shadow: 0 0 0 6px var(--accent-soft);
   transform: translateX(-50%);
 }
 
@@ -2416,7 +2355,7 @@ html[data-theme="light"] .pager li a {
   top: 14px;
   width: 22px;
   height: 1px;
-  background: rgba(103, 206, 255, 0.18);
+  background: var(--border);
 }
 
 .honors-zigzag__item--left .honors-zigzag__body {
@@ -2502,7 +2441,7 @@ html[data-theme="light"] .pager li a {
   top: 8px;
   bottom: 8px;
   width: 1px;
-  background: linear-gradient(180deg, var(--border-strong), rgba(103, 206, 255, 0.08));
+  background: var(--border);
 }
 
 .honors-yearline__group {
@@ -2522,7 +2461,7 @@ html[data-theme="light"] .pager li a {
   height: 9px;
   border-radius: 999px;
   background: var(--accent);
-  box-shadow: 0 0 0 5px rgba(101, 217, 255, 0.08);
+  box-shadow: 0 0 0 5px var(--accent-soft);
 }
 
 .honors-yearline__year {
