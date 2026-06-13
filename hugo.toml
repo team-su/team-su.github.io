@@ -1,7 +1,7 @@
 baseurl = "https://su-team.cn/"
 DefaultContentLanguage = "en"
 title = "su-team"
-theme = "beautifulhugo"
+theme = "su-theme"
 timeZone = "Asia/Shanghai"
 
 [markup]
@@ -16,15 +16,20 @@ timeZone = "Asia/Shanghai"
     lineNos = false
     codeFences = true
     guessSyntax = true
-    style = "paraiso-light"
+    style = "catppuccin-latte"
     noClasses = false
 
 [Params]
   mainSections = ["post"]
   katex = true
   homeTitle = "su-team"
-  homeSubtitle = "Writeups, Records, and Field Notes"
+  homeSubtitle = "United Sudoers"
   homeDescription = "Competition archives, deep-dive writeups, and long-term team memory from Team SU."
+  welcomeMessage = "好哥哥，你终于来啦🙈"
+  heroSlogans = [
+    "一支全年摸鱼，偶尔起飞的佛系 CTF 战队。",
+    "flag{we_are_sudoers}",
+  ]
   logo = "img/SU.jpg"
   favicon = "img/SU.jpg"
   dateFormat = "January 2, 2006"
@@ -51,7 +56,7 @@ timeZone = "Asia/Shanghai"
 
 [[menu.main]]
     name = "Archives"
-    url = ""
+    url = "page/archives/"
     weight = 1
 [[menu.main]]
     name = "About"

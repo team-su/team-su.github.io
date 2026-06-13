@@ -1,0 +1,104 @@
+<header class="site-header">
+  <div class="site-header__inner">
+    <a class="site-header__logo" href="{{ "" | relLangURL }}">
+      {{ with .Site.Params.logo }}
+        {{- $image := resources.Get . -}}
+        {{ if $image }}
+          <img src="{{ ($image.Fit "120x120 webp q90").Permalink }}" alt="{{ $.Site.Title }}" class="site-header__logo-img">
+        {{ else }}
+          <img src="{{ . | relURL }}" alt="{{ $.Site.Title }}" class="site-header__logo-img">
+        {{ end }}
+      {{ end }}
+      <span class="site-header__title">{{ .Site.Title }}</span>
+    </a>
+
+    <div class="site-header__right">
+      <nav class="site-nav" role="navigation">
+        <ul class="site-nav__list">
+          {{ range $index, $menu := .Site.Menus.main.ByWeight }}
+            {{ if $menu.HasChildren }}
+              <li class="site-nav__item site-nav__item--dropdown">
+                <button class="site-nav__link site-nav__link--parent" aria-haspopup="true" aria-expanded="false">
+                  {{ $menu.Name }}
+                  <svg class="site-nav__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+                <ul class="site-nav__dropdown">
+                  {{ range $menu.Children }}
+                    <li><a class="site-nav__dropdown-link" href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+                  {{ end }}
+                </ul>
+              </li>
+            {{ else }}
+              <li class="site-nav__item">
+                <a class="site-nav__link" href="{{ .URL | relLangURL }}">{{ $menu.Name }}</a>
+              </li>
+            {{ end }}
+          {{ end }}
+        </ul>
+      </nav>
+
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+        </svg>
+        <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+
+      <button class="site-header__menu-btn" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+(function() {
+  var toggle = document.getElementById('theme-toggle');
+  if (toggle) {
+    toggle.addEventListener('click', function() {
+      var current = document.documentElement.getAttribute('data-theme');
+      var next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch(e) {}
+    });
+  }
+
+  var btn = document.querySelector('.site-header__menu-btn');
+  var nav = document.querySelector('.site-nav');
+  if (btn && nav) {
+    btn.addEventListener('click', function() {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !expanded);
+      nav.classList.toggle('site-nav--open');
+      btn.classList.toggle('site-header__menu-btn--open');
+    });
+  }
+
+  var dropdownBtns = document.querySelectorAll('.site-nav__link--parent');
+  for (var i = 0; i < dropdownBtns.length; i++) {
+    dropdownBtns[i].addEventListener('click', function(e) {
+      e.preventDefault();
+      var item = this.parentNode;
+      var expanded = this.getAttribute('aria-expanded') === 'true';
+      this.setAttribute('aria-expanded', !expanded);
+      item.classList.toggle('site-nav__item--open');
+    });
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.site-nav__item--dropdown')) {
+      var items = document.querySelectorAll('.site-nav__item--open');
+      for (var j = 0; j < items.length; j++) {
+        items[j].classList.remove('site-nav__item--open');
+        items[j].querySelector('.site-nav__link--parent').setAttribute('aria-expanded', 'false');
+      }
+    }
+  });
+})();
+</script>

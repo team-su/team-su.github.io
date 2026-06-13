@@ -1,0 +1,36 @@
+{{ define "main" }}
+<section class="archives">
+  <div class="container--article">
+    <header class="archives__header">
+      <h1 class="archives__title">Archives</h1>
+      <p class="archives__count">{{ len (where site.RegularPages "Type" "in" site.Params.mainSections) }} posts</p>
+    </header>
+
+    {{ $pages := where site.RegularPages "Type" "in" site.Params.mainSections }}
+    {{ $byYear := $pages.GroupByDate "2006" }}
+
+    {{ range $byYear }}
+    <div class="archives__year-group">
+      <h2 class="archives__year">{{ .Key }}</h2>
+      <ul class="archives__list">
+        {{ range .Pages }}
+        <li class="archives__item">
+          <time class="archives__date" datetime="{{ .Date.Format "2006-01-02" }}">
+            {{ .Date.Format "01-02" }}
+          </time>
+          <a class="archives__link" href="{{ .RelPermalink }}">{{ .Title }}</a>
+          {{ if .Params.tags }}
+          <span class="archives__tags">
+            {{ range .Params.tags }}
+              <a href="{{ "tags" | absLangURL }}/{{ . | urlize }}/" class="tag">{{ . }}</a>
+            {{ end }}
+          </span>
+          {{ end }}
+        </li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

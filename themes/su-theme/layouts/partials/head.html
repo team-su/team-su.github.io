@@ -1,0 +1,65 @@
+{{- if eq .Kind "taxonomy" -}}
+  {{- $.Scratch.Set "Title" (printf "#%s" $.Title) -}}
+{{- else -}}
+  {{- $.Scratch.Set "Title" (.Title | default .Site.Title) -}}
+{{- end -}}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{{ if .IsHome }}
+<title>{{ .Site.Params.homeTitle | default .Site.Title }}</title>
+{{ else }}
+<title>{{ $.Scratch.Get "Title" }} - {{ .Site.Params.homeTitle | default .Site.Title }}</title>
+{{ end }}
+<meta name="description" content="{{ .Description | default .Params.subtitle | default .Summary | default .Site.Params.homeDescription | plainify | truncate 160 }}">
+{{- with .Site.Params.author.name }}
+<meta name="author" content="{{ . }}">
+{{- end }}
+{{- with .Site.Params.favicon }}
+<link rel="icon" href="{{ . | relURL }}" type="image/x-icon">
+{{- end }}
+{{ hugo.Generator }}
+<link rel="alternate" href="{{ "index.xml" | absLangURL }}" type="application/rss+xml" title="{{ .Site.Title }}">
+
+<script>
+(function() {
+  var theme;
+  try { theme = localStorage.getItem('theme'); } catch(e) {}
+  if (!theme) {
+    theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
+
+{{- if .Site.Params.selfHosted }}
+<link rel="stylesheet" href="{{ "css/katex.min.css" | relURL }}">
+<link rel="stylesheet" href="{{ "fontawesome/css/brands.min.css" | relURL }}">
+<link rel="stylesheet" href="{{ "fontawesome/css/fontawesome.min.css" | relURL }}">
+<link rel="stylesheet" href="{{ "fontawesome/css/solid.min.css" | relURL }}">
+{{- else }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/brands.css" integrity="sha384-+eXGm6TmVoCZR1gX03US+L++L2mJIfOvp2X0+luTuEktXaF5F+e3zn0sO0HBvOyT" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/fontawesome.css" integrity="sha384-B5nyPZa7e84uCJEYHtevCdVYtQosWsbDSRtq3cy/jeSVtQW05GL8CKXO7waXsjPK" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v7.0.1/css/solid.css" integrity="sha384-1IIShlrK5iYgvS7OAgIH3prz4RAFP7hHZ2MaLIb9l3+trFwwnw/NdCWcUHlymZDU" crossorigin="anonymous">
+{{- end }}
+
+{{ $css := resources.Get "css/main.css" }}
+{{ with $css }}
+<link rel="stylesheet" href="{{ .RelPermalink }}">
+{{ end }}
+
+{{- if not .Site.Params.useHLJS }}
+<link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}">
+{{- end }}
+
+{{- if .Site.Params.selfHosted }}
+<link rel="stylesheet" href="{{ "css/photoswipe.min.css" | relURL }}">
+<link rel="stylesheet" href="{{ "css/photoswipe.default-skin.min.css" | relURL }}">
+{{- else }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+{{- end }}
+
+{{- if not hugo.IsServer }}
+{{ template "_internal/google_analytics.html" . }}
+{{- end }}

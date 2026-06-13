@@ -175,6 +175,8 @@
   </url><url>
     <loc>http://localhost:1313/page/about/</loc>
   </url><url>
+    <loc>http://localhost:1313/page/archives/</loc>
+  </url><url>
     <loc>http://localhost:1313/categories/</loc>
   </url><url>
     <loc>http://localhost:1313/page/honors/</loc>

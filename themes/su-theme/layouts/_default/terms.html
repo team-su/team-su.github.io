@@ -1,0 +1,41 @@
+{{ define "main" }}
+<div class="tags-page">
+  <div class="container">
+    <header class="tags-page__header">
+      <h1 class="tags-page__title">Tags</h1>
+      <p class="tags-page__count">{{ len .Data.Terms.ByCount }} tags total</p>
+    </header>
+
+    <div class="tags-cloud">
+      {{ range .Data.Terms.ByCount }}
+        {{ $tagColor := (mod (len .Name) 6) }}
+        <a href="{{ $.Site.LanguagePrefix | absURL }}/tags/{{ .Name | urlize }}/"
+           class="tags-cloud__tag tags-cloud__tag--c{{ $tagColor }}"
+           data-count="{{ .Count }}">
+          <span class="tags-cloud__name">{{ .Name }}</span>
+          <span class="tags-cloud__count">{{ .Count }}</span>
+        </a>
+      {{ end }}
+    </div>
+
+    <div class="tags-detail">
+      {{ range .Data.Terms.ByCount }}
+        <section class="tags-detail__group" id="tag-{{ .Name | urlize }}">
+          <h2 class="tags-detail__tag-name">
+            <span class="tags-detail__hash">#</span>{{ .Name }}
+            <span class="tags-detail__tag-count">({{ .Count }})</span>
+          </h2>
+          <ul class="tags-detail__list">
+            {{ range .WeightedPages }}
+              <li class="tags-detail__item">
+                <a href="{{ .Permalink }}">{{ .Title }}</a>
+                <time>{{ .Date.Format "2006-01-02" }}</time>
+              </li>
+            {{ end }}
+          </ul>
+        </section>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

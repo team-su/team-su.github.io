@@ -1,0 +1,132 @@
+{{ define "main" }}
+{{ $tocParam := .Params.toc }}
+{{ $toc := .TableOfContents }}
+{{ $tocEnabled := ne .Type "page" }}
+{{ if isset .Params "toc" }}
+  {{ if eq (printf "%T" $tocParam) "bool" }}
+    {{ if not $tocParam }}
+      {{ $tocEnabled = false }}
+    {{ end }}
+  {{ else }}
+    {{ $toc = $tocParam }}
+  {{ end }}
+{{ end }}
+{{ $hasToc := and $tocEnabled (gt (len (findRE "<a " (printf "%s" $toc))) 0) }}
+
+<article class="article">
+  <header class="article__header">
+    <div class="container--article">
+      {{ if ne .Type "page" }}
+        <div class="article__meta">
+          {{ partial "post_meta.html" . }}
+          {{ if .Params.tags }}
+            {{ range .Params.tags }}
+              <a href="{{ "tags" | absLangURL }}/{{ . | urlize }}/" class="tag">{{ . }}</a>
+            {{ end }}
+          {{ end }}
+        </div>
+      {{ end }}
+      <h1 class="article__title">{{ .Title }}</h1>
+      {{ with .Params.subtitle }}
+        <p class="article__subtitle">{{ . }}</p>
+      {{ end }}
+    </div>
+  </header>
+
+  {{ if $hasToc }}
+  <div class="article__body">
+    <div class="article__content">
+      {{- $content := partial "fix-email-autolinks.html" .Content -}}
+      {{ $content | safeHTML }}
+    </div>
+    <aside class="toc" id="toc">
+      <div class="toc__inner">
+        <h4 class="toc__title">Table of Contents</h4>
+        <div class="toc__body">
+          {{ $toc | safeHTML }}
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="12" x2="15" y2="12"></line>
+      <line x1="3" y1="18" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  {{ else }}
+  <div class="article__content container--article">
+    {{- $content := partial "fix-email-autolinks.html" .Content -}}
+    {{ $content | safeHTML }}
+  </div>
+  {{ end }}
+
+  {{ if ne .Type "page" }}
+  <nav class="article__nav container--article">
+    {{ with .PrevInSection }}
+      <a href="{{ .RelPermalink }}" class="article__nav-link article__nav-link--prev">
+        <span class="article__nav-label">&larr; Previous</span>
+        <span class="article__nav-title">{{ .Title }}</span>
+      </a>
+    {{ end }}
+    {{ with .NextInSection }}
+      <a href="{{ .RelPermalink }}" class="article__nav-link article__nav-link--next">
+        <span class="article__nav-label">Next &rarr;</span>
+        <span class="article__nav-title">{{ .Title }}</span>
+      </a>
+    {{ end }}
+  </nav>
+  {{ end }}
+</article>
+
+{{ if $hasToc }}
+<script>
+(function() {
+  var toc = document.getElementById('toc');
+  var toggle = document.getElementById('toc-toggle');
+  if (!toc || !toggle) return;
+
+  toggle.addEventListener('click', function() {
+    toc.classList.toggle('toc--open');
+    toggle.classList.toggle('toc-toggle--active');
+  });
+
+  var links = toc.querySelectorAll('a');
+  var headings = [];
+  for (var i = 0; i < links.length; i++) {
+    var id = links[i].getAttribute('href');
+    if (id && id.charAt(0) === '#') {
+      var el = document.getElementById(id.substring(1));
+      if (el) headings.push({ link: links[i], el: el });
+    }
+  }
+
+  function onScroll() {
+    var current = null;
+    for (var j = 0; j < headings.length; j++) {
+      if (headings[j].el.getBoundingClientRect().top <= 100) {
+        current = headings[j].link;
+      }
+    }
+    for (var k = 0; k < links.length; k++) {
+      links[k].classList.remove('toc__link--active');
+    }
+    if (current) {
+      current.classList.add('toc__link--active');
+    }
+  }
+
+  var ticking = false;
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      requestAnimationFrame(function() { onScroll(); ticking = false; });
+      ticking = true;
+    }
+  });
+  onScroll();
+})();
+</script>
+{{ end }}
+{{ end }}

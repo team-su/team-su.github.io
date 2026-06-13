@@ -1,0 +1,134 @@
+{{ define "main" }}
+
+{{ with .Site.Params.welcomeMessage }}
+<div class="landing" id="landing">
+  <div class="landing__particles" aria-hidden="true">
+    <span class="particle" style="--x:10%;--y:20%;--s:4px;--d:0s;--t:6s"></span>
+    <span class="particle" style="--x:25%;--y:60%;--s:3px;--d:1s;--t:8s"></span>
+    <span class="particle" style="--x:40%;--y:30%;--s:5px;--d:2s;--t:7s"></span>
+    <span class="particle" style="--x:55%;--y:75%;--s:3px;--d:.5s;--t:9s"></span>
+    <span class="particle" style="--x:70%;--y:40%;--s:4px;--d:1.5s;--t:6s"></span>
+    <span class="particle" style="--x:85%;--y:55%;--s:6px;--d:.8s;--t:8s"></span>
+    <span class="particle" style="--x:15%;--y:80%;--s:3px;--d:2.5s;--t:7s"></span>
+    <span class="particle" style="--x:60%;--y:12%;--s:5px;--d:1.2s;--t:9s"></span>
+    <span class="particle" style="--x:92%;--y:25%;--s:3px;--d:.3s;--t:6s"></span>
+    <span class="particle" style="--x:35%;--y:88%;--s:4px;--d:1.8s;--t:8s"></span>
+    <span class="particle" style="--x:78%;--y:68%;--s:3px;--d:2.2s;--t:7s"></span>
+    <span class="particle" style="--x:5%;--y:45%;--s:5px;--d:.6s;--t:9s"></span>
+  </div>
+  <div class="landing__content">
+    {{ with $.Site.Params.logo }}
+      {{- $image := resources.Get . -}}
+      {{ if $image }}
+        <img src="{{ ($image.Fit "200x200 webp q90").Permalink }}" alt="SU" class="landing__logo">
+      {{ else }}
+        <img src="{{ . | relURL }}" alt="SU" class="landing__logo">
+      {{ end }}
+    {{ end }}
+    <h1 class="landing__title">SU</h1>
+    <p class="landing__subtitle">{{ . }}</p>
+  </div>
+  <div class="landing__arrow" aria-hidden="true">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+</div>
+<script>
+(function() {
+  var landing = document.getElementById('landing');
+  if (!landing) return;
+  try {
+    if (sessionStorage.getItem('su-welcomed')) {
+      landing.remove();
+      return;
+    }
+  } catch(e) {}
+
+  document.body.style.overflow = 'hidden';
+
+  function dismiss() {
+    if (landing.classList.contains('landing--exit')) return;
+    landing.classList.add('landing--exit');
+    document.body.style.overflow = '';
+    try { sessionStorage.setItem('su-welcomed', '1'); } catch(e) {}
+    landing.addEventListener('transitionend', function() { landing.remove(); });
+  }
+
+  landing.addEventListener('click', dismiss);
+  landing.addEventListener('wheel', function(e) {
+    if (e.deltaY > 0) dismiss();
+  }, { passive: true });
+  landing.addEventListener('touchstart', function(e) {
+    var startY = e.touches[0].clientY;
+    function onMove(ev) {
+      if (startY - ev.touches[0].clientY > 30) {
+        dismiss();
+        landing.removeEventListener('touchmove', onMove);
+      }
+    }
+    landing.addEventListener('touchmove', onMove, { passive: true });
+  }, { passive: true });
+})();
+</script>
+{{ end }}
+
+<section class="hero">
+  <div class="hero__inner">
+    <h1 class="hero__title">SU</h1>
+    <p class="hero__slogan" id="hero-slogan" aria-live="polite"></p>
+  </div>
+</section>
+
+{{ $slogans := .Site.Params.heroSlogans | default (slice "一支全年摸鱼，偶尔起飞的佛系 CTF 战队。") }}
+<script>
+(function() {
+  var slogans = {{ $slogans | jsonify | safeJS }};
+  var el = document.getElementById('hero-slogan');
+  if (!el || !slogans.length) return;
+
+  var idx = 0, charIdx = 0, deleting = false;
+
+  function tick() {
+    var current = slogans[idx];
+    if (!deleting) {
+      charIdx++;
+      el.textContent = current.substring(0, charIdx);
+      if (charIdx >= current.length) {
+        setTimeout(function() { deleting = true; tick(); }, 2000);
+        return;
+      }
+      setTimeout(tick, 80);
+    } else {
+      charIdx--;
+      el.textContent = current.substring(0, charIdx);
+      if (charIdx <= 0) {
+        deleting = false;
+        idx = (idx + 1) % slogans.length;
+        setTimeout(tick, 400);
+        return;
+      }
+      setTimeout(tick, 40);
+    }
+  }
+
+  tick();
+})();
+</script>
+
+<section class="posts-section">
+  <div class="container">
+    <h2 class="section-title">Latest Writeups</h2>
+    <div class="posts-list">
+      {{ $pag := .Paginate (where site.RegularPages "Type" "in" site.Params.mainSections) }}
+      {{ range $pag.Pages }}
+        {{ partial "post_card.html" . }}
+      {{ end }}
+    </div>
+
+    {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
+    {{ partial "pagination.html" . }}
+    {{ end }}
+  </div>
+</section>
+{{ end }}

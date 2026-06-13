@@ -1,0 +1,104 @@
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__brand">
+      <span class="site-footer__name">{{ .Site.Title }}</span>
+      <p class="site-footer__tagline">{{ .Site.Params.footerTagline | default .Site.Params.homeDescription }}</p>
+    </div>
+
+    <div class="site-footer__links">
+      {{ with .Site.Params.author.ctftime }}
+        <a href="{{ . }}" title="CTFTime" rel="noopener noreferrer" target="_blank" class="site-footer__social">
+          <img src="{{ "img/ctftime.svg" | relURL }}" alt="CTFTime" width="20" height="20">
+        </a>
+      {{ end }}
+      {{ with .Site.Params.author.github }}
+        <a href="https://github.com/{{ . }}" title="GitHub" rel="noopener noreferrer" target="_blank" class="site-footer__social">
+          <i class="fa-brands fa-github"></i>
+        </a>
+      {{ end }}
+      {{ with .Site.Params.author.email }}
+        <a href="mailto:{{ . }}" title="Email" class="site-footer__social">
+          <i class="fa-solid fa-envelope"></i>
+        </a>
+      {{ end }}
+    </div>
+
+    <p class="site-footer__copy">
+      &copy;
+      {{ if .Site.Params.since }}{{ .Site.Params.since }}&ndash;{{ end }}{{ .Site.Lastmod.Format "2006" }}
+      {{ with .Site.Params.author.name }}{{ . }}{{ end }}
+      &middot; {{ .Site.Title }}
+    </p>
+  </div>
+</footer>
+
+{{- if .Site.Params.katex }}
+  {{- if .Site.Params.selfHosted }}
+<script defer src="{{ "js/katex.min.js" | relURL }}"></script>
+<script defer src="{{ "js/auto-render.min.js" | relURL }}"></script>
+  {{- else }}
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh" crossorigin="anonymous"></script>
+  {{- end }}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  if (typeof renderMathInElement !== "function") return;
+  renderMathInElement(document.body, {
+    delimiters: [
+      { left: "$$", right: "$$", display: true },
+      { left: "$", right: "$", display: false },
+      { left: "\\begin{equation}", right: "\\end{equation}", display: true },
+      { left: "\\begin{align}", right: "\\end{align}", display: true },
+      { left: "\\begin{alignat}", right: "\\end{alignat}", display: true },
+      { left: "\\begin{gather}", right: "\\end{gather}", display: true },
+      { left: "\\(", right: "\\)", display: false },
+      { left: "\\[", right: "\\]", display: true }
+    ]
+  });
+});
+</script>
+{{- end }}
+
+{{- if .Site.Params.selfHosted }}
+<script src="{{ "js/jquery-3.7.0.slim.min.js" | relURL }}"></script>
+{{- else }}
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+{{- end }}
+
+{{- if .Site.Params.selfHosted }}
+<script src="{{ "js/photoswipe.min.js" | relURL }}"></script>
+<script src="{{ "js/photoswipe-ui-default.min.js" | relURL }}"></script>
+{{- else }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script>
+{{- end }}
+<script src="{{ "js/load-photoswipe.js" | relURL }}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var blocks = document.querySelectorAll(".highlight, .article__content > pre");
+  for (var i = 0; i < blocks.length; i++) {
+    var block = blocks[i];
+    if (block.querySelector(".code-copy-btn")) continue;
+    block.style.position = "relative";
+    var btn = document.createElement("button");
+    btn.className = "code-copy-btn";
+    btn.textContent = "Copy";
+    btn.addEventListener("click", (function(b) {
+      return function() {
+        var code = b.querySelector("code");
+        var text = code ? code.textContent : b.textContent;
+        navigator.clipboard.writeText(text).then(function() {
+          btn.textContent = "Copied!";
+          btn.classList.add("code-copy-btn--copied");
+          setTimeout(function() {
+            btn.textContent = "Copy";
+            btn.classList.remove("code-copy-btn--copied");
+          }, 2000);
+        });
+      };
+    })(block));
+    block.appendChild(btn);
+  }
+});
+</script>
