@@ -1331,7 +1331,7 @@ pre:hover .code-copy-btn { opacity: 1; }
   border-color: var(--color-heading);
   color: var(--color-heading);
 }
-.site-footer__social img { width: 18px; height: 18px; }
+.site-footer__social svg { width: 20px; height: 20px; }
 
 .site-footer__copy {
   font-size: 0.75rem;
