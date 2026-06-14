@@ -56,6 +56,7 @@
       <line x1="3" y1="18" x2="18" y2="18"></line>
     </svg>
   </button>
+  <div class="toc-overlay" id="toc-overlay"></div>
   {{ else }}
   <div class="article__content container--article">
     {{- $content := partial "fix-email-autolinks.html" .Content -}}
@@ -86,12 +87,34 @@
 (function() {
   var toc = document.getElementById('toc');
   var toggle = document.getElementById('toc-toggle');
+  var overlay = document.getElementById('toc-overlay');
   if (!toc || !toggle) return;
 
+  function openToc() {
+    toc.classList.add('toc--open');
+    toggle.classList.add('toc-toggle--active');
+    if (overlay) overlay.classList.add('toc-overlay--visible');
+    document.body.classList.add('toc-panel-open');
+  }
+
+  function closeToc() {
+    toc.classList.remove('toc--open');
+    toggle.classList.remove('toc-toggle--active');
+    if (overlay) overlay.classList.remove('toc-overlay--visible');
+    document.body.classList.remove('toc-panel-open');
+  }
+
   toggle.addEventListener('click', function() {
-    toc.classList.toggle('toc--open');
-    toggle.classList.toggle('toc-toggle--active');
+    if (toc.classList.contains('toc--open')) {
+      closeToc();
+    } else {
+      openToc();
+    }
   });
+
+  if (overlay) {
+    overlay.addEventListener('click', closeToc);
+  }
 
   var links = toc.querySelectorAll('a');
   var headings = [];
@@ -101,6 +124,9 @@
       var el = document.getElementById(id.substring(1));
       if (el) headings.push({ link: links[i], el: el });
     }
+    links[i].addEventListener('click', function() {
+      closeToc();
+    });
   }
 
   function onScroll() {

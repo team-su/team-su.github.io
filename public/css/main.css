@@ -64,6 +64,7 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   color-scheme: light dark;
+  overflow-x: hidden;
 }
 
 body {
@@ -74,16 +75,23 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+  word-break: break-word;
+}
+
+body.toc-panel-open {
+  overflow: hidden;
 }
 
 a { color: var(--color-link); text-decoration: none; transition: color 0.15s; }
 a:hover { color: var(--color-link-hover); }
 
-img { max-width: 100%; height: auto; }
+img { max-width: 100%; height: auto; display: block; }
 video, iframe, embed, object { max-width: 100%; }
 pre, code { overflow-wrap: break-word; }
-pre { overflow-x: auto; -webkit-overflow-scrolling: touch; overflow-wrap: normal; word-break: normal; }
-table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+pre { overflow-x: auto; -webkit-overflow-scrolling: touch; overflow-wrap: normal; word-break: normal; max-width: 100%; }
+table { overflow-x: auto; -webkit-overflow-scrolling: touch; display: block; max-width: 100%; }
+p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: break-word; }
 
 .container { max-width: var(--container-width); margin: 0 auto; padding: 0 24px; }
 .container--narrow { max-width: var(--content-width); margin: 0 auto; padding: 0 24px; }
@@ -389,6 +397,8 @@ table { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   min-height: 1.8em;
   font-family: var(--font-mono);
   letter-spacing: -0.01em;
+  overflow: hidden;
+  word-break: break-all;
 }
 
 .hero__slogan::after {
@@ -820,20 +830,34 @@ pre:hover .code-copy-btn { opacity: 1; }
   position: fixed;
   bottom: 24px;
   right: 24px;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   background: var(--color-bg);
   border: 1px solid var(--color-border);
   border-radius: 50%;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 8px var(--color-shadow);
-  z-index: 20;
+  box-shadow: 0 2px 12px var(--color-shadow);
+  z-index: 60;
   color: var(--color-text);
-  transition: background 0.15s;
+  transition: background 0.15s, transform 0.15s;
 }
-.toc-toggle--active { background: var(--color-surface); }
+.toc-toggle:hover { background: var(--color-surface); }
+.toc-toggle--active { background: var(--color-surface); transform: rotate(90deg); }
+
+/* TOC overlay backdrop */
+.toc-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 49;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.toc-overlay--visible { display: block; opacity: 1; }
+[data-theme="dark"] .toc-overlay { background: rgba(0, 0, 0, 0.6); }
 
 
 /* ============================================================
@@ -1427,20 +1451,26 @@ pre:hover .code-copy-btn { opacity: 1; }
   }
 
   .toc {
-    display: none;
+    display: block;
     position: fixed;
-    top: var(--header-height);
+    bottom: 0;
+    left: 0;
     right: 0;
-    width: 280px;
-    height: calc(100vh - var(--header-height));
+    top: auto;
+    width: 100%;
+    height: 50vh;
     max-height: none;
     background: var(--color-bg);
-    border-left: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-border);
+    border-left: none;
+    border-radius: 16px 16px 0 0;
     padding: 24px;
     z-index: 50;
     overflow-y: auto;
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .toc--open { display: block; }
+  .toc--open { transform: translateY(0); }
   .toc-toggle { display: flex; }
 
   .hero { padding: 64px 24px 48px; }
