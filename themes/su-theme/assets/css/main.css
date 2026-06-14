@@ -1332,6 +1332,19 @@ pre:hover .code-copy-btn { opacity: 1; }
   color: var(--color-heading);
 }
 .site-footer__social svg { width: 20px; height: 20px; }
+.site-footer__social--ctftime {
+  width: auto;
+  border: none;
+  border-radius: 0;
+}
+.site-footer__social--ctftime svg {
+  width: auto;
+  height: 20px;
+}
+.site-footer__social--ctftime:hover {
+  border-color: transparent;
+  opacity: 0.7;
+}
 
 .site-footer__copy {
   font-size: 0.75rem;
