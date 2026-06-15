@@ -106,103 +106,45 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
   inset: 0;
   z-index: 9999;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-bg);
-  background-image: radial-gradient(circle at 50% 40%, rgba(37,99,235,0.04) 0%, transparent 60%);
+  min-height: 100vh;
+  background: #f5f5f5;
   cursor: pointer;
-  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: transform;
+  transition: opacity 0.5s ease-out;
+  will-change: opacity;
   overflow: hidden;
 }
 
-[data-theme="dark"] .landing {
-  background-image: radial-gradient(circle at 50% 40%, rgba(88,166,255,0.06) 0%, transparent 60%);
-}
-
-.landing--exit {
-  transform: translateY(-100%);
-}
-
-/* Floating particles */
-.landing__particles {
-  position: absolute;
-  inset: 0;
+.landing--fade-out {
+  opacity: 0;
   pointer-events: none;
 }
 
-.particle {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: var(--s);
-  height: var(--s);
-  border-radius: 50%;
-  background: var(--color-link);
-  opacity: 0;
-  animation: particleFloat var(--t) ease-in-out var(--d) infinite;
-}
-
-@keyframes particleFloat {
-  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.1; }
-  25% { transform: translateY(-30px) translateX(10px); opacity: 0.25; }
-  50% { transform: translateY(-10px) translateX(-8px); opacity: 0.12; }
-  75% { transform: translateY(-40px) translateX(6px); opacity: 0.2; }
-}
-
-/* Content with staggered fade-in */
 .landing__content {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   user-select: none;
-  position: relative;
-  z-index: 1;
 }
 
 .landing__logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 16px;
+  width: 180px;
+  height: 180px;
+  border-radius: 20px;
   object-fit: cover;
-  margin-bottom: 24px;
-  animation: landingReveal 0.6s ease-out both;
+  animation: landingFadeIn 0.6s ease-out both;
 }
 
-.landing__title {
-  font-family: var(--font-mono);
-  font-size: 5rem;
-  font-weight: 800;
-  color: var(--color-heading);
-  letter-spacing: -0.04em;
-  line-height: 1;
-  margin-bottom: 16px;
-  animation: landingReveal 0.6s ease-out 0.1s both;
-}
-
-.landing__subtitle {
-  font-size: 1.15rem;
-  color: var(--color-text-secondary);
-  font-weight: 400;
-  animation: landingReveal 0.6s ease-out 0.2s both;
-}
-
-.landing__arrow {
-  position: absolute;
-  bottom: 48px;
-  color: var(--color-text-secondary);
-  opacity: 0;
-  z-index: 1;
-  animation: landingReveal 0.6s ease-out 0.5s both, arrowFloat 2s ease-in-out 1.1s infinite;
-}
-
-@keyframes landingReveal {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes arrowFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
+@keyframes landingFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 
@@ -1476,7 +1418,7 @@ pre:hover .code-copy-btn { opacity: 1; }
   .hero { padding: 64px 24px 48px; }
   .hero__title { font-size: 3.5rem; }
 
-  .landing__title { font-size: 4rem; }
+  .landing__logo { width: 150px; height: 150px; }
 
   .member-list {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -1606,8 +1548,7 @@ pre:hover .code-copy-btn { opacity: 1; }
 
   .archives__item { gap: 8px; }
 
-  .landing__title { font-size: 3.5rem; }
-  .landing__subtitle { font-size: 1rem; padding: 0 20px; }
+  .landing__logo { width: 130px; height: 130px; }
 
   .site-footer { padding: 32px 0; }
   .site-footer__links { gap: 12px; }
@@ -1662,9 +1603,7 @@ pre:hover .code-copy-btn { opacity: 1; }
   .member-avatar img { width: 40px; height: 40px; }
   .member-top-line .name { font-size: 0.9rem; }
 
-  .landing__title { font-size: 2.8rem; }
-  .landing__logo { width: 64px; height: 64px; border-radius: 12px; }
-  .landing__subtitle { font-size: 0.9rem; }
+  .landing__logo { width: 110px; height: 110px; }
 
   .page-404__code { font-size: 4rem; }
   .page-404 { padding: 80px 16px; }
@@ -1672,11 +1611,7 @@ pre:hover .code-copy-btn { opacity: 1; }
 
 /* --- Landscape phones (short viewport) --- */
 @media (max-height: 500px) and (max-width: 900px) {
-  .landing { padding: 24px; }
-  .landing__logo { width: 48px; height: 48px; margin-bottom: 12px; }
-  .landing__title { font-size: 2.5rem; margin-bottom: 8px; }
-  .landing__subtitle { font-size: 0.85rem; }
-  .landing__arrow { bottom: 16px; }
+  .landing__logo { width: 90px; height: 90px; }
   .hero { padding: 24px 20px; }
   .hero__title { font-size: 2rem; }
 }
