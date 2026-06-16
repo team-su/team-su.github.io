@@ -16,7 +16,15 @@
         {{ range .list }}
           <article class="member-row">
             <div class="member-avatar">
-              <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy">
+              {{ if .github }}
+                {{ $username := replace .github "https://github.com/" "" }}
+                {{ $username = replace $username "https://" "" }}
+                {{ $username = replace $username ".github.io/" "" }}
+                {{ $username = replace $username "/" "" }}
+                <img src="https://github.com/{{ $username }}.png" alt="{{ .name }}" loading="lazy">
+              {{ else }}
+                <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy">
+              {{ end }}
             </div>
 
             <div class="member-body">
