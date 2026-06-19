@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,12 +10,15 @@
 <meta name="author" content="SUer">
 <link rel="icon" href="/img/SU.jpg" type="image/x-icon">
 <meta name="generator" content="Hugo 0.163.1">
-<link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team">
+<link rel="alternate" href="https://su-team.cn/index.xml" type="application/rss+xml" title="su-team">
 
 <script>
 (function() {
+  
+  try { localStorage.removeItem('theme'); } catch(e) {}
+
   var theme;
-  try { theme = localStorage.getItem('theme'); } catch(e) {}
+  try { theme = sessionStorage.getItem('theme'); } catch(e) {}
   if (!theme) {
     theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
@@ -26,7 +29,7 @@
     var mq = window.matchMedia('(prefers-color-scheme: dark)');
     mq.addEventListener('change', function(e) {
       var stored;
-      try { stored = localStorage.getItem('theme'); } catch(_) {}
+      try { stored = sessionStorage.getItem('theme'); } catch(_) {}
       if (!stored) {
         document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
       }
@@ -43,6 +46,7 @@
 <link rel="stylesheet" href="/css/syntax.css">
 <link rel="stylesheet" href="/css/photoswipe.min.css">
 <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css">
+
 
 </head>
 <body>
@@ -125,7 +129,7 @@
       var current = document.documentElement.getAttribute('data-theme');
       var next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('theme', next); } catch(e) {}
+      try { sessionStorage.setItem('theme', next); } catch(e) {}
     });
   }
 
@@ -206,7 +210,7 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/alictf/" class="tag">alictf</a>
+        <a href="https://su-team.cn/tags/alictf/" class="tag">alictf</a>
       
     </div>
     
@@ -244,7 +248,7 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/rctf/" class="tag">RCTF</a>
+        <a href="https://su-team.cn/tags/rctf/" class="tag">RCTF</a>
       
     </div>
     
@@ -282,44 +286,7 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/%E6%8B%9F%E6%80%81/" class="tag">拟态</a>
-      
-    </div>
-    
-  </div>
-</article>
-
-      
-        <article class="post-card ">
-  <div class="post-card__body">
-    <div class="post-card__meta">
-      <span class="post-meta">
-  <time datetime="2025-10-21">October 21, 2025</time>
-  
-    <span class="post-meta__sep">&middot;</span>
-    <span>67 min read</span>
-  
-  
-    <span class="post-meta__sep">&middot;</span>
-    <span>14211 words</span>
-  
-  
-    
-  
-</span>
-
-    </div>
-    <h3 class="post-card__title">
-      <a href="/post/qwb-s9-su-wu/">2025 QWB-S9 SU WriteUp</a>
-    </h3>
-    
-    <p class="post-card__excerpt">本次强网杯我们 SU 从各方面原因考虑，十位师傅组成一队，名为“SehllWeDance”，取得了 19th 的成绩，感谢队里师傅们的辛苦付出，每个人都熬夜通宵干！特别是@2hi5hu师傅，一个人几乎AK misc 方向。同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
-以下是我们 SU 本次 2025 强 …
-    </p>
-    
-    <div class="post-card__tags">
-      
-        <a href="http://localhost:1313/tags/qwb/" class="tag">QWB</a>
+        <a href="https://su-team.cn/tags/%E6%8B%9F%E6%80%81/" class="tag">拟态</a>
       
     </div>
     
@@ -357,7 +324,7 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/wmctf/" class="tag">WMCTF</a>
+        <a href="https://su-team.cn/tags/wmctf/" class="tag">WMCTF</a>
       
     </div>
     
@@ -395,7 +362,7 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/otherctf/" class="tag">OtherCTF</a>
+        <a href="https://su-team.cn/tags/otherctf/" class="tag">OtherCTF</a>
       
     </div>
     
@@ -433,7 +400,7 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/l3hctf/" class="tag">L3HCTF</a>
+        <a href="https://su-team.cn/tags/l3hctf/" class="tag">L3HCTF</a>
       
     </div>
     
@@ -471,7 +438,7 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/dasctf/" class="tag">DASCTF</a>
+        <a href="https://su-team.cn/tags/dasctf/" class="tag">DASCTF</a>
       
     </div>
     
@@ -509,7 +476,7 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/suctf/" class="tag">SUCTF</a>
+        <a href="https://su-team.cn/tags/suctf/" class="tag">SUCTF</a>
       
     </div>
     
@@ -547,7 +514,45 @@
     
     <div class="post-card__tags">
       
-        <a href="http://localhost:1313/tags/xctffinals/" class="tag">XCTFfinals</a>
+        <a href="https://su-team.cn/tags/xctffinals/" class="tag">XCTFfinals</a>
+      
+    </div>
+    
+  </div>
+</article>
+
+      
+        <article class="post-card ">
+  <div class="post-card__body">
+    <div class="post-card__meta">
+      <span class="post-meta">
+  <time datetime="2024-05-27">May 27, 2024</time>
+  
+    <span class="post-meta__sep">&middot;</span>
+    <span>13 min read</span>
+  
+  
+    <span class="post-meta__sep">&middot;</span>
+    <span>2675 words</span>
+  
+  
+    
+  
+</span>
+
+    </div>
+    <h3 class="post-card__title">
+      <a href="/post/rctf-2024-su-wu/">2024 RCTF SU WriteUp</a>
+    </h3>
+    
+    <p class="post-card__excerpt">本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。
+以下是我们 SU 本次 2024 RCTF的 writeup。
+
+    </p>
+    
+    <div class="post-card__tags">
+      
+        <a href="https://su-team.cn/tags/rctf/" class="tag">RCTF</a>
       
     </div>
     
