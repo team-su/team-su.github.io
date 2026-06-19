@@ -31,25 +31,25 @@
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">{{ .name }}</span>
-                <div class="member-card__links">
-                  {{ if .join }}
-                    <span class="member-card__tag"><i class="fas fa-chess-knight"></i> {{ .join }}</span>
-                  {{ end }}
-                  {{ if .blog }}
-                    <a href="{{ .blog }}" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="{{ .name }}'s Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  {{ end }}
-                  {{ if .github }}
-                    <a href="{{ .github }}" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="{{ .name }}'s GitHub">
-                      <i class="fab fa-github"></i><span>GitHub</span>
-                    </a>
-                  {{ end }}
-                </div>
+                {{ if .join }}
+                  <span class="member-card__tag member-card__tag--join"><i class="fas fa-chess-knight"></i> {{ .join }}</span>
+                {{ end }}
               </div>
               {{ if .description }}
                 <p class="member-card__desc" title="{{ .description }}">{{ .description }}</p>
               {{ end }}
+              <div class="member-card__links">
+                {{ if .blog }}
+                  <a href="{{ .blog }}" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="{{ .name }}'s Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                {{ end }}
+                {{ if .github }}
+                  <a href="{{ .github }}" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="{{ .name }}'s GitHub">
+                    <i class="fab fa-github"></i><span>GitHub</span>
+                  </a>
+                {{ end }}
+              </div>
             </div>
           </article>
         {{ end }}

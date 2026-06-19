@@ -6,12 +6,12 @@
 
 <title>Pioneers - su-team</title>
 
-<meta name="description" content=" pioneers 15 Zeddy Blog GitHub N/A
-影二つ Blog 书鱼哥哥的恩情还不完
-Clown Blog GitHub 一入人间黄粱梦，半生烟雨半生忧
-Kxheng Kxhenggggggg
-wh1sper Blog CTFer @X1cT34m @SU
-m1yuu Blog …">
+<meta name="description" content=" pioneers 15 Zeddy N/A
+Blog GitHub 影二つ 书鱼哥哥的恩情还不完
+Blog Clown 一入人间黄粱梦，半生烟雨半生忧
+Blog GitHub Kxheng Kxhenggggggg
+wh1sper CTFer @X1cT34m @SU
+Blog m1yuu ctfer/cyber …">
 <meta name="author" content="SUer">
 <link rel="icon" href="/img/SU.jpg" type="image/x-icon">
 <meta name="generator" content="Hugo 0.163.1">
@@ -25,6 +25,18 @@ m1yuu Blog …">
     theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
   document.documentElement.setAttribute('data-theme', theme);
+
+  
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', function(e) {
+      var stored;
+      try { stored = localStorage.getItem('theme'); } catch(_) {}
+      if (!stored) {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    });
+  }
 })();
 </script>
 <link rel="stylesheet" href="/css/katex.min.css">
@@ -203,23 +215,23 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">Zeddy</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://zeddyu.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Zeddy's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                    <a href="https://github.com/ZeddYu" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Zeddy's GitHub">
-                      <i class="fab fa-github"></i><span>GitHub</span>
-                    </a>
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="N/A">N/A</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://zeddyu.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Zeddy's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+                  <a href="https://github.com/ZeddYu" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Zeddy's GitHub">
+                    <i class="fab fa-github"></i><span>GitHub</span>
+                  </a>
+                
+              </div>
             </div>
           </article>
         
@@ -233,19 +245,19 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">影二つ</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://kagehutatsu.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="影二つ's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="书鱼哥哥的恩情还不完">书鱼哥哥的恩情还不完</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://kagehutatsu.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="影二つ's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+              </div>
             </div>
           </article>
         
@@ -263,23 +275,23 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">Clown</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://blog.xcu.icu/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Clown's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                    <a href="https://github.com/clown-q" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Clown's GitHub">
-                      <i class="fab fa-github"></i><span>GitHub</span>
-                    </a>
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="一入人间黄粱梦，半生烟雨半生忧">一入人间黄粱梦，半生烟雨半生忧</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://blog.xcu.icu/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Clown's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+                  <a href="https://github.com/clown-q" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Clown's GitHub">
+                    <i class="fab fa-github"></i><span>GitHub</span>
+                  </a>
+                
+              </div>
             </div>
           </article>
         
@@ -293,15 +305,15 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">Kxheng</span>
-                <div class="member-card__links">
-                  
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="Kxhenggggggg">Kxhenggggggg</p>
               
+              <div class="member-card__links">
+                
+                
+              </div>
             </div>
           </article>
         
@@ -315,19 +327,19 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">wh1sper</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://blog.wh1sper.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="wh1sper's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="CTFer @X1cT34m @SU">CTFer @X1cT34m @SU</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://blog.wh1sper.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="wh1sper's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+              </div>
             </div>
           </article>
         
@@ -341,19 +353,19 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">m1yuu</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://m1yuu.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="m1yuu's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="ctfer/cyber security researcher">ctfer/cyber security researcher</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://m1yuu.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="m1yuu's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+              </div>
             </div>
           </article>
         
@@ -367,19 +379,19 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">lo1see</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://lo1see.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="lo1see's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="无人扶我青云志，我自己也上不去">无人扶我青云志，我自己也上不去</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://lo1see.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="lo1see's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+              </div>
             </div>
           </article>
         
@@ -397,23 +409,23 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">luo</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://forkmmat.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="luo's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                    <a href="https://forkmmat.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="luo's GitHub">
-                      <i class="fab fa-github"></i><span>GitHub</span>
-                    </a>
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="这一切都是命运石之门的选择">这一切都是命运石之门的选择</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://forkmmat.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="luo's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+                  <a href="https://forkmmat.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="luo's GitHub">
+                    <i class="fab fa-github"></i><span>GitHub</span>
+                  </a>
+                
+              </div>
             </div>
           </article>
         
@@ -431,23 +443,23 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">n4c1</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://www.cnblogs.com/n4c1" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="n4c1's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                    <a href="https://github.com/NaCl1" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="n4c1's GitHub">
-                      <i class="fab fa-github"></i><span>GitHub</span>
-                    </a>
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="靡不有初, 鲜克有终!">靡不有初, 鲜克有终!</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://www.cnblogs.com/n4c1" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="n4c1's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+                  <a href="https://github.com/NaCl1" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="n4c1's GitHub">
+                    <i class="fab fa-github"></i><span>GitHub</span>
+                  </a>
+                
+              </div>
             </div>
           </article>
         
@@ -465,23 +477,23 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">Nbc</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://nbcares.top/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Nbc's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                    <a href="https://github.com/Nbccccc" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Nbc's GitHub">
-                      <i class="fab fa-github"></i><span>GitHub</span>
-                    </a>
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="功利主义导向的思考方式往往使我们忘却了生命的本质是一场历程">功利主义导向的思考方式往往使我们忘却了生命的本质是一场历程</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://nbcares.top/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Nbc's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+                  <a href="https://github.com/Nbccccc" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Nbc's GitHub">
+                    <i class="fab fa-github"></i><span>GitHub</span>
+                  </a>
+                
+              </div>
             </div>
           </article>
         
@@ -495,15 +507,15 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">0xahh</span>
-                <div class="member-card__links">
-                  
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="想学习">想学习</p>
               
+              <div class="member-card__links">
+                
+                
+              </div>
             </div>
           </article>
         
@@ -517,19 +529,19 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">m3rl1n</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://blog.cyberparterre.top/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="m3rl1n's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="改变就是好事">改变就是好事</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://blog.cyberparterre.top/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="m3rl1n's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+              </div>
             </div>
           </article>
         
@@ -547,23 +559,23 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">bj777</span>
-                <div class="member-card__links">
-                  
-                  
-                    <a href="https://jonathanbest7.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="bj777's Blog">
-                      <i class="fas fa-link"></i><span>Blog</span>
-                    </a>
-                  
-                  
-                    <a href="https://github.com/jonathanbest7" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="bj777's GitHub">
-                      <i class="fab fa-github"></i><span>GitHub</span>
-                    </a>
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="戒骄戒躁">戒骄戒躁</p>
               
+              <div class="member-card__links">
+                
+                  <a href="https://jonathanbest7.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="bj777's Blog">
+                    <i class="fas fa-link"></i><span>Blog</span>
+                  </a>
+                
+                
+                  <a href="https://github.com/jonathanbest7" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="bj777's GitHub">
+                    <i class="fab fa-github"></i><span>GitHub</span>
+                  </a>
+                
+              </div>
             </div>
           </article>
         
@@ -577,15 +589,15 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">ap0s</span>
-                <div class="member-card__links">
-                  
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="我嘅人生先啱啱开始,做唔到最好,咁就做更好">我嘅人生先啱啱开始,做唔到最好,咁就做更好</p>
               
+              <div class="member-card__links">
+                
+                
+              </div>
             </div>
           </article>
         
@@ -599,15 +611,15 @@ m1yuu Blog …">
             <div class="member-card__body">
               <div class="member-card__top">
                 <span class="member-card__name">三哈</span>
-                <div class="member-card__links">
-                  
-                  
-                  
-                </div>
+                
               </div>
               
                 <p class="member-card__desc" title="哥哥不会连隐写都解不开吧~不会吧~不会吧~">哥哥不会连隐写都解不开吧~不会吧~不会吧~</p>
               
+              <div class="member-card__links">
+                
+                
+              </div>
             </div>
           </article>
         

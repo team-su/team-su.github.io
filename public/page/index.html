@@ -20,6 +20,18 @@
     theme = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
   document.documentElement.setAttribute('data-theme', theme);
+
+  
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    mq.addEventListener('change', function(e) {
+      var stored;
+      try { stored = localStorage.getItem('theme'); } catch(_) {}
+      if (!stored) {
+        document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
+      }
+    });
+  }
 })();
 </script>
 <link rel="stylesheet" href="/css/katex.min.css">
@@ -187,12 +199,12 @@
       <a href="/page/active-members/">Members</a>
     </h3>
     
-    <p class="post-card__excerpt"> Ex-Captains 1 书鱼 Blog GitHub 大家都要做爱学习的好孩子。
-Captain 1 baozongwi Blog GitHub 天地不仁，以万物为刍狗
-Members 55 w4rd3n GitHub Pwn神&amp;哲学家
-Au5t1n 在线征婚，征婚请加1249176071
-Esonhugh Blog GitHub 带带弟弟，弟弟只会云
-yulate Blog …
+    <p class="post-card__excerpt"> Ex-Captains 1 书鱼 大家都要做爱学习的好孩子。
+Blog GitHub Captain 1 baozongwi 天地不仁，以万物为刍狗
+Blog GitHub Members 55 w4rd3n Pwn神&amp;哲学家
+GitHub Au5t1n 在线征婚，征婚请加1249176071
+Esonhugh 带带弟弟，弟弟只会云
+Blog GitHub yulate day day …
     </p>
     
   </div>
@@ -222,13 +234,13 @@ yulate Blog …
       <a href="/page/pioneers/">Pioneers</a>
     </h3>
     
-    <p class="post-card__excerpt"> pioneers 15 Zeddy Blog GitHub N/A
-影二つ Blog 书鱼哥哥的恩情还不完
-Clown Blog GitHub 一入人间黄粱梦，半生烟雨半生忧
-Kxheng Kxhenggggggg
-wh1sper Blog CTFer @X1cT34m @SU
-m1yuu Blog ctfer/cyber security researcher
-lo1see Blog 无人扶我 …
+    <p class="post-card__excerpt"> pioneers 15 Zeddy N/A
+Blog GitHub 影二つ 书鱼哥哥的恩情还不完
+Blog Clown 一入人间黄粱梦，半生烟雨半生忧
+Blog GitHub Kxheng Kxhenggggggg
+wh1sper CTFer @X1cT34m @SU
+Blog m1yuu ctfer/cyber security researcher
+Blog lo1see 无人扶我青云志，我 …
     </p>
     
   </div>

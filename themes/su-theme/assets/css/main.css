@@ -1243,11 +1243,15 @@ pre:hover .code-copy-btn { opacity: 1; }
   display: block;
 }
 
-/* body */
+/* body — flex column so links stay at bottom */
 
-.member-card__body { min-width: 0; }
+.member-card__body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
 
-/* top line: name + links */
+/* top line: name + optional join tag */
 
 .member-card__top {
   display: flex;
@@ -1263,11 +1267,16 @@ pre:hover .code-copy-btn { opacity: 1; }
   white-space: nowrap;
 }
 
+/* links — pushed to bottom, right-aligned */
+
 .member-card__links {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 8px;
 }
 
 /* tag pills */
