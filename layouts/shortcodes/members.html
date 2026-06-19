@@ -6,52 +6,50 @@
   {{ end }}
 
   {{ range $data }}
-    <section class="members-section">
-      <div class="category-header">
-        <h3 class="category-name">{{ .links_category }}</h3>
-        <hr class="category-divider">
+    {{ $cat := lower .links_category }}
+    <section class="members-section{{ if in $cat "captain" }} members-section--captain{{ end }}">
+      <div class="members-section__head">
+        <h3 class="members-section__title">{{ .links_category }}</h3>
+        <span class="members-section__count">{{ len .list }}</span>
       </div>
 
-      <div class="member-list">
+      <div class="member-grid">
         {{ range .list }}
-          <article class="member-row">
-            <div class="member-avatar">
+          <article class="member-card">
+            <div class="member-card__avatar">
               {{ if .github }}
                 {{ $username := replace .github "https://github.com/" "" }}
                 {{ $username = replace $username "https://" "" }}
                 {{ $username = replace $username ".github.io/" "" }}
                 {{ $username = replace $username "/" "" }}
-                <img src="https://github.com/{{ $username }}.png" alt="{{ .name }}" loading="lazy">
+                <img src="https://github.com/{{ $username }}.png" alt="{{ .name }}" loading="lazy" width="56" height="56">
               {{ else }}
-                <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy">
+                <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy" width="56" height="56">
               {{ end }}
             </div>
 
-            <div class="member-body">
-              <div class="member-top-line">
-                <span class="name">{{ .name }}</span>
-                <div class="meta-links">
+            <div class="member-card__body">
+              <div class="member-card__top">
+                <span class="member-card__name">{{ .name }}</span>
+                <div class="member-card__links">
                   {{ if .join }}
-                    <span class="meta-item"><i class="fas fa-chess-knight"></i> Join: {{ .join }}</span>
+                    <span class="member-card__tag"><i class="fas fa-chess-knight"></i> {{ .join }}</span>
                   {{ end }}
-
                   {{ if .blog }}
-                    <a href="{{ .blog }}" target="_blank" rel="noopener noreferrer" class="meta-item link">
-                      <i class="fas fa-link"></i> Blog
+                    <a href="{{ .blog }}" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="{{ .name }}'s Blog">
+                      <i class="fas fa-link"></i><span>Blog</span>
                     </a>
                   {{ end }}
-
                   {{ if .github }}
-                    <a href="{{ .github }}" target="_blank" rel="noopener noreferrer" class="meta-item link">
-                      <i class="fab fa-github"></i> GitHub
+                    <a href="{{ .github }}" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="{{ .name }}'s GitHub">
+                      <i class="fab fa-github"></i><span>GitHub</span>
                     </a>
                   {{ end }}
                 </div>
               </div>
-
-              <div class="description">
-                {{ .description }}
-              </div>
+              {{ if .description }}
+                <p class="member-card__desc" title="{{ .description }}">{{ .description }}</p>
+              {{ end }}
             </div>
           </article>
         {{ end }}
