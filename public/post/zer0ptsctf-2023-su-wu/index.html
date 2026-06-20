@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -10,7 +10,7 @@
 <meta name="author" content="SUer">
 <link rel="icon" href="/img/SU.jpg" type="image/x-icon">
 <meta name="generator" content="Hugo 0.163.1">
-<link rel="alternate" href="https://su-team.cn/index.xml" type="application/rss+xml" title="su-team">
+<link rel="alternate" href="http://localhost:1313/index.xml" type="application/rss+xml" title="su-team">
 
 <script>
 (function() {
@@ -46,7 +46,6 @@
 <link rel="stylesheet" href="/css/syntax.css">
 <link rel="stylesheet" href="/css/photoswipe.min.css">
 <link rel="stylesheet" href="/css/photoswipe.default-skin.min.css">
-
 
 </head>
 <body>
@@ -197,7 +196,7 @@
 
           
             
-              <a href="https://su-team.cn/tags/otherctf/" class="tag">OtherCTF</a>
+              <a href="http://localhost:1313/tags/otherctf/" class="tag">OtherCTF</a>
             
           
         </div>
@@ -1111,42 +1110,96 @@ Permission denied.
   }
 
   var links = toc.querySelectorAll('a');
-  var headings = [];
+  var headings = [];         
+
   for (var i = 0; i < links.length; i++) {
-    var id = links[i].getAttribute('href');
-    if (id && id.charAt(0) === '#') {
-      var el = document.getElementById(id.substring(1));
+    var href = links[i].getAttribute('href');
+    if (href && href.charAt(0) === '#') {
+      var el = document.getElementById(href.substring(1));
       if (el) headings.push({ link: links[i], el: el });
     }
-    links[i].addEventListener('click', function() {
-      closeToc();
-    });
+    
+    links[i].addEventListener('click', function() { closeToc(); });
   }
 
-  function onScroll() {
+  if (headings.length === 0) return;
+
+  
+
+  
+  
+  toc._activeLink = null;
+  toc._headingOffset = 120;   
+
+  function updateActive() {
     var current = null;
+
+    
     for (var j = 0; j < headings.length; j++) {
-      if (headings[j].el.getBoundingClientRect().top <= 100) {
+      if (headings[j].el.getBoundingClientRect().top <= toc._headingOffset) {
         current = headings[j].link;
       }
     }
+
+    
+    if (!current) {
+      var atBottom = window.innerHeight + window.scrollY >=
+                      document.documentElement.scrollHeight - 80;
+      if (atBottom) {
+        current = headings[headings.length - 1].link;
+      }
+    }
+
+    
+    if (current === toc._activeLink) return;
+
+    
     for (var k = 0; k < links.length; k++) {
       links[k].classList.remove('toc__link--active');
     }
+
+    
     if (current) {
       current.classList.add('toc__link--active');
+
+      
+      if (toc.scrollHeight > toc.clientHeight) {
+        
+        
+        
+        var linkOffset = current.getBoundingClientRect().top
+                       - toc.getBoundingClientRect().top
+                       + toc.scrollTop;
+        var linkH = current.getBoundingClientRect().height;
+        var tocH  = toc.clientHeight;
+        var margin = 16;
+
+        
+        if (linkOffset < toc.scrollTop + margin) {
+          toc.scrollTop = linkOffset - margin;
+        } else if (linkOffset + linkH > toc.scrollTop + tocH - margin) {
+          toc.scrollTop = linkOffset + linkH - tocH + margin;
+        }
+      }
     }
+
+    toc._activeLink = current;
   }
 
-  var ticking = false;
+  
+  
+  toc._pending = false;
   window.addEventListener('scroll', function() {
-    if (!ticking) {
-      requestAnimationFrame(function() { onScroll(); ticking = false; });
-      ticking = true;
-    }
+    if (toc._pending) return;
+    toc._pending = true;
+    requestAnimationFrame(function() {
+      updateActive();
+      toc._pending = false;
+    });
   });
-  onScroll();
-})();
+
+  
+  updateActive();})();
 </script>
 
 

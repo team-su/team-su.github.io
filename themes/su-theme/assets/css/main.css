@@ -64,7 +64,7 @@ html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
   color-scheme: light dark;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body {
@@ -75,7 +75,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: background 0.3s, color 0.3s;
-  overflow-x: hidden;
+  overflow-x: clip;
   word-break: break-word;
 }
 
@@ -729,6 +729,8 @@ pre:hover .code-copy-btn { opacity: 1; }
   top: calc(var(--header-height) + 32px);
   max-height: calc(100vh - var(--header-height) - 64px);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
   z-index: 10;
 }
 
@@ -754,7 +756,8 @@ pre:hover .code-copy-btn { opacity: 1; }
   text-decoration: none;
   display: block;
   padding: 2px 0 2px 10px;
-  transition: color 0.15s, border-color 0.15s;
+  border-radius: 0 4px 4px 0;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
   border-left: 2px solid transparent;
 }
 
@@ -763,6 +766,7 @@ pre:hover .code-copy-btn { opacity: 1; }
 .toc__body a.toc__link--active {
   color: var(--color-link);
   border-left-color: var(--color-link);
+  background: var(--color-tag-bg);
   font-weight: 500;
 }
 
