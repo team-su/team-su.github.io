@@ -52,10 +52,15 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
 {{- end }}
 
-{{- /* 思源黑体 (Noto Sans SC)：正文中文字体，fontsource unicode-range 按需分片加载 */ -}}
+{{- /* 思源黑体 (Noto Sans SC)：正文中文字体，本地自托管，fontsource unicode-range 按需分片加载 */ -}}
+{{- if .Site.Params.selfHosted }}
+<link rel="stylesheet" href="{{ "fonts/noto-sans-sc/400.css" | relURL }}">
+<link rel="stylesheet" href="{{ "fonts/noto-sans-sc/700.css" | relURL }}">
+{{- else }}
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc/400.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc/700.css">
+{{- end }}
 
 {{ $css := resources.Get "css/main.css" }}
 {{ with $css }}
