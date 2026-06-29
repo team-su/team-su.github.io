@@ -1,0 +1,870 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pages on su-team</title><link>https://su-team.cn/page/</link><description>Recent content in Pages on su-team</description><generator>Hugo</generator><language>en</language><managingEditor>suers_xctf@126.com (SUer)</managingEditor><webMaster>suers_xctf@126.com (SUer)</webMaster><lastBuildDate>Wed, 24 Dec 2025 00:00:00 +0800</lastBuildDate><atom:link href="https://su-team.cn/page/index.xml" rel="self" type="application/rss+xml"/><item><title>Members</title><link>https://su-team.cn/page/active-members/</link><pubDate>Wed, 24 Dec 2025 00:00:00 +0800</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/active-members/</guid><description>&lt;div class="members-board"&gt;
+ 
+ 
+ 
+
+ 
+ 
+ &lt;section class="members-section members-section--captain"&gt;
+ &lt;div class="members-section__head"&gt;
+ &lt;h3 class="members-section__title"&gt;Ex-Captains&lt;/h3&gt;
+ &lt;span class="members-section__count"&gt;1&lt;/span&gt;
+ &lt;/div&gt;
+
+ &lt;div class="member-grid"&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/bkfish.png" alt="书鱼" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;书鱼&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="大家都要做爱学习的好孩子。"&gt;大家都要做爱学习的好孩子。&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://ctf.org.cn/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="书鱼's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/bkfish" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="书鱼's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;/div&gt;
+ &lt;/section&gt;
+ 
+ 
+ &lt;section class="members-section members-section--captain"&gt;
+ &lt;div class="members-section__head"&gt;
+ &lt;h3 class="members-section__title"&gt;Captain&lt;/h3&gt;
+ &lt;span class="members-section__count"&gt;1&lt;/span&gt;
+ &lt;/div&gt;
+
+ &lt;div class="member-grid"&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/baozongwi.png" alt="baozongwi" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;baozongwi&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="天地不仁，以万物为刍狗"&gt;天地不仁，以万物为刍狗&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://baozongwi.xyz/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="baozongwi's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/baozongwi" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="baozongwi's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;/div&gt;
+ &lt;/section&gt;
+ 
+ 
+ &lt;section class="members-section"&gt;
+ &lt;div class="members-section__head"&gt;
+ &lt;h3 class="members-section__title"&gt;Members&lt;/h3&gt;
+ &lt;span class="members-section__count"&gt;55&lt;/span&gt;
+ &lt;/div&gt;
+
+ &lt;div class="member-grid"&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/hitworld.png" alt="w4rd3n" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;w4rd3n&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="Pwn神&amp;amp;哲学家"&gt;Pwn神&amp;amp;哲学家&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ 
+ &lt;a href="https://github.com/hitworld" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="w4rd3n's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ &lt;img src="https://q1.qlogo.cn/g?b=qq&amp;amp;nk=1484818754&amp;amp;s=640" alt="Au5t1n" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;Au5t1n&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="在线征婚，征婚请加1249176071"&gt;在线征婚，征婚请加1249176071&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/Esonhugh.png" alt="Esonhugh" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;Esonhugh&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="带带弟弟，弟弟只会云"&gt;带带弟弟，弟弟只会云&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://eson.ninja/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Esonhugh's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/Esonhugh" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Esonhugh's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/yulate.png" alt="yulate" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;yulate&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="day day up"&gt;day day up&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://www.yulate.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="yulate's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/yulate" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="yulate's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/N1etzsche0.png" alt="疏狂" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;疏狂&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="濑户环奈，风华绝代"&gt;濑户环奈，风华绝代&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ 
+ &lt;a href="https://github.com/N1etzsche0" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="疏狂's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/fushuling.png" alt="fushuling" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;fushuling&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="nobody"&gt;nobody&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://fushuling.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="fushuling's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/fushuling" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="fushuling's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ &lt;img src="https://q1.qlogo.cn/g?b=qq&amp;amp;nk=2074199505&amp;amp;s=640" alt="ZimaBlue" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;ZimaBlue&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="Pay for one&amp;#39;s own poor choices."&gt;Pay for one&amp;#39;s own poor choices.&lt;/p&gt;</description></item><item><title>Pioneers</title><link>https://su-team.cn/page/pioneers/</link><pubDate>Wed, 24 Dec 2025 00:00:00 +0800</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/pioneers/</guid><description>&lt;div class="members-board"&gt;
+ 
+ 
+ 
+
+ 
+ 
+ &lt;section class="members-section"&gt;
+ &lt;div class="members-section__head"&gt;
+ &lt;h3 class="members-section__title"&gt;pioneers&lt;/h3&gt;
+ &lt;span class="members-section__count"&gt;15&lt;/span&gt;
+ &lt;/div&gt;
+
+ &lt;div class="member-grid"&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/ZeddYu.png" alt="Zeddy" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;Zeddy&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="N/A"&gt;N/A&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://zeddyu.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Zeddy's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/ZeddYu" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Zeddy's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ &lt;img src="https://q1.qlogo.cn/g?b=qq&amp;amp;nk=1609515942&amp;amp;s=640" alt="影二つ" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;影二つ&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="书鱼哥哥的恩情还不完"&gt;书鱼哥哥的恩情还不完&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://kagehutatsu.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="影二つ's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/clown-q.png" alt="Clown" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;Clown&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="一入人间黄粱梦，半生烟雨半生忧"&gt;一入人间黄粱梦，半生烟雨半生忧&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://blog.xcu.icu/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Clown's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/clown-q" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Clown's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ &lt;img src="https://q1.qlogo.cn/g?b=qq&amp;amp;nk=321586960&amp;amp;s=640" alt="Kxheng" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;Kxheng&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="Kxhenggggggg"&gt;Kxhenggggggg&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ &lt;img src="https://q1.qlogo.cn/g?b=qq&amp;amp;nk=1643239341&amp;amp;s=640" alt="wh1sper" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;wh1sper&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="CTFer @X1cT34m @SU"&gt;CTFer @X1cT34m @SU&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://blog.wh1sper.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="wh1sper's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ &lt;img src="https://m1yuu.com/medias/avatar.jpg" alt="m1yuu" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;m1yuu&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="ctfer/cyber security researcher"&gt;ctfer/cyber security researcher&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://m1yuu.com/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="m1yuu's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ &lt;img src="https://q1.qlogo.cn/g?b=qq&amp;amp;nk=2296161885&amp;amp;s=640" alt="lo1see" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;lo1see&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="无人扶我青云志，我自己也上不去"&gt;无人扶我青云志，我自己也上不去&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://lo1see.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="lo1see's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/forkmmat.png" alt="luo" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;luo&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="这一切都是命运石之门的选择"&gt;这一切都是命运石之门的选择&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://forkmmat.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="luo's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://forkmmat.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="luo's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/NaCl1.png" alt="n4c1" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;n4c1&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="靡不有初, 鲜克有终!"&gt;靡不有初, 鲜克有终!&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://www.cnblogs.com/n4c1" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="n4c1's Blog"&gt;
+ &lt;i class="fas fa-link"&gt;&lt;/i&gt;&lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/NaCl1" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="n4c1's GitHub"&gt;
+ &lt;i class="fab fa-github"&gt;&lt;/i&gt;&lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/Nbccccc.png" alt="Nbc" loading="lazy" width="56" height="56"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;Nbc&lt;/span&gt;
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="功利主义导向的思考方式往往使我们忘却了生命的本质是一场历程"&gt;功利主义导向的思考方式往往使我们忘却了生命的本质是一场历程&lt;/p&gt;</description></item><item><title>About us</title><link>https://su-team.cn/page/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/about/</guid><description>&lt;h2 id="关于我们"&gt;关于我们&lt;/h2&gt;
+&lt;p&gt;SU创队之始，战队取名SU，一方面代表江苏，另一方面也寓意夺取最高权限，现在我们将成员范围不再仅仅局限于江苏，扩大为全国各地，保留SU队名一方面是希望继续以SU已有的成绩基础上继续创造佳绩，另一方面我们也希望我们不再是只是一支江苏联合战队，更希望是一支全国高校的联合战队，希望能把越来越多的高校联合起来，无论这些高校有没有社团基础，现在的成绩如何，只要同学们对CTF这方面或者不仅是这方面感兴趣，我们都愿意去从各方面去帮助这些同学们在自己的高校建立起相应的社团资源，或者为这些单打独斗的同学提供一个更好的交流环境，为这些苦于没有学习资源却真正想学习的同学提供一个良好的平台，所以我们也更愿意把SU解释为 united sudoers / sudoers of union。总之我们希望能把更多的网络安全爱好者联合起来，构建一支强有力的队伍，一起为共同的目标努力，向着梦想出发。&lt;/p&gt;
+&lt;p&gt;有意愿加入我们的小伙伴联系邮箱：&lt;a href="mailto:suers_xctf@126.com"&gt;suers_xctf@126.com&lt;/a&gt;
+&lt;/p&gt;
+&lt;h2 id="战队荣誉"&gt;战队荣誉&lt;/h2&gt;
+&lt;section class="honors-brief honors-brief--zigzag"&gt;
+ &lt;div class="honors-zigzag honors-zigzag--bare"&gt;&lt;article class="honors-zigzag__item honors-zigzag__item--left"&gt;
+ &lt;div class="honors-zigzag__body"&gt;
+ &lt;div class="honors-zigzag__year"&gt;2025&lt;/div&gt;
+ &lt;div class="honors-zigzag__entries"&gt;&lt;div class="honors-zigzag__line"&gt;
+ &lt;span class="honors-zigzag__event"&gt;第九届 XCTF 联赛积分榜&lt;/span&gt;
+ &lt;span class="honors-zigzag__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-zigzag__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-zigzag__line"&gt;
+ &lt;span class="honors-zigzag__event"&gt;L3HCTF&lt;/span&gt;
+ &lt;span class="honors-zigzag__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-zigzag__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;&lt;article class="honors-zigzag__item honors-zigzag__item--right"&gt;
+ &lt;div class="honors-zigzag__body"&gt;
+ &lt;div class="honors-zigzag__year"&gt;2024&lt;/div&gt;
+ &lt;div class="honors-zigzag__entries"&gt;&lt;div class="honors-zigzag__line"&gt;
+ &lt;span class="honors-zigzag__event"&gt;第四届网鼎杯&lt;/span&gt;
+ &lt;span class="honors-zigzag__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-zigzag__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;金长城奖&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-zigzag__line"&gt;
+ &lt;span class="honors-zigzag__event"&gt;熊猫杯网络安全大赛&lt;/span&gt;
+ &lt;span class="honors-zigzag__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-zigzag__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;&lt;article class="honors-zigzag__item honors-zigzag__item--left"&gt;
+ &lt;div class="honors-zigzag__body"&gt;
+ &lt;div class="honors-zigzag__year"&gt;2023&lt;/div&gt;
+ &lt;div class="honors-zigzag__entries"&gt;&lt;div class="honors-zigzag__line"&gt;
+ &lt;span class="honors-zigzag__event"&gt;巅峰极客线下决赛&lt;/span&gt;
+ &lt;span class="honors-zigzag__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-zigzag__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;&lt;article class="honors-zigzag__item honors-zigzag__item--right"&gt;
+ &lt;div class="honors-zigzag__body"&gt;
+ &lt;div class="honors-zigzag__year"&gt;2022&lt;/div&gt;
+ &lt;div class="honors-zigzag__entries"&gt;&lt;div class="honors-zigzag__line"&gt;
+ &lt;span class="honors-zigzag__event"&gt;XCTF SUSCTF 2022&lt;/span&gt;
+ &lt;span class="honors-zigzag__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-zigzag__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;&lt;/div&gt;
+
+ &lt;div class="honors-brief__actions"&gt;
+ &lt;a class="team-button" href="https://su-team.cn/page/honors/"&gt;查看完整荣誉墙&lt;/a&gt;
+ &lt;/div&gt;
+&lt;/section&gt;</description></item><item><title>Archives</title><link>https://su-team.cn/page/archives/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/archives/</guid><description/></item><item><title>荣誉墙</title><link>https://su-team.cn/page/honors/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/honors/</guid><description>&lt;section class="honors-archive-simple"&gt;
+ &lt;div class="honors-yearline"&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2026&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;AliCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;10th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;LilacCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;5th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2025&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;CTFTIME TOP 50&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;36th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;第九届 XCTF 联赛积分榜&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;HKCERTCTF Quals&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;4th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;RCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;5th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;第九届 XCTF 国际网络攻防联赛总决赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--bronze"&gt;🥉&amp;nbsp;三等奖&lt;/span&gt;&lt;span class="honor-result__sep"&gt; / &lt;/span&gt;&lt;span class="honor-result honor-result--bronze"&gt;🥉&amp;nbsp;Live Solo 第三名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;强网拟态&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;预赛第一名&lt;/span&gt;&lt;span class="honor-result__sep"&gt; / &lt;/span&gt;&lt;span class="honor-result honor-result--bronze"&gt;🥉&amp;nbsp;决赛第三名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;中华人民共和国第三届职业技能大赛网络安全项目&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;WMCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;TFCCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;6th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;L3HCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;DASCTF 上半年赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;数字中国创新大赛数据安全产业积分争夺赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--bronze"&gt;🥉&amp;nbsp;铜奖&lt;/span&gt;&lt;span class="honor-result__sep"&gt; / &lt;/span&gt;&lt;span class="honor-result honor-result--rank"&gt;10th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2024&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;第四届网鼎杯&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;金长城奖&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;第四届网鼎杯线下总决赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;第四十七届世界技能大赛网络安全项目中国国家队选拔赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;国产 OS 漏洞挖掘赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;羊城杯网络安全大赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;矩阵杯网络安全大赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;RCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;熊猫杯网络安全大赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2023&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;XCTF ACTF 2023&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;RWCTF 2023 体验赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;中华人民共和国第二届职业技能大赛网络安全项目&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;网鼎杯决赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;第十一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;陇剑杯决赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;第六名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;祥云杯线下决赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;巅峰极客线下决赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;巅峰极客线上赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2022&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;XCTF SUSCTF 2022&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;RWCTF 2022 体验赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2021&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;美团 CTF（个人 / 团队）&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;个人赛第一名&lt;/span&gt;&lt;span class="honor-result__sep"&gt; / &lt;/span&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;团队赛第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;SCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;强网拟态预赛&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;BYTECTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;第十名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;RCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;第七名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2020&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;XCTF WMCTF 2020&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2019&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;CyBRICS CTF 中国区&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;第五名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;XCTF SCTF 2019&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;KCTF 2019 Q2&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--silver"&gt;🥈&amp;nbsp;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2017&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;SCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;第八名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;WHCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;第四名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-yearline__group"&gt;
+ &lt;div class="honors-yearline__year"&gt;2016&lt;/div&gt;
+ &lt;div class="honors-yearline__body"&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;华山杯（决赛 / 初赛）&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;决赛第七名&lt;/span&gt;&lt;span class="honor-result__sep"&gt; / &lt;/span&gt;&lt;span class="honor-result honor-result--rank"&gt;初赛第十名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;XMAN 夏令营&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--bronze"&gt;🥉&amp;nbsp;总排名第三&lt;/span&gt;&lt;span class="honor-result__sep"&gt; / &lt;/span&gt;&lt;span class="honor-result honor-result--rank"&gt;攻防第五&lt;/span&gt;&lt;span class="honor-result__sep"&gt; / &lt;/span&gt;&lt;span class="honor-result honor-result--bronze"&gt;🥉&amp;nbsp;结业第三&lt;/span&gt;&lt;span class="honor-result__sep"&gt; / &lt;/span&gt;&lt;span class="honor-result honor-result--gold"&gt;🏆&amp;nbsp;练习赛第一&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-yearline__entry"&gt;
+ &lt;span class="honors-yearline__event"&gt;AliCTF&lt;/span&gt;
+ &lt;span class="honors-yearline__dash"&gt;—&lt;/span&gt;
+ &lt;span class="honors-yearline__result"&gt;&lt;span class="honor-result honor-result--rank"&gt;第十名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;/div&gt;
+&lt;/section&gt;</description></item></channel></rss>
