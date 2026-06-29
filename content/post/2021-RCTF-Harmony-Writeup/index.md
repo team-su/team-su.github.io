@@ -21,35 +21,35 @@ Hi!Harmony!-复现
 
 文件丢进EXEinfos里面看看文件信息
 
-![01](01.jpg)
+![image](01.jpg)
 
 用Ubuntu打开看看,发现也不太行
 
-![03](03.jpg)
+![image](03.jpg)
 
 准备用IDA静态分析 发现IDA打不开
 
-![02](02.jpg)
+![image](02.jpg)
 
 用file命令查看下文件信息
 
-![04](04.jpg)
+![image](04.jpg)
 
 看到了一个信息RISC-V 百度搜索下
 
-![05](05.jpg)
+![image](05.jpg)
 
 一个指令集  怪不得IDA打开 搜下有没有关于IDA的RISC-V的插件https://github.com/shuffle2/riscv-ida
 
 经过一大堆艰难的操作发现 不能F5。。。。。。。
 
-![06](06.jpg)
+![image](06.jpg)
 
 总不能硬读汇编把 没学过这个架构 搜索其他脚本也报错 这也是为啥我再比赛过程中没做出该题的原因
 
-![07](07.jpg)
+![image](07.jpg)
 
-![08](08.jpg)
+![image](08.jpg)
 
 
 
@@ -57,7 +57,7 @@ Hi!Harmony!-复现
 
 后面想想用新学习到的Ghidra试试 发现还真的可以  不得不说这个反编译工具还是强啊
 
-![09](09.jpg)
+![image](09.jpg)
 
 反编译伪代码  ---解密模块
 

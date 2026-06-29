@@ -21,25 +21,25 @@ slug: "tfcctf-2025-su-wu"
 from Crypto.Util.number import long_to_bytes, bytes_to_long  
 import random  
 from secret import flag  
-  
+
 mod = 0x225fd  
 flag = bytes_to_long(flag)  
 e_values = [97491, 14061, 55776]  
 S = (lambda f=[flag], sk=[]: ([sk.append(f[0] % mod) or f.__setitem__(0, f[0] // mod) for _ in iter(lambda: f[0], 0)],sk)[1])()  
 S = vector(GF(mod), S)  
-  
+
 A_save = []  
 b_save = []  
-  
+
 for i in range(52):  
     A = VectorSpace(GF(mod), 44).random_element()  
     e = random.choice(e_values)  
     b = A * S + e  
     #print(b)  
-  
+
     A_save.append(A)  
     b_save.append(b)  
-  
+
 open('out.txt', 'w').write('A_values = ' + str(A_save) + ' ; b_values = ' + str(b_save))
 ```
 
@@ -208,7 +208,6 @@ https://github.com/leommxj/ghidra_csky
 反编译完直接就跳到了main而且非常清晰
 
 ```c
-
 undefined4 main(void)
 
 {
@@ -241,7 +240,7 @@ undefined4 main(void)
   uint local_cc [12];
   uint local_9c [12];
   uint local_6c [16];
-  
+
   __stream = fopen("flag.txt","rb");
   if (__stream != (FILE *)0x0) {
     fseek(__stream,0,2);
@@ -523,8 +522,6 @@ LAB_00008a6e:
     }
   } while( true );
 }
-
-
 ```
 
 使用Gemini分析可以得到：
@@ -549,9 +546,9 @@ int main(void) {
     if (!file_content) {
         return 1;
     }
-    
+
     char* trimmed_input = trim_whitespace(file_content); // 去除首尾空白字符
-    
+
     // 2. 将输入的前16个字节作为系数
     unsigned int input_coeffs[16] = {0};
     for (int i = 0; i < 16 && i < strlen(trimmed_input); ++i) {
@@ -562,7 +559,7 @@ int main(void) {
     // 3. 使用固定种子生成一个基础的随机多项式系统
     // srandom(0x539) 相当于 srandom(1337)，这意味着每次运行生成的“随机”多项式都是一样的
     srandom(1337); 
-    
+
     // 生成4个基础的随机二次多项式 Q0, Q1, Q2, Q3
     // 每个多项式包含8个变量 (x1, ..., x8)
     Polynomial base_polynomials[4];
@@ -594,7 +591,7 @@ int main(void) {
 
     // 6. 清理内存
     // ... 释放所有动态分配的内存 ...
-    
+
     return 0;
 }
 ```
@@ -677,7 +674,7 @@ f.write(b"\x01\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01\x00\x00\x00\x00\x01")
 f.close()
 ```
 
-![1](2.png)
+![image](2.png)
 
 再分别求解系数方程就可以得到flag：
 
@@ -773,7 +770,7 @@ return [population[floor(random() * n)] for i in _repeat(None, k)]
 
 通过询问AI得知，Python的random模块有些是直接使用C语言实现的，这些用C语言实现的随机数函数在编译Python解释器的时候已经被编译了，题目中的random()这个函数就是C语言实现的。所以需要到CPython相关的github仓库查看一下源码。在CPython中的这个仓库中可以找到源码 https://github.com/python/cpython/blob/main/Modules/_randommodule.c
 
-![1](3.png)
+![image](3.png)
 
 从源码中就可以看到random()在生成的时候相当于调用了俩次random.randbytes(32)，其中a取高27位，b取高26位。总的来说choice选择1，得到的就是floor(random() * n)的值，也就是能得到MT19937的26bit的值，但是连续选择choice1得到的26bit并不是连续的。对于已知不连续的nbit的值，本质上是线性方程组求解，求解的原理在这篇文章中情况三有比较详细的说明[MT19937分析](https://xenny.wiki/posts/crypto/PRNG/MT19937.html)，同时这篇博客有类似的题型https://tangcuxiaojikuai.xyz/post/69eaef2e.html
 
@@ -1018,7 +1015,7 @@ https://github.com/leommxj/ghidra_csky
 
 栈溢出
 
-![1](4.png)
+![image](4.png)
 
 后面就是 调试工具了可以从这里下载到
 
@@ -1030,8 +1027,10 @@ https://gitee.com/swxu/csky-elfabiv2-tools
 
  要注意的是 有些字符不能发送，不然会截断？
 
+
+
 ```python
-![5](5.png)from pwn import *
+from pwn import *
 #from ctypes import CDLL
 #cdl = CDLL('/lib/x86_64-linux-gnu/libc.so.6')
 s    = lambda   x : io.send(x)
@@ -1087,7 +1086,7 @@ itr()
 
 Elf 里面的 read 系统调用号是 0x54
 
-![1](5.png)
+![image](5.png)
 
 而 linux 源码里面的是 64 https://github.com/c-sky/linux-4.9.y
 
@@ -1097,7 +1096,7 @@ Elf 里面的 read 系统调用号是 0x54
 
 相差21
 
-![1](6.png)
+![image](6.png)
 
 那么 正确的 execve调用号 可能也是 差 21
 
@@ -1105,7 +1104,7 @@ Elf 里面的 read 系统调用号是 0x54
 
 242
 
-![1](7.png)
+![image](7.png)
 
 ```python
     .section .text
@@ -1120,9 +1119,9 @@ _start:
     jmp r12
 ```
 
-![1](8.png)
+![image](8.png)
 
-![1](9.png)
+![image](9.png)
 
 # Misc
 
@@ -1349,13 +1348,12 @@ while True:
         t = threading.Thread(target=safe_user_input)
         t.start()
         t.join()
-        
+
         if INPUT == "exit":
             break
     except:
         print("Some error occured")
         break
-
 ```
 
 使用 **Python 3.14** 的新特性 **多重****解释器**（`concurrent.interpreters`），在沙箱中执行用户输入代码。过了一些关键词，以及`builtins`被清空，所以很多的内置函数都不能使用，而且还被降权了，类似于ssti可以getshell
@@ -1388,7 +1386,6 @@ root           8       1  0 03:38 ?        00:00:00 socat TCP-LISTEN:1337,reusea
 root           9       8  2 03:38 ?        00:00:00 python3 /jail.py
 nobody        11       9  0 03:38 ?        00:00:00 /bin/sh -c ps -ef
 nobody        12      11  0 03:38 ?        00:00:00 ps -ef
-
 ```
 
 并没发现什么，由于是在python里面降权，想到同一进程不同线程的权限问题，写个检测脚本
@@ -1486,7 +1483,6 @@ Threads: 2
 TID      Uid(R/E/S)   Gid(R/E/S)   State    Comm
 522      0/0/0        65534/65534/65534 S (sleeping) python3
 523      65534/65534/65534 65534/65534/65534 S (sleeping) Thread-1 (safe_
-
 ```
 
 同一进程不同线程用shellcode打 https://ewontfix.com/17/#:~:text=Now
@@ -1501,7 +1497,7 @@ TID      Uid(R/E/S)   Gid(R/E/S)   State    Comm
 
 所以直接将当时有的一些记录复制到notepad，发现其中一条信息后有奇怪的内容
 
-![1](10.png)
+![image](10.png)
 
 推测应该是零宽字节隐写，这里丢给厨子可以看到只有两种零宽字节，用在线工具处理不出来
 
@@ -1542,7 +1538,7 @@ ida没办法直接解析反汇编成伪代码
 
 ai分析发现是进行了简单的异或加密，异或0xa5，但是不确定密文的位置在哪里，直接把整个elf文件作为输入丢给赛博厨子，然后得到flag
 
-![1](11.png)
+![image](11.png)
 
 ## CR00NEY
 
@@ -1565,7 +1561,7 @@ if (!user || !user.admin) {
 
 需要admin字段鉴权以确定是都能拿到flag, 去看users表结构
 
-![1](12.png)
+![image](12.png)
 
 再看注册逻辑
 
@@ -1803,7 +1799,6 @@ if __name__ == "__main__":
         f.write("Hello from fake SFTP server\n")
 
     start_sftp_server()
-
 ```
 
 需要安装paramiko依赖
@@ -1812,7 +1807,7 @@ if __name__ == "__main__":
 
 然而直接覆盖users.db也不行, 题目对users.db进行了校验
 
-![1](13.png)
+![image](13.png)
 
 依旧是ai生成脚本来修改获得恶意users.db, 使得它通过DB_id校验
 
@@ -2048,7 +2043,6 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
 ```
 
 之后打开靶机注册账户 qqq / qqq
@@ -2090,7 +2084,7 @@ Priority: u=1, i
 
 服务器收到请求
 
-![1](14.png)
+![image](14.png)
 
 此时qqq账户已经是admin权限
 
@@ -2443,7 +2437,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 ```
 
 # Reverse
@@ -2593,7 +2586,7 @@ if ( HACKER != 1 )
 
 直接nop掉跳转即可
 
-![1](15.png)
+![image](15.png)
 
 然后apply patches
 
@@ -2705,11 +2698,11 @@ gcc -c out.c -o out.o
 
 在c代码中发现比较点，可以看到后面有wrong、correct
 
-![1](16.png)
+![image](16.png)
 
 回到浏览器里源代码wasm搜1049113（此时已经转为了wat代码，还是可以读的）下断点
 
-![1](17.png)
+![image](17.png)
 
 输入框输入6个a结果发现没有断下来，说明压根没有到比较点（下断点在encrypt等同样发现没有被调用）
 
@@ -2731,7 +2724,7 @@ gcc -c out.c -o out.o
 
 从1049113往上找发现一处if比较，可以在local.get $var2下断点发现此时可以断下来，说明我们没有进到这个if
 
-![1](18.png)
+![image](18.png)
 
 调试发现比较12和134，12正好是我们输入的6个a的16进制长度；134同样也是`C3FAE3F2EFF4BFC6C70D91C1F1A8F2DAFAFEACE5FFF7C712D6EAF1EFBA818AFEEFEBA2D1F70FD6EBE3F9AECDCAE4B7EBEDDCFB129DE8BCD9F4DCE9B0D6F7C9D8F01DDF`
 
@@ -2739,11 +2732,11 @@ gcc -c out.c -o out.o
 
 点击下图里的内存可以查看值
 
-![1](19.png)
+![image](19.png)
 
 调试到下图时候看到给了一个比较大的地址，查看内存发现正好是输入加密完的结果
 
-![1](20.png)
+![image](20.png)
 
 结合前面obf_key长度14（`cheia_osc_plug`，check_flag开头有一组while循环14次，按模3结果处理了key），观察发现这个组16进制值出现了循环，因此直接猜测只做了简单的异或，我们要做的只需要提取出来异或的值即可
 
@@ -2818,7 +2811,7 @@ if ( n2_1 == 1 )
     if ( (unsigned int)i32_load(n5 + 16, v52 + 36LL) == 134 )
       goto LABEL_138;
     goto LABEL_144;
-    
+
     LABEL_144:
     i32_load8_u(n5 + 16, 1070265);
     v97 = w2c_wasm__oscn__bg_f75(n5, 8, 1);
@@ -2892,7 +2885,7 @@ print(flag)
 
 验证端口告诉我们输入正确的flag会变成O，那么下载FontForge找到唯一的O
 
-![1](21.png)
+![image](21.png)
 
 O162e219bca79a462f9cf5701124cf74c
 
@@ -3216,7 +3209,7 @@ def render_page(name_to_display=None):
 ```python
 def escape_html(text):
     """转义HTML特殊字符，防止XSS等攻击"""
-    return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace("(", "&#40;").replace(")", "&#41;")
+    return text.replace("&", "&").replace("<", "<").replace(">", ">").replace("(", "&#40;").replace(")", "&#41;")
 ```
 
 黑名单如下
@@ -3335,7 +3328,6 @@ const sid = "amwvsLiDgNHm2XXfoynBUNRA2iWoEH5E";
 
 const cookieVal = 's:' + signature.sign(sid, secret);
 console.log("connect.sid=" + cookieVal);
-
 ```
 
 > connect.sid=s%3AamwvsLiDgNHm2XXfoynBUNRA2iWoEH5E%2ER3H281arLqbqxxVlw9hWgdoQRZpcJElSLSSn6rdnloE

@@ -19,9 +19,9 @@ slug: "ntfy-2022-su-wu"
 
 ### 题目描述
 
-![1](https://img.seaeye.cn/img/qwnt2022/1.png)
+![image](https://img.seaeye.cn/img/qwnt2022/1.png)
 
-![2](https://img.seaeye.cn/img/qwnt2022/2.png)
+![image](https://img.seaeye.cn/img/qwnt2022/2.png)
 
 [合约文件](https://img.seaeye.cn/file/qwnt2022/ToBeEquel.sol)
 
@@ -31,7 +31,7 @@ slug: "ntfy-2022-su-wu"
 
 首先使用`nc 140.210.195.172 10001`连接服务器看看情况，发现需要先进行`工作量证明`，使用`Poseidon.PoW`模块即可，直接给出以下脚本`pow.py`。
 
-![3](https://img.seaeye.cn/img/qwnt2022/3.png)
+![image](https://img.seaeye.cn/img/qwnt2022/3.png)
 
 ```python
 from Poseidon.PoW import PoWUtils   # https://github.com/B1ue1nWh1te/Poseidon
@@ -45,7 +45,7 @@ Connection.interactive()
 
 执行`python3 pow.py`，成功进入题目环境。
 
-![4](https://img.seaeye.cn/img/qwnt2022/4.png)
+![image](https://img.seaeye.cn/img/qwnt2022/4.png)
 
 
 
@@ -55,39 +55,39 @@ Connection.interactive()
 
 进入`Option 1`，创建`Deployer`账户。
 
-![5](https://img.seaeye.cn/img/qwnt2022/5.png)
+![image](https://img.seaeye.cn/img/qwnt2022/5.png)
 
 
 
 访问`http://140.210.195.172/`，为该账户领取测试币以发起交易。
 
-![6](https://img.seaeye.cn/img/qwnt2022/6.png)
+![image](https://img.seaeye.cn/img/qwnt2022/6.png)
 
 
 
 进入`Option 2`，部署题目合约，记录下`Transaction hash`以获取`合约地址`。
 
-![7](https://img.seaeye.cn/img/qwnt2022/7.png)
+![image](https://img.seaeye.cn/img/qwnt2022/7.png)
 
 
 
 下面开始对合约进行分析，首先看到解出条件，需要满足`owner`的代币余额与我们账户的代币余额相等。
 
-![8](https://img.seaeye.cn/img/qwnt2022/8.png)
+![image](https://img.seaeye.cn/img/qwnt2022/8.png)
 
 
 
 然后发现`owner`的最初余额有`500`，并且通过`_Cal`函数可以实现余额的修改，但是需要调用者为`合约部署者`或`合约自身`。
 
-![9](https://img.seaeye.cn/img/qwnt2022/9.png)
+![image](https://img.seaeye.cn/img/qwnt2022/9.png)
 
-![10](https://img.seaeye.cn/img/qwnt2022/10.png)
+![image](https://img.seaeye.cn/img/qwnt2022/10.png)
 
 
 
 最后发现关键函数`CallTest`，它允许我们以`题目合约的身份`调用一个外部合约的自定义函数。一开始我以为是`函数选择器碰撞`类型，但发现这题不需要这么麻烦，直接传目的函数即可。
 
-![11](https://img.seaeye.cn/img/qwnt2022/11.png)
+![image](https://img.seaeye.cn/img/qwnt2022/11.png)
 
 
 
@@ -101,7 +101,7 @@ Connection.interactive()
 
 经过上述分析得到这一方程：`500-2x=64*2`，解得`x=186`，即十六进制的`0xba`，所以我们需要使用[虚荣地址生成器](https://vanity-eth.tk/)来生成账户地址最后两位为`ba`的账户。使用这个账户来调用`_Cal`就可以实现每次合约的余额减少`186`，我们自己的余额增加`64`，两次后即可相等为`128`。
 
-![12](https://img.seaeye.cn/img/qwnt2022/12.png)
+![image](https://img.seaeye.cn/img/qwnt2022/12.png)
 
 
 
@@ -272,7 +272,7 @@ contract.CallFunction("getFlag")
 
 最后进入`Option 3`，获取`flag`。
 
-![13](https://img.seaeye.cn/img/qwnt2022/13.png)
+![image](https://img.seaeye.cn/img/qwnt2022/13.png)
 
 
 
@@ -286,9 +286,9 @@ flag{Make_Two_Equel_Successfully}
 
 ### 题目描述
 
-![14](https://img.seaeye.cn/img/qwnt2022/14.png)
+![image](https://img.seaeye.cn/img/qwnt2022/14.png)
 
-![15](https://img.seaeye.cn/img/qwnt2022/15.png)
+![image](https://img.seaeye.cn/img/qwnt2022/15.png)
 
 [合约文件(自行微调版)](https://img.seaeye.cn/file/qwnt2022/NFT%20Revenge.sol)
 
@@ -298,7 +298,7 @@ flag{Make_Two_Equel_Successfully}
 
 首先使用`nc 140.210.217.225 10001`连接服务器看看情况，发现需要先进行`工作量证明`，使用`Poseidon.PoW`模块即可，直接给出以下脚本`pow.py`。
 
-![16](https://img.seaeye.cn/img/qwnt2022/16.png)
+![image](https://img.seaeye.cn/img/qwnt2022/16.png)
 
 ```python
 from Poseidon.PoW import PoWUtils   # https://github.com/B1ue1nWh1te/Poseidon
@@ -312,7 +312,7 @@ Connection.interactive()
 
 执行`python3 pow.py`，成功进入题目环境。
 
-![17](https://img.seaeye.cn/img/qwnt2022/17.png)
+![image](https://img.seaeye.cn/img/qwnt2022/17.png)
 
 
 
@@ -322,25 +322,25 @@ Connection.interactive()
 
 进入`Option 1`，创建`Deployer`账户。
 
-![18](https://img.seaeye.cn/img/qwnt2022/18.png)
+![image](https://img.seaeye.cn/img/qwnt2022/18.png)
 
 
 
 访问`http://140.210.217.225:8080/`，为该账户领取测试币以发起交易。
 
-![19](https://img.seaeye.cn/img/qwnt2022/19.png)
+![image](https://img.seaeye.cn/img/qwnt2022/19.png)
 
 
 
 进入`Option 2`，部署题目合约，记录下`合约地址`以备后续使用。
 
-![20](https://img.seaeye.cn/img/qwnt2022/20.png)
+![image](https://img.seaeye.cn/img/qwnt2022/20.png)
 
 
 
 下面开始对合约进行分析，通过上面题目描述中已经附上的代码可以看出，这一题和`0CTF 2022`的`NFT Market`那题非常相似，但是`Solidity`版本由原先包含`Calldata 元组 ABI 重新编码中的头部溢出错误`的`0.8.15`版本变为了修复该 BUG 后的`0.8.16`版本，因此之前的解题方法就不太适用于这一题。
 
-![21](https://img.seaeye.cn/img/qwnt2022/21.png)
+![image](https://img.seaeye.cn/img/qwnt2022/21.png)
 
 
 
@@ -350,37 +350,37 @@ Connection.interactive()
 
 `NFT Market`原版：
 
-![22](https://img.seaeye.cn/img/qwnt2022/22.png)
+![image](https://img.seaeye.cn/img/qwnt2022/22.png)
 
 
 
 `NFT Revenge`修改版：
 
-![23](https://img.seaeye.cn/img/qwnt2022/23.png)
+![image](https://img.seaeye.cn/img/qwnt2022/23.png)
 
 
 
 接下来还是从头开始分析，先看`NFT`合约，很正常没有什么疑点。
 
-![24](https://img.seaeye.cn/img/qwnt2022/24.png)
+![image](https://img.seaeye.cn/img/qwnt2022/24.png)
 
 
 
 再看`Token`合约，有用的信息是：`Market`合约的代币余额为`1337`、我们可以调用一次`airdrop`函数以获得数量为`5`的代币。
 
-![25](https://img.seaeye.cn/img/qwnt2022/25.png)
+![image](https://img.seaeye.cn/img/qwnt2022/25.png)
 
 
 
 之后看到`Market`合约的构造函数，所有相关合约都由其创建，并且一共`mint`了`3`个NFT，分别以`1`、`1337`、`13333333337`的价格依次上架了这三个NFT。
 
-![26](https://img.seaeye.cn/img/qwnt2022/26.png)
+![image](https://img.seaeye.cn/img/qwnt2022/26.png)
 
 
 
 然后看待`Market`合约的`win`函数，它指示了我们需要获取到这三个NFT才能达到解出条件，那么接下来就是思考如何`空手套白狼`以获取这三个已经上架到`Market`的NFT了。
 
-![27](https://img.seaeye.cn/img/qwnt2022/27.png)
+![image](https://img.seaeye.cn/img/qwnt2022/27.png)
 
 
 
@@ -390,13 +390,13 @@ Connection.interactive()
 
 为了方便讲解在此处放出`Hacker.sol`攻击合约的部分代码以进行形式化说明，我们的操作全称由`攻击合约`代为完成，首先调用`Token.airdrop()`获取启动资金，然后调用`Market.purchaseOrder(0)`表示全款买下`#1`NFT，最后别忘了用`NFT.approve(address(Market), 1)`授权`Market`可以移动`现在属于我们`的`#1`NFT，以便后续的上架操作能够正常完成。
 
-![28](https://img.seaeye.cn/img/qwnt2022/28.png)
+![image](https://img.seaeye.cn/img/qwnt2022/28.png)
 
 
 
 执行`Hack1`后，`Market`的`orders`为`[#3,#2]`，这由`Market`的`_deleteOrder`处理。
 
-![29](https://img.seaeye.cn/img/qwnt2022/29.png)
+![image](https://img.seaeye.cn/img/qwnt2022/29.png)
 
 
 
@@ -404,7 +404,7 @@ Connection.interactive()
 
 
 
-![30](https://img.seaeye.cn/img/qwnt2022/30.png)
+![image](https://img.seaeye.cn/img/qwnt2022/30.png)
 
 
 
@@ -414,7 +414,7 @@ Connection.interactive()
 
 因此也解释了我们上面为何那样构造订单顺序，首先通过上架`假的`且`tokenId`为`3`的NFT，以通过前面的重重验证，并且在这个漏洞点发挥重要作用，新的`Order`是我们最后插入的`#1`NFT，而它的`nftAddress`是我们所期望的与解题相关的NFT合约地址，这样一来，可以让`Market`合约把`#3`NFT发给我们，但还有一步就是需要构造`owner`，以使其值变成`Market`合约的地址（因为它是`#3`NFT的拥有者），如果不构造的话`owner`就会变成我们的地址，这样转移`#3`NFT就会失败。
 
-![31](https://img.seaeye.cn/img/qwnt2022/31.png)
+![image](https://img.seaeye.cn/img/qwnt2022/31.png)
 
 
 
@@ -422,39 +422,39 @@ Connection.interactive()
 
 下面看到我们自己的`HackerNFT`合约，构造`ownerOf`以使其在`Verifier`调用的时候显示`owner`是我们自己以便通过签名验证，在`Market`调用的时候显示`owner`是`Market`以便转移`#3`NFT能够成功。
 
-![32](https://img.seaeye.cn/img/qwnt2022/32.png)
+![image](https://img.seaeye.cn/img/qwnt2022/32.png)
 
 
 
 最后就是解决签名验证问题了，看到题目的`CouponVerifierBeta`合约，我们需要构造`SignedCoupon`对象，并且其中的`coupon.issuer`需要为我们通过私钥控制的能够对消息进行签名的账户的地址，这也就是为什么在`Verifier`调用`orderOf`时返回`Me`的原因。然后`coupon.user`就是`攻击合约`地址，最后是`SignedCoupon`对象的整体构造。
 
-![33](https://img.seaeye.cn/img/qwnt2022/33.png)
+![image](https://img.seaeye.cn/img/qwnt2022/33.png)
 
 
 
 看到`攻击合约`的`GetMessageHashToSign`函数，这里构造了和上面分析一致的`FakerOrder`，以上架`#Fake3`NFT，然后构造`FakeCoupon`，指示我们这个`Coupon`是用来购买`Market.orders[3]`这个`#Fake3`NFT的，最后就是按照前面`CouponVerifierBeta`给出的消息格式进行编码并获取`keccak256`值，以便我们对消息哈希进行链下签名，获得`v`、`r`、`s`的值。
 
-![34](https://img.seaeye.cn/img/qwnt2022/34.png)
+![image](https://img.seaeye.cn/img/qwnt2022/34.png)
 
 
 
 需要注意的是签名需要以`EIP-712`标准进行，然后将签名数据传给`Hack3`以进行构造`SignedCoupon`，之后`Market.purchaseWithCoupon(FakeSignedCoupon)`就可以跑通了，成功拿下`#3`NFT，在此之后`Market`的`orders`为`[#3,#2,#1]`。
 
-![35](https://img.seaeye.cn/img/qwnt2022/35.png)
+![image](https://img.seaeye.cn/img/qwnt2022/35.png)
 
-![36](https://img.seaeye.cn/img/qwnt2022/36.png)
+![image](https://img.seaeye.cn/img/qwnt2022/36.png)
 
 
 
 最后我们把`#2`NFT拿下并且利用之前的布局将`#1`买回，看到`Market`的`purchaseTest`，它允许我们用`Market`的代币以指定价格来购买一个NFT，并且这个付款是给这个指定NFT的原`owner`的。前面我们提到`Market`合约的代币余额为`1337`，而且`#2`NFT的价格也为`1337`，那么我们直接让其以`1337`的价格购买我们前面拿下的`#1`NFT，这样就有钱买`#2`NFT了，并且我们还剩有一些代币以买回`#1`NFT。
 
-![37](https://img.seaeye.cn/img/qwnt2022/37.png)
+![image](https://img.seaeye.cn/img/qwnt2022/37.png)
 
 
 
 根据上述分析，得到`Hack2`，第一次`Market.purchaseOrder(1)`后，`Market`的`orders`为`[#3,#1]`，所以再执行一次`Market.purchaseOrder(1)`买回`#1`NFT，至此我们已经拿到了全部NFT，调用`Market.win()`即可触发`SendFlag`事件。
 
-![38](https://img.seaeye.cn/img/qwnt2022/38.png)
+![image](https://img.seaeye.cn/img/qwnt2022/38.png)
 
 
 
@@ -782,7 +782,7 @@ Hacker.CallFunction("Hack2")
 
 进入`Option 3`，获取`flag`。
 
-![39](https://img.seaeye.cn/img/qwnt2022/39.png)
+![image](https://img.seaeye.cn/img/qwnt2022/39.png)
 
 
 

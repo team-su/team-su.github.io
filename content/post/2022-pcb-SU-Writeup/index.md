@@ -613,7 +613,7 @@ php://filter/read=convert.base64-encode/resource=flag.php
 
 但是存在cb依赖
 
-![1](image4.png)
+![image](image4.png)
 
 可以尝试调用SignedObject的getobject二次反序列化
 
