@@ -1,8 +1,40 @@
 {{- $page := or .PageInner .Page -}}
-{{- $src := partial "page-resource-url.html" (dict "page" $page "path" .Destination) -}}
+{{- $dst := .Destination -}}
+{{- $ext := path.Ext $dst | strings.ToLower -}}
+{{- $src := partial "page-resource-url.html" (dict "page" $page "path" $dst) -}}
+{{- $img := "" -}}
+{{- /* 仅处理页面资源（相对路径）中的位图；绝对路径/外链/gif/svg 原样输出 */ -}}
+{{- if and $dst
+  (not (strings.HasPrefix $dst "/"))
+  (not (strings.HasPrefix $dst "#"))
+  (not (strings.HasPrefix $dst "http://"))
+  (not (strings.HasPrefix $dst "https://"))
+  (not (strings.HasPrefix $dst "mailto:"))
+  (not (strings.HasPrefix $dst "tel:"))
+  (not (strings.HasPrefix $dst "data:"))
+  (ne $ext ".gif")
+  (ne $ext ".svg")
+-}}
+  {{- $normalized := strings.TrimPrefix "./" $dst -}}
+  {{- $res := "" -}}
+  {{- with $page -}}
+    {{- $res = .Resources.GetMatch $normalized -}}
+    {{- if not $res -}}
+      {{- $res = .Resources.GetMatch (printf "**/%s" $normalized) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with $res -}}
+    {{- if eq .ResourceType "image" -}}
+      {{- $attempt := try (.Process "resize 1200x webp q85") -}}
+      {{- if not $attempt.Err -}}
+        {{- $img = $attempt.Value -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 <img
   class="blog-post__image"
-  src="{{ $src | safeURL }}"
+  src="{{ if $img }}{{ $img.RelPermalink }}{{ else }}{{ $src }}{{ end }}"
   alt="{{ .PlainText }}"
   {{- with .Title }} title="{{ . }}"{{- end }}
   loading="lazy"

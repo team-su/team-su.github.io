@@ -46,10 +46,20 @@
 })();
 </script>
 
-{{- if .Site.Params.selfHosted }}
+{{- /* KaTeX：仅当页面内容实际包含公式时才加载（可被 front matter katex 覆盖） */ -}}
+{{- $hasMath := or (strings.Contains .RawContent "$$") (strings.Contains .RawContent "\\begin{") (strings.Contains .RawContent "\\(") (strings.Contains .RawContent "\\[") -}}
+{{- if isset .Params "katex" -}}
+  {{- if eq (printf "%T" .Params.katex) "bool" -}}
+    {{- $hasMath = .Params.katex -}}
+  {{- end -}}
+{{- end -}}
+{{- if $hasMath -}}
+  {{- $.Scratch.Set "hasMath" true -}}
+  {{- if .Site.Params.selfHosted }}
 <link rel="stylesheet" href="{{ "css/katex.min.css" | relURL }}">
-{{- else }}
+  {{- else }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+  {{- end }}
 {{- end }}
 
 {{- /* 思源黑体 (Noto Sans SC)：正文中文字体，本地自托管，fontsource unicode-range 按需分片加载 */ -}}
@@ -69,14 +79,6 @@
 
 {{- if not .Site.Params.useHLJS }}
 <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}">
-{{- end }}
-
-{{- if .Site.Params.selfHosted }}
-<link rel="stylesheet" href="{{ "css/photoswipe.min.css" | relURL }}">
-<link rel="stylesheet" href="{{ "css/photoswipe.default-skin.min.css" | relURL }}">
-{{- else }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
 {{- end }}
 
 {{- if not hugo.IsServer }}

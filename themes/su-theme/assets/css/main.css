@@ -99,52 +99,85 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
 
 
 /* ============================================================
-   Full-screen Landing Page
+   Welcome Screen (first visit, fades out quickly)
    ============================================================ */
-.landing {
+.welcome {
   position: fixed;
   inset: 0;
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background: #f5f5f5;
-  cursor: pointer;
-  transition: opacity 0.5s ease-out;
+  background: var(--color-bg);
+  transition: opacity 0.6s ease-out;
   will-change: opacity;
   overflow: hidden;
 }
 
-.landing--fade-out {
+.welcome.is-hidden {
   opacity: 0;
   pointer-events: none;
 }
 
-.landing__content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.welcome__glow {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.welcome__glow::before {
+  content: "";
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.10) 0%, transparent 60%);
+}
+
+[data-theme="dark"] .welcome__glow::before {
+  background: radial-gradient(circle, rgba(96, 165, 250, 0.12) 0%, transparent 60%);
+}
+
+.welcome__inner {
+  position: relative;
+  text-align: center;
   user-select: none;
+  padding: 0 24px;
 }
 
-.landing__logo {
-  width: 180px;
-  height: 180px;
-  border-radius: 20px;
-  object-fit: cover;
-  animation: landingFadeIn 0.6s ease-out both;
+.welcome__text {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: var(--color-heading);
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transform: scale(0.92);
+  animation: welcomeFadeIn 0.5s ease-out 0.2s forwards;
 }
 
-@keyframes landingFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.85);
-  }
+.welcome__subtitle {
+  margin-top: 12px;
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  animation: welcomeFadeIn 0.5s ease-out 0.35s forwards;
+}
+
+@keyframes welcomeFadeIn {
   to {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+body.welcome-visible {
+  overflow: hidden;
 }
 
 
@@ -174,10 +207,10 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
 .site-header__logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: var(--color-heading);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-family: var(--font-mono);
   text-decoration: none;
   letter-spacing: -0.02em;
@@ -185,9 +218,9 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
 .site-header__logo:hover { color: var(--color-heading); }
 
 .site-header__logo-img {
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   object-fit: cover;
 }
 
@@ -204,14 +237,18 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   background: none;
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   color: var(--color-text);
   transition: background 0.15s, color 0.15s;
+}
+.theme-toggle svg {
+  width: 22px;
+  height: 22px;
 }
 .theme-toggle:hover {
   background: var(--color-surface);
@@ -237,7 +274,7 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
 }
 .site-header__menu-btn span {
   display: block;
-  width: 20px;
+  width: 22px;
   height: 2px;
   background: var(--color-heading);
   transition: transform 0.2s, opacity 0.2s;
@@ -257,11 +294,11 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
 .site-nav__link {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 6px 14px;
-  font-size: 0.875rem;
+  gap: 5px;
+  padding: 9px 18px;
+  font-size: 1rem;
   color: var(--color-text);
-  border-radius: 6px;
+  border-radius: 8px;
   transition: background 0.15s, color 0.15s;
   text-decoration: none;
   background: none;
@@ -274,7 +311,7 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
   color: var(--color-heading);
 }
 
-.site-nav__chevron { transition: transform 0.2s; color: var(--color-text-secondary); }
+.site-nav__chevron { width: 12px; height: 7px; transition: transform 0.2s; color: var(--color-text-secondary); }
 .site-nav__item--open .site-nav__chevron { transform: rotate(180deg); }
 
 /* Dropdown */
@@ -297,10 +334,10 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
 
 .site-nav__dropdown-link {
   display: block;
-  padding: 8px 12px;
-  font-size: 0.875rem;
+  padding: 10px 14px;
+  font-size: 0.95rem;
   color: var(--color-text);
-  border-radius: 6px;
+  border-radius: 8px;
   transition: background 0.15s;
 }
 .site-nav__dropdown-link:hover {
@@ -693,28 +730,37 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
   color: #cdd6f4;
 }
 
-/* Copy button for code blocks */
+/* Copy button for code blocks (icon button, visible on hover) */
 .code-copy-btn {
   position: absolute;
   top: 8px;
   right: 8px;
-  padding: 4px 10px;
-  font-size: 0.7rem;
-  font-family: var(--font-mono);
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 6px;
+  background: var(--color-surface);
   color: var(--color-text-secondary);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
   cursor: pointer;
   opacity: 0;
-  transition: opacity 0.15s, background 0.15s;
+  transition: opacity 0.15s, color 0.15s, background-color 0.15s, transform 0.15s;
   z-index: 2;
+}
+
+.code-copy-btn svg {
+  width: 16px;
+  height: 16px;
 }
 
 .highlight:hover .code-copy-btn,
 pre:hover .code-copy-btn { opacity: 1; }
 
-.code-copy-btn:hover { background: var(--color-surface); color: var(--color-heading); }
+.code-copy-btn:hover { color: var(--color-heading); }
+.code-copy-btn:active { transform: scale(0.94); }
 .code-copy-btn--copied { color: var(--color-gold); }
 
 
@@ -1209,12 +1255,12 @@ pre:hover .code-copy-btn { opacity: 1; }
 
 .member-card {
   display: grid;
-  grid-template-columns: 52px 1fr;
-  gap: 16px;
-  align-items: start;
-  padding: 16px 18px;
+  grid-template-columns: 72px 1fr;
+  gap: 18px;
+  align-items: center;
+  padding: 18px 20px;
   border: 1px solid var(--color-border-light);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--color-bg);
   transition: border-color 0.15s, background 0.15s;
 }
@@ -1224,15 +1270,12 @@ pre:hover .code-copy-btn { opacity: 1; }
   background: var(--color-surface);
 }
 
-/* Captain emphasis */
-.members-section--captain .member-card {
-  border-color: var(--color-link);
-  border-left-width: 2px;
-  background: var(--color-tag-bg);
-}
-.members-section--captain .member-card:hover,
-.members-section--captain .member-card:focus-within {
-  border-color: var(--color-link-hover);
+/* Captain: gold crown badge next to the name */
+.member-card__crown {
+  width: 16px;
+  height: 16px;
+  color: var(--color-gold);
+  flex-shrink: 0;
 }
 
 /* avatar */
@@ -1240,9 +1283,9 @@ pre:hover .code-copy-btn { opacity: 1; }
 .member-card__avatar { flex-shrink: 0; line-height: 0; }
 
 .member-card__avatar img {
-  width: 52px;
-  height: 52px;
-  border-radius: 10px;
+  width: 72px;
+  height: 72px;
+  border-radius: 12px;
   object-fit: cover;
   display: block;
 }
@@ -1266,7 +1309,7 @@ pre:hover .code-copy-btn { opacity: 1; }
 
 .member-card__name {
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 1.05rem;
   color: var(--color-heading);
   white-space: nowrap;
 }
@@ -1289,10 +1332,10 @@ pre:hover .code-copy-btn { opacity: 1; }
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 6px;
   border: 1px solid var(--color-border-light);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--color-text-secondary);
   line-height: 1.4;
   text-decoration: none;
@@ -1301,16 +1344,22 @@ pre:hover .code-copy-btn { opacity: 1; }
   transition: border-color 0.15s, color 0.15s, background 0.15s;
 }
 
+.member-card__tag svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
 .member-card__tag--link {
-  background: var(--color-tag-bg);
-  border-color: transparent;
+  background: var(--color-bg);
+  border-color: var(--color-border-light);
 }
 
 .member-card__tag--link:hover,
 .member-card__tag--link:focus {
   color: var(--color-link);
   border-color: var(--color-link);
-  background: var(--color-tag-bg-hover);
+  background: var(--color-surface);
 }
 
 /* description — clamped to 2 lines */
@@ -1329,10 +1378,6 @@ pre:hover .code-copy-btn { opacity: 1; }
 /* light-theme overrides */
 [data-theme="light"] .member-card {
   background: var(--color-bg);
-}
-
-[data-theme="light"] .members-section--captain .member-card {
-  background: var(--color-tag-bg);
 }
 
 
@@ -1509,8 +1554,6 @@ pre:hover .code-copy-btn { opacity: 1; }
   .hero { padding: 64px 24px 48px; }
   .hero__title { font-size: 3.5rem; }
 
-  .landing__logo { width: 150px; height: 150px; }
-
   .member-grid {
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
   }
@@ -1639,8 +1682,6 @@ pre:hover .code-copy-btn { opacity: 1; }
 
   .archives__item { gap: 8px; }
 
-  .landing__logo { width: 130px; height: 130px; }
-
   .site-footer { padding: 32px 0; }
   .site-footer__links { gap: 12px; }
   .site-footer__social { width: 40px; height: 40px; }
@@ -1694,15 +1735,12 @@ pre:hover .code-copy-btn { opacity: 1; }
   .member-card__avatar img { width: 44px; height: 44px; }
   .member-card__name { font-size: 0.9rem; }
 
-  .landing__logo { width: 110px; height: 110px; }
-
   .page-404__code { font-size: 4rem; }
   .page-404 { padding: 80px 16px; }
 }
 
 /* --- Landscape phones (short viewport) --- */
 @media (max-height: 500px) and (max-width: 900px) {
-  .landing__logo { width: 90px; height: 90px; }
   .hero { padding: 24px 20px; }
   .hero__title { font-size: 2rem; }
 }

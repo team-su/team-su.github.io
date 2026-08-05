@@ -1,44 +1,32 @@
 {{ define "main" }}
 
-{{ with .Site.Params.welcomeMessage }}
-<div class="landing" id="landing">
-  <div class="landing__content">
-    {{ with $.Site.Params.logo }}
-      {{- $image := resources.Get . -}}
-      {{ if $image }}
-        <img src="{{ ($image.Fit "400x400 webp q90").Permalink }}" alt="SU" class="landing__logo">
-      {{ else }}
-        <img src="{{ . | relURL }}" alt="SU" class="landing__logo">
-      {{ end }}
-    {{ end }}
+<div class="welcome" id="welcome-screen" aria-hidden="true">
+  <div class="welcome__glow"></div>
+  <div class="welcome__inner">
+    <p class="welcome__text">{{ .Site.Params.welcomeMessage | default "welcome" }}</p>
+    {{ with .Site.Params.homeSubtitle }}<p class="welcome__subtitle">{{ . }}</p>{{ end }}
   </div>
 </div>
 <script>
 (function() {
-  var landing = document.getElementById('landing');
-  if (!landing) return;
+  var screen = document.getElementById('welcome-screen');
+  if (!screen) return;
+
+  var KEY = 'su-welcome-shown';
   try {
-    if (sessionStorage.getItem('su-welcomed')) {
-      landing.remove();
-      return;
-    }
+    if (sessionStorage.getItem(KEY)) { screen.remove(); return; }
   } catch(e) {}
 
-  document.body.style.overflow = 'hidden';
+  document.body.classList.add('welcome-visible');
 
-  // logo 动画 0.6s + 停留 1.8s，然后淡出
   setTimeout(function() {
-    if (landing.classList.contains('landing--fade-out')) return;
-    landing.classList.add('landing--fade-out');
-    document.body.style.overflow = '';
-    try { sessionStorage.setItem('su-welcomed', '1'); } catch(e) {}
-    landing.addEventListener('transitionend', function() {
-      landing.remove();
-    });
-  }, 2400);
+    screen.classList.add('is-hidden');
+    document.body.classList.remove('welcome-visible');
+    try { sessionStorage.setItem(KEY, '1'); } catch(e) {}
+    setTimeout(function() { screen.remove(); }, 700);
+  }, 900);
 })();
 </script>
-{{ end }}
 
 <section class="hero">
   <div class="hero__inner">

@@ -21,7 +21,20 @@ jobs:
           hugo-version: "0.157.0"
           extended: true
 
+      # 缓存 Hugo 图片处理缓存（Hugo 按源文件内容 hash 失效，缓存不会陈旧）
+      - name: Cache Hugo resources
+        uses: actions/cache@v4
+        with:
+          path: |
+            resources
+            /tmp/hugo_cache
+          key: hugo-${{ runner.os }}-${{ hashFiles('hugo.toml', 'assets/**', 'layouts/**', 'themes/**') }}
+          restore-keys: |
+            hugo-${{ runner.os }}-
+
       - run: hugo --minify --buildFuture --cleanDestinationDir
+        env:
+          HUGO_CACHEDIR: /tmp/hugo_cache
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
