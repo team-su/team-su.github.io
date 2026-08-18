@@ -1,0 +1,187 @@
+- generic [active] [ref=f14e1]:
+  - banner [ref=f14e2]:
+    - generic [ref=f14e3]:
+      - link "su-team su-team" [ref=f14e4] [cursor=pointer]:
+        - /url: /
+        - img "su-team" [ref=f14e5]
+        - generic [ref=f14e6]: su-team
+      - generic [ref=f14e7]:
+        - navigation [ref=f14e8]:
+          - list [ref=f14e9]:
+            - listitem [ref=f14e10]:
+              - link "Archives" [ref=f14e11] [cursor=pointer]:
+                - /url: /page/archives/
+            - listitem [ref=f14e12]:
+              - button "Members" [ref=f14e13] [cursor=pointer]
+            - listitem [ref=f14e16]:
+              - link "About" [ref=f14e17] [cursor=pointer]:
+                - /url: /page/about/
+            - listitem [ref=f14e18]:
+              - link "Tags" [ref=f14e19] [cursor=pointer]:
+                - /url: /tags
+        - button "Toggle theme" [ref=f14e20] [cursor=pointer]
+  - main [ref=f14e29]:
+    - generic [ref=f14e31]:
+      - heading "SU" [level=1] [ref=f14e32]
+      - paragraph [ref=f14e33]: 一支全年摸鱼，偶尔起飞的佛系 CTF 战队。|
+    - generic [ref=f14e35]:
+      - heading "Latest Writeups" [level=2] [ref=f14e36]
+      - generic [ref=f14e37]:
+        - article [ref=f14e38]:
+          - generic [ref=f14e39]:
+            - generic [ref=f14e41]:
+              - time [ref=f14e42]: February 2, 2026
+              - generic [ref=f14e43]: ·
+              - generic [ref=f14e44]: 59 min read
+              - generic [ref=f14e45]: ·
+              - generic [ref=f14e46]: 12470 words
+            - heading [level=3] [ref=f14e47]:
+              - link "2026 ALICTF SU WriteUp" [ref=f14e48] [cursor=pointer]:
+                - /url: /post/alictf-su-2026-wu/
+            - paragraph [ref=f14e49]: 本次 ALICTF 我们 SU 取得了 第十名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。 以下是我们 SU 本次 2026 ALICTF 的 WriteUp。
+            - link "alictf" [ref=f14e51] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/alictf/
+        - article [ref=f14e52]:
+          - generic [ref=f14e53]:
+            - generic [ref=f14e55]:
+              - time [ref=f14e56]: November 18, 2025
+              - generic [ref=f14e57]: ·
+              - generic [ref=f14e58]: 61 min read
+              - generic [ref=f14e59]: ·
+              - generic [ref=f14e60]: 12844 words
+            - heading [level=3] [ref=f14e61]:
+              - link "2025 RCTF SU WriteUp" [ref=f14e62] [cursor=pointer]:
+                - /url: /post/rctf-2025-su-wu/
+            - paragraph [ref=f14e63]: 本次 RCTF 我们 SU 取得了 第五名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。 以下是我们 SU 本次 2025 RCTF 的 WriteUp。
+            - link "RCTF" [ref=f14e65] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/rctf/
+        - article [ref=f14e66]:
+          - generic [ref=f14e67]:
+            - generic [ref=f14e69]:
+              - time [ref=f14e70]: October 27, 2025
+              - generic [ref=f14e71]: ·
+              - generic [ref=f14e72]: 27 min read
+              - generic [ref=f14e73]: ·
+              - generic [ref=f14e74]: 5749 words
+            - heading [level=3] [ref=f14e75]:
+              - link "第八届“强网”拟态防御国际精英挑战赛 SU Writeup" [ref=f14e76] [cursor=pointer]:
+                - /url: /post/ntfy-2025-su-wu/
+            - paragraph [ref=f14e77]: 本次 强网拟态线上预选赛 我们 SU 取得了 第一名🏆 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。 以下是我们 SU 第八届“强网”拟态防御国际精英挑战赛 的 WriteUp。
+            - link "拟态" [ref=f14e79] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/%E6%8B%9F%E6%80%81/
+        - article [ref=f14e80]:
+          - generic [ref=f14e81]:
+            - generic [ref=f14e83]:
+              - time [ref=f14e84]: October 21, 2025
+              - generic [ref=f14e85]: ·
+              - generic [ref=f14e86]: 67 min read
+              - generic [ref=f14e87]: ·
+              - generic [ref=f14e88]: 14211 words
+            - heading [level=3] [ref=f14e89]:
+              - link "2025 QWB-S9 SU WriteUp" [ref=f14e90] [cursor=pointer]:
+                - /url: /post/qwb-s9-su-wu/
+            - paragraph [ref=f14e91]: 本次强网杯我们 SU 从各方面原因考虑，十位师傅组成一队，名为“SehllWeDance”，取得了 19th 的成绩，感谢队里师傅们的辛苦付出，每个人都熬夜通宵干！特别是@2hi5hu师傅，一个人几乎AK misc 方向。同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。 以下是我们 SU 本次 2025 强 …
+            - link "QWB" [ref=f14e93] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/qwb/
+        - article [ref=f14e94]:
+          - generic [ref=f14e95]:
+            - generic [ref=f14e97]:
+              - time [ref=f14e98]: September 21, 2025
+              - generic [ref=f14e99]: ·
+              - generic [ref=f14e100]: 30 min read
+              - generic [ref=f14e101]: ·
+              - generic [ref=f14e102]: 6225 words
+            - heading [level=3] [ref=f14e103]:
+              - link "2025 WMCTF SU WriteUp" [ref=f14e104] [cursor=pointer]:
+                - /url: /post/wmctf-2025-su-wu/
+            - paragraph [ref=f14e105]: 感谢 W&M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。 以下是我们 SU 本次 2025 WMCTF的 WriteUp。
+            - link "WMCTF" [ref=f14e107] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/wmctf/
+        - article [ref=f14e108]:
+          - generic [ref=f14e109]:
+            - generic [ref=f14e111]:
+              - time [ref=f14e112]: August 31, 2025
+              - generic [ref=f14e113]: ·
+              - generic [ref=f14e114]: 46 min read
+              - generic [ref=f14e115]: ·
+              - generic [ref=f14e116]: 9697 words
+            - heading [level=3] [ref=f14e117]:
+              - link "2025 TFCCTF SU WriteUp" [ref=f14e118] [cursor=pointer]:
+                - /url: /post/tfcctf-2025-su-wu/
+            - paragraph [ref=f14e119]: 本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。 以下是我们 SU 本次 2025 TFCCTF的 WriteUp。
+            - link "OtherCTF" [ref=f14e121] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/otherctf/
+        - article [ref=f14e122]:
+          - generic [ref=f14e123]:
+            - generic [ref=f14e125]:
+              - time [ref=f14e126]: July 13, 2025
+              - generic [ref=f14e127]: ·
+              - generic [ref=f14e128]: 66 min read
+              - generic [ref=f14e129]: ·
+              - generic [ref=f14e130]: 13949 words
+            - heading [level=3] [ref=f14e131]:
+              - link "2025 L3HCTF SU WriteUp" [ref=f14e132] [cursor=pointer]:
+                - /url: /post/l3hctf-2025-su-wu/
+            - paragraph [ref=f14e133]: 感谢 L3H_Sec 的师傅们精心准备的比赛！本次L3HCTF我们 SU 取得了 第一名🏆 的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。 以下是我们 SU 本次 2025 L3HCTF的 WriteUp。
+            - link "L3HCTF" [ref=f14e135] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/l3hctf/
+        - article [ref=f14e136]:
+          - generic [ref=f14e137]:
+            - generic [ref=f14e139]:
+              - time [ref=f14e140]: June 21, 2025
+              - generic [ref=f14e141]: ·
+              - generic [ref=f14e142]: 32 min read
+              - generic [ref=f14e143]: ·
+              - generic [ref=f14e144]: 6615 words
+            - heading [level=3] [ref=f14e145]:
+              - link "2025 DASCTF上半年赛 SU WriteUp" [ref=f14e146] [cursor=pointer]:
+                - /url: /post/2025-dasctf-first-half-su-wu/
+            - paragraph [ref=f14e147]: 感谢 08067Sec 的师傅们精心准备的比赛！本次DASCTF我们 SU 取得了 第一名🏆 的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。 以下是我们 SU 本次 2025 DASCTF 上半年赛的 部分writeup以及赛后解出的部分题目。
+            - link "DASCTF" [ref=f14e149] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/dasctf/
+        - article [ref=f14e150]:
+          - generic [ref=f14e151]:
+            - generic [ref=f14e153]:
+              - time [ref=f14e154]: January 20, 2025
+              - generic [ref=f14e155]: ·
+              - generic [ref=f14e156]: 1 min read
+              - generic [ref=f14e157]: ·
+              - generic [ref=f14e158]: 23 words
+            - heading [level=3] [ref=f14e159]:
+              - link "2025 SUCTF 官方WriteUp&Docker" [ref=f14e160] [cursor=pointer]:
+                - /url: /post/2025-suctf-official-writeup-docker/
+            - paragraph [ref=f14e161]: 本次第九届XCTF分站赛SUCTF由我们 SU 组织举办，感谢队里师傅们的辛苦付出（出题以及运维）！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。 以下是我们 SU 本次 2025 XCTF-SUCTF的 官方WriteUp以及部分Docker。
+            - link "SUCTF" [ref=f14e163] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/suctf/
+        - article [ref=f14e164]:
+          - generic [ref=f14e165]:
+            - generic [ref=f14e167]:
+              - time [ref=f14e168]: June 23, 2024
+              - generic [ref=f14e169]: ·
+              - generic [ref=f14e170]: 4 min read
+              - generic [ref=f14e171]: ·
+              - generic [ref=f14e172]: 762 words
+            - heading [level=3] [ref=f14e173]:
+              - link "2024 熊猫杯决赛 SU WriteUp" [ref=f14e174] [cursor=pointer]:
+                - /url: /post/pdctf-2024-su-wu/
+            - paragraph [ref=f14e175]: 本次熊猫杯决赛我们 SU 取得了 第一名 🏆的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。 以下是我们 SU 本次 2024 熊猫杯决赛的 部分writeup。
+            - link "XCTFfinals" [ref=f14e177] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/xctffinals/
+      - navigation "Pagination" [ref=f14e178]:
+        - generic: ← Newer
+        - generic [ref=f14e179]: Page 1 of 4
+        - link "Older →" [ref=f14e180] [cursor=pointer]:
+          - /url: /page/2/
+  - contentinfo [ref=f14e181]:
+    - generic [ref=f14e182]:
+      - generic [ref=f14e183]:
+        - text: su-team
+        - paragraph [ref=f14e184]: Built for team archives and competition writeups.
+      - generic [ref=f14e185]:
+        - link "GitHub" [ref=f14e186] [cursor=pointer]:
+          - /url: https://github.com/team-su
+        - link "CTFTime" [ref=f14e189] [cursor=pointer]:
+          - /url: https://ctftime.org/team/29641
+        - link "Email" [ref=f14e201] [cursor=pointer]:
+          - /url: mailto:suers_xctf@126.com
+      - paragraph [ref=f14e205]: © 2026 SUer · su-team

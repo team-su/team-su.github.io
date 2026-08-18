@@ -89,5 +89,39 @@ document.addEventListener("DOMContentLoaded", function() {
     })(block));
     block.appendChild(btn);
   }
+
+  function closeLightbox() {
+    var box = document.querySelector(".image-lightbox");
+    if (!box) return;
+    document.removeEventListener("keydown", onLightboxKey);
+    box.remove();
+    document.body.classList.remove("image-lightbox-open");
+  }
+
+  function onLightboxKey(e) {
+    if (e.key === "Escape") closeLightbox();
+  }
+
+  document.addEventListener("click", function(e) {
+    var img = e.target.closest && e.target.closest("img.blog-post__image[data-fullsrc]");
+    if (!img) return;
+    var src = img.getAttribute("data-fullsrc");
+    if (!src || src.charAt(0) !== "/" || src.charAt(1) === "/") return;
+    e.preventDefault();
+    closeLightbox();
+    var box = document.createElement("div");
+    box.className = "image-lightbox";
+    box.setAttribute("role", "dialog");
+    box.setAttribute("aria-modal", "true");
+    box.setAttribute("aria-label", "Image preview");
+    var full = document.createElement("img");
+    full.src = src;
+    full.alt = img.alt || "";
+    box.appendChild(full);
+    box.addEventListener("click", closeLightbox);
+    document.body.appendChild(box);
+    document.body.classList.add("image-lightbox-open");
+    document.addEventListener("keydown", onLightboxKey);
+  });
 });
 </script>

@@ -1,20 +1,25 @@
 {{- $page := or .PageInner .Page -}}
 {{- $dst := .Destination -}}
 {{- $ext := path.Ext $dst | strings.ToLower -}}
-{{- $src := partial "page-resource-url.html" (dict "page" $page "path" $dst) -}}
 {{- $img := "" -}}
-{{- /* 仅处理页面资源（相对路径）中的位图；绝对路径/外链/gif/svg 原样输出 */ -}}
-{{- if and $dst
-  (not (strings.HasPrefix $dst "/"))
-  (not (strings.HasPrefix $dst "#"))
-  (not (strings.HasPrefix $dst "http://"))
-  (not (strings.HasPrefix $dst "https://"))
-  (not (strings.HasPrefix $dst "mailto:"))
-  (not (strings.HasPrefix $dst "tel:"))
-  (not (strings.HasPrefix $dst "data:"))
-  (ne $ext ".gif")
-  (ne $ext ".svg")
+{{- $full := "" -}}
+{{- $srcset := "" -}}
+{{- $ow := 0 -}}
+{{- $oh := 0 -}}
+{{- $eager := eq .Ordinal 0 -}}
+{{- $skipProcess := or
+  (not $dst)
+  (strings.HasPrefix $dst "/")
+  (strings.HasPrefix $dst "#")
+  (strings.HasPrefix $dst "http://")
+  (strings.HasPrefix $dst "https://")
+  (strings.HasPrefix $dst "mailto:")
+  (strings.HasPrefix $dst "tel:")
+  (strings.HasPrefix $dst "data:")
+  (eq $ext ".gif")
+  (eq $ext ".svg")
 -}}
+{{- if not $skipProcess -}}
   {{- $normalized := strings.TrimPrefix "./" $dst -}}
   {{- $res := "" -}}
   {{- with $page -}}
@@ -25,18 +30,52 @@
   {{- end -}}
   {{- with $res -}}
     {{- if eq .ResourceType "image" -}}
-      {{- $attempt := try (.Process "resize 1200x webp q85") -}}
-      {{- if not $attempt.Err -}}
-        {{- $img = $attempt.Value -}}
+      {{- $ow = .Width -}}
+      {{- $oh = .Height -}}
+      {{- $spec := "webp q85 hint drawing" -}}
+      {{- /* Resize (not Process): some files are .png/.jpg with the wrong magic bytes. */ -}}
+      {{- if gt $ow 1800 -}}
+        {{- $a1 := try (.Resize (printf "900x %s" $spec)) -}}
+        {{- $a2 := try (.Resize (printf "1800x %s" $spec)) -}}
+        {{- if and (not $a1.Err) (not $a2.Err) -}}
+          {{- $img = $a1.Value -}}
+          {{- $full = $a2.Value.RelPermalink -}}
+          {{- $srcset = printf "%s 900w, %s 1800w" $a1.Value.RelPermalink $a2.Value.RelPermalink -}}
+        {{- end -}}
+      {{- else if gt $ow 900 -}}
+        {{- $a1 := try (.Resize (printf "900x %s" $spec)) -}}
+        {{- $a2 := try (.Resize (printf "%dx %s" $ow $spec)) -}}
+        {{- if and (not $a1.Err) (not $a2.Err) -}}
+          {{- $img = $a1.Value -}}
+          {{- $full = $a2.Value.RelPermalink -}}
+          {{- $srcset = printf "%s 900w, %s %dw" $a1.Value.RelPermalink $a2.Value.RelPermalink $ow -}}
+        {{- end -}}
+      {{- else -}}
+        {{- $a := try (.Resize (printf "%dx %s" $ow $spec)) -}}
+        {{- if not $a.Err -}}
+          {{- $img = $a.Value -}}
+          {{- $full = $a.Value.RelPermalink -}}
+        {{- end -}}
       {{- end -}}
     {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $src := "" -}}
+{{- if not $img -}}
+  {{- $src = partial "page-resource-url.html" (dict "page" $page "path" $dst) -}}
+  {{- if and (not $full) $src -}}
+    {{- $full = $src -}}
   {{- end -}}
 {{- end -}}
 <img
   class="blog-post__image"
   src="{{ if $img }}{{ $img.RelPermalink }}{{ else }}{{ $src }}{{ end }}"
+  {{- if $srcset }} srcset="{{ $srcset }}" sizes="(max-width: 900px) calc(100vw - 32px), 850px"{{ end }}
+  {{- if $ow }} width="{{ $ow }}" height="{{ $oh }}"{{ end }}
+  {{- if $full }} data-fullsrc="{{ $full }}"{{ end }}
   alt="{{ .PlainText }}"
   {{- with .Title }} title="{{ . }}"{{- end }}
-  loading="lazy"
+  loading="{{ if $eager }}eager{{ else }}lazy{{ end }}"
+  {{- if $eager }} fetchpriority="high"{{ end }}
   decoding="async"
 >

@@ -1,0 +1,188 @@
+- generic [active] [ref=f17e1]:
+  - banner [ref=f17e2]:
+    - generic [ref=f17e3]:
+      - link "su-team su-team" [ref=f17e4] [cursor=pointer]:
+        - /url: /
+        - img "su-team" [ref=f17e5]
+        - generic [ref=f17e6]: su-team
+      - generic [ref=f17e7]:
+        - navigation [ref=f17e8]:
+          - list [ref=f17e9]:
+            - listitem [ref=f17e10]:
+              - link "Archives" [ref=f17e11] [cursor=pointer]:
+                - /url: /page/archives/
+            - listitem [ref=f17e12]:
+              - button "Members" [ref=f17e13] [cursor=pointer]
+            - listitem [ref=f17e16]:
+              - link "About" [ref=f17e17] [cursor=pointer]:
+                - /url: /page/about/
+            - listitem [ref=f17e18]:
+              - link "Tags" [ref=f17e19] [cursor=pointer]:
+                - /url: /tags
+        - button "Toggle theme" [ref=f17e20] [cursor=pointer]
+  - main [ref=f17e29]:
+    - generic [ref=f17e31]:
+      - heading "SU" [level=1] [ref=f17e32]
+      - paragraph [ref=f17e33]: "flag{we_|"
+    - generic [ref=f17e35]:
+      - heading "Latest Writeups" [level=2] [ref=f17e36]
+      - generic [ref=f17e37]:
+        - article [ref=f17e38]:
+          - generic [ref=f17e39]:
+            - generic [ref=f17e41]:
+              - time [ref=f17e42]: May 27, 2024
+              - generic [ref=f17e43]: ·
+              - generic [ref=f17e44]: 13 min read
+              - generic [ref=f17e45]: ·
+              - generic [ref=f17e46]: 2675 words
+            - heading [level=3] [ref=f17e47]:
+              - link "2024 RCTF SU WriteUp" [ref=f17e48] [cursor=pointer]:
+                - /url: /post/rctf-2024-su-wu/
+            - paragraph [ref=f17e49]: 本次RCTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。 以下是我们 SU 本次 2024 RCTF的 writeup。
+            - link "RCTF" [ref=f17e51] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/rctf/
+        - article [ref=f17e52]:
+          - generic [ref=f17e53]:
+            - generic [ref=f17e55]:
+              - time [ref=f17e56]: October 30, 2023
+              - generic [ref=f17e57]: ·
+              - generic [ref=f17e58]: 30 min read
+              - generic [ref=f17e59]: ·
+              - generic [ref=f17e60]: 6333 words
+            - heading [level=3] [ref=f17e61]:
+              - link "2023 ACTF SU WriteUp" [ref=f17e62] [cursor=pointer]:
+                - /url: /post/actf-2023-su-wu/
+            - paragraph [ref=f17e63]: 感谢 AAA 的师傅们精心准备的比赛！本次ACTF我们 SU 取得了 第二名🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系书鱼 QQ:381382770。 以下是我们 SU 本次 2023 ACTF的 writeup。
+            - link "ACTF" [ref=f17e65] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/actf/
+        - article [ref=f17e66]:
+          - generic [ref=f17e67]:
+            - generic [ref=f17e69]:
+              - time [ref=f17e70]: August 24, 2023
+              - generic [ref=f17e71]: ·
+              - generic [ref=f17e72]: 3 min read
+              - generic [ref=f17e73]: ·
+              - generic [ref=f17e74]: 539 words
+            - heading [level=3] [ref=f17e75]:
+              - link "2023 巅峰极客决赛 SU WriteUp" [ref=f17e76] [cursor=pointer]:
+                - /url: /post/dfjkfinal-2023-su-wu/
+            - paragraph [ref=f17e77]: 本次巅峰极客决赛为线下渗透赛，我们 SU 取得了 2nd🥈的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 以下是我们 SU 本次 巅峰极客 2023 决赛的 writeup。
+            - link "渗透" [ref=f17e79] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/%E6%B8%97%E9%80%8F/
+        - article [ref=f17e80]:
+          - generic [ref=f17e81]:
+            - generic [ref=f17e83]:
+              - time [ref=f17e84]: August 24, 2023
+              - generic [ref=f17e85]: ·
+              - generic [ref=f17e86]: 5 min read
+              - generic [ref=f17e87]: ·
+              - generic [ref=f17e88]: 932 words
+            - heading [level=3] [ref=f17e89]:
+              - link "2023 贵阳大数据网络安全精英对抗赛 SU Writeup" [ref=f17e90] [cursor=pointer]:
+                - /url: /post/gyb-2023-su-wu/
+            - paragraph [ref=f17e91]: 本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。
+            - link "渗透" [ref=f17e93] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/%E6%B8%97%E9%80%8F/
+        - article [ref=f17e94]:
+          - generic [ref=f17e95]:
+            - generic [ref=f17e97]:
+              - time [ref=f17e98]: August 19, 2023
+              - generic [ref=f17e99]: ·
+              - generic [ref=f17e100]: 32 min read
+              - generic [ref=f17e101]: ·
+              - generic [ref=f17e102]: 6794 words
+            - heading [level=3] [ref=f17e103]:
+              - link "2023 WMCTF SU Write-Up" [ref=f17e104] [cursor=pointer]:
+                - /url: /post/wmctf-2023-su-wu/
+            - paragraph [ref=f17e105]: 感谢 WM 的师傅们精心准备的比赛！本次比赛我们 SU 取得了 10nd 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 以下是我们 SU 本次 WMCTF 2023 的 writeup。
+            - link "WMCTF" [ref=f17e107] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/wmctf/
+        - article [ref=f17e108]:
+          - generic [ref=f17e109]:
+            - generic [ref=f17e111]:
+              - time [ref=f17e112]: July 17, 2023
+              - generic [ref=f17e113]: ·
+              - generic [ref=f17e114]: 9 min read
+              - generic [ref=f17e115]: ·
+              - generic [ref=f17e116]: 1778 words
+            - heading [level=3] [ref=f17e117]:
+              - link "2023 Zer0ptsCTF SU Writeup" [ref=f17e118] [cursor=pointer]:
+                - /url: /post/zer0ptsctf-2023-su-wu/
+            - paragraph [ref=f17e119]: 本次2023 Zer0ptsCTF 是我们SU第一次正式组织参加国际赛，获得全球榜第二十七名，大陆第三名，我们会继续努力，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 或直接联系书鱼(QQ:381382770) 以下是我们 SU 本次 Zer0ptsCTF writeup
+            - link "OtherCTF" [ref=f17e121] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/otherctf/
+        - article [ref=f17e122]:
+          - generic [ref=f17e123]:
+            - generic [ref=f17e125]:
+              - time [ref=f17e126]: April 4, 2023
+              - generic [ref=f17e127]: ·
+              - generic [ref=f17e128]: 11 min read
+              - generic [ref=f17e129]: ·
+              - generic [ref=f17e130]: 2147 words
+            - heading [level=3] [ref=f17e131]:
+              - link "2023 XCTFfinals SU Writeup" [ref=f17e132] [cursor=pointer]:
+                - /url: /post/xctffinals-2023-su-wu/
+            - paragraph [ref=f17e133]: 本次2023 XCTFfinals 我们 SU 取得了 第7名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 或直接联系书鱼(QQ:381382770) 以下是我们 SU 本次 2023XCTFfinals的 writeup
+            - link "XCTFfinals" [ref=f17e135] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/xctffinals/
+        - article [ref=f17e136]:
+          - generic [ref=f17e137]:
+            - generic [ref=f17e139]:
+              - time [ref=f17e140]: January 10, 2023
+              - generic [ref=f17e141]: ·
+              - generic [ref=f17e142]: 6 min read
+              - generic [ref=f17e143]: ·
+              - generic [ref=f17e144]: 1139 words
+            - heading [level=3] [ref=f17e145]:
+              - link "2023 RWCTF体验赛 SU Writeup" [ref=f17e146] [cursor=pointer]:
+                - /url: /post/rwctf-2023-su-wu/
+            - paragraph [ref=f17e147]: 本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 或直接联系书鱼(QQ:381382770) 以下是我们 SU 本次 2023 RWCTF的 writeup
+            - link "RWCTF" [ref=f17e149] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/rwctf/
+        - article [ref=f17e150]:
+          - generic [ref=f17e151]:
+            - generic [ref=f17e153]:
+              - time [ref=f17e154]: November 6, 2022
+              - generic [ref=f17e155]: ·
+              - generic [ref=f17e156]: 16 min read
+              - generic [ref=f17e157]: ·
+              - generic [ref=f17e158]: 3299 words
+            - heading [level=3] [ref=f17e159]:
+              - link "第五届“强网”拟态防御国际精英挑战赛 SU Writeup" [ref=f17e160] [cursor=pointer]:
+                - /url: /post/ntfy-2022-su-wu/
+            - paragraph [ref=f17e161]: 感谢队里师傅们的辛苦付出,尤其是深海师傅@B1ue1nWh1te，考试中抽空第一个ak了区块链赛题！ 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 或直接联系书鱼(QQ:381382770) 以下是我们 SU 本次 强网拟态防御国际精英挑战赛 的 writeup
+            - link "拟态" [ref=f17e163] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/%E6%8B%9F%E6%80%81/
+        - article [ref=f17e164]:
+          - generic [ref=f17e165]:
+            - generic [ref=f17e167]:
+              - time [ref=f17e168]: October 31, 2022
+              - generic [ref=f17e169]: ·
+              - generic [ref=f17e170]: 11 min read
+              - generic [ref=f17e171]: ·
+              - generic [ref=f17e172]: 2320 words
+            - heading [level=3] [ref=f17e173]:
+              - link "2022 祥云杯 SU Writeup" [ref=f17e174] [cursor=pointer]:
+                - /url: /post/xyb-2022-su-wu/
+            - paragraph [ref=f17e175]: 以下是我们 SU 本次2022 祥云杯 的 writeup ，感谢队里师傅们的辛苦付出！ 同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：suers_xctf@126.com 或直接联系书鱼(QQ:381382770)
+            - link "祥云杯" [ref=f17e177] [cursor=pointer]:
+              - /url: http://localhost:1313/tags/%E7%A5%A5%E4%BA%91%E6%9D%AF/
+      - navigation "Pagination" [ref=f17e178]:
+        - link "← Newer" [ref=f17e179] [cursor=pointer]:
+          - /url: /
+        - generic [ref=f17e180]: Page 2 of 4
+        - link "Older →" [ref=f17e181] [cursor=pointer]:
+          - /url: /page/3/
+  - contentinfo [ref=f17e182]:
+    - generic [ref=f17e183]:
+      - generic [ref=f17e184]:
+        - text: su-team
+        - paragraph [ref=f17e185]: Built for team archives and competition writeups.
+      - generic [ref=f17e186]:
+        - link "GitHub" [ref=f17e187] [cursor=pointer]:
+          - /url: https://github.com/team-su
+        - link "CTFTime" [ref=f17e190] [cursor=pointer]:
+          - /url: https://ctftime.org/team/29641
+        - link "Email" [ref=f17e202] [cursor=pointer]:
+          - /url: mailto:suers_xctf@126.com
+      - paragraph [ref=f17e206]: © 2026 SUer · su-team

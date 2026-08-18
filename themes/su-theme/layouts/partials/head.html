@@ -10,7 +10,14 @@
 {{ else }}
 <title>{{ $.Scratch.Get "Title" }} - {{ .Site.Params.homeTitle | default .Site.Title }}</title>
 {{ end }}
-<meta name="description" content="{{ .Description | default .Params.subtitle | default .Summary | default .Site.Params.homeDescription | plainify | truncate 160 }}">
+{{- $desc := .Description | default .Params.subtitle | default .Params.summary -}}
+{{- if not $desc -}}
+  {{- $desc = .RawContent | plainify | truncate 160 -}}
+{{- end -}}
+{{- if not $desc -}}
+  {{- $desc = .Site.Params.homeDescription -}}
+{{- end -}}
+<meta name="description" content="{{ $desc | plainify | truncate 160 }}">
 {{- with .Site.Params.author.name }}
 <meta name="author" content="{{ . }}">
 {{- end }}
@@ -74,11 +81,15 @@
 
 {{ $css := resources.Get "css/main.css" }}
 {{ with $css }}
-<link rel="stylesheet" href="{{ .RelPermalink }}">
+  {{- $sheet := . | minify -}}
+  <link rel="stylesheet" href="{{ $sheet.RelPermalink }}">
 {{ end }}
 
-{{- if not .Site.Params.useHLJS }}
+{{- if not .Site.Params.useHLJS -}}
+  {{- $needsSyntax := or (eq .Type "post") (strings.Contains .RawContent "```") -}}
+  {{- if $needsSyntax }}
 <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}">
+  {{- end -}}
 {{- end }}
 
 {{- if not hugo.IsServer }}

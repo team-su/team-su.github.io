@@ -15,10 +15,21 @@
     <div class="site-header__right">
       <nav class="site-nav" role="navigation">
         <ul class="site-nav__list">
+          {{- $curr := .RelPermalink -}}
           {{ range $index, $menu := .Site.Menus.main.ByWeight }}
             {{ if $menu.HasChildren }}
+              {{- $parentActive := false -}}
+              {{- range $menu.Children -}}
+                {{- $childHref := .URL | relLangURL -}}
+                {{- if and $childHref (not (hasSuffix $childHref "/")) -}}
+                  {{- $childHref = printf "%s/" $childHref -}}
+                {{- end -}}
+                {{- if or (eq $curr $childHref) (and $childHref (hasPrefix $curr $childHref)) -}}
+                  {{- $parentActive = true -}}
+                {{- end -}}
+              {{- end -}}
               <li class="site-nav__item site-nav__item--dropdown">
-                <button class="site-nav__link site-nav__link--parent" aria-haspopup="true" aria-expanded="false">
+                <button class="site-nav__link site-nav__link--parent{{ if $parentActive }} site-nav__link--active{{ end }}" aria-haspopup="true" aria-expanded="false">
                   {{ $menu.Name }}
                   <svg class="site-nav__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none">
                     <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -26,13 +37,27 @@
                 </button>
                 <ul class="site-nav__dropdown">
                   {{ range $menu.Children }}
-                    <li><a class="site-nav__dropdown-link" href="{{ .URL | relLangURL }}">{{ .Name }}</a></li>
+                    {{- $href := .URL | relLangURL -}}
+                    {{- $hrefSlash := $href -}}
+                    {{- if and $hrefSlash (not (hasSuffix $hrefSlash "/")) -}}
+                      {{- $hrefSlash = printf "%s/" $hrefSlash -}}
+                    {{- end -}}
+                    {{- $childActive := or (eq $curr $hrefSlash) (and $hrefSlash (hasPrefix $curr $hrefSlash)) -}}
+                    <li>
+                      <a class="site-nav__dropdown-link{{ if $childActive }} site-nav__dropdown-link--active{{ end }}" href="{{ $href }}"{{ if $childActive }} aria-current="page"{{ end }}>{{ .Name }}</a>
+                    </li>
                   {{ end }}
                 </ul>
               </li>
             {{ else }}
+              {{- $href := $menu.URL | relLangURL -}}
+              {{- $hrefSlash := $href -}}
+              {{- if and $hrefSlash (not (hasSuffix $hrefSlash "/")) -}}
+                {{- $hrefSlash = printf "%s/" $hrefSlash -}}
+              {{- end -}}
+              {{- $active := or (eq $curr $hrefSlash) (and $hrefSlash (hasPrefix $curr $hrefSlash)) -}}
               <li class="site-nav__item">
-                <a class="site-nav__link" href="{{ .URL | relLangURL }}">{{ $menu.Name }}</a>
+                <a class="site-nav__link{{ if $active }} site-nav__link--active{{ end }}" href="{{ $href }}"{{ if $active }} aria-current="page"{{ end }}>{{ $menu.Name }}</a>
               </li>
             {{ end }}
           {{ end }}
@@ -80,15 +105,43 @@
     });
   }
 
+  var hoverFine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var dropdownBtns = document.querySelectorAll('.site-nav__link--parent');
+
+  function drawerMode() {
+    return btn && window.getComputedStyle(btn).display !== 'none';
+  }
+
   for (var i = 0; i < dropdownBtns.length; i++) {
-    dropdownBtns[i].addEventListener('click', function(e) {
-      e.preventDefault();
-      var item = this.parentNode;
-      var expanded = this.getAttribute('aria-expanded') === 'true';
-      this.setAttribute('aria-expanded', !expanded);
-      item.classList.toggle('site-nav__item--open');
-    });
+    (function(parentBtn) {
+      var item = parentBtn.parentNode;
+
+      if (hoverFine) {
+        item.addEventListener('mouseenter', function() {
+          if (!drawerMode()) parentBtn.setAttribute('aria-expanded', 'true');
+        });
+        item.addEventListener('mouseleave', function() {
+          if (!drawerMode() && !item.contains(document.activeElement)) {
+            parentBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+        item.addEventListener('focusin', function() {
+          if (!drawerMode()) parentBtn.setAttribute('aria-expanded', 'true');
+        });
+        item.addEventListener('focusout', function(e) {
+          if (!drawerMode() && !item.contains(e.relatedTarget)) {
+            parentBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+
+      parentBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var expanded = parentBtn.getAttribute('aria-expanded') === 'true';
+        parentBtn.setAttribute('aria-expanded', !expanded);
+        item.classList.toggle('site-nav__item--open');
+      });
+    })(dropdownBtns[i]);
   }
 
   document.addEventListener('click', function(e) {
@@ -96,7 +149,8 @@
       var items = document.querySelectorAll('.site-nav__item--open');
       for (var j = 0; j < items.length; j++) {
         items[j].classList.remove('site-nav__item--open');
-        items[j].querySelector('.site-nav__link--parent').setAttribute('aria-expanded', 'false');
+        var parent = items[j].querySelector('.site-nav__link--parent');
+        if (parent) parent.setAttribute('aria-expanded', 'false');
       }
     }
   });

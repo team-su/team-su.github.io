@@ -1,0 +1,78 @@
+- generic [active] [ref=f12e1]:
+  - banner [ref=f12e2]:
+    - generic [ref=f12e3]:
+      - link "su-team su-team" [ref=f12e4] [cursor=pointer]:
+        - /url: /
+        - img "su-team" [ref=f12e5]
+        - generic [ref=f12e6]: su-team
+      - generic [ref=f12e7]:
+        - button "Toggle theme" [ref=f12e8] [cursor=pointer]
+        - button "Toggle menu" [ref=f12e17] [cursor=pointer]
+  - main [ref=f12e21]:
+    - article [ref=f12e22]:
+      - generic [ref=f12e24]:
+        - heading "About us" [level=1] [ref=f12e25]
+        - paragraph [ref=f12e26]: 一支全年摸鱼，偶尔起飞的佛系 CTF 战队
+      - generic [ref=f12e27]:
+        - heading "关于我们" [level=2] [ref=f12e28]
+        - paragraph [ref=f12e29]: SU创队之始，战队取名SU，一方面代表江苏，另一方面也寓意夺取最高权限，现在我们将成员范围不再仅仅局限于江苏，扩大为全国各地，保留SU队名一方面是希望继续以SU已有的成绩基础上继续创造佳绩，另一方面我们也希望我们不再是只是一支江苏联合战队，更希望是一支全国高校的联合战队，希望能把越来越多的高校联合起来，无论这些高校有没有社团基础，现在的成绩如何，只要同学们对CTF这方面或者不仅是这方面感兴趣，我们都愿意去从各方面去帮助这些同学们在自己的高校建立起相应的社团资源，或者为这些单打独斗的同学提供一个更好的交流环境，为这些苦于没有学习资源却真正想学习的同学提供一个良好的平台，所以我们也更愿意把SU解释为 united sudoers / sudoers of union。总之我们希望能把更多的网络安全爱好者联合起来，构建一支强有力的队伍，一起为共同的目标努力，向着梦想出发。
+        - paragraph [ref=f12e30]:
+          - text: 有意愿加入我们的小伙伴联系邮箱：
+          - link "suers_xctf@126.com" [ref=f12e31] [cursor=pointer]:
+            - /url: mailto:suers_xctf@126.com
+        - heading "战队荣誉" [level=2] [ref=f12e32]
+        - generic [ref=f12e33]:
+          - generic [ref=f12e34]:
+            - article [ref=f12e35]:
+              - generic [ref=f12e36]:
+                - generic [ref=f12e37]: "2025"
+                - generic [ref=f12e38]:
+                  - generic [ref=f12e39]:
+                    - generic [ref=f12e40]: 第九届 XCTF 联赛积分榜
+                    - generic [ref=f12e41]: —
+                    - generic [ref=f12e42]: 🏆 第一名
+                  - generic [ref=f12e43]:
+                    - generic [ref=f12e44]: L3HCTF
+                    - generic [ref=f12e45]: —
+                    - generic [ref=f12e46]: 🏆 第一名
+            - article [ref=f12e47]:
+              - generic [ref=f12e48]:
+                - generic [ref=f12e49]: "2024"
+                - generic [ref=f12e50]:
+                  - generic [ref=f12e51]:
+                    - generic [ref=f12e52]: 第四届网鼎杯
+                    - generic [ref=f12e53]: —
+                    - generic [ref=f12e54]: 🏆 金长城奖
+                  - generic [ref=f12e55]:
+                    - generic [ref=f12e56]: 熊猫杯网络安全大赛
+                    - generic [ref=f12e57]: —
+                    - generic [ref=f12e58]: 🏆 第一名
+            - article [ref=f12e59]:
+              - generic [ref=f12e60]:
+                - generic [ref=f12e61]: "2023"
+                - generic [ref=f12e63]:
+                  - generic [ref=f12e64]: 巅峰极客线下决赛
+                  - generic [ref=f12e65]: —
+                  - generic [ref=f12e66]: 🥈 第二名
+            - article [ref=f12e67]:
+              - generic [ref=f12e68]:
+                - generic [ref=f12e69]: "2022"
+                - generic [ref=f12e71]:
+                  - generic [ref=f12e72]: XCTF SUSCTF 2022
+                  - generic [ref=f12e73]: —
+                  - generic [ref=f12e74]: 🏆 第一名
+          - link "查看完整荣誉墙" [ref=f12e76] [cursor=pointer]:
+            - /url: /page/honors/
+  - contentinfo [ref=f12e77]:
+    - generic [ref=f12e78]:
+      - generic [ref=f12e79]:
+        - text: su-team
+        - paragraph [ref=f12e80]: Built for team archives and competition writeups.
+      - generic [ref=f12e81]:
+        - link "GitHub" [ref=f12e82] [cursor=pointer]:
+          - /url: https://github.com/team-su
+        - link "CTFTime" [ref=f12e85] [cursor=pointer]:
+          - /url: https://ctftime.org/team/29641
+        - link "Email" [ref=f12e97] [cursor=pointer]:
+          - /url: mailto:suers_xctf@126.com
+      - paragraph [ref=f12e101]: © 2026 SUer · su-team
