@@ -19,11 +19,9 @@
             {{ .Date.Format "01-02" }}
           </time>
           <a class="archives__link" href="{{ .RelPermalink }}">{{ .Title }}</a>
-          {{ if .Params.tags }}
+          {{ if .GetTerms "tags" }}
           <span class="archives__tags">
-            {{ range .Params.tags }}
-              <a href="{{ "tags" | absLangURL }}/{{ . | urlize }}/" class="tag">{{ . }}</a>
-            {{ end }}
+            {{ partial "tag-links.html" . }}
           </span>
           {{ end }}
         </li>

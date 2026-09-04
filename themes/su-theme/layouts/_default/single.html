@@ -19,11 +19,7 @@
       {{ if ne .Type "page" }}
         <div class="article__meta">
           {{ partial "post_meta.html" . }}
-          {{ if .Params.tags }}
-            {{ range .Params.tags }}
-              <a href="{{ "tags" | absLangURL }}/{{ . | urlize }}/" class="tag">{{ . }}</a>
-            {{ end }}
-          {{ end }}
+          {{ partial "tag-links.html" . }}
         </div>
       {{ end }}
       <h1 class="article__title">{{ .Title }}</h1>

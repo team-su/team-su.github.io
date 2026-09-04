@@ -1,14 +1,6 @@
 <header class="site-header">
   <div class="site-header__inner">
     <a class="site-header__logo" href="{{ "" | relLangURL }}">
-      {{ with .Site.Params.logo }}
-        {{- $image := resources.Get . -}}
-        {{ if $image }}
-          <img src="{{ ($image.Fit "120x120 webp q90").Permalink }}" alt="{{ $.Site.Title }}" class="site-header__logo-img">
-        {{ else }}
-          <img src="{{ . | relURL }}" alt="{{ $.Site.Title }}" class="site-header__logo-img">
-        {{ end }}
-      {{ end }}
       <span class="site-header__title">{{ .Site.Title }}</span>
     </a>
 

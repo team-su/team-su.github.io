@@ -1,6 +1,37 @@
 summary: >-
   SU 持续活跃于国内外 CTF 赛事与国家级网络安全赛事，这里只展示代表性成绩，完整荣誉已按时间轴整理。
 preview_limit: 6
+hosted:
+  - year: 2026
+    event: SUCTF 2026
+    edition: 第十届 XCTF 国际联赛分站赛
+    date: 2026.03.14 – 03.16
+    url: https://github.com/team-su/SUCTF-2026
+  - year: 2025
+    event: SUCTF 2025
+    edition: 第九届 XCTF 国际联赛分站赛
+    date: 2025.01.11 – 01.13
+    url: https://github.com/team-su/SUCTF-2025
+  - year: 2023
+    event: DASCTF × SU 2023
+    edition: 开局之战
+    date: 2023.04.22
+    url: https://mp.weixin.qq.com/s/9jmsUhKXmsBs_bsZshQKZA
+  - year: 2022
+    event: DASCTF × SU 2022
+    edition: 三月春季挑战赛
+    date: 2022.03.26
+    url: https://mp.weixin.qq.com/s/-wn9k7yDAgrddC59WvSGyA
+  - year: 2019
+    event: SUCTF 2019
+    edition: 第五届 XCTF 国际联赛分站赛
+    date: 2019.08.17 – 08.18
+    url: https://github.com/team-su/SUCTF-2019
+  - year: 2018
+    event: SUCTF 2018
+    edition: 第四届 XCTF 国际联赛分站赛
+    date: 2018.05.26 – 05.27
+    url: https://mp.weixin.qq.com/s/i2TVTPmRy3urZ88EahkE0g
 years:
   - year: 2026
     entries:
@@ -57,6 +88,18 @@ years:
       - event: TFCCTF
         badges:
           - label: 6th
+            tone: rank
+      - event: ImaginaryCTF
+        badges:
+          - label: 13th
+            tone: rank
+      - event: DeadSec CTF
+        badges:
+          - label: 13th
+            tone: rank
+      - event: WolvCTF
+        badges:
+          - label: 13th
             tone: rank
       - event: L3HCTF
         featured_rank: 2
@@ -120,6 +163,26 @@ years:
         badges:
           - label: 亚军
             tone: silver
+      - event: 第七届 XCTF 国际网络攻防联赛总决赛
+        badges:
+          - label: 第七名
+            tone: rank
+      - event: 贵阳大数据网络安全精英对抗赛
+        badges:
+          - label: 第四名
+            tone: rank
+      - event: TPCTF
+        badges:
+          - label: 7th
+            tone: rank
+      - event: SCTF
+        badges:
+          - label: 8th
+            tone: rank
+      - event: WMCTF
+        badges:
+          - label: 10th
+            tone: rank
       - event: RWCTF 2023 体验赛
         badges:
           - label: 亚军
@@ -157,6 +220,10 @@ years:
         badges:
           - label: 冠军
             tone: gold
+      - event: XCTF ACTF 2022
+        badges:
+          - label: 第五名
+            tone: rank
       - event: RWCTF 2022 体验赛
         badges:
           - label: 冠军
@@ -195,6 +262,10 @@ years:
         badges:
           - label: 亚军
             tone: silver
+      - event: 强网杯线上赛
+        badges:
+          - label: 12th
+            tone: rank
 
   - year: 2019
     entries:
@@ -211,6 +282,13 @@ years:
         badges:
           - label: 亚军
             tone: silver
+
+  - year: 2018
+    entries:
+      - event: InCTF
+        badges:
+          - label: 6th
+            tone: rank
 
   - year: 2017
     entries:

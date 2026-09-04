@@ -25,7 +25,6 @@ timeZone = "Asia/Shanghai"
   homeTitle = "su-team"
   homeSubtitle = "United Sudoers"
   homeDescription = "Competition archives, deep-dive writeups, and long-term team memory from Team SU."
-  welcomeMessage = "好哥哥，你终于来啦🙈"
   heroSlogans = [
     "一支全年摸鱼，偶尔起飞的佛系 CTF 战队。",
     "flag{we_are_sudoers}",
@@ -64,7 +63,7 @@ timeZone = "Asia/Shanghai"
     weight = 3
 [[menu.main]]
     name = "Tags"
-    url = "tags"
+    url = "tags/"
     weight = 3
 [[menu.main]]
     identifier = "members"

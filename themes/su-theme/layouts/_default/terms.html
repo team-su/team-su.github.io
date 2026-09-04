@@ -9,10 +9,10 @@
     <div class="tags-cloud">
       {{ range .Data.Terms.ByCount }}
         {{ $tagColor := (mod (len .Name) 6) }}
-        <a href="{{ $.Site.LanguagePrefix | absURL }}/tags/{{ .Name | urlize }}/"
+        <a href="{{ .Page.RelPermalink }}"
            class="tags-cloud__tag tags-cloud__tag--c{{ $tagColor }}"
            data-count="{{ .Count }}">
-          <span class="tags-cloud__name">{{ .Name }}</span>
+          <span class="tags-cloud__name">{{ .Page.LinkTitle }}</span>
           <span class="tags-cloud__count">{{ .Count }}</span>
         </a>
       {{ end }}
@@ -22,7 +22,7 @@
       {{ range .Data.Terms.ByCount }}
         <section class="tags-detail__group" id="tag-{{ .Name | urlize }}">
           <h2 class="tags-detail__tag-name">
-            <span class="tags-detail__hash">#</span>{{ .Name }}
+            <span class="tags-detail__hash">#</span>{{ .Page.LinkTitle }}
             <span class="tags-detail__tag-count">({{ .Count }})</span>
           </h2>
           <ul class="tags-detail__list">

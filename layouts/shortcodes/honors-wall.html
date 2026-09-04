@@ -1,16 +1,54 @@
 {{- $honors := hugo.Data.honors -}}
 {{- $years := $honors.years | default (slice) -}}
-<section class="honors-archive-simple">
-  <div class="honors-yearline">
+<section class="honors-wall" data-filter="all">
+  {{- with $honors.hosted -}}
+    {{- if gt (len .) 0 -}}
+      <section class="honors-hosted">
+        <div class="honors-kicker">主办</div>
+        <div class="honors-hosted__list">
+          {{- range . -}}
+            {{- $rowClass := "honors-hosted__row" -}}
+            {{- if .url -}}
+              <a class="{{ $rowClass }}" href="{{ .url }}" rel="noopener">
+                <span class="honors-hosted__name">{{ .event }}</span>
+                <span class="honors-hosted__edition">{{ .edition }}</span>
+                <span class="honors-hosted__date">{{ .date }}</span>
+              </a>
+            {{- else -}}
+              <div class="{{ $rowClass }}">
+                <span class="honors-hosted__name">{{ .event }}</span>
+                <span class="honors-hosted__edition">{{ .edition }}</span>
+                <span class="honors-hosted__date">{{ .date }}</span>
+              </div>
+            {{- end -}}
+          {{- end -}}
+        </div>
+      </section>
+    {{- end -}}
+  {{- end -}}
+
+  <div class="honors-toolbar">
+    <div class="honors-kicker">成绩</div>
+    <div class="honors-filter" role="tablist" aria-label="筛选成绩">
+      <button type="button" class="honors-filter__btn is-active" data-filter="all" aria-pressed="true">全部</button>
+      <button type="button" class="honors-filter__btn" data-filter="gold" aria-pressed="false">冠军</button>
+    </div>
+  </div>
+
+  <div class="honors-index">
     {{- range $years -}}
-      <section class="honors-yearline__group">
-        <div class="honors-yearline__year">{{ .year }}</div>
-        <div class="honors-yearline__body">
+      {{- $year := .year -}}
+      <section class="honors-year" data-year="{{ $year }}">
+        <h2 class="honors-year__label">{{ $year }}</h2>
+        <div class="honors-year__rows">
           {{- range .entries -}}
-            <div class="honors-yearline__entry">
-              <span class="honors-yearline__event">{{ .event }}</span>
-              <span class="honors-yearline__dash">—</span>
-              <span class="honors-yearline__result">{{ partial "honor-result-inline.html" .badges }}</span>
+            {{- $gold := false -}}
+            {{- range .badges -}}
+              {{- if eq (.tone | default "rank") "gold" -}}{{- $gold = true -}}{{- end -}}
+            {{- end -}}
+            <div class="honors-row{{ if $gold }} honors-row--gold{{ end }}"{{ if $gold }} data-gold="1"{{ end }}>
+              <span class="honors-row__event">{{ .event }}</span>
+              <span class="honors-row__place">{{ partial "honor-result-inline.html" .badges }}</span>
             </div>
           {{- end -}}
         </div>
@@ -18,3 +56,37 @@
     {{- end -}}
   </div>
 </section>
+<script>
+(function () {
+  var root = document.currentScript && document.currentScript.previousElementSibling;
+  if (!root || !root.classList.contains('honors-wall')) {
+    root = document.querySelector('.honors-wall');
+  }
+  if (!root) return;
+  var buttons = root.querySelectorAll('.honors-filter__btn');
+  var years = root.querySelectorAll('.honors-year');
+  function apply(mode) {
+    root.setAttribute('data-filter', mode);
+    buttons.forEach(function (btn) {
+      var on = btn.getAttribute('data-filter') === mode;
+      btn.classList.toggle('is-active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    years.forEach(function (year) {
+      var rows = year.querySelectorAll('.honors-row');
+      var visible = 0;
+      rows.forEach(function (row) {
+        var show = mode === 'all' || row.getAttribute('data-gold') === '1';
+        row.hidden = !show;
+        if (show) visible += 1;
+      });
+      year.hidden = visible === 0;
+    });
+  }
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      apply(btn.getAttribute('data-filter'));
+    });
+  });
+})();
+</script>

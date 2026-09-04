@@ -23,11 +23,9 @@
       {{- if .Params.summary }}{{ $summary = .Params.summary }}{{ end -}}
       {{ $summary | plainify | truncate 200 }}
     </p>
-    {{ if .Params.tags }}
+    {{ if .GetTerms "tags" }}
     <div class="post-card__tags">
-      {{ range .Params.tags }}
-        <a href="{{ "tags" | absLangURL }}/{{ . | urlize }}/" class="tag">{{ . }}</a>
-      {{ end }}
+      {{ partial "tag-links.html" . }}
     </div>
     {{ end }}
   </div>
