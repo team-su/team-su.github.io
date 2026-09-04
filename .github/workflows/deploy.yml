@@ -43,3 +43,16 @@ jobs:
           publish_dir: ./public
           force_orphan: true
           # cname: su-team.cn
+
+      # HK VPS（Caddy）。密钥仓库 Secret：VPS_SSH_KEY
+      - name: Deploy to VPS
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 25238 -H 156.239.238.130 >> ~/.ssh/known_hosts
+          rsync -az --delete \
+            -e "ssh -p 25238 -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" \
+            public/ root@156.239.238.130:/var/www/su-team/

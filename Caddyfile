@@ -1,0 +1,43 @@
+# su-team 静态站
+# 域名还没指过来：先用 :80，IP 就能预览。
+# DNS 把 su-team.cn / www 指到这台之后，把下面站点地址改成：
+#
+#   www.su-team.cn {
+#       redir https://su-team.cn{uri} 308
+#   }
+#
+#   su-team.cn {
+#       import static_site
+#   }
+#
+# Caddy 会自动签 Let's Encrypt、HTTP 跳 HTTPS，不用再管证书。
+
+{
+	email suers_xctf@126.com
+}
+
+(static_site) {
+	root * /var/www/su-team
+	encode gzip zstd
+	try_files {path} {path}/index.html {path}/
+	file_server
+	handle_errors {
+		rewrite * /404.html
+		file_server
+	}
+
+	@assets path *.woff2 *.webp *.jpg *.png *.svg *.ico *.gif *.woff
+	header @assets Cache-Control "public, max-age=2592000"
+
+	@code path *.css *.js
+	header @code Cache-Control "public, max-age=3600"
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+	}
+}
+
+:80 {
+	import static_site
+}
