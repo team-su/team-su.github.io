@@ -29,8 +29,8 @@ timeZone = "Asia/Shanghai"
     "一支全年摸鱼，偶尔起飞的佛系 CTF 战队。",
     "flag{we_are_sudoers}",
   ]
-  logo = "img/SU.jpg"
-  favicon = "img/SU.jpg"
+  logo = "img/SU.png"
+  favicon = "img/SU.png"
   dateFormat = "January 2, 2006"
   commit = false
   rss = false

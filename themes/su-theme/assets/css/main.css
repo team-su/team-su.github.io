@@ -349,6 +349,11 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
   height: 112px;
   margin: 0;
   object-fit: contain;
+  background: transparent;
+}
+
+[data-theme="dark"] .hero__logo {
+  filter: brightness(1.08);
 }
 
 .hero__copy {
