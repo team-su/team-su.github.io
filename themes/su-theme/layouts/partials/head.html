@@ -22,9 +22,14 @@
 <meta name="author" content="{{ . }}">
 {{- end }}
 {{- with .Site.Params.favicon }}
+  {{- $icon := resources.Get . -}}
+  {{- if $icon }}
+<link rel="icon" href="{{ ($icon.Resize "32x32 png").RelPermalink }}" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="{{ ($icon.Resize "180x180 png").RelPermalink }}">
+  {{- else }}
 <link rel="icon" href="{{ . | relURL }}" type="image/png">
+  {{- end }}
 {{- end }}
-{{ hugo.Generator }}
 <link rel="alternate" href="{{ "index.xml" | absLangURL }}" type="application/rss+xml" title="{{ .Site.Title }}">
 
 <script>
@@ -69,10 +74,16 @@
   {{- end }}
 {{- end }}
 
-{{- /* 思源黑体 (Noto Sans SC)：正文中文字体，本地自托管，fontsource unicode-range 按需分片加载 */ -}}
+{{- /* 思源黑体：unicode-range 分片，字体 CSS 异步加载，避免 200KB @font-face 阻塞首屏 */ -}}
 {{- if .Site.Params.selfHosted }}
+<link rel="preload" as="font" type="font/woff2" href="{{ "fonts/noto-sans-sc/files/noto-sans-sc-latin-400-normal.woff2" | relURL }}" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="{{ "fonts/noto-sans-sc/files/noto-sans-sc-117-400-normal.woff2" | relURL }}" crossorigin>
+<link rel="preload" as="style" href="{{ "fonts/noto-sans-sc/400.css" | relURL }}" onload="this.onload=null;this.rel='stylesheet'">
+<link rel="preload" as="style" href="{{ "fonts/noto-sans-sc/700.css" | relURL }}" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
 <link rel="stylesheet" href="{{ "fonts/noto-sans-sc/400.css" | relURL }}">
 <link rel="stylesheet" href="{{ "fonts/noto-sans-sc/700.css" | relURL }}">
+</noscript>
 {{- else }}
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc/400.css">
@@ -81,8 +92,8 @@
 
 {{ $css := resources.Get "css/main.css" }}
 {{ with $css }}
-  {{- $sheet := . | minify -}}
-  <link rel="stylesheet" href="{{ $sheet.RelPermalink }}">
+  {{- $sheet := . | minify | fingerprint -}}
+  <link rel="stylesheet" href="{{ $sheet.RelPermalink }}" integrity="{{ $sheet.Data.Integrity }}" crossorigin="anonymous">
 {{ end }}
 
 {{- if not .Site.Params.useHLJS -}}

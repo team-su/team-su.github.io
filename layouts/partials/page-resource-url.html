@@ -12,18 +12,23 @@
 -}}
   {{- $path -}}
 {{- else -}}
-  {{- $normalized := strings.TrimPrefix "./" $path -}}
-  {{- $resource := "" -}}
-  {{- with $page -}}
-    {{- $resource = .Resources.GetMatch $normalized -}}
-    {{- if not $resource -}}
-      {{- $resource = .Resources.GetMatch (printf "**/%s" $normalized) -}}
-    {{- end -}}
-  {{- end -}}
-
-  {{- with $resource -}}
-    {{- .RelPermalink -}}
+  {{- $img := partial "get-page-image.html" (dict "page" $page "path" $path) -}}
+  {{- if $img -}}
+    {{- $processed := partial "process-image.html" (dict "image" $img) -}}
+    {{- $processed.RelPermalink -}}
   {{- else -}}
-    {{- $path -}}
+    {{- $normalized := strings.TrimPrefix "./" $path -}}
+    {{- $resource := "" -}}
+    {{- with $page -}}
+      {{- $resource = .Resources.GetMatch $normalized -}}
+      {{- if not $resource -}}
+        {{- $resource = .Resources.GetMatch (printf "**/%s" $normalized) -}}
+      {{- end -}}
+    {{- end -}}
+    {{- with $resource -}}
+      {{- .RelPermalink -}}
+    {{- else -}}
+      {{- $path -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}

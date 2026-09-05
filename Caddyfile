@@ -23,8 +23,14 @@
 	@assets path *.woff2 *.webp *.jpg *.png *.svg *.ico *.gif *.woff
 	header @assets Cache-Control "public, max-age=2592000"
 
-	@code path *.css *.js
-	header @code Cache-Control "public, max-age=3600"
+	@hashed path_regexp \.[a-f0-9]{16,}\.(css|js)$
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+
+	@code {
+		path *.css *.js
+		not path_regexp \.[a-f0-9]{16,}\.(css|js)$
+	}
+	header @code Cache-Control "public, max-age=86400"
 
 	header {
 		X-Content-Type-Options nosniff

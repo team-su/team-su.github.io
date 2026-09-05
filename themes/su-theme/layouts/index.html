@@ -5,9 +5,9 @@
     {{ with .Site.Params.logo }}
       {{- $image := resources.Get . -}}
       {{ if $image }}
-        <img src="{{ ($image.Fit "240x240 webp q90").Permalink }}" alt="{{ $.Site.Title }}" class="hero__logo" width="112" height="112">
+        <img src="{{ ($image.Fit "224x224 webp q80").RelPermalink }}" alt="{{ $.Site.Title }}" class="hero__logo" width="112" height="112" fetchpriority="high" decoding="async">
       {{ else }}
-        <img src="{{ . | relURL }}" alt="{{ $.Site.Title }}" class="hero__logo" width="112" height="112">
+        <img src="{{ . | relURL }}" alt="{{ $.Site.Title }}" class="hero__logo" width="112" height="112" fetchpriority="high" decoding="async">
       {{ end }}
     {{ end }}
     <div class="hero__copy">

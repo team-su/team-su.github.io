@@ -20,43 +20,28 @@
   (eq $ext ".svg")
 -}}
 {{- if not $skipProcess -}}
-  {{- $normalized := strings.TrimPrefix "./" $dst -}}
-  {{- $res := "" -}}
-  {{- with $page -}}
-    {{- $res = .Resources.GetMatch $normalized -}}
-    {{- if not $res -}}
-      {{- $res = .Resources.GetMatch (printf "**/%s" $normalized) -}}
-    {{- end -}}
-  {{- end -}}
+  {{- $res := partial "get-page-image.html" (dict "page" $page "path" $dst) -}}
   {{- with $res -}}
-    {{- if eq .ResourceType "image" -}}
-      {{- $ow = .Width -}}
-      {{- $oh = .Height -}}
-      {{- $spec := "webp q85 hint drawing" -}}
-      {{- /* Resize (not Process): some files are .png/.jpg with the wrong magic bytes. */ -}}
-      {{- if gt $ow 1800 -}}
-        {{- $a1 := try (.Resize (printf "900x %s" $spec)) -}}
-        {{- $a2 := try (.Resize (printf "1800x %s" $spec)) -}}
-        {{- if and (not $a1.Err) (not $a2.Err) -}}
-          {{- $img = $a1.Value -}}
-          {{- $full = $a2.Value.RelPermalink -}}
-          {{- $srcset = printf "%s 900w, %s 1800w" $a1.Value.RelPermalink $a2.Value.RelPermalink -}}
-        {{- end -}}
-      {{- else if gt $ow 900 -}}
-        {{- $a1 := try (.Resize (printf "900x %s" $spec)) -}}
-        {{- $a2 := try (.Resize (printf "%dx %s" $ow $spec)) -}}
-        {{- if and (not $a1.Err) (not $a2.Err) -}}
-          {{- $img = $a1.Value -}}
-          {{- $full = $a2.Value.RelPermalink -}}
-          {{- $srcset = printf "%s 900w, %s %dw" $a1.Value.RelPermalink $a2.Value.RelPermalink $ow -}}
-        {{- end -}}
-      {{- else -}}
-        {{- $a := try (.Resize (printf "%dx %s" $ow $spec)) -}}
-        {{- if not $a.Err -}}
-          {{- $img = $a.Value -}}
-          {{- $full = $a.Value.RelPermalink -}}
-        {{- end -}}
-      {{- end -}}
+    {{- $ow = .Width -}}
+    {{- $oh = .Height -}}
+    {{- $displayW := 900 -}}
+    {{- $fullW := 1600 -}}
+    {{- if gt $ow $fullW -}}
+      {{- $a1 := partial "process-image.html" (dict "image" . "width" $displayW) -}}
+      {{- $a2 := partial "process-image.html" (dict "image" . "width" $fullW) -}}
+      {{- $img = $a1 -}}
+      {{- $full = $a2.RelPermalink -}}
+      {{- $srcset = printf "%s %dw, %s %dw" $a1.RelPermalink $displayW $a2.RelPermalink $fullW -}}
+    {{- else if gt $ow $displayW -}}
+      {{- $a1 := partial "process-image.html" (dict "image" . "width" $displayW) -}}
+      {{- $a2 := partial "process-image.html" (dict "image" . "width" $ow) -}}
+      {{- $img = $a1 -}}
+      {{- $full = $a2.RelPermalink -}}
+      {{- $srcset = printf "%s %dw, %s %dw" $a1.RelPermalink $displayW $a2.RelPermalink $ow -}}
+    {{- else -}}
+      {{- $a := partial "process-image.html" (dict "image" .) -}}
+      {{- $img = $a -}}
+      {{- $full = $a.RelPermalink -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

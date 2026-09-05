@@ -8,6 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
@@ -18,21 +19,22 @@ jobs:
 
       - uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.157.0"
+          hugo-version: "0.163.1"
           extended: true
 
-      # 缓存 Hugo 图片处理缓存（Hugo 按源文件内容 hash 失效，缓存不会陈旧）
+      # 图片在构建时压成 webp；源 png/jpg 不进 public。
+      # Hugo 按源文件内容 hash 失效，缓存不会陈旧。
       - name: Cache Hugo resources
         uses: actions/cache@v4
         with:
           path: |
-            resources
+            resources/_gen
             /tmp/hugo_cache
-          key: hugo-${{ runner.os }}-${{ hashFiles('hugo.toml', 'assets/**', 'layouts/**', 'themes/**') }}
+          key: hugo-${{ runner.os }}-${{ hashFiles('hugo.toml', 'layouts/**', 'themes/**') }}
           restore-keys: |
             hugo-${{ runner.os }}-
 
-      - run: hugo --minify --buildFuture --cleanDestinationDir
+      - run: hugo --minify --buildFuture --cleanDestinationDir --gc
         env:
           HUGO_CACHEDIR: /tmp/hugo_cache
 
