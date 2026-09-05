@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pages on su-team</title><link>https://su-team.cn/page/</link><description>Recent content in Pages on su-team</description><generator>Hugo</generator><language>en</language><managingEditor>suers_xctf@126.com (SUer)</managingEditor><webMaster>suers_xctf@126.com (SUer)</webMaster><lastBuildDate>Wed, 24 Dec 2025 00:00:00 +0800</lastBuildDate><atom:link href="https://su-team.cn/page/index.xml" rel="self" type="application/rss+xml"/><item><title>Members</title><link>https://su-team.cn/page/active-members/</link><pubDate>Wed, 24 Dec 2025 00:00:00 +0800</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/active-members/</guid><description>&lt;div class="members-board"&gt;
+ 
+ 
+ 
+
+ 
+ 
+ &lt;section class="members-section members-section--captain"&gt;
+ &lt;div class="members-section__head"&gt;
+ &lt;h3 class="members-section__title"&gt;Ex-Captains&lt;/h3&gt;
+ &lt;span class="members-section__count"&gt;1&lt;/span&gt;
+ &lt;/div&gt;
+
+ &lt;div class="member-grid"&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/bkfish.png?size=144" alt="书鱼" loading="lazy" decoding="async" width="72" height="72"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;书鱼&lt;/span&gt;
+ 
+ &lt;svg class="member-card__crown" viewBox="0 0 24 24" fill="currentColor" aria-label="Captain"&gt;&lt;path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/&gt;&lt;path d="M5 21h14"/&gt;&lt;/svg&gt;
+ 
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="大家都要做爱学习的好孩子。"&gt;大家都要做爱学习的好孩子。&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://ctf.org.cn/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="书鱼's Blog"&gt;
+ &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/&gt;&lt;path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/&gt;&lt;/svg&gt;
+ &lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/bkfish" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="书鱼's GitHub"&gt;
+ &lt;svg viewBox="0 0 24 24" fill="currentColor"&gt;&lt;path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/&gt;&lt;/svg&gt;
+ &lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;/div&gt;
+ &lt;/section&gt;
+ 
+ 
+ &lt;section class="members-section members-section--captain"&gt;
+ &lt;div class="members-section__head"&gt;
+ &lt;h3 class="members-section__title"&gt;Captain&lt;/h3&gt;
+ &lt;span class="members-section__count"&gt;1&lt;/span&gt;
+ &lt;/div&gt;
+
+ &lt;div class="member-grid"&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/baozongwi.png?size=144" alt="baozongwi" loading="lazy" decoding="async" width="72" height="72"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;baozongwi&lt;/span&gt;
+ 
+ &lt;svg class="member-card__crown" viewBox="0 0 24 24" fill="currentColor" aria-label="Captain"&gt;&lt;path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.735H5.81a1 1 0 0 1-.957-.735L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z"/&gt;&lt;path d="M5 21h14"/&gt;&lt;/svg&gt;
+ 
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="天地不仁，以万物为刍狗"&gt;天地不仁，以万物为刍狗&lt;/p&gt;</description></item><item><title>Pioneers</title><link>https://su-team.cn/page/pioneers/</link><pubDate>Wed, 24 Dec 2025 00:00:00 +0800</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/pioneers/</guid><description>&lt;div class="members-board"&gt;
+ 
+ 
+ 
+
+ 
+ 
+ &lt;section class="members-section"&gt;
+ &lt;div class="members-section__head"&gt;
+ &lt;h3 class="members-section__title"&gt;pioneers&lt;/h3&gt;
+ &lt;span class="members-section__count"&gt;15&lt;/span&gt;
+ &lt;/div&gt;
+
+ &lt;div class="member-grid"&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ 
+ 
+ 
+ 
+ &lt;img src="https://github.com/ZeddYu.png?size=144" alt="Zeddy" loading="lazy" decoding="async" width="72" height="72"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;Zeddy&lt;/span&gt;
+ 
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="N/A"&gt;N/A&lt;/p&gt;
+ 
+ &lt;div class="member-card__links"&gt;
+ 
+ &lt;a href="https://zeddyu.github.io/" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="Blog" aria-label="Zeddy's Blog"&gt;
+ &lt;svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&gt;&lt;path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/&gt;&lt;path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/&gt;&lt;/svg&gt;
+ &lt;span&gt;Blog&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ 
+ &lt;a href="https://github.com/ZeddYu" target="_blank" rel="noopener noreferrer" class="member-card__tag member-card__tag--link" title="GitHub" aria-label="Zeddy's GitHub"&gt;
+ &lt;svg viewBox="0 0 24 24" fill="currentColor"&gt;&lt;path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.341-3.369-1.341-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.337-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836a9.59 9.59 0 012.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/&gt;&lt;/svg&gt;
+ &lt;span&gt;GitHub&lt;/span&gt;
+ &lt;/a&gt;
+ 
+ &lt;/div&gt;
+ &lt;/div&gt;
+ &lt;/article&gt;
+ 
+ &lt;article class="member-card"&gt;
+ &lt;div class="member-card__avatar"&gt;
+ 
+ &lt;img src="https://q1.qlogo.cn/g?b=qq&amp;amp;nk=1609515942&amp;amp;s=640" alt="影二つ" loading="lazy" decoding="async" width="72" height="72"&gt;
+ 
+ &lt;/div&gt;
+
+ &lt;div class="member-card__body"&gt;
+ &lt;div class="member-card__top"&gt;
+ &lt;span class="member-card__name"&gt;影二つ&lt;/span&gt;
+ 
+ 
+ &lt;/div&gt;
+ 
+ &lt;p class="member-card__desc" title="书鱼哥哥的恩情还不完"&gt;书鱼哥哥的恩情还不完&lt;/p&gt;</description></item><item><title>About us</title><link>https://su-team.cn/page/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/about/</guid><description>&lt;h2 id="关于我们"&gt;关于我们&lt;/h2&gt;
+&lt;p&gt;SU创队之始，战队取名SU，一方面代表江苏，另一方面也寓意夺取最高权限，现在我们将成员范围不再仅仅局限于江苏，扩大为全国各地，保留SU队名一方面是希望继续以SU已有的成绩基础上继续创造佳绩，另一方面我们也希望我们不再是只是一支江苏联合战队，更希望是一支全国高校的联合战队，希望能把越来越多的高校联合起来，无论这些高校有没有社团基础，现在的成绩如何，只要同学们对CTF这方面或者不仅是这方面感兴趣，我们都愿意去从各方面去帮助这些同学们在自己的高校建立起相应的社团资源，或者为这些单打独斗的同学提供一个更好的交流环境，为这些苦于没有学习资源却真正想学习的同学提供一个良好的平台，所以我们也更愿意把SU解释为 united sudoers / sudoers of union。总之我们希望能把更多的网络安全爱好者联合起来，构建一支强有力的队伍，一起为共同的目标努力，向着梦想出发。&lt;/p&gt;
+&lt;p&gt;有意愿加入我们的小伙伴联系邮箱：&lt;a href="mailto:suers_xctf@126.com"&gt;suers_xctf@126.com&lt;/a&gt;
+&lt;/p&gt;
+&lt;h2 id="战队荣誉"&gt;战队荣誉&lt;/h2&gt;
+&lt;section class="honors-brief"&gt;&lt;section class="honors-brief__year"&gt;
+ &lt;div class="honors-year__label"&gt;2025&lt;/div&gt;&lt;div class="honors-row honors-row--gold"&gt;
+ &lt;span class="honors-row__event"&gt;第九届 XCTF 联赛积分榜&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold"&gt;
+ &lt;span class="honors-row__event"&gt;L3HCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/section&gt;&lt;section class="honors-brief__year"&gt;
+ &lt;div class="honors-year__label"&gt;2024&lt;/div&gt;&lt;div class="honors-row honors-row--gold"&gt;
+ &lt;span class="honors-row__event"&gt;第四届网鼎杯&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 金长城奖&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold"&gt;
+ &lt;span class="honors-row__event"&gt;熊猫杯网络安全大赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/section&gt;&lt;section class="honors-brief__year"&gt;
+ &lt;div class="honors-year__label"&gt;2023&lt;/div&gt;&lt;div class="honors-row honors-row--gold"&gt;
+ &lt;span class="honors-row__event"&gt;巅峰极客线下决赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/section&gt;&lt;section class="honors-brief__year"&gt;
+ &lt;div class="honors-year__label"&gt;2022&lt;/div&gt;&lt;div class="honors-row honors-row--gold"&gt;
+ &lt;span class="honors-row__event"&gt;XCTF SUSCTF 2022&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/section&gt;&lt;div class="honors-brief__actions"&gt;
+ &lt;a class="team-button" href="https://su-team.cn/page/honors/"&gt;全部荣誉&lt;/a&gt;
+ &lt;/div&gt;
+&lt;/section&gt;</description></item><item><title>Archives</title><link>https://su-team.cn/page/archives/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/archives/</guid><description/></item><item><title>荣誉墙</title><link>https://su-team.cn/page/honors/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>suers_xctf@126.com (SUer)</author><guid>https://su-team.cn/page/honors/</guid><description>&lt;section class="honors-wall" data-filter="all"&gt;&lt;section class="honors-hosted"&gt;
+ &lt;div class="honors-kicker"&gt;主办&lt;/div&gt;
+ &lt;div class="honors-hosted__list"&gt;&lt;a class="honors-hosted__row" href="https://github.com/team-su/SUCTF-2026" rel="noopener"&gt;
+ &lt;span class="honors-hosted__name"&gt;SUCTF 2026&lt;/span&gt;
+ &lt;span class="honors-hosted__edition"&gt;第十届 XCTF 国际联赛分站赛&lt;/span&gt;
+ &lt;span class="honors-hosted__date"&gt;2026.03.14 – 03.16&lt;/span&gt;
+ &lt;/a&gt;&lt;a class="honors-hosted__row" href="https://github.com/team-su/SUCTF-2025" rel="noopener"&gt;
+ &lt;span class="honors-hosted__name"&gt;SUCTF 2025&lt;/span&gt;
+ &lt;span class="honors-hosted__edition"&gt;第九届 XCTF 国际联赛分站赛&lt;/span&gt;
+ &lt;span class="honors-hosted__date"&gt;2025.01.11 – 01.13&lt;/span&gt;
+ &lt;/a&gt;&lt;a class="honors-hosted__row" href="https://mp.weixin.qq.com/s/9jmsUhKXmsBs_bsZshQKZA" rel="noopener"&gt;
+ &lt;span class="honors-hosted__name"&gt;DASCTF × SU 2023&lt;/span&gt;
+ &lt;span class="honors-hosted__edition"&gt;开局之战&lt;/span&gt;
+ &lt;span class="honors-hosted__date"&gt;2023.04.22&lt;/span&gt;
+ &lt;/a&gt;&lt;a class="honors-hosted__row" href="https://mp.weixin.qq.com/s/-wn9k7yDAgrddC59WvSGyA" rel="noopener"&gt;
+ &lt;span class="honors-hosted__name"&gt;DASCTF × SU 2022&lt;/span&gt;
+ &lt;span class="honors-hosted__edition"&gt;三月春季挑战赛&lt;/span&gt;
+ &lt;span class="honors-hosted__date"&gt;2022.03.26&lt;/span&gt;
+ &lt;/a&gt;&lt;a class="honors-hosted__row" href="https://github.com/team-su/SUCTF-2019" rel="noopener"&gt;
+ &lt;span class="honors-hosted__name"&gt;SUCTF 2019&lt;/span&gt;
+ &lt;span class="honors-hosted__edition"&gt;第五届 XCTF 国际联赛分站赛&lt;/span&gt;
+ &lt;span class="honors-hosted__date"&gt;2019.08.17 – 08.18&lt;/span&gt;
+ &lt;/a&gt;&lt;a class="honors-hosted__row" href="https://mp.weixin.qq.com/s/i2TVTPmRy3urZ88EahkE0g" rel="noopener"&gt;
+ &lt;span class="honors-hosted__name"&gt;SUCTF 2018&lt;/span&gt;
+ &lt;span class="honors-hosted__edition"&gt;第四届 XCTF 国际联赛分站赛&lt;/span&gt;
+ &lt;span class="honors-hosted__date"&gt;2018.05.26 – 05.27&lt;/span&gt;
+ &lt;/a&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;div class="honors-toolbar"&gt;
+ &lt;div class="honors-kicker"&gt;成绩&lt;/div&gt;
+ &lt;div class="honors-filter" role="tablist" aria-label="筛选成绩"&gt;
+ &lt;button type="button" class="honors-filter__btn is-active" data-filter="all" aria-pressed="true"&gt;全部&lt;/button&gt;
+ &lt;button type="button" class="honors-filter__btn" data-filter="gold" aria-pressed="false"&gt;冠军&lt;/button&gt;
+ &lt;/div&gt;
+ &lt;/div&gt;
+
+ &lt;div class="honors-index"&gt;&lt;section class="honors-year" data-year="2026"&gt;
+ &lt;h2 class="honors-year__label"&gt;2026&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;AliCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;10th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;LilacCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;5th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2025"&gt;
+ &lt;h2 class="honors-year__label"&gt;2025&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;CTFTIME TOP 50&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;36th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;第九届 XCTF 联赛积分榜&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 第一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;HKCERTCTF Quals&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;4th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;RCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;5th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;第九届 XCTF 国际网络攻防联赛总决赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--bronze"&gt;三等奖&lt;/span&gt;&lt;span class="honor-rank__sep"&gt; / &lt;/span&gt;&lt;span class="honor-rank honor-rank--bronze"&gt;Live Solo 季军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;强网拟态&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 预赛冠军&lt;/span&gt;&lt;span class="honor-rank__sep"&gt; / &lt;/span&gt;&lt;span class="honor-rank honor-rank--bronze"&gt;决赛季军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;中华人民共和国第三届职业技能大赛网络安全项目&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;WMCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;TFCCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;6th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;ImaginaryCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;13th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;DeadSec CTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;13th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;WolvCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;13th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;L3HCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;DASCTF 上半年赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;数字中国创新大赛数据安全产业积分争夺赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--bronze"&gt;铜奖&lt;/span&gt;&lt;span class="honor-rank__sep"&gt; / &lt;/span&gt;&lt;span class="honor-rank honor-rank--rank"&gt;10th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2024"&gt;
+ &lt;h2 class="honors-year__label"&gt;2024&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;第四届网鼎杯&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 金长城奖&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;第四届网鼎杯线下总决赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;第四十七届世界技能大赛网络安全项目中国国家队选拔赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;国产 OS 漏洞挖掘赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;羊城杯网络安全大赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;矩阵杯网络安全大赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;RCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;熊猫杯网络安全大赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2023"&gt;
+ &lt;h2 class="honors-year__label"&gt;2023&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;XCTF ACTF 2023&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;第七届 XCTF 国际网络攻防联赛总决赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第七名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;贵阳大数据网络安全精英对抗赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第四名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;TPCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;7th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;SCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;8th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;WMCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;10th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;RWCTF 2023 体验赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;中华人民共和国第二届职业技能大赛网络安全项目&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;网鼎杯决赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第十一名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;陇剑杯决赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第六名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;祥云杯线下决赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;巅峰极客线下决赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;巅峰极客线上赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2022"&gt;
+ &lt;h2 class="honors-year__label"&gt;2022&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;XCTF SUSCTF 2022&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;XCTF ACTF 2022&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第五名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;RWCTF 2022 体验赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 冠军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2021"&gt;
+ &lt;h2 class="honors-year__label"&gt;2021&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;美团 CTF（个人 / 团队）&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 个人赛冠军&lt;/span&gt;&lt;span class="honor-rank__sep"&gt; / &lt;/span&gt;&lt;span class="honor-rank honor-rank--silver"&gt;团队赛亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;SCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;强网拟态预赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;第二名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;BYTECTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第十名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;RCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第七名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2020"&gt;
+ &lt;h2 class="honors-year__label"&gt;2020&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;XCTF WMCTF 2020&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;强网杯线上赛&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;12th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2019"&gt;
+ &lt;h2 class="honors-year__label"&gt;2019&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;CyBRICS CTF 中国区&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第五名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;XCTF SCTF 2019&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;KCTF 2019 Q2&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--silver"&gt;亚军&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2018"&gt;
+ &lt;h2 class="honors-year__label"&gt;2018&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;InCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;6th&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2017"&gt;
+ &lt;h2 class="honors-year__label"&gt;2017&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;SCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第八名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;WHCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第四名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;section class="honors-year" data-year="2016"&gt;
+ &lt;h2 class="honors-year__label"&gt;2016&lt;/h2&gt;
+ &lt;div class="honors-year__rows"&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;华山杯（决赛 / 初赛）&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;决赛第七名&lt;/span&gt;&lt;span class="honor-rank__sep"&gt; / &lt;/span&gt;&lt;span class="honor-rank honor-rank--rank"&gt;初赛第十名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row honors-row--gold" data-gold="1"&gt;
+ &lt;span class="honors-row__event"&gt;XMAN 夏令营&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--bronze"&gt;总排名第三&lt;/span&gt;&lt;span class="honor-rank__sep"&gt; / &lt;/span&gt;&lt;span class="honor-rank honor-rank--rank"&gt;攻防第五&lt;/span&gt;&lt;span class="honor-rank__sep"&gt; / &lt;/span&gt;&lt;span class="honor-rank honor-rank--bronze"&gt;结业第三&lt;/span&gt;&lt;span class="honor-rank__sep"&gt; / &lt;/span&gt;&lt;span class="honor-rank honor-rank--gold"&gt;★ 练习赛第一&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;div class="honors-row"&gt;
+ &lt;span class="honors-row__event"&gt;AliCTF&lt;/span&gt;
+ &lt;span class="honors-row__place"&gt;&lt;span class="honor-rank honor-rank--rank"&gt;第十名&lt;/span&gt;&lt;/span&gt;
+ &lt;/div&gt;&lt;/div&gt;
+ &lt;/section&gt;&lt;/div&gt;
+&lt;/section&gt;
+&lt;script&gt;
+(function () {
+ var root = document.currentScript &amp;&amp; document.currentScript.previousElementSibling;
+ if (!root || !root.classList.contains('honors-wall')) {
+ root = document.querySelector('.honors-wall');
+ }
+ if (!root) return;
+ var buttons = root.querySelectorAll('.honors-filter__btn');
+ var years = root.querySelectorAll('.honors-year');
+ function apply(mode) {
+ root.setAttribute('data-filter', mode);
+ buttons.forEach(function (btn) {
+ var on = btn.getAttribute('data-filter') === mode;
+ btn.classList.toggle('is-active', on);
+ btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+ });
+ years.forEach(function (year) {
+ var rows = year.querySelectorAll('.honors-row');
+ var visible = 0;
+ rows.forEach(function (row) {
+ var show = mode === 'all' || row.getAttribute('data-gold') === '1';
+ row.hidden = !show;
+ if (show) visible += 1;
+ });
+ year.hidden = visible === 0;
+ });
+ }
+ buttons.forEach(function (btn) {
+ btn.addEventListener('click', function () {
+ apply(btn.getAttribute('data-filter'));
+ });
+ });
+})();
+&lt;/script&gt;</description></item></channel></rss>
