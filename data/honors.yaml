@@ -50,54 +50,50 @@ years:
         badges:
           - label: 36th
             tone: rank
-      - event: 第九届 XCTF 联赛积分榜
-        featured_rank: 1
-        badges:
-          - label: 第一名
-            tone: gold
       - event: HKCERTCTF Quals
         badges:
           - label: 4th
             tone: rank
-      - event: RCTF
-        badges:
-          - label: 5th
-            tone: rank
-      - event: 第九届 XCTF 国际网络攻防联赛总决赛
-        badges:
-          - label: 三等奖
-            tone: bronze
-          - label: Live Solo 季军
-            tone: bronze
       - event: 强网拟态
         badges:
           - label: 预赛冠军
             tone: gold
           - label: 决赛季军
             tone: bronze
-      - event: 中华人民共和国第三届职业技能大赛网络安全项目
-        featured_rank: 11
+      - event: RCTF
         badges:
-          - label: 冠军
+          - label: 5th
+            tone: rank
+      - event: 第九届 XCTF 联赛积分榜
+        featured_rank: 1
+        badges:
+          - label: 第一名
             tone: gold
+      - event: 第九届 XCTF 国际网络攻防联赛总决赛
+        badges:
+          - label: 三等奖
+            tone: bronze
+          - label: Live Solo 季军
+            tone: bronze
       - event: WMCTF
         featured_rank: 8
         badges:
           - label: 亚军
             tone: silver
-      - event: TFCCTF
+      - event: 中华人民共和国第三届职业技能大赛网络安全项目
+        featured_rank: 11
         badges:
-          - label: 6th
-            tone: rank
+          - label: 冠军
+            tone: gold
       - event: ImaginaryCTF
         badges:
           - label: 13th
             tone: rank
-      - event: DeadSec CTF
+      - event: TFCCTF
         badges:
-          - label: 13th
+          - label: 6th
             tone: rank
-      - event: WolvCTF
+      - event: DeadSec CTF
         badges:
           - label: 13th
             tone: rank
@@ -117,26 +113,21 @@ years:
             tone: bronze
           - label: 10th
             tone: rank
+      - event: WolvCTF
+        badges:
+          - label: 13th
+            tone: rank
 
   - year: 2024
     entries:
-      - event: 第四届网鼎杯
-        featured_rank: 3
-        badges:
-          - label: 金长城奖
-            tone: gold
       - event: 第四届网鼎杯线下总决赛
         badges:
           - label: 亚军
             tone: silver
-      - event: 第四十七届世界技能大赛网络安全项目中国国家队选拔赛
-        featured_rank: 10
+      - event: 第四届网鼎杯
+        featured_rank: 3
         badges:
-          - label: 冠军
-            tone: gold
-      - event: 国产 OS 漏洞挖掘赛
-        badges:
-          - label: 冠军
+          - label: 金长城奖
             tone: gold
       - event: 羊城杯网络安全大赛
         badges:
@@ -147,43 +138,32 @@ years:
         badges:
           - label: 冠军
             tone: gold
+      - event: 国产 OS 漏洞挖掘赛
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 熊猫杯网络安全大赛
+        featured_rank: 4
+        badges:
+          - label: 冠军
+            tone: gold
       - event: RCTF
         badges:
           - label: 亚军
             tone: silver
-      - event: 熊猫杯网络安全大赛
-        featured_rank: 4
+      - event: 第四十七届世界技能大赛网络安全项目中国国家队选拔赛
+        featured_rank: 10
         badges:
           - label: 冠军
             tone: gold
 
   - year: 2023
     entries:
-      - event: XCTF ACTF 2023
-        badges:
-          - label: 亚军
-            tone: silver
-      - event: 第七届 XCTF 国际网络攻防联赛总决赛
-        badges:
-          - label: 第七名
-            tone: rank
-      - event: 贵阳大数据网络安全精英对抗赛
-        badges:
-          - label: 第四名
-            tone: rank
       - event: TPCTF
         badges:
           - label: 7th
             tone: rank
-      - event: SCTF
-        badges:
-          - label: 8th
-            tone: rank
-      - event: WMCTF
-        badges:
-          - label: 10th
-            tone: rank
-      - event: RWCTF 2023 体验赛
+      - event: XCTF ACTF 2023
         badges:
           - label: 亚军
             tone: silver
@@ -191,10 +171,6 @@ years:
         badges:
           - label: 冠军
             tone: gold
-      - event: 网鼎杯决赛
-        badges:
-          - label: 第十一名
-            tone: rank
       - event: 陇剑杯决赛
         badges:
           - label: 第六名
@@ -208,22 +184,46 @@ years:
         badges:
           - label: 亚军
             tone: silver
+      - event: WMCTF
+        badges:
+          - label: 10th
+            tone: rank
       - event: 巅峰极客线上赛
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: SCTF
+        badges:
+          - label: 8th
+            tone: rank
+      - event: 贵阳大数据网络安全精英对抗赛
+        badges:
+          - label: 第四名
+            tone: rank
+      - event: 网鼎杯决赛
+        badges:
+          - label: 第十一名
+            tone: rank
+      - event: 第七届 XCTF 国际网络攻防联赛总决赛
+        badges:
+          - label: 第七名
+            tone: rank
+      - event: RWCTF 2023 体验赛
         badges:
           - label: 亚军
             tone: silver
 
   - year: 2022
     entries:
+      - event: XCTF ACTF 2022
+        badges:
+          - label: 第五名
+            tone: rank
       - event: XCTF SUSCTF 2022
         featured_rank: 6
         badges:
           - label: 冠军
             tone: gold
-      - event: XCTF ACTF 2022
-        badges:
-          - label: 第五名
-            tone: rank
       - event: RWCTF 2022 体验赛
         badges:
           - label: 冠军
@@ -231,13 +231,6 @@ years:
 
   - year: 2021
     entries:
-      - event: 美团 CTF（个人 / 团队）
-        featured_rank: 7
-        badges:
-          - label: 个人赛冠军
-            tone: gold
-          - label: 团队赛亚军
-            tone: silver
       - event: SCTF
         badges:
           - label: 第二名
@@ -254,18 +247,25 @@ years:
         badges:
           - label: 第七名
             tone: rank
+      - event: 美团 CTF（个人 / 团队）
+        featured_rank: 7
+        badges:
+          - label: 个人赛冠军
+            tone: gold
+          - label: 团队赛亚军
+            tone: silver
 
   - year: 2020
     entries:
+      - event: 强网杯线上赛
+        badges:
+          - label: 12th
+            tone: rank
       - event: XCTF WMCTF 2020
         featured_rank: 13
         badges:
           - label: 亚军
             tone: silver
-      - event: 强网杯线上赛
-        badges:
-          - label: 12th
-            tone: rank
 
   - year: 2019
     entries:
@@ -323,3 +323,4 @@ years:
         badges:
           - label: 第十名
             tone: rank
+

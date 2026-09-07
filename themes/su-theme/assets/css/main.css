@@ -18,7 +18,7 @@
   --color-link: #006cac;
   --color-link-hover: #005a8a;
   --color-gold: #b8860b;
-  --color-silver: #708090;
+  --color-silver: #4f6270;
   --color-bronze: #a0522d;
   --color-code-bg: #f6f6f5;
   --color-code-border: #e8e6e3;
@@ -43,7 +43,7 @@
   --color-link: #8fcef2;
   --color-link-hover: #a5dbf8;
   --color-gold: #d4a017;
-  --color-silver: #8b949e;
+  --color-silver: #c5ced6;
   --color-bronze: #cd7f32;
   --color-code-bg: #2a3043;
   --color-code-border: #3a4159;
@@ -1421,7 +1421,6 @@ a.honors-hosted__row:hover .honors-hosted__name { color: var(--color-gold); }
   min-width: 0;
   line-height: 1.55;
 }
-.honors-row--gold .honors-row__event { color: var(--color-heading); }
 
 .honors-row__place {
   text-align: right;
@@ -1431,7 +1430,7 @@ a.honors-hosted__row:hover .honors-hosted__name { color: var(--color-gold); }
   white-space: nowrap;
 }
 
-.honor-rank--gold { color: var(--color-gold); font-weight: 600; }
+.honor-rank--gold { color: var(--color-gold); }
 .honor-rank--silver { color: var(--color-silver); }
 .honor-rank--bronze { color: var(--color-bronze); }
 .honor-rank--rank { color: var(--color-text-secondary); }
