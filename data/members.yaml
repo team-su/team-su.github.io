@@ -105,6 +105,10 @@
       - name: m4x
         description: 这个人很懒，什么都没留下
         avatar: https://q1.qlogo.cn/g?b=qq&nk=1358690893&s=640
+      - name: 影二つ
+        blog: https://kagehutatsu.com/
+        description: 书鱼哥哥的恩情还不完
+        avatar: https://q1.qlogo.cn/g?b=qq&nk=1609515942&s=640
       - name: enjoy
         github: https://github.com/Decemberus
         description: 都是风景，幸会！
@@ -202,7 +206,7 @@
         description: 人间有你红尘有趣
         avatar: https://www.yyyspark.xyz/img/%E5%A4%B4%E5%83%8F.png
       - name: Triode
-        blog: https://triodelzx.github.io/
+        blog: https://www.triode.cc/
         github: https://github.com/TriodeLzx
         description: 一个又菜又爱玩的Cryptoer
         avatar: https://q1.qlogo.cn/g?b=qq&nk=1521143613&s=640
