@@ -20,7 +20,7 @@
               {{ $src := .avatar | default "img/SU.png" }}
               {{ $av := partial "get-static-image.html" $src }}
               {{ if $av }}
-                {{ $av = partial "process-image.html" (dict "image" $av "op" "fill" "spec" "144x144" "q" 88) }}
+                {{ $av = partial "process-image.html" (dict "image" $av "op" "fit" "spec" "144x144" "q" 88) }}
                 <img src="{{ $av.RelPermalink }}" alt="{{ .name }}" loading="lazy" decoding="async" width="72" height="72">
               {{ else }}
                 <img src="{{ $src | relURL }}" alt="{{ .name }}" loading="lazy" decoding="async" width="72" height="72">

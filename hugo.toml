@@ -58,6 +58,7 @@ timeout = "60m"
   quality = 80
   resampleFilter = "CatmullRom"
   hint = "drawing"
+  anchor = "Center"
   [imaging.exif]
     disableLatLong = true
 
