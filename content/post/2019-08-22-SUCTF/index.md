@@ -255,8 +255,8 @@ rename("1.phar", "1.gif");
 $query||FLAG
 因此需要找到一种可以通过||带出flag的方式。在sql_mode，可以通过将其值设置为PIPE_AS_CONCAT改变||的作用为拼接字符串，此时随便输入一串字符串便能返回该字符串与FLAG拼接的内容。
 这里我借用N.E.X的一张图加以说明：
-![](https://hackmd.summershrimp.com/uploads/upload_798e53bdb308c936d6e7c008f3bc58ba.png)
-![](https://hackmd.summershrimp.com/uploads/upload_669e9245c3c4e870eca0ea89ccf2718a.png)
+![](upload_798e53bdb308c936d6e7c008f3bc58ba.png)
+![](upload_669e9245c3c4e870eca0ea89ccf2718a.png)
 
 最终的payload为：
 1;set sql_mode=pipes_as_concat;select 1

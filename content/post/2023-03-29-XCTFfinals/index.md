@@ -267,7 +267,7 @@ outf.close()
 
 赛后复现的时候想到了题目描述，目的是找到产品密钥
 
-![rev2](https://renovice-1311449499.cos.ap-chongqing.myqcloud.com/img/rev2.png)
+![rev2](rev2.png)
 
 所以找到了sign.pyc.encrypted文件，解密后
 
@@ -381,7 +381,7 @@ int main() {
 
 第一段shellcode可以分为两个部分，在0x167之前都是对后面部分的SMC，先动态调试，得到解密后的shellcode之后再复制写入ida
 
-![image-20230401213737097](https://renovice-1311449499.cos.ap-chongqing.myqcloud.com/img/image-20230401213737097.png)
+![image-20230401213737097](image-20230401213737097.png)
 
 
 
@@ -391,7 +391,7 @@ ida_bytes.patch_bytes（要写入的地址，bytes.fromhex（“解密后的二�
 
 可以得到真正的加密函数
 
-![image-20230401213934268](https://renovice-1311449499.cos.ap-chongqing.myqcloud.com/img/image-20230401213934268.png)
+![image-20230401213934268](image-20230401213934268.png)
 
 加密主要是将输入中的两个字符拼接在一起然后加密，直接爆破
 

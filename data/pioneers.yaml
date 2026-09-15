@@ -5,57 +5,67 @@
       blog: https://zeddyu.github.io/
       github: https://github.com/ZeddYu
       description: N/A
-      avatar: https://q1.qlogo.cn/g?b=qq&nk=935702251&s=640
+      avatar: /img/avatars/zeddy.jpg
     - name: Clown
       blog: https://blog.xcu.icu/
       github: https://github.com/clown-q
       description: 一入人间黄粱梦，半生烟雨半生忧
-      avatar: https://blog.xcu.icu/images/avatar.jpg
+      avatar: /img/avatars/clown.jpg
     - name: Kxheng
       description: Kxhenggggggg
-      avatar: https://q1.qlogo.cn/g?b=qq&nk=321586960&s=640
+      avatar: /img/avatars/kxheng.jpg
     - name: wh1sper
       blog: https://blog.wh1sper.com/
       description: CTFer @X1cT34m @SU
-      avatar: https://q1.qlogo.cn/g?b=qq&nk=1643239341&s=640
+      avatar: /img/avatars/wh1sper.jpg
     - name: m1yuu
       blog: https://m1yuu.com/
       description: ctfer/cyber security researcher
-      avatar: https://m1yuu.com/medias/avatar.jpg
+      avatar: /img/avatars/m1yuu.jpg
     - name: lo1see
       blog: https://lo1see.github.io/
       description: 无人扶我青云志，我自己也上不去
-      avatar: https://q1.qlogo.cn/g?b=qq&nk=2296161885&s=640
+      avatar: /img/avatars/lo1see.jpg
     - name: luo
       blog: https://forkmmat.github.io/
       github: https://forkmmat.github.io/
       description: 这一切都是命运石之门的选择
-      avatar: https://forkmmat.github.io/image/02.jpg
+      avatar: /img/avatars/luo.jpg
     - name: n4c1
       blog: https://www.cnblogs.com/n4c1
       github: https://github.com/NaCl1
       description: 靡不有初, 鲜克有终!
-      avatar: https://avatars.githubusercontent.com/u/87687085?v=4
+      avatar: /img/avatars/n4c1.jpg
     - name: Nbc
       blog: https://nbcares.top/
       github: https://github.com/Nbccccc
       description: 功利主义导向的思考方式往往使我们忘却了生命的本质是一场历程
-      avatar: https://avatars.githubusercontent.com/u/192305884?v=4
+      avatar: /img/avatars/nbc.jpg
     - name: 0xahh
       description: 想学习
-      avatar: https://q1.qlogo.cn/g?b=qq&nk=871759032&s=640
+      avatar: /img/avatars/0xahh.jpg
     - name: m3rl1n
       blog: https://blog.cyberparterre.top/
       description: 改变就是好事
-      avatar: https://blog.cyberparterre.top/upload/header.png
+      avatar: /img/avatars/m3rl1n.png
     - name: bj777
       blog: https://jonathanbest7.github.io/
       github: https://github.com/jonathanbest7
       description: 戒骄戒躁
-      avatar: https://q1.qlogo.cn/g?b=qq&nk=506611735&s=640
+      avatar: /img/avatars/bj777.jpg
     - name: ap0s
       description: 我嘅人生先啱啱开始,做唔到最好,咁就做更好
-      avatar: https://q1.qlogo.cn/g?b=qq&nk=3063257925&s=640
+      avatar: /img/avatars/ap0s.jpg
     - name: 三哈
       description: 哥哥不会连隐写都解不开吧~不会吧~不会吧~
-      avatar: https://q1.qlogo.cn/g?b=qq&nk=2959849401&s=640
+      avatar: /img/avatars/三哈.jpg
+    - name: B1ue1nWh1te
+      blog: https://www.seaeye.cn/
+      github: https://github.com/B1ue1nWh1te
+      description: 大道至简，天道酬勤。
+      avatar: /img/avatars/b1ue1nwh1te.jpg
+    - name: 月石
+      blog: https://github.com/Aaisui/Blog
+      github: https://github.com/Aaisui
+      description: Mine eyes have seen the glory of the coming of the lord
+      avatar: /img/avatars/aaisui.jpg

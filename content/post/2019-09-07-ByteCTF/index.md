@@ -784,7 +784,7 @@ for i in range(len(list_im)):
                                  width*(col + 1), height*(i//column + 1)))   
 target.show()
 ```
-拿到flag ![](https://hackmd.summershrimp.com/uploads/upload_f47c3d040ed16a129a345190d1caa97d.png)
+拿到flag ![](upload_f47c3d040ed16a129a345190d1caa97d.png)
 
 
 ###	betgame
@@ -945,6 +945,6 @@ for i in range(1000000):
 ```
 
 根据异或性质直接爆回去
-![](https://hackmd.summershrimp.com/uploads/upload_e098d7bf802d700acd98ac57755507e7.png)
+![](upload_e098d7bf802d700acd98ac57755507e7.png)
 
 坑点在于flag格式 爆了半天bytectf

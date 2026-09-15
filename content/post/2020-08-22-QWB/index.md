@@ -146,7 +146,7 @@ for diff in range(-500, 500):
 ```
 
 
-![](https://i.loli.net/2020/08/23/f4cTxE8ZLg79o5W.jpg)
+![](f4cTxE8ZLg79o5W.jpg)
 
 
 
@@ -514,30 +514,30 @@ p.interactive()
 
 ## Misc
 ### miscstudy
-![](https://hackmd.summershrimp.com/uploads/upload_6a55e4763ec72134b9c0b3d913bd724b.png)
+![](upload_6a55e4763ec72134b9c0b3d913bd724b.png)
 
 找到一个访问 http://39.99.247.28/fonts/1 的流量
 
-![](https://hackmd.summershrimp.com/uploads/upload_7456417605938132686ff20660e7d9ff.png)
+![](upload_7456417605938132686ff20660e7d9ff.png)
 
 得到flag{level1_begin_and_level2_is_come
 
 还从中得到了私钥信息，将其导入Wireshark可以解密后续的部分TLS流量。
 
 继续往后翻stream，可以发现一个图片：
-![](https://hackmd.summershrimp.com/uploads/upload_d374609201cbd3daf43e87e452f03c30.png)
+![](upload_d374609201cbd3daf43e87e452f03c30.png)
 
 访问 https://www.qiangwangbei.com/images/4e5d47b2db53654959295bba216858932.png 下载图片
 
 在末尾能看到一串类似base64编码的字符串：
 
-![](https://hackmd.summershrimp.com/uploads/upload_96ed59c4dba7593974234283b98b6ca3.png)
+![](upload_96ed59c4dba7593974234283b98b6ca3.png)
 
 解码得到level3_start_it
 
 
 
-![](https://hackmd.summershrimp.com/uploads/upload_d88a9c7631f80aee514a93c951730a2b.png)
+![](upload_d88a9c7631f80aee514a93c951730a2b.png)
 
 
 在文件末尾的上面，也能发现3串base64编码后的字符串，对其分别解码后得到一串长度为3600的01字符串，按照每60个一行，可以得到一个二维码：
@@ -562,7 +562,7 @@ for i in range(0, x):
             
 img.show()
 ```
-![](https://hackmd.summershrimp.com/uploads/upload_abea5644a517e71dffcdda7ab5957760.png)
+![](upload_abea5644a517e71dffcdda7ab5957760.png)
 
 
 扫描得到
@@ -570,7 +570,7 @@ img.show()
 
 下载得到level4.zip
 
-![](https://hackmd.summershrimp.com/uploads/upload_4a982fd6cd1c6c0e6ea0ff6ead63c099.png)
+![](upload_4a982fd6cd1c6c0e6ea0ff6ead63c099.png)
 
 stegbreak，密码power123
 
@@ -582,7 +582,7 @@ mrpt
 level4_here_all
 ```
 
-![](https://hackmd.summershrimp.com/uploads/upload_1f8f684177225795f5167bf2a7a69080.png)
+![](upload_1f8f684177225795f5167bf2a7a69080.png)
 
 level5_is_aaa
 
@@ -592,7 +592,7 @@ level7.zip明文碰撞1.png，再水印隐写可以得到level7ishere和39.99.24
 
 源码里看到
 
-![](https://hackmd.summershrimp.com/uploads/upload_f6df4e39c4e1ca6dcb47e51e2d442ff5.png)
+![](upload_f6df4e39c4e1ca6dcb47e51e2d442ff5.png)
 
 Snow隐写 解密得到the_misc_examaaaaaaa_!!!}
 
@@ -744,7 +744,7 @@ Min WANG,Zhen WU,Jin-tao RAO,Hang LING. Round reduction-based fault attack on SM
 
 然后几个paper轮流看。
 
-![](https://hackmd.summershrimp.com/uploads/upload_bbc71b52cfdefddb249b337787f0c652.png)
+![](upload_bbc71b52cfdefddb249b337787f0c652.png)
 
 选择了需要fault次数最多的那个方法。（因为容易理解一些
 
@@ -752,13 +752,13 @@ paper：https://wenku.baidu.com/view/df86818e79563c1ec5da71c4.html
 
 出题人没整好输入的round（只能在第2～31轮注入fault， 而非1～32轮），所以操作的时候就稍微需要自己改变一下
 
-![](https://hackmd.summershrimp.com/uploads/upload_ee8ac49c5879017f86dfc47f2778e39c.png)
+![](upload_ee8ac49c5879017f86dfc47f2778e39c.png)
 
 往第31轮的X30上注入1byte的fault，将会导致第32轮的X34的差分值有1byte不为0。
 
 然后往F函数里面日：
 
-![](https://hackmd.summershrimp.com/uploads/upload_944a8f9c6845bac7c504f38481822778.png)
+![](upload_944a8f9c6845bac7c504f38481822778.png)
 
 可以激活一个sbox：必有一个sbox的差分值不为0（其他3个sbox均为0），且这个sbox的位置可控；这个sbox的两个差分输入r_inp, f_inp 也能确定下来。
 
@@ -767,7 +767,7 @@ paper：https://wenku.baidu.com/view/df86818e79563c1ec5da71c4.html
 
 再来从下往上看这个sbox输出的差分值：
 
-![](https://hackmd.summershrimp.com/uploads/upload_e1c2ffc280b41e4a1e98b99227cd24d9.png)
+![](upload_e1c2ffc280b41e4a1e98b99227cd24d9.png)
 
 paper里有具体的分析，看不懂，直接看到结论。这个结论就是说sbox输出的差分值diff_out也能确定下来。
 
@@ -990,7 +990,7 @@ r.interactive()
 
 但是能getflag：
 
-![](https://hackmd.summershrimp.com/uploads/upload_80b51b89dfd332c4c8c86c69fe16698d.png)
+![](upload_80b51b89dfd332c4c8c86c69fe16698d.png)
 
 
 
@@ -1000,13 +1000,13 @@ r.interactive()
 
 第二关 
 
-![](https://hackmd.summershrimp.com/uploads/upload_7b66e6dda856cd1cf3f9c8ab71abcb68.png)
+![](upload_7b66e6dda856cd1cf3f9c8ab71abcb68.png)
 
 扔给服务器两个一样的c1、c2，然后iv = (c1 ^ p2) ^ p1
 
 第三关 
 
-![](https://hackmd.summershrimp.com/uploads/upload_159b1c4e457f109f16b6c8ba0e45486b.png)
+![](upload_159b1c4e457f109f16b6c8ba0e45486b.png)
 
 把第3块密文换成第5块密文
 
@@ -1214,7 +1214,7 @@ solve_6()
 r.interactive()
 ```
 
-![](https://hackmd.summershrimp.com/uploads/upload_89f5b8eb5b121d8ba732901351531e73.png)
+![](upload_89f5b8eb5b121d8ba732901351531e73.png)
 
 ## Blockchain
 ### IPFS
@@ -1241,11 +1241,11 @@ for perm in permutations([0,1,2,5], 4):
 
 发现0213.jpg可以正常显示：
 
-![Screen Shot 2020-08-23 at 2.32.56 AM](https://i.loli.net/2020/08/23/WhGOoXKJQVyH4c2.png)
+![Screen Shot 2020-08-23 at 2.32.56 AM](WhGOoXKJQVyH4c2.png)
 
 pic2.jpg，给出了文件的sha256sum，根据QmHash的格式，可以得到pic2.jpg的QmHash：
 
-![image-20200823023341028](https://i.loli.net/2020/08/23/vsh6M3fpr9OAx2Q.png)
+![image-20200823023341028](vsh6M3fpr9OAx2Q.png)
 
 ```python
 import base58
@@ -1256,7 +1256,7 @@ print(base58.b58encode(bytes.fromhex("1220"+"659c2a2c3ed5e50f848135eea4d3ead3fa2
 
 `ipfs cat QmVBHzwuchpfHLxEqNrBb3492E73DHE99yFCxx1UYcJ6R3 > pic2.jpg`可以得到第二张图片：
 
-![Screen Shot 2020-08-23 at 2.36.21 AM](https://i.loli.net/2020/08/23/yltfSPeMgpYLJUu.png)
+![Screen Shot 2020-08-23 at 2.36.21 AM](yltfSPeMgpYLJUu.png)
 
 组合起来就是：`flag=flag{md5( hash1 + hash2 )}`
 
@@ -1268,7 +1268,7 @@ hash1可以通过再重新上传pic1.jpg得到。
 
 看一下`ipfs add --help`发现能够通过`--chunker=size-26624`指定block的大小
 
-![Screen Shot 2020-08-23 at 2.39.27 AM](https://i.loli.net/2020/08/23/1hvuTxL9gWVQJpj.png)
+![Screen Shot 2020-08-23 at 2.39.27 AM](1hvuTxL9gWVQJpj.webp)
 
 重新上传得到root hash：QmYjQSMMux72UH4d6HX7tKVFaP27UzC65cRchbVAsh96Q7
 
@@ -1456,7 +1456,7 @@ RSA CRT fault
 
 http://dl.ifip.org/db/conf/wistp/wistp2007/KimQ07.pdf
 
-![](https://hackmd.summershrimp.com/uploads/upload_7487dc2dc6748d87889114d2ddd279d6.png)
+![](upload_7487dc2dc6748d87889114d2ddd279d6.png)
 
 ```python
 from hashlib import sha1
@@ -1529,7 +1529,7 @@ transact
 Alice -1000
 get flag
 
-![](https://hackmd.summershrimp.com/uploads/upload_28920235447ac58455a8fc5ce744baac.png)
+![](upload_28920235447ac58455a8fc5ce744baac.png)
 
 ### 红方辅助
 分析一下流量的格式，解解密就行
@@ -1598,7 +1598,7 @@ while index < len(data)-100:
 ```
 
 
-![](https://hackmd.summershrimp.com/uploads/upload_dd2a1b0987a7931fcf7479b8dbd231a6.png)
+![](upload_dd2a1b0987a7931fcf7479b8dbd231a6.jpg)
 
 得到3e752bf509ddb4e9a42f1ef30beff495
 

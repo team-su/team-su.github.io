@@ -12,6 +12,7 @@
   {{ end }}
 {{ end }}
 {{ $hasToc := and $tocEnabled (gt (len (findRE "<a " (printf "%s" $toc))) 0) }}
+{{ $content := partial "process-page-content.html" . }}
 
 <article class="article">
   <header class="article__header">
@@ -32,7 +33,6 @@
   {{ if $hasToc }}
   <div class="article__body">
     <div class="article__content">
-      {{- $content := partial "fix-email-autolinks.html" .Content -}}
       {{ $content | safeHTML }}
     </div>
     <aside class="toc" id="toc">
@@ -55,7 +55,6 @@
   <div class="toc-overlay" id="toc-overlay"></div>
   {{ else }}
   <div class="article__content container--article">
-    {{- $content := partial "fix-email-autolinks.html" .Content -}}
     {{ $content | safeHTML }}
   </div>
   {{ end }}

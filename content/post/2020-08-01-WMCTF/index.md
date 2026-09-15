@@ -55,7 +55,7 @@ if __name__=="__main__":
 因为 require_once 读不了 flag.php, 根据上一题 flag 的提示是 php 自己的问题, 找了半天发现  
 https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c
 
-![](https://hackmd.summershrimp.com/uploads/upload_6c61a5a08c92dbda0b82e77a9ffb0afb.png)
+![](upload_6c61a5a08c92dbda0b82e77a9ffb0afb.png)
 
 超过 32 层会停止读符号链接, 所以用 /proc/self/root 套 33 层娃即可
 ```
@@ -533,16 +533,16 @@ p.interactive()
 ##	Misc
 ###    Dalabengba
 先用EnigmaVBUnpacker.exe将游戏解包 
-![](https://hackmd.summershrimp.com/uploads/upload_f40cca716ad4cccb72861350a9b79c3e.png)
+![](upload_f40cca716ad4cccb72861350a9b79c3e.png)
 然后开启rpgmaker开一个新项目，把www里面文件拷过去打开
-![](https://hackmd.summershrimp.com/uploads/upload_b3e744e636152849dc783d0ff598e507.png)
+![](upload_b3e744e636152849dc783d0ff598e507.png)
 在这个网站把素材解包https://petschko.org/tools/mv_decrypter/，把完整的放回文件夹里，这里要修改data/system.json的配置
 "hasEncryptedImages": false,
 "hasEncryptedAudio": false,
 运行正常使用了
-![](https://hackmd.summershrimp.com/uploads/upload_0280daf918a26ff67cafd0d76c9745e5.png)
+![](upload_0280daf918a26ff67cafd0d76c9745e5.png)
 查找了国王最后成功的话
-![](https://hackmd.summershrimp.com/uploads/upload_5db1d582c9cd1710e90fd9de5e605019.png)
+![](upload_5db1d582c9cd1710e90fd9de5e605019.png)
 调试发现还是加密了，用了decText.js里面代码
 参考[RPGMaker防破解百度快照](http://cache.baiducontent.com/c?m=9d78d513d98303fa4fece4215e4f80260e55f0744cd2c7647dc3923884155f563662f4cb51356704c7823c390ef50f1aa8b12173441e3df2de8d9f4aaae3c97b73c97d73671cf1104f8c04edd64727c621900cb8f81cb3eea6&p=c96fc64ad48c11a058e8d6654948&newp=92769a47cd8911a058e8872b445c92695c02dc3051ddd001298ffe0cc4241a1a1a3aecbb24241502d9c478610abb0f31aba7747d605f76acd1&s=cfcd208495d565ef&user=baidu&fm=sc&query=RPGMAKER%B7%C0%C6%C6%BD%E2&qid=f601feaf00042d52&p1=1)
 去分析rpg_core.js，推出systemkey:"f74592328a168cf858e727078d4f6ab"，然后丢回包里看国王说的话，其实可以把所有发现加密的都跑出来看看有哪些东西
@@ -551,24 +551,24 @@ emm好像没flag
 第一部分：
 
 直接跳到最后的天空城关卡
-![](https://hackmd.summershrimp.com/uploads/upload_44b8b47e88c65b64871b31003e28c45e.png)
+![](upload_44b8b47e88c65b64871b31003e28c45e.png)
 发现移动路线组成单词Pr1nCe5s
 第二部分：
 文件part2.jpg
 前面有一个do you know java ，查了java和图片隐写的东西
 找打java盲水印工具：https://github.com/ww23/BlindWatermark，
 需要拼接一部分，扫描出第二部分
-![](https://hackmd.summershrimp.com/uploads/upload_66fa2c8058debf0be49712ab229dc1ad.png)
+![](upload_66fa2c8058debf0be49712ab229dc1ad.png)
 W@rR1or
 
 第三部分：
 前面导入systemkey后使用加密的素材
-![](https://hackmd.summershrimp.com/uploads/upload_36ef3f2933fd61a8f638cbfa7bb0197a.png)
+![](upload_36ef3f2933fd61a8f638cbfa7bb0197a.png)
 看到国王的话逆序hex->ascii得到Y0u_@re_5o_bRaVE得到一个文件
-![](https://hackmd.summershrimp.com/uploads/upload_238ca188ca474387ad33958b4cbff3be.png)
+![](upload_238ca188ca474387ad33958b4cbff3be.png)
 搜文件名s3cr3t找到了个解密的https://gist.github.com/aanoaa/1408846
 出了WhrRrrr~
-![](https://hackmd.summershrimp.com/uploads/upload_0d910504a7ecb5dfa598b63708415bb9.png)
+![](upload_0d910504a7ecb5dfa598b63708415bb9.png)
 ###    XMAN_Happy_birthday!
 翻转
 
@@ -590,7 +590,7 @@ W@rR1or
 一个windows逆向,一开始踩坑到了虚假的执行流,虚假的base64,虚假的xor,在init的时候,运行了好多函数,关于异常反调试等等,还有三处调用了ntdll里面的一个可以对抗调试器的函数.
 
 既然这样,那就直接上trace了,手头有一个写好的工具,配合qemu,trace出了他所有的指令流
-![](https://hackmd.summershrimp.com/uploads/upload_eb1e6150524146d82f47f963b35c4a87.png)
+![](upload_eb1e6150524146d82f47f963b35c4a87.png)
 发现到这里了,跟进去看了一下,和假的那个函数差不多,直接逆了一下,发现有一个改了表的base64函数,后面是几个明显的大数计算,这里直接patch了他的ntdll那个函数的调用,可以调试了,在进入虚假的check函数时,修改eip到这个函数,手动跳过来,继续调试
 
 整理出来大概的流程:
@@ -618,12 +618,12 @@ print "no,wrong"'
 
 **First Blood**
 
-![](https://hackmd.summershrimp.com/uploads/upload_adfc7becae87af10ef6798f13fe703ee.png)
+![](upload_adfc7becae87af10ef6798f13fe703ee.png)
 check格式flag{}长度70
 数字和大写ABCDEF
-![](https://hackmd.summershrimp.com/uploads/upload_933b2c51cb597137690981f9004ce0d5.png)
+![](upload_933b2c51cb597137690981f9004ce0d5.png)
 字符串转16进制后进sub_401909进行加密
-![](https://hackmd.summershrimp.com/uploads/upload_b0b0102d285e2209705ad6e60fcbf3dd.png)
+![](upload_b0b0102d285e2209705ad6e60fcbf3dd.png)
 主要是乘法减法mod三个操作
 
 因为sub_401111操作结果都是32bytes，猜测是一个取模操作。
@@ -753,22 +753,22 @@ $$
 
 试了一下，模数n可以被分解为两个素数：
 
-![](https://hackmd.summershrimp.com/uploads/upload_aa549cd4b2fea446ef3cede72d45f0ca.png)
+![](upload_aa549cd4b2fea446ef3cede72d45f0ca.png)
 
 p = 320265757102059730318470218759311257989
 q = 361550014853497117429835520396253724753
 
 通过Mathematica可以分别在mod p和mod q上解出来x
 
-![](https://hackmd.summershrimp.com/uploads/upload_8cdadd80b40e712d8885735244da2871.png)
+![](upload_8cdadd80b40e712d8885735244da2871.png)
 
-![](https://hackmd.summershrimp.com/uploads/upload_4e390411a80f80ec29f9859d80ff4d67.png)
+![](upload_4e390411a80f80ec29f9859d80ff4d67.png)
 
 然后再用CRT即可得到在mod n下的解：17608204545242378720348793798058123425575979093234353645947732994798163637792
 
 程序输入flag{26EDE3FE048B6BFA04F647259A3F00505FD9C9CCB87298CD631FD91F17CCB620}
 
-![](https://hackmd.summershrimp.com/uploads/upload_f4ea85e2037390a2008bdb99f9973dd6.png)
+![](upload_f4ea85e2037390a2008bdb99f9973dd6.png)
 
 
 提交需要将"flag"改成"WMCTF"
@@ -824,7 +824,7 @@ while True:
             quit()
 ```
 
-![](https://hackmd.summershrimp.com/uploads/upload_faf549fca1bd7700eaead38dfb8281f4.png)
+![](upload_faf549fca1bd7700eaead38dfb8281f4.png)
 
 ### piece_of_cake
 
@@ -1028,7 +1028,7 @@ print(hex(X_)[2:].rjust(8,'0'), freq / 10000)
 
 **画图分析**
 
-![](https://hackmd.summershrimp.com/uploads/upload_c126a80567a8eeab248c3b0ff26319cd.png)
+![](upload_c126a80567a8eeab248c3b0ff26319cd.png)
 
 > 在线画图：https://draw.io
 

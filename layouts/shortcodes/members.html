@@ -17,14 +17,13 @@
         {{ range .list }}
           <article class="member-card">
             <div class="member-card__avatar">
-              {{ if .github }}
-                {{ $username := replace .github "https://github.com/" "" }}
-                {{ $username = replace $username "https://" "" }}
-                {{ $username = replace $username ".github.io/" "" }}
-                {{ $username = replace $username "/" "" }}
-                <img src="https://github.com/{{ $username }}.png?size=144" alt="{{ .name }}" loading="lazy" decoding="async" width="72" height="72">
+              {{ $src := .avatar | default "img/SU.png" }}
+              {{ $av := partial "get-static-image.html" $src }}
+              {{ if $av }}
+                {{ $av = partial "process-image.html" (dict "image" $av "op" "fill" "spec" "144x144" "q" 88) }}
+                <img src="{{ $av.RelPermalink }}" alt="{{ .name }}" loading="lazy" decoding="async" width="72" height="72">
               {{ else }}
-                <img src="{{ .avatar }}" alt="{{ .name }}" loading="lazy" decoding="async" width="72" height="72">
+                <img src="{{ $src | relURL }}" alt="{{ .name }}" loading="lazy" decoding="async" width="72" height="72">
               {{ end }}
             </div>
 

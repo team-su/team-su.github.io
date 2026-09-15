@@ -335,15 +335,15 @@ sh.interactive()
 
 ## login
 
-![image-20240623141533130](https://s2.loli.net/2024/06/23/oM3jPv1FAex4m82.png)
+![image-20240623141533130](oM3jPv1FAex4m82.webp)
 
  可以看到有两个功能，一个是输入密码，一个是输出输入的密码
 
-![image-20240623141617033](https://s2.loli.net/2024/06/23/M8rkFblsyUBPenX.png)
+![image-20240623141617033](M8rkFblsyUBPenX.webp)
 
 可以看到有个read，而且是读到栈上并且长度是变量也就是我们输入的密码，前提是绕过校验
 
-![image-20240623141652666](https://s2.loli.net/2024/06/23/FB2QEGLtXRhgSDP.png)
+![image-20240623141652666](FB2QEGLtXRhgSDP.png)
 
 校验的返回值是一个数字，是从一个随机文件读出来的，一开始想着爆破，结果远程爆破的时候发现到后面居然是openerror，那么密码也就是-1了，所以直接栈溢出后门一把嗦
 
@@ -374,7 +374,7 @@ p.interactive()
 
 ## safestring
 
-![image-20240623141843775](https://s2.loli.net/2024/06/23/2rKfDmujki89aGb.png)
+![image-20240623141843775](2rKfDmujki89aGb.png)
 
 菜单三个功能，加密、解密、输出，输出的时候有格式化字符串，然后加密和解密一个是大小写字母+3一个-3
 
