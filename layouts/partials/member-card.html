@@ -1,0 +1,50 @@
+{{- $m := .member -}}
+{{- $role := .role | default "" -}}
+{{- $desc := $m.description | default "" -}}
+{{- if or (eq $desc "N/A") (eq $desc "n/a") (eq $desc "NA") -}}{{- $desc = "" -}}{{- end -}}
+{{- $ghLabel := "GitHub" -}}
+{{- with $m.github -}}
+  {{- $gh := strings.TrimSuffix "/" . -}}
+  {{- if in $gh "github.com/" -}}
+    {{- $parts := split $gh "/" -}}
+    {{- $last := index $parts (sub (len $parts) 1) -}}
+    {{- if $last -}}{{- $ghLabel = $last -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $display := 56 -}}
+<article class="member">
+  <div class="member__avatar">
+    {{- $src := $m.avatar | default "img/SU.png" -}}
+    {{- $av := partial "get-static-image.html" $src -}}
+    {{- if $av -}}
+      {{- $av = partial "process-image.html" (dict "image" $av "op" "fill" "spec" (printf "%dx%d" (mul $display 2) (mul $display 2)) "q" 88) -}}
+      <img src="{{ $av.RelPermalink }}" alt="{{ $m.name }}" loading="lazy" decoding="async" width="{{ $display }}" height="{{ $display }}">
+    {{- else -}}
+      <img src="{{ $src | relURL }}" alt="{{ $m.name }}" loading="lazy" decoding="async" width="{{ $display }}" height="{{ $display }}">
+    {{- end -}}
+  </div>
+  <div class="member__body">
+    <p class="member__name">
+      <strong>{{ $m.name }}</strong>
+      {{- if $role }} <span class="member__role">({{ $role }})</span>{{ end -}}
+    </p>
+    {{- if $desc -}}
+      <p class="member__bio">{{ $desc }}</p>
+    {{- end -}}
+    {{- if or $m.blog $m.github $m.join -}}
+      <p class="member__links">
+        {{- if $m.blog -}}
+          <a href="{{ $m.blog }}" target="_blank" rel="noopener noreferrer">Blog</a>
+        {{- end -}}
+        {{- if and $m.blog $m.github }}<span class="member__sep" aria-hidden="true">·</span>{{ end -}}
+        {{- if $m.github -}}
+          <a href="{{ $m.github }}" target="_blank" rel="noopener noreferrer">{{ $ghLabel }}</a>
+        {{- end -}}
+        {{- if $m.join -}}
+          {{- if or $m.blog $m.github }}<span class="member__sep" aria-hidden="true">·</span>{{ end -}}
+          <span class="member__join">{{ $m.join }}</span>
+        {{- end -}}
+      </p>
+    {{- end -}}
+  </div>
+</article>

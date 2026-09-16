@@ -1,0 +1,21 @@
+{{ define "main" }}
+{{ $datafile := .Params.datafile }}
+{{ if not $datafile }}
+  {{ errorf "roster layout requires datafile on %s" .File.Path }}
+{{ end }}
+
+<article class="article">
+  <header class="article__header">
+    <div class="container--article">
+      <h1 class="article__title">{{ .Title }}</h1>
+      {{ with .Params.subtitle }}
+        <p class="article__subtitle">{{ . }}</p>
+      {{ end }}
+    </div>
+  </header>
+
+  <div class="article__content container--article">
+    {{ partial "members-board.html" (dict "datafile" $datafile) }}
+  </div>
+</article>
+{{ end }}

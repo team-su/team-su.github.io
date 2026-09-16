@@ -13,10 +13,12 @@
 {{ end }}
 {{ $hasToc := and $tocEnabled (gt (len (findRE "<a " (printf "%s" $toc))) 0) }}
 {{ $content := partial "process-page-content.html" . }}
+{{ $wide := .Params.wide | default false }}
+{{ $wrap := cond $wide "container" "container--article" }}
 
-<article class="article">
+<article class="article{{ if $wide }} article--wide{{ end }}">
   <header class="article__header">
-    <div class="container--article">
+    <div class="{{ $wrap }}">
       {{ if ne .Type "page" }}
         <div class="article__meta">
           {{ partial "post_meta.html" . }}
@@ -54,7 +56,7 @@
   </button>
   <div class="toc-overlay" id="toc-overlay"></div>
   {{ else }}
-  <div class="article__content container--article">
+  <div class="article__content {{ $wrap }}">
     {{ $content | safeHTML }}
   </div>
   {{ end }}

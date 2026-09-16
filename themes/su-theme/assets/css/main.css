@@ -743,6 +743,7 @@ p, li, dd, dt, blockquote, figcaption { overflow-wrap: break-word; word-break: b
 }
 
 /* Standalone content (no TOC) */
+.article__content.container,
 .article__content.container--article {
   min-height: 200px;
   animation: slideUpIn 0.25s var(--ease) 0.08s both;
@@ -1462,180 +1463,74 @@ a.honors-hosted__row:hover .honors-hosted__name { color: var(--color-gold); }
 
 
 /* ============================================================
-   Members Shortcode — compact grid
+   Members — roster with inline avatars
    ============================================================ */
-.members-board { margin: 16px 0; display: grid; gap: 48px; }
-
-.members-section { margin-bottom: 0; }
-
-/* ── section head ── */
-
-.members-section__head {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 16px;
+.members-board {
+  margin: 0 0 24px;
 }
+.article__content .members-board p { margin-bottom: 0; }
 
-.members-section__title {
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-text-secondary);
-  margin: 0;
-}
-
-.members-section__count {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--color-text-secondary);
-  opacity: 0.6;
-  font-family: var(--font-mono);
-}
-
-.members-section + .members-section {
-  padding-top: 40px;
-  border-top: 1px solid var(--color-border-light);
-}
-
-/* ── grid ── */
-
-.member-grid {
+.member-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
-  gap: 10px;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 40px;
 }
 
-/* ── card ── */
-
-.member-card {
+.member {
   display: grid;
-  grid-template-columns: 72px 1fr;
-  gap: 18px;
-  align-items: center;
-  padding: 18px 20px;
-  border: 1px solid var(--color-border-light);
-  border-radius: 12px;
-  background: var(--color-bg);
-  transition: border-color 0.15s, background 0.15s;
-}
-.member-card:hover,
-.member-card:focus-within {
-  border-color: var(--color-border);
-  background: var(--color-surface);
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 12px 14px;
+  align-items: start;
+  min-width: 0;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
-/* Captain: gold crown badge next to the name */
-.member-card__crown {
-  width: 16px;
-  height: 16px;
-  color: var(--color-gold);
-  flex-shrink: 0;
-}
-
-/* avatar */
-
-.member-card__avatar { flex-shrink: 0; line-height: 0; }
-
-.member-card__avatar img {
-  width: 72px;
-  height: 72px;
-  border-radius: 12px;
+.member__avatar { line-height: 0; }
+.member__avatar img {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
   object-fit: cover;
   display: block;
-}
-
-/* body — flex column so links stay at bottom */
-
-.member-card__body {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* top line: name + optional join tag */
-
-.member-card__top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px 12px;
-}
-
-.member-card__name {
-  font-weight: 600;
-  font-size: 1.05rem;
-  color: var(--color-heading);
-  white-space: nowrap;
-}
-
-/* links — pushed to bottom, right-aligned */
-
-.member-card__links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  align-items: center;
-  justify-content: flex-end;
-  margin-top: auto;
-  padding-top: 8px;
-}
-
-/* tag pills */
-
-.member-card__tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
-  border-radius: 6px;
-  border: 1px solid var(--color-border-light);
-  font-size: 0.8125rem;
-  color: var(--color-text-secondary);
-  line-height: 1.4;
-  text-decoration: none;
-  white-space: nowrap;
-  background: var(--color-bg);
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
-}
-
-.member-card__tag svg {
-  width: 15px;
-  height: 15px;
-  flex-shrink: 0;
-}
-
-.member-card__tag--link {
-  background: var(--color-bg);
-  border-color: var(--color-border-light);
-}
-
-.member-card__tag--link:hover,
-.member-card__tag--link:focus {
-  color: var(--color-link);
-  border-color: var(--color-link);
   background: var(--color-surface);
 }
 
-/* description — clamped to 2 lines */
+.member__body { min-width: 0; }
 
-.member-card__desc {
-  margin: 8px 0 0;
-  font-size: 0.82rem;
+.article__content .member__name,
+.member__name {
+  margin: 0;
+  font-size: 1.02rem;
+  line-height: 1.4;
+  color: var(--color-heading);
+}
+.member__name strong { font-weight: 700; }
+
+.member__role {
+  font-weight: 500;
   color: var(--color-text-secondary);
-  line-height: 1.55;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
-/* light-theme overrides */
-[data-theme="light"] .member-card {
-  background: var(--color-bg);
+.article__content .member__bio,
+.member__bio {
+  margin: 4px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--color-text);
 }
+
+.article__content .member__links,
+.member__links {
+  margin: 6px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.member__sep {
+  margin: 0 0.45em;
+  color: var(--color-text-secondary);
+}
+.member__join { color: var(--color-text-secondary); }
 
 
 /* ============================================================
@@ -1815,9 +1710,7 @@ a.honors-hosted__row:hover .honors-hosted__name { color: var(--color-gold); }
   .hero__logo { width: 100px; height: 100px; }
   .hero__title { font-size: 2.1rem; }
 
-  .member-grid {
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
-  }
+  .member-list { column-gap: 28px; }
 
   .article__content pre {
     font-size: 0.82rem;
@@ -1979,7 +1872,7 @@ a.honors-hosted__row:hover .honors-hosted__name { color: var(--color-gold); }
   .pagination { flex-wrap: wrap; gap: 12px; justify-content: center; }
   .pagination__link { padding: 10px 16px; min-height: 44px; display: inline-flex; align-items: center; }
 
-  .member-grid { grid-template-columns: 1fr; gap: 8px; }
+  .member-list { grid-template-columns: 1fr; }
 
   .honors-toolbar {
     flex-direction: column;
@@ -2063,9 +1956,8 @@ a.honors-hosted__row:hover .honors-hosted__name { color: var(--color-gold); }
 
   .tags-page__title { font-size: 1.5rem; }
 
-  .member-card { padding: 12px 14px; gap: 12px; }
-  .member-card__avatar img { width: 44px; height: 44px; }
-  .member-card__name { font-size: 0.9rem; }
+  .member { padding: 14px 0; }
+  .member__name { font-size: 0.98rem; }
 
   .page-404__code { font-size: 4rem; }
   .page-404 { padding: 80px 16px; }
