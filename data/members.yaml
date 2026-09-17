@@ -6,7 +6,6 @@
         github: https://github.com/bkfish
         description: 大家都要做爱学习的好孩子。
         avatar: /img/avatars/书鱼.jpg
-
 - links_category: Captain
   has_thumbnail: false
   list:
@@ -18,10 +17,6 @@
 - links_category: Members
   has_thumbnail: false
   list:
-      - name: w4rd3n
-        github: https://github.com/hitworld
-        description: Pwn神&哲学家
-        avatar: /img/avatars/w4rd3n.jpg
       - name: Au5t1n
         description: 在线征婚，征婚请加1249176071
         avatar: /img/avatars/au5t1n.jpg
@@ -44,6 +39,10 @@
         github: https://github.com/fushuling
         description: nobody
         avatar: /img/avatars/fushuling.jpg
+      - name: w4rd3n
+        github: https://github.com/hitworld
+        description: Pwn神&哲学家
+        avatar: /img/avatars/w4rd3n.jpg
       - name: ZimaBlue
         blog: https://www.zimablue.life/
         description: Pay for one's own poor choices.
@@ -72,23 +71,6 @@
       - name: 0kam1
         description: 啥都想学的web狗
         avatar: /img/avatars/0kam1.jpg
-      - name: flyyy
-        blog: https://flyyy.top/
-        github: https://github.com/f1lyyy
-        description: 又被自己菜昏过去了
-        avatar: /img/avatars/flyyy.jpg
-      - name: Pupi1
-        blog: https://pupil857.github.io/
-        description: 简单一点就好了
-        avatar: /img/avatars/pupi1.jpg
-      - name: wood1314
-        blog: https://wood1314.github.io/
-        description: stay hungry stay foolish.
-        avatar: /img/avatars/wood1314.jpg
-      - name: Srin
-        github: https://github.com/killthatshaman
-        description: 目标是当一条咸鱼
-        avatar: /img/avatars/srin.jpg
       - name: winmt
         blog: https://bbs.pediy.com/user-home-949925.htm
         github: https://github.com/winmt
@@ -98,29 +80,47 @@
         blog: https://zikh26.github.io/
         description: 人生如戏，戏如人生
         avatar: /img/avatars/zikh26.jpg
-      - name: zarismine
-        github: https://github.com/zarismine
-        description: 不想当切图仔
-        avatar: /img/avatars/zarismine.jpg
-      - name: m4x
-        description: 这个人很懒，什么都没留下
-        avatar: /img/avatars/m4x.jpg
+      - name: flyyy
+        blog: https://flyyy.top/
+        github: https://github.com/f1lyyy
+        description: 又被自己菜昏过去了
+        avatar: /img/avatars/flyyy.jpg
+      - name: Pupi1
+        blog: https://pupil857.github.io/
+        description: 简单一点就好了
+        avatar: /img/avatars/pupi1.jpg
       - name: 影二つ
         blog: https://kagehutatsu.com/
         description: 书鱼哥哥的恩情还不完
         avatar: /img/avatars/影二つ.jpg
+      - name: 22mu
+        description: 莫道天凉好个秋
+        avatar: /img/avatars/22mu.jpg
+      - name: wood1314
+        blog: https://wood1314.github.io/
+        description: stay hungry stay foolish.
+        avatar: /img/avatars/wood1314.jpg
+      - name: Srin
+        github: https://github.com/killthatshaman
+        description: 目标是当一条咸鱼
+        avatar: /img/avatars/srin.jpg
+      - name: Harvey
+        blog: https://mssnharvey.github.io/
+        github: https://github.com/MssnHarvey
+        description: Take your time. I’ll be where the flowers bloom.
+        avatar: /img/avatars/harvey.jpg
+      - name: lem0
+        github: https://github.com/zarismine
+        description: 不想当切图仔
+        avatar: /img/avatars/lem0.jpg
+      - name: m4x
+        github: https://github.com/m4xxxxx
+        description: 这个人很懒，什么都没留下
+        avatar: /img/avatars/m4x.jpg
       - name: enjoy
         github: https://github.com/Decemberus
         description: 都是风景，幸会！
         avatar: /img/avatars/enjoy.jpg
-      - name: MiaoTony
-        blog: https://miaotony.xyz/?utm_source=su
-        github: https://github.com/miaotony
-        description: 喵，划水摸鱼ing~
-        avatar: /img/avatars/miaotony.jpg
-      - name: 22mu
-        description: 莫道天凉好个秋
-        avatar: /img/avatars/22mu.jpg
       - name: Xherlock
         blog: http://xherlock.top/
         github: https://github.com/SH-Op-X

@@ -1,19 +1,40 @@
 - links_category: pioneers
   has_thumbnail: false
   list: 
+    - name: SuperFashi
+      blog: https://superfashi.com/
+      github: https://github.com/superfashi
+      description: Acceleration is a substitute for eternity.
+      avatar: /img/avatars/superfashi.jpg
+    - name: meizijiu
+      blog: https://meizjm3i.github.io/
+      github: https://github.com/meizjm3i
+      description: to be happy
+      avatar: /img/avatars/meizijiu.jpg
+    - name: acdxvfsvd
+      github: https://github.com/acdxvfsvd
+      description: N/A
+      avatar: /img/avatars/acdxvfsvd.jpg
+    - name: MozhuCY
+      blog: https://mozhucy.cn/
+      github: https://github.com/MozhuCY
+      description: N/A
+      avatar: /img/avatars/mozhucy.jpg
     - name: Zeddy
       blog: https://zeddyu.github.io/
       github: https://github.com/ZeddYu
       description: N/A
       avatar: /img/avatars/zeddy.jpg
-    - name: Clown
-      blog: https://blog.xcu.icu/
-      github: https://github.com/clown-q
-      description: 一入人间黄粱梦，半生烟雨半生忧
-      avatar: /img/avatars/clown.jpg
-    - name: Kxheng
-      description: Kxhenggggggg
-      avatar: /img/avatars/kxheng.jpg
+    - name: imagemlt
+      blog: https://imagemlt.github.io/
+      github: https://github.com/imagemlt
+      description: Web安全，代码审计，CTF
+      avatar: /img/avatars/imagemlt.jpg
+    - name: C0ss4ck
+      blog: https://cossack9989.github.io/
+      github: https://github.com/Cossack9989
+      description: System security research engineer, focusing on weakness around cloud computing.
+      avatar: /img/avatars/c0ss4ck.jpg
     - name: wh1sper
       blog: https://blog.wh1sper.com/
       description: CTFer @X1cT34m @SU
@@ -22,6 +43,43 @@
       blog: https://m1yuu.com/
       description: ctfer/cyber security researcher
       avatar: /img/avatars/m1yuu.jpg
+    - name: B1ue1nWh1te
+      blog: https://www.seaeye.cn/
+      github: https://github.com/B1ue1nWh1te
+      description: 大道至简，天道酬勤。
+      avatar: /img/avatars/b1ue1nwh1te.jpg
+    - name: MiaoTony
+      blog: https://miaotony.xyz/?utm_source=su
+      github: https://github.com/miaotony
+      description: 喵，划水摸鱼ing~
+      avatar: /img/avatars/miaotony.jpg
+    - name: 月石
+      blog: https://github.com/Aaisui/Blog
+      github: https://github.com/Aaisui
+      description: Mine eyes have seen the glory of the coming of the lord
+      avatar: /img/avatars/aaisui.jpg
+    - name: Anyyy
+      blog: https://www.anyiblog.top/
+      github: https://github.com/Anyyy111
+      description: 电影落幕，月亮隐没，我会忘记你。
+      avatar: /img/avatars/anyyy.jpg
+    - name: imlk
+      blog: https://blog.imlk.top/
+      github: https://github.com/imlk0
+      description: 爱折腾，喜欢很酷的事情
+      avatar: /img/avatars/imlk.jpg
+    - name: HhhM
+      blog: https://www.redmango.top/
+      description: N/A
+      avatar: /img/avatars/hhhm.jpg
+    - name: Clown
+      blog: https://blog.xcu.icu/
+      github: https://github.com/clown-q
+      description: 一入人间黄粱梦，半生烟雨半生忧
+      avatar: /img/avatars/clown.jpg
+    - name: Kxheng
+      description: Kxhenggggggg
+      avatar: /img/avatars/kxheng.jpg
     - name: lo1see
       blog: https://lo1see.github.io/
       description: 无人扶我青云志，我自己也上不去
@@ -59,13 +117,3 @@
     - name: 三哈
       description: 哥哥不会连隐写都解不开吧~不会吧~不会吧~
       avatar: /img/avatars/三哈.jpg
-    - name: B1ue1nWh1te
-      blog: https://www.seaeye.cn/
-      github: https://github.com/B1ue1nWh1te
-      description: 大道至简，天道酬勤。
-      avatar: /img/avatars/b1ue1nwh1te.jpg
-    - name: 月石
-      blog: https://github.com/Aaisui/Blog
-      github: https://github.com/Aaisui
-      description: Mine eyes have seen the glory of the coming of the lord
-      avatar: /img/avatars/aaisui.jpg
