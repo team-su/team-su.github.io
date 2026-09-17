@@ -19,18 +19,28 @@
 
 <article class="article{{ if $wide }} article--wide{{ end }}">
   <header class="article__header">
-    <div class="{{ $wrap }}">
-      {{ if ne .Type "page" }}
-        <div class="article__meta">
-          {{ partial "post_meta.html" . }}
-          {{ partial "tag-links.html" . }}
-        </div>
-      {{ end }}
-      <h1 class="article__title" style="view-transition-name: {{ partial "vt-name.html" . }}">{{ .Title }}</h1>
-      {{ with .Params.subtitle }}
-        <p class="article__subtitle">{{ . }}</p>
-      {{ end }}
-    </div>
+    <h1 class="article__title" style="view-transition-name: {{ partial "vt-name.html" . }}">{{ .Title }}</h1>
+    {{ with .Params.subtitle }}
+      <p class="article__subtitle">{{ . }}</p>
+    {{ end }}
+    {{ if ne .Type "page" }}
+      <p class="article__meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006-01-02" }}</time>
+        {{ if .Site.Params.readingTime }}
+          <span class="article__dot" aria-hidden="true">·</span>
+          <span>{{ .ReadingTime }} min</span>
+        {{ end }}
+        {{- range $term := .GetTerms "tags" -}}
+          {{- $label := $term.LinkTitle -}}
+          {{- range $.Params.tags -}}
+            {{- if eq (. | urlize) ($term.Name | urlize) -}}
+              {{- $label = . -}}
+            {{- end -}}
+          {{- end -}}
+          <a class="article__tag" href="{{ $term.RelPermalink }}">{{ $label }}</a>
+        {{- end -}}
+      </p>
+    {{ end }}
   </header>
 
   {{ if $hasToc }}
@@ -40,7 +50,7 @@
     </div>
     <aside class="toc" id="toc">
       <div class="toc__inner">
-        <h4 class="toc__title">Table of Contents</h4>
+        <h4 class="toc__title">Contents</h4>
         <div class="toc__body">
           {{ $toc | safeHTML }}
         </div>
@@ -117,14 +127,32 @@
   var links = toc.querySelectorAll('a');
   var headings = [];         // [{ link: <a>, el: <heading> }]
 
+  function headingId(href) {
+    if (!href || href.charAt(0) !== '#') return '';
+    try { return decodeURIComponent(href.substring(1)); }
+    catch (err) { return href.substring(1); }
+  }
+
+  function jumpToHeading(href) {
+    var id = headingId(href);
+    var el = id ? document.getElementById(id) : null;
+    if (!el) return false;
+    closeToc();
+    el.scrollIntoView({ behavior: 'auto', block: 'start' });
+    try { history.replaceState(null, '', '#' + id); } catch (err) {}
+    return true;
+  }
+
+  toc.addEventListener('click', function(e) {
+    var a = e.target.closest('a[href]');
+    if (!a || !toc.contains(a)) return;
+    if (jumpToHeading(a.getAttribute('href'))) e.preventDefault();
+  });
+
   for (var i = 0; i < links.length; i++) {
     var href = links[i].getAttribute('href');
-    if (href && href.charAt(0) === '#') {
-      var el = document.getElementById(href.substring(1));
-      if (el) headings.push({ link: links[i], el: el });
-    }
-    // Clicking a TOC link closes the mobile panel
-    links[i].addEventListener('click', function() { closeToc(); });
+    var el = document.getElementById(headingId(href));
+    if (el) headings.push({ link: links[i], el: el });
   }
 
   if (headings.length === 0) return;
@@ -134,7 +162,7 @@
   // Use DOM properties for persistent state — minifier never renames
   // property names, so these survive minification intact.
   toc._activeLink = null;
-  toc._headingOffset = 120;   // px from viewport top
+  toc._headingOffset = 64;   // px from viewport top
 
   function updateActive() {
     var current = null;

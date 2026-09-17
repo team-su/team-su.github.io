@@ -1,5 +1,8 @@
 (function () {
   var cache = new Map();
+  var appliedKey = location.pathname + location.search;
+  var progressEl = null;
+  var progressTimer = 0;
 
   function sameOrigin(href) {
     try {
@@ -7,6 +10,58 @@
     } catch (e) {
       return false;
     }
+  }
+
+  function canonPath(path) {
+    if (!path) return "/";
+    if (path.length > 1 && path.charAt(path.length - 1) !== "/") return path + "/";
+    return path;
+  }
+
+  function urlKey(href) {
+    var u = new URL(href, location.href);
+    return canonPath(u.pathname) + u.search;
+  }
+
+  function showProgress() {
+    if (!progressEl) {
+      progressEl = document.createElement("div");
+      progressEl.className = "nav-progress";
+      progressEl.setAttribute("aria-hidden", "true");
+      document.body.appendChild(progressEl);
+    }
+    progressEl.classList.add("nav-progress--on");
+  }
+
+  function hideProgress() {
+    if (progressTimer) {
+      clearTimeout(progressTimer);
+      progressTimer = 0;
+    }
+    if (progressEl) progressEl.classList.remove("nav-progress--on");
+  }
+
+  function hashId(hash) {
+    if (!hash || hash === "#") return "";
+    try {
+      return decodeURIComponent(hash.replace(/^#/, ""));
+    } catch (e) {
+      return hash.replace(/^#/, "");
+    }
+  }
+
+  function scrollToHash(hash, instant) {
+    var id = hashId(hash);
+    if (!id) {
+      window.scrollTo(0, 0);
+      return;
+    }
+    var el = document.getElementById(id);
+    if (!el) {
+      window.scrollTo(0, 0);
+      return;
+    }
+    el.scrollIntoView({ behavior: "auto", block: "start" });
   }
 
   function prefetch(url) {
@@ -52,6 +107,9 @@
       var s = document.createElement("script");
       s.src = src;
       s.defer = true;
+      s.onload = function () {
+        if (typeof window.SUEnhanceArticle === "function") window.SUEnhanceArticle();
+      };
       document.body.appendChild(s);
     }
   }
@@ -72,7 +130,7 @@
     });
   }
 
-  function apply(html) {
+  function apply(html, url) {
     var doc = new DOMParser().parseFromString(html, "text/html");
     var newMain = doc.querySelector("main");
     var curMain = document.querySelector("main");
@@ -88,19 +146,38 @@
     if (curNav && newNav) curNav.innerHTML = newNav.innerHTML;
     curMain.replaceWith(newMain);
     runScripts(newMain);
-    window.scrollTo(0, 0);
+    if (typeof window.SUEnhanceArticle === "function") window.SUEnhanceArticle();
+    appliedKey = urlKey(url);
+    var hash = "";
+    try { hash = new URL(url, location.href).hash; } catch (e) {}
+    requestAnimationFrame(function () {
+      scrollToHash(hash, true);
+    });
     renderMath();
   }
 
   function go(url, push) {
+    progressTimer = setTimeout(showProgress, 140);
     prefetch(url)
       .then(function (html) {
-        var run = function () { apply(html); };
-        if (document.startViewTransition) document.startViewTransition(run);
-        else run();
+        hideProgress();
+        var run = function () { apply(html, url); };
+        if (document.startViewTransition) {
+          var vt = document.startViewTransition(run);
+          if (vt && vt.finished) {
+            vt.finished.catch(function () {}).then(function () {
+              var hash = "";
+              try { hash = new URL(url, location.href).hash; } catch (e) {}
+              if (hash) scrollToHash(hash, true);
+            });
+          }
+        } else {
+          run();
+        }
         if (push) history.pushState({ suNav: 1 }, "", url);
       })
       .catch(function () {
+        hideProgress();
         location.href = url;
       });
   }
@@ -109,12 +186,20 @@
     if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     var a = e.target.closest("a[href]");
     if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+    var raw = a.getAttribute("href");
+    if (!raw || raw === "#" || raw.indexOf("mailto:") === 0 || raw.indexOf("javascript:") === 0) return;
     var url = a.href;
     if (!sameOrigin(url)) return;
-    var next = new URL(url);
-    if (next.pathname === location.pathname && next.search === location.search) {
-      if (next.hash) return;
-      e.preventDefault();
+    var next;
+    try { next = new URL(url); } catch (err) { return; }
+    if (urlKey(next.href) === urlKey(location.href)) {
+      if (next.hash) {
+        e.preventDefault();
+        if (next.hash !== location.hash) history.pushState({ suNav: 1 }, "", next.href);
+        scrollToHash(next.hash, false);
+      } else {
+        e.preventDefault();
+      }
       return;
     }
     e.preventDefault();
@@ -125,10 +210,17 @@
     var a = e.target.closest("a[href]");
     if (!a || a.target === "_blank") return;
     if (!sameOrigin(a.href)) return;
+    var next;
+    try { next = new URL(a.href); } catch (err) { return; }
+    if (urlKey(next.href) === urlKey(location.href)) return;
     prefetch(a.href);
   }, { passive: true });
 
   window.addEventListener("popstate", function () {
+    if (urlKey(location.href) === appliedKey) {
+      scrollToHash(location.hash, false);
+      return;
+    }
     go(location.href, false);
   });
 })();
