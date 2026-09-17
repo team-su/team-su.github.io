@@ -17,7 +17,7 @@ timeout = "60m"
     lineNos = false
     codeFences = true
     guessSyntax = true
-    style = "catppuccin-latte"
+    style = "github"
     noClasses = false
 
 [Params]

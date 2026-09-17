@@ -1,33 +1,41 @@
 (function () {
-  var COPY_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-  var CHECK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-
   function bindCopyButtons() {
-    var blocks = document.querySelectorAll(".highlight, .article__content > pre");
-    for (var i = 0; i < blocks.length; i++) {
-      var block = blocks[i];
-      if (block.querySelector(".code-copy-btn")) continue;
-      block.style.position = "relative";
+    var nodes = document.querySelectorAll(".article__content .highlight, .article__content > pre");
+    for (var i = 0; i < nodes.length; i++) {
+      var block = nodes[i];
+      var host = block;
+      if (block.tagName === "PRE") {
+        if (block.parentNode && block.parentNode.classList.contains("highlight")) continue;
+        var wrap = document.createElement("div");
+        wrap.className = "highlight";
+        block.parentNode.insertBefore(wrap, block);
+        wrap.appendChild(block);
+        host = wrap;
+      }
+      if (host.querySelector(".code-copy-btn")) continue;
+
       var btn = document.createElement("button");
       btn.className = "code-copy-btn";
       btn.type = "button";
       btn.setAttribute("aria-label", "Copy code");
-      btn.innerHTML = COPY_ICON;
+      btn.textContent = "Copy";
       btn.addEventListener("click", (function (b, copyBtn) {
-        return function () {
+        return function (e) {
+          e.preventDefault();
+          e.stopPropagation();
           var code = b.querySelector("code");
           var text = code ? code.textContent : b.textContent;
           navigator.clipboard.writeText(text).then(function () {
-            copyBtn.innerHTML = CHECK_ICON;
+            copyBtn.textContent = "Copied";
             copyBtn.classList.add("code-copy-btn--copied");
             setTimeout(function () {
-              copyBtn.innerHTML = COPY_ICON;
+              copyBtn.textContent = "Copy";
               copyBtn.classList.remove("code-copy-btn--copied");
-            }, 2000);
+            }, 1600);
           });
         };
-      })(block, btn));
-      block.appendChild(btn);
+      })(host, btn));
+      host.appendChild(btn);
     }
   }
 
