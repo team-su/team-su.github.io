@@ -1,0 +1,15 @@
+{{ define "shell" }} page-shell--prose{{ end }}
+{{ define "main" }}
+{{ $content := partial "process-page-content.html" . }}
+<article class="prose-page">
+  <header class="prose-page__header">
+    <h1 class="prose-page__title" style="view-transition-name: {{ partial "vt-name.html" . }}">{{ .Title }}</h1>
+    {{ with .Params.subtitle }}
+      <p class="prose-page__subtitle">{{ . }}</p>
+    {{ end }}
+  </header>
+  <div class="prose-page__body">
+    {{ $content | safeHTML }}
+  </div>
+</article>
+{{ end }}

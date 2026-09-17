@@ -46,6 +46,7 @@ timeout = "60m"
   articleLead = "Writeups, reports, and battle notes from the team."
   footerTagline = "Built for team archives and competition writeups."
   footerSubline = "Minimal noise, high signal, and fast navigation."
+  since = 2016
 
 [Params.author]
   name = "SUer"
@@ -100,33 +101,19 @@ timeout = "60m"
     name = "Archives"
     url = "page/archives/"
     weight = 1
-    [menu.main.params]
-      icon = "book"
+[[menu.main]]
+    name = "Members"
+    url = "page/active-members/"
+    weight = 2
+[[menu.main]]
+    name = "Pioneers"
+    url = "page/pioneers/"
+    weight = 3
 [[menu.main]]
     name = "About"
     url = "page/about/"
-    weight = 3
-    [menu.main.params]
-      icon = "flag"
+    weight = 4
 [[menu.main]]
     name = "Tags"
     url = "tags/"
-    weight = 3
-    [menu.main.params]
-      icon = "tag"
-[[menu.main]]
-    identifier = "members"
-    name = "Members"
-    weight = 2
-    [menu.main.params]
-      icon = "users"
-[[menu.main]]
-    parent = "members"
-    name = "Members"
-    url = "page/active-members/"
-    weight = 1
-[[menu.main]]
-    parent = "members"
-    name = "Pioneers"
-    url = "page/pioneers/"
-    weight = 2
+    weight = 5

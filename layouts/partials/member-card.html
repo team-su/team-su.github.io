@@ -12,7 +12,7 @@
   {{- end -}}
 {{- end -}}
 {{- $display := 56 -}}
-<article class="member">
+<li class="member">
   <div class="member__avatar">
     {{- $src := $m.avatar | default "img/SU.png" -}}
     {{- $av := partial "get-static-image.html" $src -}}
@@ -47,4 +47,4 @@
       </p>
     {{- end -}}
   </div>
-</article>
+</li>

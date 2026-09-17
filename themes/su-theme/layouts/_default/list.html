@@ -1,28 +1,27 @@
+{{ define "shell" }} page-shell--list{{ end }}
 {{ define "main" }}
-<div class="page-list">
-  <div class="container">
-    <header class="page-list__header">
-      <h1 class="page-list__title">{{ .Title }}</h1>
-      {{ with .Description }}
-        <p class="page-list__desc">{{ . }}</p>
-      {{ end }}
-    </header>
-
-    {{ with .Content }}
-      <div class="page-list__content">
-        {{ . }}
-      </div>
+<section class="page-list">
+  <header class="page-list__header">
+    <h1 class="page-list__title">{{ .Title }}</h1>
+    {{ with .Description }}
+      <p class="page-list__desc">{{ . }}</p>
     {{ end }}
+  </header>
 
-    <div class="posts-list">
-      {{ range .Paginator.Pages }}
-        {{ partial "post_card.html" . }}
-      {{ end }}
+  {{ with .Content }}
+    <div class="page-list__content">
+      {{ . }}
     </div>
+  {{ end }}
 
-    {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
-      {{ partial "pagination.html" . }}
+  <ul class="post-rows">
+    {{ range .Paginator.Pages }}
+      {{ partial "post_row.html" (dict "page" . "showSub" true) }}
     {{ end }}
-  </div>
-</div>
+  </ul>
+
+  {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
+    {{ partial "pagination.html" . }}
+  {{ end }}
+</section>
 {{ end }}

@@ -4,29 +4,31 @@
   {{- errorf "members-board datafile %q not found" $datafile -}}
 {{- end -}}
 
-{{- $leaders := slice -}}
-{{- $rest := slice -}}
+{{- $cards := slice -}}
 {{- range $data -}}
   {{- if in (lower .links_category) "captain" -}}
-    {{- $leaders = $leaders | append . -}}
-  {{- else -}}
-    {{- $rest = $rest | append . -}}
+    {{- $role := .links_category -}}
+    {{- if eq $role "Ex-Captains" -}}{{- $role = "Ex-Captain" -}}{{- end -}}
+    {{- range .list -}}
+      {{- $cards = $cards | append (dict "member" . "role" $role) -}}
+    {{- end -}}
   {{- end -}}
 {{- end -}}
+{{- range $data -}}
+  {{- if not (in (lower .links_category) "captain") -}}
+    {{- range .list -}}
+      {{- $cards = $cards | append (dict "member" .) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $total := len $cards -}}
 
-<div class="members-board">
-  <div class="member-list">
-    {{- range $leaders -}}
-      {{- $role := .links_category -}}
-      {{- if eq $role "Ex-Captains" -}}{{- $role = "Ex-Captain" -}}{{- end -}}
-      {{- range .list -}}
-        {{- partial "member-card.html" (dict "member" . "role" $role) -}}
+<div class="members-board" style="--count: {{ $total }}">
+  <div class="members-viewport" tabindex="0" aria-label="成员列表">
+    <ul class="member-list">
+      {{- range $cards -}}
+        {{- partial "member-card.html" . -}}
       {{- end -}}
-    {{- end -}}
-    {{- range $rest -}}
-      {{- range .list -}}
-        {{- partial "member-card.html" (dict "member" .) -}}
-      {{- end -}}
-    {{- end -}}
+    </ul>
   </div>
 </div>
