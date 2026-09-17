@@ -20,6 +20,9 @@
 		file_server
 	}
 
+	@html not path *.css *.js *.woff2 *.webp *.jpg *.png *.svg *.ico *.gif *.woff *.xml
+	header @html Cache-Control "public, max-age=60"
+
 	@assets path *.woff2 *.webp *.jpg *.png *.svg *.ico *.gif *.woff
 	header @assets Cache-Control "public, max-age=2592000"
 

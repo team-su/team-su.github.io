@@ -14,6 +14,7 @@
 {{ end }}
 {{ $hasToc := and $tocEnabled (gt (len (findRE "<a " (printf "%s" $toc))) 0) }}
 {{ $content := partial "process-page-content.html" . }}
+{{ $.Scratch.Set "needsArticleJs" (or (in $content "highlight") (in $content "<pre") (in $content "<img")) }}
 {{ $wide := .Params.wide | default false }}
 {{ $wrap := cond $wide "container" "container--article" }}
 
@@ -157,57 +158,23 @@
 
   if (headings.length === 0) return;
 
-  // ── Scroll spy ──────────────────────────────────────
-
-  // Use DOM properties for persistent state — minifier never renames
-  // property names, so these survive minification intact.
   toc._activeLink = null;
-  toc._headingOffset = 64;   // px from viewport top
+  toc._headingOffset = 64;
 
-  function updateActive() {
-    var current = null;
-
-    // Last heading whose top is at or above the detection line
-    for (var j = 0; j < headings.length; j++) {
-      if (headings[j].el.getBoundingClientRect().top <= toc._headingOffset) {
-        current = headings[j].link;
-      }
-    }
-
-    // Edge case: scrolled past the last heading (near page bottom)
-    if (!current) {
-      var atBottom = window.innerHeight + window.scrollY >=
-                      document.documentElement.scrollHeight - 80;
-      if (atBottom) {
-        current = headings[headings.length - 1].link;
-      }
-    }
-
-    // No change → skip DOM writes & TOC scrolling
+  function setActive(current) {
     if (current === toc._activeLink) return;
-
-    // Clear all active states
     for (var k = 0; k < links.length; k++) {
       links[k].classList.remove('toc__link--active');
     }
-
-    // Set new active link + scroll TOC to keep it visible
     if (current) {
       current.classList.add('toc__link--active');
-
-      // Only auto-scroll if the TOC actually has overflow
       if (toc.scrollHeight > toc.clientHeight) {
-        // Compute link's offset from the top of TOC's scrollable content.
-        // getBoundingClientRect gives viewport coords; correct by current
-        // scrollTop to get the position relative to TOC content origin.
         var linkOffset = current.getBoundingClientRect().top
                        - toc.getBoundingClientRect().top
                        + toc.scrollTop;
         var linkH = current.getBoundingClientRect().height;
-        var tocH  = toc.clientHeight;
+        var tocH = toc.clientHeight;
         var margin = 16;
-
-        // Absolute scrollTop assignment — idempotent, safe to run repeatedly
         if (linkOffset < toc.scrollTop + margin) {
           toc.scrollTop = linkOffset - margin;
         } else if (linkOffset + linkH > toc.scrollTop + tocH - margin) {
@@ -215,24 +182,57 @@
         }
       }
     }
-
     toc._activeLink = current;
   }
 
-  // Throttled scroll handler — store flag on DOM to avoid minifier
-  // ever reusing the variable name for something inside updateActive().
-  toc._pending = false;
-  window.addEventListener('scroll', function() {
-    if (toc._pending) return;
-    toc._pending = true;
-    requestAnimationFrame(function() {
-      updateActive();
-      toc._pending = false;
-    });
-  });
+  function fallbackActive() {
+    var current = null;
+    for (var j = 0; j < headings.length; j++) {
+      if (headings[j].el.getBoundingClientRect().top <= toc._headingOffset) {
+        current = headings[j].link;
+      }
+    }
+    if (!current) {
+      var atBottom = window.innerHeight + window.scrollY >=
+                      document.documentElement.scrollHeight - 80;
+      if (atBottom) current = headings[headings.length - 1].link;
+    }
+    setActive(current);
+  }
 
-  // Fire once on load so first-visible section is highlighted immediately
-  updateActive();})();
+  if (typeof IntersectionObserver === "function") {
+    var visible = [];
+    var io = new IntersectionObserver(function (entries) {
+      for (var i = 0; i < entries.length; i++) {
+        var entry = entries[i];
+        for (var j = 0; j < headings.length; j++) {
+          if (headings[j].el === entry.target) {
+            visible[j] = entry.isIntersecting;
+            break;
+          }
+        }
+      }
+      var current = null;
+      for (var j = 0; j < headings.length; j++) {
+        if (visible[j]) { current = headings[j].link; break; }
+      }
+      if (!current) fallbackActive();
+      else setActive(current);
+    }, { rootMargin: "-64px 0px -65% 0px", threshold: 0 });
+    for (var i = 0; i < headings.length; i++) io.observe(headings[i].el);
+  } else {
+    toc._pending = false;
+    window.addEventListener("scroll", function () {
+      if (toc._pending) return;
+      toc._pending = true;
+      requestAnimationFrame(function () {
+        fallbackActive();
+        toc._pending = false;
+      });
+    });
+    fallbackActive();
+  }
+})();
 </script>
 {{ end }}
 {{ end }}

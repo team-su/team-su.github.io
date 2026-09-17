@@ -50,10 +50,12 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 {{- end }}
 
-{{- $needsArticleJs := false -}}
-{{- if .IsPage -}}
-  {{- $c := .Content -}}
-  {{- $needsArticleJs = or (strings.Contains $c "highlight") (strings.Contains $c "<pre") (strings.Contains $c "blog-post__image") (strings.Contains $c "data-fullsrc") (strings.Contains $c "<img") -}}
+{{- $needsArticleJs := $.Scratch.Get "needsArticleJs" -}}
+{{- if not $needsArticleJs -}}
+  {{- if .IsPage -}}
+    {{- $raw := .RawContent -}}
+    {{- $needsArticleJs = or (in $raw "```") (in $raw "![]") (in $raw "<img") (in $raw "<pre") -}}
+  {{- end -}}
 {{- end -}}
 {{- if $needsArticleJs -}}
   {{- with resources.Get "js/article.js" -}}

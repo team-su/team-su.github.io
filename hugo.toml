@@ -16,7 +16,7 @@ timeout = "60m"
   [markup.highlight]
     lineNos = false
     codeFences = true
-    guessSyntax = true
+    guessSyntax = false
     style = "github"
     noClasses = false
 
@@ -35,13 +35,13 @@ timeout = "60m"
   dateFormat = "January 2, 2006"
   commit = false
   rss = false
+  showRelatedPosts = false
   selfHosted = true
   readingTime = true
   wordCount = true
   useHLJS = false
   socialShare = false
   delayDisqus = true
-  showRelatedPosts = true
   articleEyebrow = "SU TEAM ARCHIVE"
   articleLead = "Writeups, reports, and battle notes from the team."
   footerTagline = "Built for team archives and competition writeups."
@@ -54,6 +54,15 @@ timeout = "60m"
   email = "suers_xctf@126.com"
   github = "team-su"
   ctftime = "https://ctftime.org/team/29641"
+
+disableKinds = ["RSS"]
+
+[outputs]
+  home = ["HTML"]
+  page = ["HTML"]
+  section = ["HTML"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
 
 [imaging]
   quality = 80

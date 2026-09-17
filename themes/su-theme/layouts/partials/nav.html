@@ -66,94 +66,18 @@
         </svg>
       </button>
 
-      <button class="site-header__menu-btn" id="hamburger" type="button" aria-label="Toggle menu" aria-expanded="false" aria-controls="site-nav">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
   </div>
 </header>
 
 <script>
 (function() {
   var toggle = document.getElementById('theme-toggle');
-  if (toggle) {
-    toggle.addEventListener('click', function() {
-      var current = document.documentElement.getAttribute('data-theme');
-      var next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { sessionStorage.setItem('theme', next); } catch(e) {}
-    });
-  }
-
-  var btn = document.querySelector('.site-header__menu-btn');
-  var nav = document.querySelector('.site-nav');
-  function closeMenu() {
-    if (!btn || !nav) return;
-    btn.setAttribute('aria-expanded', 'false');
-    nav.classList.remove('site-nav--open');
-    btn.classList.remove('site-header__menu-btn--open');
-  }
-  if (btn && nav) {
-    btn.addEventListener('click', function() {
-      var expanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', !expanded);
-      nav.classList.toggle('site-nav--open');
-      btn.classList.toggle('site-header__menu-btn--open');
-    });
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeMenu();
-    });
-  }
-
-  var hoverFine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-  var dropdownBtns = document.querySelectorAll('.site-nav__link--parent');
-
-  function drawerMode() {
-    return btn && window.getComputedStyle(btn).display !== 'none';
-  }
-
-  for (var i = 0; i < dropdownBtns.length; i++) {
-    (function(parentBtn) {
-      var item = parentBtn.parentNode;
-
-      if (hoverFine) {
-        item.addEventListener('mouseenter', function() {
-          if (!drawerMode()) parentBtn.setAttribute('aria-expanded', 'true');
-        });
-        item.addEventListener('mouseleave', function() {
-          if (!drawerMode() && !item.contains(document.activeElement)) {
-            parentBtn.setAttribute('aria-expanded', 'false');
-          }
-        });
-        item.addEventListener('focusin', function() {
-          if (!drawerMode()) parentBtn.setAttribute('aria-expanded', 'true');
-        });
-        item.addEventListener('focusout', function(e) {
-          if (!drawerMode() && !item.contains(e.relatedTarget)) {
-            parentBtn.setAttribute('aria-expanded', 'false');
-          }
-        });
-      }
-
-      parentBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        var expanded = parentBtn.getAttribute('aria-expanded') === 'true';
-        parentBtn.setAttribute('aria-expanded', !expanded);
-        item.classList.toggle('site-nav__item--open');
-      });
-    })(dropdownBtns[i]);
-  }
-
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.site-nav__item--dropdown')) {
-      var items = document.querySelectorAll('.site-nav__item--open');
-      for (var j = 0; j < items.length; j++) {
-        items[j].classList.remove('site-nav__item--open');
-        var parent = items[j].querySelector('.site-nav__link--parent');
-        if (parent) parent.setAttribute('aria-expanded', 'false');
-      }
-    }
+  if (!toggle) return;
+  toggle.addEventListener('click', function() {
+    var current = document.documentElement.getAttribute('data-theme');
+    var next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { sessionStorage.setItem('theme', next); } catch (e) {}
   });
 })();
 </script>

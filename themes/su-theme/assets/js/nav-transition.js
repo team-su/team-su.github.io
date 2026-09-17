@@ -3,6 +3,7 @@
   var appliedKey = location.pathname + location.search;
   var progressEl = null;
   var progressTimer = 0;
+  var HUGE = 200000;
 
   function sameOrigin(href) {
     try {
@@ -50,7 +51,7 @@
     }
   }
 
-  function scrollToHash(hash, instant) {
+  function scrollToHash(hash) {
     var id = hashId(hash);
     if (!id) {
       window.scrollTo(0, 0);
@@ -151,35 +152,47 @@
     var hash = "";
     try { hash = new URL(url, location.href).hash; } catch (e) {}
     requestAnimationFrame(function () {
-      scrollToHash(hash, true);
+      scrollToHash(hash);
     });
     renderMath();
   }
 
+  function swap(html, url, push) {
+    var run = function () { apply(html, url); };
+    var huge = typeof html === "string" && html.length > HUGE;
+    if (!huge && document.startViewTransition) {
+      var vt = document.startViewTransition(run);
+      if (vt && vt.finished) {
+        vt.finished.catch(function () {}).then(function () {
+          var hash = "";
+          try { hash = new URL(url, location.href).hash; } catch (e) {}
+          if (hash) scrollToHash(hash);
+        });
+      }
+    } else {
+      run();
+    }
+    if (push) history.pushState({ suNav: 1 }, "", url);
+  }
+
   function go(url, push) {
-    progressTimer = setTimeout(showProgress, 140);
-    prefetch(url)
-      .then(function (html) {
+    var hit = cache.get(url);
+    if (typeof hit === "string") {
+      swap(hit, url, push);
+      return;
+    }
+    if (hit && typeof hit.then === "function") {
+      progressTimer = setTimeout(showProgress, 140);
+      hit.then(function (html) {
         hideProgress();
-        var run = function () { apply(html, url); };
-        if (document.startViewTransition) {
-          var vt = document.startViewTransition(run);
-          if (vt && vt.finished) {
-            vt.finished.catch(function () {}).then(function () {
-              var hash = "";
-              try { hash = new URL(url, location.href).hash; } catch (e) {}
-              if (hash) scrollToHash(hash, true);
-            });
-          }
-        } else {
-          run();
-        }
-        if (push) history.pushState({ suNav: 1 }, "", url);
-      })
-      .catch(function () {
+        swap(html, url, push);
+      }).catch(function () {
         hideProgress();
         location.href = url;
       });
+      return;
+    }
+    location.href = url;
   }
 
   document.addEventListener("click", function (e) {
@@ -196,10 +209,14 @@
       if (next.hash) {
         e.preventDefault();
         if (next.hash !== location.hash) history.pushState({ suNav: 1 }, "", next.href);
-        scrollToHash(next.hash, false);
+        scrollToHash(next.hash);
       } else {
         e.preventDefault();
       }
+      return;
+    }
+    var hit = cache.get(url);
+    if (typeof hit !== "string" && !(hit && typeof hit.then === "function")) {
       return;
     }
     e.preventDefault();
@@ -218,7 +235,7 @@
 
   window.addEventListener("popstate", function () {
     if (urlKey(location.href) === appliedKey) {
-      scrollToHash(location.hash, false);
+      scrollToHash(location.hash);
       return;
     }
     go(location.href, false);

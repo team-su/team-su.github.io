@@ -599,7 +599,7 @@ p.sl("/bin/sh\x00")
 p.interactive()
 ```
 ### mulnote
-```python=
+```python
 from pwn import *
 context.arch = "amd64"
 libc = ELF('/lib/x86_64-linux-gnu/libc-2.23.so')
@@ -644,7 +644,7 @@ io.interactive()
 真·面向CVE做题
 
 任意地址读
-```javascript=
+```javascript
 function opt(o, proto, value) {
     o.b = 1;
 
@@ -669,7 +669,7 @@ function main() {
 main();
 ```
 任意地址写
-```javascript=
+```javascript
 obj = {}
 obj.a = 1;
 obj.b = 2;

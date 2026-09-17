@@ -12,7 +12,7 @@
 {{ end }}
 {{- $desc := .Description | default .Params.subtitle | default .Params.summary -}}
 {{- if not $desc -}}
-  {{- $desc = .RawContent | plainify | truncate 160 -}}
+  {{- $desc = .RawContent | truncate 800 | plainify | truncate 160 -}}
 {{- end -}}
 {{- if not $desc -}}
   {{- $desc = .Site.Params.homeDescription -}}
@@ -30,7 +30,7 @@
 <link rel="icon" href="{{ . | relURL }}" type="image/png">
   {{- end }}
 {{- end }}
-<link rel="alternate" href="{{ "index.xml" | absLangURL }}" type="application/rss+xml" title="{{ .Site.Title }}">
+
 
 <script>
 (function() {
@@ -58,8 +58,8 @@
 })();
 </script>
 
-{{- /* KaTeX：仅当页面内容实际包含公式时才加载（可被 front matter katex 覆盖） */ -}}
-{{- $hasMath := or (strings.Contains .RawContent "$$") (strings.Contains .RawContent "\\begin{") (strings.Contains .RawContent "\\(") (strings.Contains .RawContent "\\[") -}}
+{{- /* KaTeX：忽略代码块里的 $$，避免 writeup dump 误伤；front matter katex 可覆盖 */ -}}
+{{- $hasMath := partial "detect-math.html" . -}}
 {{- if isset .Params "katex" -}}
   {{- if eq (printf "%T" .Params.katex) "bool" -}}
     {{- $hasMath = .Params.katex -}}
@@ -68,22 +68,27 @@
 {{- if $hasMath -}}
   {{- $.Scratch.Set "hasMath" true -}}
   {{- if .Site.Params.selfHosted }}
+    {{- with resources.Get "s/css/katex.min.css" -}}
+      {{- $sheet := . | fingerprint -}}
+<link rel="stylesheet" href="{{ $sheet.RelPermalink }}" integrity="{{ $sheet.Data.Integrity }}" crossorigin="anonymous">
+    {{- else -}}
 <link rel="stylesheet" href="{{ "css/katex.min.css" | relURL }}">
+    {{- end }}
   {{- else }}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
   {{- end }}
 {{- end }}
 
-{{- /* 思源黑体：unicode-range 分片，字体 CSS 异步加载，避免 200KB @font-face 阻塞首屏 */ -}}
+{{- /* 思源黑体：只用站点实际出现过的 unicode 切片 + latin */ -}}
 {{- if .Site.Params.selfHosted }}
 <link rel="preload" as="font" type="font/woff2" href="{{ "fonts/noto-sans-sc/files/noto-sans-sc-latin-400-normal.woff2" | relURL }}" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="{{ "fonts/noto-sans-sc/files/noto-sans-sc-117-400-normal.woff2" | relURL }}" crossorigin>
-<link rel="preload" as="style" href="{{ "fonts/noto-sans-sc/400.css" | relURL }}" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" as="style" href="{{ "fonts/noto-sans-sc/700.css" | relURL }}" onload="this.onload=null;this.rel='stylesheet'">
-<noscript>
-<link rel="stylesheet" href="{{ "fonts/noto-sans-sc/400.css" | relURL }}">
-<link rel="stylesheet" href="{{ "fonts/noto-sans-sc/700.css" | relURL }}">
-</noscript>
+  {{- $fontCss := resources.Get "s/fonts/noto-sans-sc/site.css" | default (resources.Get "s/fonts/noto-sans-sc/400.css") -}}
+  {{- with $fontCss -}}
+    {{- $sheet := . | minify | fingerprint -}}
+<link rel="preload" as="style" href="{{ $sheet.RelPermalink }}" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{{ $sheet.RelPermalink }}"></noscript>
+  {{- end }}
 {{- else }}
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/noto-sans-sc/400.css">
@@ -99,7 +104,12 @@
 {{- if not .Site.Params.useHLJS -}}
   {{- $needsSyntax := or (eq .Type "post") (strings.Contains .RawContent "```") -}}
   {{- if $needsSyntax }}
+    {{- with resources.Get "s/css/syntax.css" -}}
+      {{- $sheet := . | minify | fingerprint -}}
+<link rel="stylesheet" href="{{ $sheet.RelPermalink }}" integrity="{{ $sheet.Data.Integrity }}" crossorigin="anonymous">
+    {{- else -}}
 <link rel="stylesheet" href="{{ "css/syntax.css" | relURL }}">
+    {{- end }}
   {{- end -}}
 {{- end }}
 

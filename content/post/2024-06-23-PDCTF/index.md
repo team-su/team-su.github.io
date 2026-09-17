@@ -347,7 +347,7 @@ sh.interactive()
 
 校验的返回值是一个数字，是从一个随机文件读出来的，一开始想着爆破，结果远程爆破的时候发现到后面居然是openerror，那么密码也就是-1了，所以直接栈溢出后门一把嗦
 
-```
+```python
 from pwn import*
 from time import*
 #p=process('./main')

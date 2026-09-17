@@ -1483,7 +1483,7 @@ $ser = isset($_GET['land']) ? $_GET['land'] : 'O:4:"test":N';
 
 测试后可从远程环境报错得知 eval 之后的路径是 
 
-```
+```text
 /var/www/html/index.php(1) : eval()'d code
 ```
 

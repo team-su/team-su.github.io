@@ -115,7 +115,7 @@ http://123.60.67.19/
 container restart for every 2 hours
 ```
 Going to the link gives us:
-```Assembly%20language
+```asm
 ./code/8ca5c8ec00628042f7028492fdf2986f
 
 your code at ./code/8ca5c8ec00628042f7028492fdf2986f/index.php
@@ -128,7 +128,7 @@ Here’s my [index.php](https://drive.google.com/file/d/1DCKPqSWfD7UpO99rGGY5IzK
 - Observe that there is a big function at the start which is called many times.
 - We see that the argument that this function takes is xor’d to something constant so first we replace all `f({x})` with `f({x} xor {that constant})` and also replace the xor’s in the function itself. This will get rid of most bad bytes. We must also be careful to do everything as bytes and not uf8 strings.
 - Then we observe that we can try to call the function with these values and see if result is always same. As it turns out function is only dependent on it’s argument. So we generate php code to call each 
-  ```
+  ```text
   f({x})
   ```
    and replace the calls with this value everywhere with the resulting value.
@@ -940,7 +940,7 @@ c.setTime(0)
 
 结果：
 
-```
+```text
 [object DataView]
 [object Date]
 TypeError: undefined is not callable
@@ -1616,7 +1616,7 @@ time.sleep(5)
 其实本质是一个TEA（包括魔数都一样了），直接写出TEA解密算法即可
 ## tttree
 在ghidra中打开二进制文件，看到入口函数非常小，没有调用自身以外的东西
-```Assembly%20language
+```asm
 longlong __fastcall entry(void)
              longlong          RAX:8               <RETURN>
              undefined8        Stack[-0x30]:8      local_30                                XREF[1]:     1400133ce(W)  

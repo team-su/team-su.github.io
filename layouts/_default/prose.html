@@ -1,6 +1,7 @@
 {{ define "shell" }} page-shell--prose{{ end }}
 {{ define "main" }}
 {{ $content := partial "process-page-content.html" . }}
+{{ $.Scratch.Set "needsArticleJs" (or (in $content "highlight") (in $content "<pre") (in $content "<img")) }}
 <article class="prose-page">
   <header class="prose-page__header">
     <h1 class="prose-page__title" style="view-transition-name: {{ partial "vt-name.html" . }}">{{ .Title }}</h1>

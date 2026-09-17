@@ -30,7 +30,7 @@ jobs:
           path: |
             resources/_gen
             /tmp/hugo_cache
-          key: hugo-${{ runner.os }}-${{ hashFiles('hugo.toml', 'layouts/**', 'themes/**') }}
+          key: hugo-${{ runner.os }}-${{ hashFiles('hugo.toml', 'layouts/partials/process-image.html', 'layouts/partials/process-image-inner.html', 'layouts/_markup/render-image.html') }}
           restore-keys: |
             hugo-${{ runner.os }}-
 

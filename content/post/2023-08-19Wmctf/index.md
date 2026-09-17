@@ -1480,7 +1480,7 @@ print(flag)
 ## welcomesigner1
 
 myfastexp的函数效果如下
-```
+```text
 $$先对d的二进制逆向，根据参数j左右分成dl,dr.\\ f(j)=((m^{dl} mod n) <
 ```
 从左往右，如果对应位数为0，那么上面式子的右半部分大小不变，以此来构建等式，得到dl

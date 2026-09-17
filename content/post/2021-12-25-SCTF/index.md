@@ -140,7 +140,7 @@ print("upload_path|".(serialize(new \Symfony\Component\String\LazyString())));
 
 ### Loginme
 
-```
+```http
 X-real-ip:127.0.0.1
 
 age={{$}}
@@ -482,7 +482,7 @@ l.recvuntil(b'QUIT')
 l.close()
 
 ```
-```
+```http
 
 PUT /api/user HTTP/1.1
 
@@ -834,7 +834,7 @@ The problem is that there are not much structs we can target for this specific s
 
 But good for use there is `struct subprocess_info` which can give RIP control.
 
-```C%23
+```c
 struct subprocess_info {
 
         struct work_struct work;
@@ -882,7 +882,7 @@ So the plan is this:
 
 The complete exploit:
 
-```C%2B%2B
+```c
 #include <stdio.h>
 
 #include <fcntl.h>
@@ -1444,7 +1444,7 @@ web服务堆环境很乱 需要多次爆破尝试.
 
 pwnjson如下:
 
-```Plain%20Text
+```text
 {
 
     "bb":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
@@ -1582,7 +1582,7 @@ sh.interactive()
 
 然后将_IO_2_1_stdout_的vtable中的_IO_file_jumps改为system, 利用printf即可触发
 
-```Plain%20Text
+```text
  gift libcbase is sleep - 972880;
 
 gift target is libcbase + 2205080;
@@ -3207,7 +3207,7 @@ print(flag)
 
 ### **SycOS**
 
-```C%2B%2B
+```c
 #include<stdlib.h>
 
 #include <stdio.h>  

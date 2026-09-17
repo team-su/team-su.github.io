@@ -1350,7 +1350,7 @@ Final key 足够大就行了
 
 ![img](20211121175536234.jpg)
 
-```
+```text
 S3Cre7_K3y = Al4N_wAlK3RX
 ```
 
@@ -1600,7 +1600,7 @@ p.interactive()
 
 第一层解pell方程，网上找个脚本，根据cl1，cl2的最大bit数卡一下bit求出合适的解，即ul，vl，crt一下构造多项式求m1, m2，求出m1,m2也就求出和hm1,hm2，之后g很好求，指数上用费马小定理，发现求个逆即可，pq两个方程两个未知数解一下也就求出来了，之后用s2-s1求k，剩下的就没啥了，求出x12就好了
 
-```
+```python
 from pwn import *
 
 from hashlib import sha256
@@ -1740,7 +1740,7 @@ filter中每次有0.9概率从s1中选择数字，0.1概率选择s2中的数据�
 
 找到连续64个比特之后，只需要一直向前回溯，就能得到初始状态init1.第一部分代码如下：
 
-```
+```python
 N = 64
 
 class lfsr():
@@ -1880,7 +1880,7 @@ print(init1)
 
 得到init1之后，output里与init1生成不一样的数据就是init2生成的数据。由于lfsr是可以用矩阵表示的，因此可以用矩阵方程：$init*A^{k-1}*mask$得到第k个输出。我们已知100多比特的输出，那么就可列$xA=y$形式矩阵方程计算。
 
-```
+```python
 M = block_matrix(Zmod(2), [Matrix([0] * 63), identity_matrix(63)], nrows = 2, subdivide = False)
 
 mask = mask2.digits(2)[::-1]
@@ -1912,7 +1912,7 @@ print(A.solve_left(y))
 
 第一层base是2的dlp，求解出x之后，解个多项式root求出p，已知dp情况下在modp下求解即可。
 
-```
+```python
 from hashlib import sha256
 
 from Crypto.Util.number import *
