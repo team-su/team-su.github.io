@@ -65,7 +65,7 @@ disableKinds = ["RSS"]
   term = ["HTML"]
 
 [imaging]
-  quality = 80
+  quality = 90
   resampleFilter = "CatmullRom"
   hint = "drawing"
   anchor = "Center"

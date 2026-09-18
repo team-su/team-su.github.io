@@ -17,7 +17,7 @@
     {{- $src := $m.avatar | default "img/SU.png" -}}
     {{- $av := partial "get-static-image.html" $src -}}
     {{- if $av -}}
-      {{- $av = partial "process-image.html" (dict "image" $av "op" "fill" "spec" (printf "%dx%d" (mul $display 2) (mul $display 2)) "q" 88) -}}
+      {{- $av = partial "process-image.html" (dict "image" $av "op" "fill" "spec" (printf "%dx%d" (mul $display 2) (mul $display 2)) "q" 90) -}}
       <img src="{{ $av.RelPermalink }}" alt="{{ $m.name }}" loading="lazy" decoding="async" width="{{ $display }}" height="{{ $display }}">
     {{- else -}}
       <img src="{{ $src | relURL }}" alt="{{ $m.name }}" loading="lazy" decoding="async" width="{{ $display }}" height="{{ $display }}">
