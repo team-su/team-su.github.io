@@ -22,7 +22,7 @@ jobs:
           hugo-version: "0.163.1"
           extended: true
 
-      # 图片在构建时压成 webp；源 png/jpg 不进 public。
+      # 仅 CI 把图压成 webp q90；源 png/jpg 不进 public。本地 hugo 不转换。
       # Hugo 按源文件内容 hash 失效，缓存不会陈旧。
       - name: Cache Hugo resources
         uses: actions/cache@v4
@@ -37,6 +37,7 @@ jobs:
       - run: hugo --minify --buildFuture --cleanDestinationDir --gc
         env:
           HUGO_CACHEDIR: /tmp/hugo_cache
+          HUGO_PROCESS_WEBP: "1"
 
       - uses: peaceiris/actions-gh-pages@v4
         with:
