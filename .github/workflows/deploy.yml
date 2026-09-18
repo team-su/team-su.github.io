@@ -22,7 +22,7 @@ jobs:
           hugo-version: "0.163.1"
           extended: true
 
-      # 仅 CI 把图压成 webp q90；源 png/jpg 不进 public。本地 hugo 不转换。
+      # 仅 CI 转 webp：rankingImage / alt=排名 为 q100，其余正文图 q80。本地 hugo 不转换。
       # Hugo 按源文件内容 hash 失效，缓存不会陈旧。
       - name: Cache Hugo resources
         uses: actions/cache@v4

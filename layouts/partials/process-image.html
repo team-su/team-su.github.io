@@ -1,4 +1,4 @@
-{{- /* 仅 CI 转 webp q90；本地 hugo 直接用原图，不写 webp。 */ -}}
+{{- /* 仅 CI 转 webp；本地 hugo 直接用原图，不写 webp。 */ -}}
 {{- $out := .image -}}
 {{- if or (eq (getenv "HUGO_PROCESS_WEBP") "1") (eq (getenv "CI") "true") -}}
   {{- $id := .image.RelPermalink | default .image.Name -}}

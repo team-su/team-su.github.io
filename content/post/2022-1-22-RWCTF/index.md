@@ -3,6 +3,7 @@ title: 2022 RWCTF体验赛 SU Writeup
 tags: ["RWCTF"]
 date: 2022-01-30 16:50:17
 slug: "rwctf-2022-su-wu"
+rankingImage: "1.png"
 ---
 本次2022 RWCTF 体验赛 我们 SU 取得了第一名 🏆的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：[suers_xctf@126.com](mailto:suers_xctf@126.com)或直接联系书鱼(QQ:381382770)
 以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析

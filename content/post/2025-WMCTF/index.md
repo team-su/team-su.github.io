@@ -3,6 +3,7 @@ title: 2025 WMCTF SU WriteUp
 date: 2025-09-21 19:32:48
 tags: ["WMCTF"]
 slug: "wmctf-2025-su-wu"
+rankingImage: "1.PNG"
 ---
 
 感谢 W&M 的师傅们精心准备的比赛！本次 WMCTF 我们 SU 取得了 第二名🥈 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。

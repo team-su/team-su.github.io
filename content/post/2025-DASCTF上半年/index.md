@@ -3,6 +3,7 @@ title: 2025 DASCTF上半年赛 SU WriteUp
 tags: ["DASCTF"]
 date: 2025-06-21 21:29:17
 slug: "2025-dasctf-first-half-su-wu"
+rankingImage: "QQ20250621-212945.jpg"
 ---
 
 感谢 08067Sec 的师傅们精心准备的比赛！本次DASCTF我们 SU 取得了 第一名🏆 的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。

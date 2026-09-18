@@ -3,6 +3,7 @@ title: 2026 ALICTF SU WriteUp
 date: 2026-02-02T22:24:15+08:00
 slug: "alictf-su-2026-wu"
 tags: ["alictf"]
+rankingImage: "1.png"
 ---
 
 本次 ALICTF 我们 SU 取得了 第十名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。

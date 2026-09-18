@@ -3,6 +3,7 @@ title: 2025 L3HCTF SU WriteUp
 tags: ["L3HCTF"]
 date: 2025-07-13 20:21:10
 slug: "l3hctf-2025-su-wu"
+rankingImage: "1.png"
 ---
 
 感谢 L3H_Sec 的师傅们精心准备的比赛！本次L3HCTF我们 SU 取得了 第一名🏆 的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。

@@ -3,6 +3,7 @@ title: 2025 TFCCTF SU WriteUp
 date: 2025-08-31 21:31:50
 tags: ["OtherCTF"]
 slug: "tfcctf-2025-su-wu"
+rankingImage: "1.png"
 ---
 
 本次 TFCCTF 我们 SU 取得了 第六名 的成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，欢迎发送个人简介至：suers_xctf@126.com 或者直接联系baozongwi QQ:2405758945。
