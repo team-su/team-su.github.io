@@ -9,7 +9,7 @@ rankingImage: "1.png"
 以下是我们 SU 本次 2022 RWCTF的 writeup 以及RWCTF RWDN 复现解析
 
 <!--more-->
-![](1.png)
+![排名](1.png)
 
 
 # pwn

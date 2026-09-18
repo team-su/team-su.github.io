@@ -12,7 +12,7 @@ rankingImage: "1.PNG"
 
 <!--more-->
 
-![img](1.PNG)
+![排名](1.PNG)
 
 # Web
 

@@ -7,7 +7,7 @@
 {{- $ow := 0 -}}
 {{- $oh := 0 -}}
 {{- $alt := strings.TrimSpace .PlainText | strings.ToLower -}}
-{{- $ranking := or (eq $alt "排名") (eq $alt "rank") (eq $alt "ranking") (eq $alt "scoreboard") (eq $alt "leaderboard") -}}
+{{- $ranking := or (in $alt "排名") (eq $alt "rank") (in $alt "ranking") (in $alt "scoreboard") (in $alt "leaderboard") -}}
 {{- with $page.Params.rankingImage -}}
   {{- $want := strings.TrimSpace (printf "%s" .) -}}
   {{- if and $want (eq (strings.ToLower (path.Base $dst)) (strings.ToLower (path.Base $want))) -}}

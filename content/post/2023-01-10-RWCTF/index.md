@@ -3,7 +3,6 @@ title: 2023 RWCTF体验赛 SU Writeup
 tags: ["RWCTF"]
 date: 2023-01-10 10:42:00
 slug: "rwctf-2023-su-wu"
-rankingImage: "1.png"
 ---
 本次2023 RWCTF 体验赛 我们 SU 取得了第二名 🥈的好成绩，感谢队里师傅们的辛苦付出！同时我们也在持续招人，只要你拥有一颗热爱 CTF 的心，都可以加入我们！欢迎发送个人简介至：[suers_xctf@126.com](mailto:suers_xctf@126.com)或直接联系书鱼(QQ:381382770)
 以下是我们 SU 本次 2023 RWCTF的 writeup
