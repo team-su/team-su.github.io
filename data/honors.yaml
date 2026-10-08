@@ -35,6 +35,11 @@ hosted:
 years:
   - year: 2026
     entries:
+      - event: 第四十八届世界技能大赛网络安全项目
+        featured_rank: 1
+        badges:
+          - label: 亚军
+            tone: silver
       - event: AliCTF
         badges:
           - label: 10th
@@ -65,7 +70,7 @@ years:
           - label: 5th
             tone: rank
       - event: 第九届 XCTF 联赛积分榜
-        featured_rank: 1
+        featured_rank: 2
         badges:
           - label: 第一名
             tone: gold
@@ -76,12 +81,12 @@ years:
           - label: Live Solo 季军
             tone: bronze
       - event: WMCTF
-        featured_rank: 8
+        featured_rank: 9
         badges:
           - label: 亚军
             tone: silver
       - event: 中华人民共和国第三届职业技能大赛网络安全项目
-        featured_rank: 11
+        featured_rank: 12
         badges:
           - label: 冠军
             tone: gold
@@ -98,12 +103,12 @@ years:
           - label: 13th
             tone: rank
       - event: L3HCTF
-        featured_rank: 2
+        featured_rank: 3
         badges:
           - label: 冠军
             tone: gold
       - event: DASCTF 上半年赛
-        featured_rank: 12
+        featured_rank: 13
         badges:
           - label: 冠军
             tone: gold
@@ -125,7 +130,7 @@ years:
           - label: 亚军
             tone: silver
       - event: 第四届网鼎杯
-        featured_rank: 3
+        featured_rank: 4
         badges:
           - label: 金长城奖
             tone: gold
@@ -134,7 +139,7 @@ years:
           - label: 冠军
             tone: gold
       - event: 矩阵杯网络安全大赛
-        featured_rank: 9
+        featured_rank: 10
         badges:
           - label: 冠军
             tone: gold
@@ -143,7 +148,7 @@ years:
           - label: 冠军
             tone: gold
       - event: 熊猫杯网络安全大赛
-        featured_rank: 4
+        featured_rank: 5
         badges:
           - label: 冠军
             tone: gold
@@ -152,7 +157,7 @@ years:
           - label: 亚军
             tone: silver
       - event: 第四十七届世界技能大赛网络安全项目中国国家队选拔赛
-        featured_rank: 10
+        featured_rank: 11
         badges:
           - label: 冠军
             tone: gold
@@ -180,7 +185,7 @@ years:
           - label: 亚军
             tone: silver
       - event: 巅峰极客线下决赛
-        featured_rank: 5
+        featured_rank: 6
         badges:
           - label: 亚军
             tone: silver
@@ -220,7 +225,7 @@ years:
           - label: 第五名
             tone: rank
       - event: XCTF SUSCTF 2022
-        featured_rank: 6
+        featured_rank: 7
         badges:
           - label: 冠军
             tone: gold
@@ -248,7 +253,7 @@ years:
           - label: 第七名
             tone: rank
       - event: 美团 CTF（个人 / 团队）
-        featured_rank: 7
+        featured_rank: 8
         badges:
           - label: 个人赛冠军
             tone: gold
@@ -262,7 +267,7 @@ years:
           - label: 12th
             tone: rank
       - event: XCTF WMCTF 2020
-        featured_rank: 13
+        featured_rank: 14
         badges:
           - label: 亚军
             tone: silver
@@ -274,7 +279,7 @@ years:
           - label: 第五名
             tone: rank
       - event: XCTF SCTF 2019
-        featured_rank: 14
+        featured_rank: 15
         badges:
           - label: 亚军
             tone: silver
