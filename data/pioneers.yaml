@@ -112,3 +112,8 @@
     - name: 三哈
       description: 哥哥不会连隐写都解不开吧~不会吧~不会吧~
       avatar: /img/avatars/三哈.jpg
+    - name: Tajang
+      blog: https://h4cker.zip/
+      github: https://github.com/TajangSec
+      description: 临渊羡鱼 不如退而结网
+      avatar: /img/avatars/tajang.jpg
