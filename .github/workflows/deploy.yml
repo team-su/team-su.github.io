@@ -48,14 +48,23 @@ jobs:
           # cname: su-team.cn
 
       # HK VPS（Caddy）。密钥仓库 Secret：VPS_SSH_KEY
+      # 主机信息支持用仓库 Variables 覆盖，默认指向当前 HK VPS。
       - name: Deploy to VPS
         env:
           SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_HOST: ${{ vars.VPS_HOST || '191.40.46.42' }}
+          VPS_PORT: ${{ vars.VPS_PORT || '25238' }}
+          VPS_USER: ${{ vars.VPS_USER || 'root' }}
+          VPS_PATH: ${{ vars.VPS_PATH || '/var/www/su-team/' }}
         run: |
-          mkdir -p ~/.ssh
-          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_ed25519
+          set -euo pipefail
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p 25238 -H 156.239.238.130 >> ~/.ssh/known_hosts
-          rsync -az --delete \
-            -e "ssh -p 25238 -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes" \
-            public/ root@156.239.238.130:/var/www/su-team/
+          ssh-keyscan -T 10 -p "$VPS_PORT" -H "$VPS_HOST" >> ~/.ssh/known_hosts
+          ssh -p "$VPS_PORT" -i ~/.ssh/id_ed25519 \
+            -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15 \
+            "$VPS_USER@$VPS_HOST" 'echo "VPS SSH OK"'
+          rsync -az --delete --info=stats2 \
+            -e "ssh -p $VPS_PORT -i ~/.ssh/id_ed25519 -o IdentitiesOnly=yes -o BatchMode=yes -o ConnectTimeout=15" \
+            public/ "$VPS_USER@$VPS_HOST:$VPS_PATH"
