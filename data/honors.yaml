@@ -35,10 +35,16 @@ hosted:
 years:
   - year: 2026
     entries:
+      - event: 第十届“强网杯”全国网络安全挑战赛
+        badges:
+          - label: 线上赛三等奖
+            tone: bronze
+          # - label: 决赛季军
+          #   tone: bronze
       - event: 第四十八届世界技能大赛网络安全项目
         featured_rank: 1
         badges:
-          - label: 亚军
+          - label: 银牌
             tone: silver
       - event: AliCTF
         badges:
