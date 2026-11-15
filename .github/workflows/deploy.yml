@@ -8,18 +8,19 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    # 固定 24.04：ubuntu-latest 会分批迁往 26.04，部署链路不跟这个节奏。
+    runs-on: ubuntu-24.04
     timeout-minutes: 60
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: true
           fetch-depth: 0
 
-      - uses: peaceiris/actions-hugo@v3
+      - uses: peaceiris/actions-hugo@v3.2.1
         with:
           hugo-version: "0.163.1"
           extended: true
@@ -27,7 +28,7 @@ jobs:
       # 仅 CI 转 webp：rankingImage / alt=排名 为 q100，其余正文图 q80。本地 hugo 不转换。
       # Hugo 按源文件内容 hash 失效，缓存不会陈旧。
       - name: Cache Hugo resources
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: |
             resources/_gen
@@ -41,7 +42,7 @@ jobs:
           HUGO_CACHEDIR: /tmp/hugo_cache
           HUGO_PROCESS_WEBP: "1"
 
-      - uses: peaceiris/actions-gh-pages@v4
+      - uses: peaceiris/actions-gh-pages@v4.1.0
         with:
           deploy_key: ${{ secrets.DEPLOY_KEY }}
           publish_branch: master
