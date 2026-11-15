@@ -3,16 +3,26 @@ set -euo pipefail
 
 cd "$(dirname "$0")"
 
+# 先同步远程，避免 non-fast-forward 导致 push 失败。
+# 构建检查放在 pull 之后，校验的才是这次真正要上线的内容。
+echo "==> 同步远程"
+git pull --rebase --autostash origin main
+
 # 与 CI 相同的构建参数，先在本地发现内容错误。
 if command -v hugo >/dev/null 2>&1; then
   echo "==> 本地构建检查"
+
+  # 本地与 CI 的 Hugo 版本不一致时只告警：不阻断，但要说清构建结果可能有差异。
+  ci_hugo=$(awk -F'"' '/hugo-version:/ {print $2; exit}' .github/workflows/deploy.yml 2>/dev/null || true)
+  local_hugo=$(hugo version 2>/dev/null | sed -n 's/^hugo v\([0-9][0-9.]*\).*/\1/p')
+  if [[ -n "$ci_hugo" && -n "$local_hugo" && "$ci_hugo" != "$local_hugo" ]]; then
+    echo "警告：本地 Hugo $local_hugo 与 CI 的 $ci_hugo 不一致，构建结果可能有差异" >&2
+  fi
+
   hugo --minify --buildFuture --cleanDestinationDir --gc >/dev/null
 else
   echo "警告：未找到 hugo，跳过本地构建检查" >&2
 fi
-
-# 先同步远程，避免 non-fast-forward 导致 push 失败。
-git pull --rebase --autostash origin main
 
 git add -A
 if git diff --cached --quiet; then
