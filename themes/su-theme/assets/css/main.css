@@ -1399,7 +1399,7 @@ pre:hover .code-copy-btn,
   color: var(--color-text-secondary);
 }
 
-/* SUCTF 页的列表：不要底部留白和分隔线 */
+/* About 页的 SUCTF 列表：不要底部留白和分隔线 */
 .honors-hosted.suctf-list {
   margin: 0;
   padding-bottom: 0;
