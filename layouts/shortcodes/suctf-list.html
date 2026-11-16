@@ -1,0 +1,21 @@
+{{- /* SUCTF 页：列出我们主办过的赛事（数据来自 data/honors.toml 的 [[hosted]]） */ -}}
+{{- $hosted := hugo.Data.honors.hosted | default (slice) -}}
+<div class="honors-hosted suctf-list">
+  <div class="honors-hosted__list">
+    {{- range $hosted -}}
+      {{- if .url -}}
+        <a class="honors-hosted__row" href="{{ .url }}" rel="noopener">
+          <span class="honors-hosted__name">{{ .event }}</span>
+          <span class="honors-hosted__edition">{{ .edition }}</span>
+          <span class="honors-hosted__date">{{ .date }}</span>
+        </a>
+      {{- else -}}
+        <div class="honors-hosted__row">
+          <span class="honors-hosted__name">{{ .event }}</span>
+          <span class="honors-hosted__edition">{{ .edition }}</span>
+          <span class="honors-hosted__date">{{ .date }}</span>
+        </div>
+      {{- end -}}
+    {{- end -}}
+  </div>
+</div>

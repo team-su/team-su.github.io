@@ -1,0 +1,201 @@
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  margin-left: 16px;
+  font-family: var(--font-mono);
+}
+
+
+/* ============================================================
+   Honors — year groups, two-column rows
+   ============================================================ */
+.honors-wall,
+.honors-brief {
+  margin: 4px 0 40px;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.honors-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.honors-hosted {
+  margin: 0 0 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--color-border);
+}
+.honors-hosted .honors-kicker { margin-bottom: 12px; }
+
+.honors-hosted__list { min-width: 0; }
+
+.honors-hosted__row {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr) auto;
+  gap: 8px 20px;
+  align-items: baseline;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--color-border-light);
+  color: inherit;
+  text-decoration: none;
+}
+.honors-hosted__row:last-child { border-bottom: none; }
+a.honors-hosted__row:hover .honors-hosted__name { color: var(--color-gold); }
+
+.honors-hosted__name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-heading);
+  white-space: nowrap;
+}
+.honors-hosted__edition,
+.honors-hosted__date {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+.honors-hosted__date {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.honors-toolbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0 0 8px;
+}
+
+.prose-page .honors-filter,
+.article__content .honors-filter {
+  display: flex;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+}
+.prose-page .honors-filter__btn,
+.article__content .honors-filter__btn {
+  appearance: none;
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  padding: 4px 10px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  line-height: 1.4;
+}
+.prose-page .honors-filter__btn:hover,
+.article__content .honors-filter__btn:hover { color: var(--color-heading); }
+.prose-page .honors-filter__btn.is-active,
+.article__content .honors-filter__btn.is-active {
+  color: var(--color-heading);
+  border-bottom-color: var(--color-gold);
+}
+.prose-page .honors-filter__btn[data-filter="gold"].is-active,
+.article__content .honors-filter__btn[data-filter="gold"].is-active {
+  color: var(--color-gold);
+}
+
+.honors-index { display: flex; flex-direction: column; gap: 28px; }
+
+.prose-page h2.honors-year__label,
+.prose-page .honors-year__label,
+.article__content h2.honors-year__label,
+.article__content .honors-year__label,
+.article__content .honors-brief .honors-year__label {
+  font-family: var(--font-mono);
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-heading);
+  margin: 0 0 4px;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--color-border);
+  line-height: 1.2;
+}
+
+.honors-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(6.5rem, max-content);
+  gap: 8px 24px;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--color-border-light);
+}
+.honors-row:last-child { border-bottom: none; }
+.honors-row[hidden] { display: none; }
+.honors-year[hidden] { display: none; }
+
+.honors-row__event {
+  font-size: 0.95rem;
+  color: var(--color-text);
+  min-width: 0;
+  line-height: 1.55;
+}
+
+.honors-row__place {
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.honor-rank--gold { color: var(--color-gold); }
+.honor-rank--silver { color: var(--color-silver); }
+.honor-rank--bronze { color: var(--color-bronze); }
+.honor-rank--rank { color: var(--color-text-secondary); }
+.honor-rank__sep { color: var(--color-text-secondary); }
+
+.honors-brief { display: flex; flex-direction: column; gap: 24px; }
+.honors-brief__year { min-width: 0; }
+.honors-brief__actions {
+  margin-top: 8px;
+  text-align: left;
+}
+
+.team-button {
+  display: inline-block;
+  padding: 10px 24px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-heading);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+}
+.team-button:hover {
+  border-color: var(--color-link);
+  background: var(--color-hover-lift);
+  color: var(--color-link);
+}
+
+
+/* ============================================================
+   Roster — dedicated members / pioneers list
+   ============================================================ */
+.roster { padding: 0 0 24px; }
+
+.roster__header {
+  margin-bottom: 16px;
+}
+
+.roster__title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-heading);
+  line-height: 1.3;
+}
+

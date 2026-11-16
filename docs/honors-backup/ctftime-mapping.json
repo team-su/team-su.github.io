@@ -1,0 +1,28 @@
+{
+  "_comment": "CTFtime 核验过的赛事（event id 可点开 https://ctftime.org/event/<id>/ 复核）。字段：date=展示用，sort=排序用起点，location=地点。",
+  "entries": {
+    "2026|LilacCTF": {"date": "2026.01.24–26", "sort": "2026.01.24", "location": "Online", "source": "https://ctftime.org/event/3071/"},
+    "2025|HKCERTCTF Quals": {"date": "2025.12.19–21", "sort": "2025.12.19", "location": "Online", "source": "https://ctftime.org/event/2998/"},
+    "2025|RCTF": {"date": "2025.11.15–17", "sort": "2025.11.15", "location": "Online", "source": "https://ctftime.org/event/2992/"},
+    "2025|WMCTF": {"date": "2025.09.20–21", "sort": "2025.09.20", "location": "Online", "source": "https://ctftime.org/event/2910/"},
+    "2025|ImaginaryCTF": {"date": "2025.09.05–07", "sort": "2025.09.05", "location": "Online", "source": "https://ctftime.org/event/2799/"},
+    "2025|TFCCTF": {"date": "2025.08.29–31", "sort": "2025.08.29", "location": "Online", "source": "https://ctftime.org/event/2822/"},
+    "2025|DeadSec CTF": {"date": "2025.07.25–27", "sort": "2025.07.25", "location": "Online", "source": "https://ctftime.org/event/2631/"},
+    "2025|L3HCTF": {"date": "2025.07.12–14", "sort": "2025.07.12", "location": "Online", "source": "https://ctftime.org/event/2823/"},
+    "2025|WolvCTF": {"date": "2025.03.21–23", "sort": "2025.03.21", "location": "Online", "source": "https://ctftime.org/event/2579/"},
+    "2024|RCTF": {"date": "2024.05.25–27", "sort": "2024.05.25", "location": "Online", "source": "https://ctftime.org/event/2374/"},
+    "2023|TPCTF": {"date": "2023.11.25–27", "sort": "2023.11.25", "location": "Online", "source": "https://ctftime.org/event/2161/"},
+    "2023|XCTF ACTF 2023": {"date": "2023.10.28–30", "sort": "2023.10.28", "location": "Online", "source": "https://ctftime.org/event/2104/"},
+    "2023|WMCTF": {"date": "2023.08.19–21", "sort": "2023.08.19", "location": "Online", "source": "https://ctftime.org/event/2061/"},
+    "2023|SCTF": {"date": "2023.06.17–19", "sort": "2023.06.17", "location": "Online", "source": "https://ctftime.org/event/2021/"},
+    "2023|RWCTF 2023 体验赛": {"date": "2023.01.06–08", "sort": "2023.01.06", "location": "Online", "source": "https://ctftime.org/event/1797/"},
+    "2022|XCTF ACTF 2022": {"date": "2022.06.25–27", "sort": "2022.06.25", "location": "Online", "source": "https://ctftime.org/event/1682/"},
+    "2022|XCTF SUSCTF 2022": {"date": "2022.02.26–28", "sort": "2022.02.26", "location": "Online", "source": "https://ctftime.org/event/1566/"},
+    "2022|RWCTF 2022 体验赛": {"date": "2022.01.21–23", "sort": "2022.01.21", "location": "Online", "source": "https://ctftime.org/event/1507/"},
+    "2021|SCTF": {"date": "2021.12.25–27", "sort": "2021.12.25", "location": "Online", "source": "https://ctftime.org/event/1539/"},
+    "2021|RCTF": {"date": "2021.09.11–13", "sort": "2021.09.11", "location": "Online", "source": "https://ctftime.org/event/1413/"},
+    "2020|XCTF WMCTF 2020": {"date": "2020.08.01–03", "sort": "2020.08.01", "location": "Online", "source": "https://ctftime.org/event/1094/"},
+    "2019|CyBRICS CTF 中国区": {"date": "2019.07.20–21", "sort": "2019.07.20", "location": "Online", "source": "https://ctftime.org/event/836/"},
+    "2018|InCTF": {"date": "2018.10.06–07", "sort": "2018.10.06", "location": "Online", "source": "https://ctftime.org/event/662/"}
+  }
+}

@@ -10,6 +10,3 @@ SU创队之始，战队取名SU，一方面代表江苏，另一方面也寓意�
 
 有意愿加入我们的小伙伴联系邮箱：[suers_xctf@126.com](mailto:suers_xctf@126.com)
 
-## 战队荣誉
-
-{{< honors-preview >}}

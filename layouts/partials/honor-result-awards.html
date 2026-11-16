@@ -1,0 +1,26 @@
+{{- /*
+  荣誉页名次渲染 —— 纯 r3kapig「Selected Awards」文字风：不加框、不加底色。
+  🏆 只给冠军；一等奖用 ★；亚军 / 季军 / 等级奖靠文字颜色区分。
+*/ -}}
+{{- range $idx, $badge := . -}}
+  {{- $tone := $badge.tone | default "rank" -}}
+  {{- $label := $badge.en | default $badge.label -}}
+  {{- $kind := "rank" -}}
+  {{- if eq $tone "gold" -}}
+    {{- if or (in $badge.label "冠军") (in $badge.label "第一") -}}
+      {{- $kind = "champion" -}}
+    {{- else -}}
+      {{- $kind = "first" -}}
+    {{- end -}}
+  {{- else if eq $tone "silver" -}}
+    {{- $kind = "second" -}}
+  {{- else if eq $tone "bronze" -}}
+    {{- if or (in $badge.label "季军") (in $badge.label "第三") -}}
+      {{- $kind = "third" -}}
+    {{- else -}}
+      {{- $kind = "prize" -}}
+    {{- end -}}
+  {{- end -}}
+  {{- if gt $idx 0 -}}<span class="honor-sep">/</span>{{- end -}}
+  <span class="honor-place honor-place--{{ $kind }}">{{- if eq $kind "champion" }}🏆 {{ else if eq $kind "first" }}★ {{ else if eq $kind "second" }}🥈 {{ else if eq $kind "third" }}🥉 {{ end }}{{ $label }}</span>
+{{- end -}}

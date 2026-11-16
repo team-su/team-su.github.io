@@ -1,0 +1,570 @@
+summary: >-
+  SU 持续活跃于国内外 CTF 赛事与国家级网络安全赛事，这里只展示代表性成绩，完整荣誉已按时间轴整理。
+preview_limit: 6
+hosted:
+  - year: 2026
+    event: SUCTF 2026
+    edition: 第十届 XCTF 国际联赛分站赛
+    date: 2026.03.14 – 03.16
+    url: https://github.com/team-su/SUCTF-2026
+  - year: 2025
+    event: SUCTF 2025
+    edition: 第九届 XCTF 国际联赛分站赛
+    date: 2025.01.11 – 01.13
+    url: https://github.com/team-su/SUCTF-2025
+  - year: 2023
+    event: DASCTF × SU 2023
+    edition: 开局之战
+    date: 2023.04.22
+    url: https://mp.weixin.qq.com/s/9jmsUhKXmsBs_bsZshQKZA
+  - year: 2022
+    event: DASCTF × SU 2022
+    edition: 三月春季挑战赛
+    date: 2022.03.26
+    url: https://mp.weixin.qq.com/s/-wn9k7yDAgrddC59WvSGyA
+  - year: 2019
+    event: SUCTF 2019
+    edition: 第五届 XCTF 国际联赛分站赛
+    date: 2019.08.17 – 08.18
+    url: https://github.com/team-su/SUCTF-2019
+  - year: 2018
+    event: SUCTF 2018
+    edition: 第四届 XCTF 国际联赛分站赛
+    date: 2018.05.26 – 05.27
+    url: https://mp.weixin.qq.com/s/i2TVTPmRy3urZ88EahkE0g
+years:
+  - year: 2026
+    entries:
+      - event: 第十届“强网杯”全国网络安全挑战赛
+        date: "2026.10.31–11.01"
+        sort: "2026.10.31"
+        location: "Online"
+        source: "https://qiangwangbei.com/"
+        badges:
+          - label: 线上赛三等奖
+            tone: bronze
+          # - label: 决赛季军
+          #   tone: bronze
+      - event: 第四十八届世界技能大赛网络安全项目
+        date: "2026.09.23–09.26"
+        sort: "2026.09.23"
+        location: "上海"
+        source: "https://worldskills2026.com/schedule"
+        featured: true
+        badges:
+          - label: 银牌
+            tone: silver
+      - event: AliCTF
+        date: "2026.01.31–02.01"
+        sort: "2026.01.31"
+        location: "Online"
+        source: "https://xz.aliyun.com/ctf"
+        badges:
+          - label: 10th
+            tone: rank
+      - event: LilacCTF
+        date: "2026.01.24–26"
+        sort: "2026.01.24"
+        location: "Online"
+        source: "https://ctftime.org/event/3071/"
+        badges:
+          - label: 5th
+            tone: rank
+
+  - year: 2025
+    entries:
+      - event: CTFTIME TOP 50
+        date: "2025"
+        sort: "2025.12.31"
+        source: "https://ctftime.org/stats/2025"
+        badges:
+          - label: 36th
+            tone: rank
+      - event: HKCERTCTF Quals
+        date: "2025.12.19–21"
+        sort: "2025.12.19"
+        location: "Online"
+        source: "https://ctftime.org/event/2998/"
+        badges:
+          - label: 4th
+            tone: rank
+      - event: 强网拟态
+        date: "2025.11.26–11.29"
+        sort: "2025.11.26"
+        location: "南京"
+        source: "http://www.chinadevelopment.com.cn/zxsd/2025/1112/1968774.shtml"
+        badges:
+          - label: 预赛冠军
+            tone: gold
+          - label: 决赛季军
+            tone: bronze
+      - event: RCTF
+        date: "2025.11.15–17"
+        sort: "2025.11.15"
+        location: "Online"
+        source: "https://ctftime.org/event/2992/"
+        badges:
+          - label: 5th
+            tone: rank
+      - event: 第九届 XCTF 联赛积分榜
+        date: "2025.10"
+        sort: "2025.10.00"
+        location: "Online"
+        source: "https://unsafe.sh/go-286072.html"
+        featured: true
+        badges:
+          - label: 第一名
+            tone: gold
+      - event: 第九届 XCTF 国际网络攻防联赛总决赛
+        date: "2025.10.26–10.28"
+        sort: "2025.10.26"
+        location: "宁波"
+        source: "https://epaper.blnews.com.cn/html/2025-10/27/content_7102_18990471.htm"
+        badges:
+          - label: 三等奖
+            tone: bronze
+          - label: Live Solo 季军
+            tone: bronze
+      - event: WMCTF
+        date: "2025.09.20–21"
+        sort: "2025.09.20"
+        location: "Online"
+        source: "https://ctftime.org/event/2910/"
+        featured: true
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 中华人民共和国第三届职业技能大赛网络安全项目
+        date: "2025.09.20–09.22"
+        sort: "2025.09.20"
+        location: "郑州"
+        source: "https://jnjd.mca.gov.cn/n324/n404/c1662004999980004191/content.html"
+        featured: true
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: ImaginaryCTF
+        date: "2025.09.05–07"
+        sort: "2025.09.05"
+        location: "Online"
+        source: "https://ctftime.org/event/2799/"
+        badges:
+          - label: 13th
+            tone: rank
+      - event: TFCCTF
+        date: "2025.08.29–31"
+        sort: "2025.08.29"
+        location: "Online"
+        source: "https://ctftime.org/event/2822/"
+        badges:
+          - label: 6th
+            tone: rank
+      - event: DeadSec CTF
+        date: "2025.07.25–27"
+        sort: "2025.07.25"
+        location: "Online"
+        source: "https://ctftime.org/event/2631/"
+        badges:
+          - label: 13th
+            tone: rank
+      - event: XCTF L3HCTF
+        date: "2025.07.12–14"
+        sort: "2025.07.12"
+        location: "Online"
+        source: "https://ctftime.org/event/2823/"
+        featured: true
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: DASCTF 上半年赛
+        date: "2025.06.21"
+        sort: "2025.06.21"
+        location: "Online"
+        source: "https://buuoj.cn/plugins/ctfd-matches/matches/215"
+        featured: true
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 数字中国创新大赛数据安全产业积分争夺赛
+        date: "2025.04.20"
+        sort: "2025.04.20"
+        location: "福州"
+        source: "https://cstc.org.cn/info/1754/254128.htm"
+        badges:
+          - label: 铜奖
+            tone: bronze
+          - label: 10th
+            tone: rank
+      - event: WolvCTF
+        date: "2025.03.21–23"
+        sort: "2025.03.21"
+        location: "Online"
+        source: "https://ctftime.org/event/2579/"
+        badges:
+          - label: 13th
+            tone: rank
+
+  - year: 2024
+    entries:
+      - event: 第四届网鼎杯线下总决赛
+        date: "2024.11.23–11.25"
+        sort: "2024.11.23"
+        location: "贵阳"
+        source: "http://news.sohu.com/a/828673303_362042"
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 第四届网鼎杯
+        date: "2024.10.29–11.04"
+        sort: "2024.10.29"
+        location: "Online"
+        source: "http://www.gz.chinanews.com.cn/szfc/guiyang/2024-10-29/doc-iheinuzm7526047.shtml"
+        featured: true
+        badges:
+          - label: 金长城奖
+            tone: gold
+      - event: 羊城杯网络安全大赛
+        date: "2024.09.11"
+        sort: "2024.09.11"
+        location: "广州"
+        source: "http://gd.people.com.cn/n2/2024/0912/c123932-40974725.html"
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 矩阵杯网络安全大赛
+        date: "2024.06.26–06.28"
+        sort: "2024.06.26"
+        location: "青岛"
+        source: "https://topics.gmw.cn/2024-06/24/content_37396925.htm"
+        featured: true
+        badges:
+          - label: 战队攻防对抗赛一等奖
+            tone: gold
+          - label: 人工智能挑战赛优秀奖
+            tone: rank
+      - event: 国产 OS 漏洞挖掘赛
+        date: "2024.01.17"
+        sort: "2024.01.17"
+        location: "武汉"
+        source: "https://mp.weixin.qq.com/s/NKLLBek2zFENJjo901TJdA"
+        badges:
+          - label: 一等奖
+            tone: gold
+      - event: 熊猫杯网络安全大赛
+        date: "2024.06.22–06.23"
+        sort: "2024.06.22"
+        location: "成都"
+        source: "https://slcyxy.cuit.edu.cn/info/1021/1200.htm"
+        featured: true
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: RCTF
+        date: "2024.05.25–27"
+        sort: "2024.05.25"
+        location: "Online"
+        source: "https://ctftime.org/event/2374/"
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 第四十七届世界技能大赛网络安全项目中国国家队选拔赛
+        date: "2024.03.21–03.25"
+        sort: "2024.03.21"
+        location: "广州"
+        source: "https://rgzn.cquet.edu.cn/info/1050/14430.htm"
+        featured: true
+        badges:
+          - label: 冠军
+            tone: gold
+
+  - year: 2023
+    entries:
+      - event: TPCTF
+        date: "2023.11.25–27"
+        sort: "2023.11.25"
+        location: "Online"
+        source: "https://ctftime.org/event/2161/"
+        badges:
+          - label: 7th
+            tone: rank
+      - event: XCTF ACTF 2023
+        date: "2023.10.28–30"
+        sort: "2023.10.28"
+        location: "Online"
+        source: "https://ctftime.org/event/2104/"
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 中华人民共和国第二届职业技能大赛网络安全项目
+        date: "2023.09.16–09.19"
+        sort: "2023.09.16"
+        location: "天津"
+        source: "https://www.cquet.edu.cn/info/1037/11066.htm"
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: 陇剑杯决赛
+        date: "2023.09.15"
+        sort: "2023.09.15"
+        location: "兰州新区"
+        source: "http://gs.people.com.cn/BIG5/n2/2023/0917/c183348-40573803.html"
+        badges:
+          - label: 第六名
+            tone: rank
+      - event: 祥云杯线下决赛
+        date: "2023.09.09–09.10"
+        sort: "2023.09.09"
+        location: "长春"
+        source: "https://news.cnjiwang.com/jwyc/202309/3769805.html"
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: 巅峰极客线下决赛
+        date: "2023.08.23"
+        sort: "2023.08.23"
+        location: "成都"
+        source: "https://news.chengdu.cn/2023/0824/2368783.shtml"
+        featured: true
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: WMCTF
+        date: "2023.08.19–21"
+        sort: "2023.08.19"
+        location: "Online"
+        source: "https://ctftime.org/event/2061/"
+        badges:
+          - label: 10th
+            tone: rank
+      - event: 巅峰极客线上赛
+        date: "2023.07.22"
+        sort: "2023.07.22"
+        location: "Online"
+        source: "https://www.cnblogs.com/120211P/p/17573801.html"
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: XCTF SCTF
+        date: "2023.06.17–19"
+        sort: "2023.06.17"
+        location: "Online"
+        source: "https://ctftime.org/event/2021/"
+        badges:
+          - label: 8th
+            tone: rank
+      - event: 贵阳大数据网络安全精英对抗赛
+        date: "2023.05.20–05.25"
+        sort: "2023.05.20"
+        location: "贵阳"
+        source: "https://www.gywb.cn/system/2023/05/25/071379889.shtml"
+        badges:
+          - label: 第四名
+            tone: rank
+      - event: 网鼎杯决赛
+        date: "2023.04.14–04.15"
+        sort: "2023.04.14"
+        location: "杭州"
+        source: "https://cernet.edu.cn/info/ji_shu_ju_le_bu/wlaq/202304/t20230420_2380539.shtml"
+        badges:
+          - label: 第十一名
+            tone: rank
+      - event: 第七届 XCTF 国际网络攻防联赛总决赛
+        date: "2023.03.28–03.29"
+        sort: "2023.03.28"
+        location: "南京"
+        source: "http://note.f5.pm/go-158022.html"
+        badges:
+          - label: 第七名
+            tone: rank
+      - event: RWCTF 2023 体验赛
+        date: "2023.01.06–08"
+        sort: "2023.01.06"
+        location: "Online"
+        source: "https://ctftime.org/event/1797/"
+        badges:
+          - label: 亚军
+            tone: silver
+
+  - year: 2022
+    entries:
+      - event: XCTF ACTF 2022
+        date: "2022.06.25–27"
+        sort: "2022.06.25"
+        location: "Online"
+        source: "https://ctftime.org/event/1682/"
+        badges:
+          - label: 第五名
+            tone: rank
+      - event: XCTF SUSCTF 2022
+        date: "2022.02.26–28"
+        sort: "2022.02.26"
+        location: "Online"
+        source: "https://ctftime.org/event/1566/"
+        featured: true
+        badges:
+          - label: 冠军
+            tone: gold
+      - event: RWCTF 2022 体验赛
+        date: "2022.01.21–23"
+        sort: "2022.01.21"
+        location: "Online"
+        source: "https://ctftime.org/event/1507/"
+        badges:
+          - label: 冠军
+            tone: gold
+
+  - year: 2021
+    entries:
+      - event: XCTF SCTF
+        date: "2021.12.25–27"
+        sort: "2021.12.25"
+        location: "Online"
+        source: "https://ctftime.org/event/1539/"
+        badges:
+          - label: 第二名
+            tone: silver
+      - event: 强网拟态预赛
+        date: "2021.10.23–10.25"
+        sort: "2021.10.23"
+        location: "Online"
+        source: "https://www.163.com/dy/article/GLRVNQCI05388O9J.html"
+        badges:
+          - label: 第二名
+            tone: silver
+      - event: BYTECTF
+        date: "2021.10.16–17"
+        sort: "2021.10.16"
+        location: "Online"
+        source: "https://www.anquan419.com/comp/10/58.html"
+        badges:
+          - label: 第十名
+            tone: rank
+      - event: RCTF
+        date: "2021.09.11–13"
+        sort: "2021.09.11"
+        location: "Online"
+        source: "https://ctftime.org/event/1413/"
+        badges:
+          - label: 第七名
+            tone: rank
+      - event: 美团 CTF（个人 / 团队）
+        date: "2021.12.19"
+        sort: "2021.12.19"
+        location: "Online"
+        source: "https://www.ichunqiu.com/competition/detail/266"
+        featured: true
+        badges:
+          - label: 个人赛冠军
+            tone: gold
+          - label: 团队赛亚军
+            tone: silver
+
+  - year: 2020
+    entries:
+      - event: 强网杯线上赛
+        date: "2020.08.22–08.23"
+        sort: "2020.08.22"
+        location: "Online"
+        source: "http://news.hnr.cn/202009/14/147764.html"
+        badges:
+          - label: 12th
+            tone: rank
+      - event: XCTF WMCTF 2020
+        date: "2020.08.01–03"
+        sort: "2020.08.01"
+        location: "Online"
+        source: "https://ctftime.org/event/1094/"
+        featured: true
+        badges:
+          - label: 亚军
+            tone: silver
+
+  - year: 2019
+    entries:
+      - event: CyBRICS CTF 中国区
+        date: "2019.07.20–21"
+        sort: "2019.07.20"
+        location: "Online"
+        source: "https://ctftime.org/event/836/"
+        badges:
+          - label: 第五名
+            tone: rank
+      - event: XCTF SCTF 2019
+        featured: true
+        badges:
+          - label: 亚军
+            tone: silver
+      - event: KCTF 2019 Q2
+        date: "2019.06.10–06.24"
+        sort: "2019.06.10"
+        location: "Online"
+        source: "https://www.4hou.com/posts/LY0p"
+        badges:
+          - label: 亚军
+            tone: silver
+
+  - year: 2018
+    entries:
+      - event: InCTF
+        date: "2018.10.06–07"
+        sort: "2018.10.06"
+        location: "Online"
+        source: "https://ctftime.org/event/662/"
+        badges:
+          - label: 6th
+            tone: rank
+      - event: XCTF SCTF
+        date: "2018.06.19–20"
+        sort: "2018.06.19"
+        location: "Online"
+        source: "https://www.ichunqiu.com/competition/detail/151"
+        badges:
+          - label: 第八名
+            tone: rank
+
+  - year: 2017
+    entries:
+      - event: WHCTF
+        date: "2017.09.16–09.17"
+        sort: "2017.09.16"
+        location: "Online"
+        source: "https://www.anquanke.com/post/id/86858"
+        badges:
+          - label: 第四名
+            tone: rank
+
+  - year: 2016
+    entries:
+      - event: 华山杯（决赛 / 初赛）
+        date: "2016.09.24"
+        sort: "2016.09.24"
+        location: "西安"
+        source: "https://sn.cri.cn/20160826/63fe9c20-7a69-102a-c691-d77df5aad94d.html"
+        badges:
+          - label: 决赛第七名
+            tone: rank
+          - label: 初赛第十名
+            tone: rank
+      - event: XMAN 夏令营
+        date: "2016.08.06–08.26"
+        sort: "2016.08.06"
+        location: "Online"
+        source: "https://www.ichunqiu.com/xman/index/2016-8-18"
+        badges:
+          - label: 总排名第三
+            tone: bronze
+          - label: 攻防第五
+            tone: rank
+          - label: 结业第三
+            tone: bronze
+          - label: 练习赛第一
+            tone: gold
+      - event: AliCTF
+        date: "2016.06.04–06.06"
+        sort: "2016.06.04"
+        location: "Online"
+        source: "https://ctftime.org/event/322/"
+        badges:
+          - label: 第十名
+            tone: rank
+

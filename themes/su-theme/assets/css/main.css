@@ -1374,6 +1374,22 @@ pre:hover .code-copy-btn,
   min-width: 0;
 }
 
+.honors-hosted-inline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 0 0 10px;
+}
+.honors-hosted-inline__list {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+.honors-hosted-inline__list a { color: var(--color-text); text-decoration: none; }
+.honors-hosted-inline__list a:hover { color: var(--color-link); }
+.honors-hosted-inline__sep { margin: 0 4px; color: var(--color-border); }
+
 .honors-kicker {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -1383,12 +1399,35 @@ pre:hover .code-copy-btn,
   color: var(--color-text-secondary);
 }
 
+/* SUCTF 页的列表：不要底部留白和分隔线 */
+.honors-hosted.suctf-list {
+  margin: 0;
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
 .honors-hosted {
   margin: 0 0 40px;
   padding-bottom: 32px;
   border-bottom: 1px solid var(--color-border);
 }
-.honors-hosted .honors-kicker { margin-bottom: 12px; }
+.honors-hosted .honors-hosted-inline {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 0 0 10px;
+}
+.honors-hosted-inline__list {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+.honors-hosted-inline__list a { color: var(--color-text); text-decoration: none; }
+.honors-hosted-inline__list a:hover { color: var(--color-link); }
+.honors-hosted-inline__sep { margin: 0 4px; color: var(--color-border); }
+
+.honors-kicker { margin-bottom: 12px; }
 
 .honors-hosted__list { min-width: 0; }
 
@@ -1517,11 +1556,277 @@ a.honors-hosted__row:hover .honors-hosted__name { color: var(--color-gold); }
 .honor-rank--rank { color: var(--color-text-secondary); }
 .honor-rank__sep { color: var(--color-text-secondary); }
 
+/* --- 名次渲染（r3kapig 风）：不加框、不加底色，只用文字颜色和图标分档 --- */
+.honor-place {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+.honor-place--champion { color: var(--color-gold); }
+.honor-place--first { color: var(--color-gold); }
+.honor-place--second { color: var(--color-silver); }
+.honor-place--third { color: var(--color-bronze); }
+.honor-place--prize { color: var(--color-text-secondary); }
+.honor-place--rank { color: var(--color-text-secondary); }
+
+.honor-sep {
+  color: var(--color-border);
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
 .honors-brief { display: flex; flex-direction: column; gap: 24px; }
 .honors-brief__year { min-width: 0; }
 .honors-brief__actions {
   margin-top: 8px;
   text-align: left;
+}
+
+/* ============================================================
+   Awards — /page/honors/ 紧凑表（参考 r3kapig Selected Awards）
+   ============================================================ */
+
+.awards { margin: 4px 0 0; max-width: 100%; min-width: 0; }
+
+.awards-toolbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin: 0 0 10px;
+}
+
+.awards-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-text-secondary);
+}
+
+.awards-count {
+  margin-left: 10px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.awards-filter { display: flex; gap: 2px; }
+
+.awards-filter__btn {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+  padding: 4px 10px;
+  cursor: pointer;
+  line-height: 1.4;
+  transition: color 0.15s;
+}
+.awards-filter__btn:hover { color: var(--color-heading); }
+.awards-filter__btn.is-active {
+  color: var(--color-heading);
+  border-bottom-color: var(--color-gold);
+}
+.awards-filter__btn[data-filter="gold"].is-active { color: var(--color-gold); }
+
+.awards-table {
+  width: 100%;
+  display: table;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.awards-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-text-secondary);
+  text-align: left;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.awards-table thead th:last-child { text-align: right; }
+
+.awards-row[hidden] { display: none; }
+.awards-tick[hidden] { display: none; }
+
+.awards-tick td {
+  padding: 22px 0 6px;
+  border-bottom: 0;
+}
+.awards-tick:first-child td { padding-top: 2px; }
+
+.awards-tick__year {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--color-text-secondary);
+}
+.awards-tick__year::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+.awards-table {
+  width: 100%;
+  display: table;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.awards-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--color-text-secondary);
+  text-align: left;
+  padding: 0 0 8px;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
+}
+.awards-table thead th:last-child { text-align: right; }
+
+.awards-row[hidden] { display: none; }
+.awards-tick[hidden] { display: none; }
+
+.awards-tick td {
+  padding: 22px 0 6px;
+  border-bottom: 0;
+}
+.awards-tick:first-child td { padding-top: 2px; }
+
+.awards-tick__year {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--color-text-secondary);
+}
+.awards-tick__year::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+.awards-tick[hidden] { display: none; }
+
+.awards-tick td {
+  padding: 22px 0 6px;
+  border-bottom: 0;
+}
+.awards-tick:first-child td { padding-top: 2px; }
+
+.awards-tick__year {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  color: var(--color-text-secondary);
+}
+.awards-tick__year::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+.awards-row td {
+  padding: 9px 0;
+  border-bottom: 1px solid var(--color-border-light);
+  vertical-align: top;
+}
+
+.awards-row:hover td { background: var(--color-hover-lift); }
+
+.awards-event {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  padding-right: 18px;
+}
+
+/* 冠军行不做加粗/变色——层级交给名次标签本身（🏆 / ★ / 🥈 / 🥉） */
+
+.awards-event__name { display: block; }
+
+.awards-event__result {
+  display: block;
+  margin-top: 1px;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  line-height: 1.5;
+}
+
+.awards-when {
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.awards-when a,
+.awards-when > span {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+}
+.awards-when a:hover {
+  color: var(--color-link);
+  border-bottom-color: currentColor;
+}
+
+/* prose 默认给所有 a 加下划线；表格里的时间列只在 hover 时才露出来 */
+.prose-page__body .awards-when a,
+.prose-page__body .awards-when > span { text-decoration: none; }
+.prose-page__body .awards-when a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.awards-when__place { color: var(--color-text-secondary); }
+.awards-when__place + .awards-when__date::before {
+  content: " · ";
+  color: var(--color-text-secondary);
+}
+
+@media (max-width: 640px) {
+  .awards-table,
+  .awards-table tbody,
+  .awards-row,
+  .awards-event,
+  .awards-when { display: block; }
+  .awards-table thead { display: none; }
+  .awards-row {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+  .awards-row td { border-bottom: none; padding: 0; }
+  .awards-event { padding-right: 0; font-size: 0.92rem; }
+  .awards-when { text-align: left; margin-top: 2px; }
 }
 
 .team-button {

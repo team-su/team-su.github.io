@@ -123,6 +123,10 @@ disableKinds = ["RSS"]
     url = "page/about/"
     weight = 4
 [[menu.main]]
-    name = "Tags"
-    url = "tags/"
+    name = "Honors"
+    url = "page/honors/"
     weight = 5
+[[menu.main]]
+    name = "SUCTF"
+    url = "page/suctf/"
+    weight = 6

@@ -1,0 +1,6 @@
+{{- range $idx, $badge := . -}}
+  {{- $tone := $badge.tone | default "rank" -}}
+  {{- if gt $idx 0 -}}<span class="honor-rank__sep"> / </span>{{- end -}}
+  <span class="honor-rank honor-rank--{{ $tone }}">{{- if eq $tone "gold" -}}★ {{ end -}}{{ $badge.label }}</span>
+{{- end -}}
+
